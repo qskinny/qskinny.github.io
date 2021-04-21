@@ -1,0 +1,2218 @@
+<!doctype html>
+<html lang="en">
+    <head>    
+
+        <title>nodes/QskBoxNode.h - The QSkinny UI framework</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="A documentation theme"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i%26display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" href="/assets/css/main.css">
+        <link rel="stylesheet" href="/assets/css/syntax.css">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        
+    </head>
+    <body>
+        
+        <div id="page" class="site">
+  <header id="masthead" class="site-header outer">
+  <div class="inner">
+    <div class="site-header-inside">
+      <div class="site-branding">
+        
+        
+        <p class="site-title"><a href="/"></a></p>
+        
+      </div><!-- .site-branding -->
+      
+      
+      <nav id="main-navigation" class="site-navigation" aria-label="Main Navigation">
+        <div class="site-nav-inside">
+          <button id="menu-close" class="menu-toggle"><span class="screen-reader-text">Open Menu</span><span class="icon-close" aria-hidden="true"></span></button>
+          <ul class="menu">
+          
+            
+            
+            <li class="menu-item">
+              
+              
+<a class="" href="/">
+  
+  Home
+  
+</a>
+
+              
+            </li>
+          
+            
+            
+            <li class="menu-item">
+              
+              
+<a class="" href="/docs">
+  
+  Documentation
+  
+</a>
+
+              
+            </li>
+          
+            
+            
+            <li class="menu-item menu-button">
+              
+              
+<a class="button" href="https://github.com/uwerat/qskinny">
+  
+  GitHub
+  
+</a>
+
+              
+            </li>
+          
+          </ul>
+        </div><!-- .site-nav-inside -->
+      </nav><!-- .site-navigation -->
+      <button id="menu-open" class="menu-toggle"><span class="screen-reader-text">Close Menu</span><span class="icon-menu" aria-hidden="true"></span></button>
+      
+    </div><!-- .site-header-inside -->
+  </div><!-- .inner -->
+</header><!-- .site-header -->
+
+  <main id="content" class="site-content">
+    <div class="inner outer">
+  <div class="docs-content">
+    
+    
+
+
+
+
+<nav id="docs-nav" class="docs-nav" style="z-index: 1000">
+  <div id="docs-nav-inside" class="docs-nav-inside sticky">
+    <button id="docs-nav-toggle" class="docs-nav-toggle">Navigate Docs<span class="icon-angle-right" aria-hidden="true"></span></button>
+    <div class="docs-nav-menu">
+      <select id="search-field">
+      </select>
+      <br /><br />
+      <ul id="docs-menu" class="docs-menu">
+        <li class="docs-menu-item">
+          <a href="/docs/">Introduction</a>
+        </li>
+        
+          
+          
+          
+          
+          
+          
+          
+          <li class="docs-menu-item has-children">
+            <a href="/docs/tutorials/">Tutorials</a>
+            
+            
+              <button class="docs-submenu-toggle"><span class="screen-reader-text">Submenu</span><span class="icon-angle-right" aria-hidden="true"></span></button>
+              
+              
+
+
+<ul class="docs-submenu">
+  
+    <li class="docs-menu-item">
+      <a href="/docs/tutorials/01-What-is-QSkinny/">1. What is QSkinny?</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/tutorials/02-Why-QSkinny/">2. Why QSkinny?</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/tutorials/03-writing-your-first-application/">3. Writing your first application</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/tutorials/04-Layouts/">4. Layouts</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/tutorials/05-Skins/">5. Skins</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/tutorials/06-scalable-graphics/">6. (Scalable) graphics</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/tutorials/07-parents-and-parent-items/">7. Parents and parent items</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/tutorials/08-qskinny-and-qml/">8. Using QSkinny and QML</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/tutorials/09-writing-own-controls/">9. Writing own controls</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/tutorials/10-scene-graph/">9. Scene graph representations of controls</a>
+    </li>
+  
+</ul>
+
+            
+          </li>
+        
+          
+          
+          
+          
+          
+          
+          
+          <li class="docs-menu-item has-children">
+            <a href="/docs/modules/">Modules</a>
+            
+            
+              <button class="docs-submenu-toggle"><span class="screen-reader-text">Submenu</span><span class="icon-angle-right" aria-hidden="true"></span></button>
+              
+              
+
+
+<ul class="docs-submenu">
+  
+    <li class="docs-menu-item">
+      <a href="/docs/modules/group__Animation/">Animation</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/modules/group__Controls/">Controls</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/modules/group__Core/">Core</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/modules/group__Dialogs/">Dialogs</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/modules/group__Framework/">Framework</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/modules/group__Graphic/">Graphic</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/modules/group__Layouts/">Layouts</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/modules/group__Scenegraph/">Scenegraph</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/modules/group__Skinlets/">Skinlets</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/modules/group__Themeing/">Themeing</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/modules/group__container/">Container</a>
+    </li>
+  
+</ul>
+
+            
+          </li>
+        
+          
+          
+          
+          
+          
+          
+          
+          <li class="docs-menu-item has-children">
+            <a href="/docs/classes/">Classes</a>
+            
+            
+              <button class="docs-submenu-toggle"><span class="screen-reader-text">Submenu</span><span class="icon-angle-right" aria-hidden="true"></span></button>
+              
+              
+
+
+<ul class="docs-submenu">
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskAbstractButton/">QskAbstractButton</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskAnimationHint/">QskAnimationHint</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskAnimator/">QskAnimator</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskAnimatorDriver/">QskAnimatorDriver</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskAnimatorEvent/">QskAnimatorEvent</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskAspect/">QskAspect</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBoundedControl/">QskBoundedControl</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBoundedInput/">QskBoundedInput</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBoundedRangeInput/">QskBoundedRangeInput</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBoundedValueInput/">QskBoundedValueInput</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBox/">QskBox</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBoxBorderColors/">QskBoxBorderColors</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBoxBorderMetrics/">QskBoxBorderMetrics</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBoxClipNode/">QskBoxClipNode</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBoxNode/">QskBoxNode</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBoxRenderer/">QskBoxRenderer</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBoxShapeMetrics/">QskBoxShapeMetrics</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskBoxSkinlet/">QskBoxSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskColorFilter/">QskColorFilter</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskControl/">QskControl</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskCorner/">QskCorner</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskDialog/">QskDialog</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskDialogButton/">QskDialogButton</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskDialogButtonBox/">QskDialogButtonBox</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskDialogSubWindow/">QskDialogSubWindow</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskDialogWindow/">QskDialogWindow</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskDirtyItemFilter/">QskDirtyItemFilter</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskEvent/">QskEvent</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskFlickAnimator/">QskFlickAnimator</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskFocusIndicator/">QskFocusIndicator</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskFocusIndicatorSkinlet/">QskFocusIndicatorSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGeometryChangeEvent/">QskGeometryChangeEvent</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGesture/">QskGesture</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGestureEvent/">QskGestureEvent</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGestureRecognizer/">QskGestureRecognizer</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGradient/">QskGradient</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGradientStop/">QskGradientStop</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGraphic/">QskGraphic</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGraphicImageProvider/">QskGraphicImageProvider</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGraphicLabel/">QskGraphicLabel</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGraphicLabelSkinlet/">QskGraphicLabelSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGraphicNode/">QskGraphicNode</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGraphicPaintEngine/">QskGraphicPaintEngine</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGraphicProvider/">QskGraphicProvider</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGraphicProviderMap/">QskGraphicProviderMap</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGraphicTextureFactory/">QskGraphicTextureFactory</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGridBox/">QskGridBox</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskGridLayoutEngine/">QskGridLayoutEngine</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskHintAnimator/">QskHintAnimator</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskHintAnimatorTable/">QskHintAnimatorTable</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskIndexedLayoutBox/">QskIndexedLayoutBox</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskInputContext/">QskInputContext</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskInputContextFactory/">QskInputContextFactory</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskInputGrabber/">QskInputGrabber</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskInputPanel/">QskInputPanel</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskInputPanelBox/">QskInputPanelBox</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskInputPredictionBar/">QskInputPredictionBar</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskIntervalF/">QskIntervalF</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskLayoutChain/">QskLayoutChain</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskLayoutEngine2D/">QskLayoutEngine2D</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskLayoutHint/">QskLayoutHint</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskLinearBox/">QskLinearBox</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskLinearLayoutEngine/">QskLinearLayoutEngine</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskListView/">QskListView</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskListViewNode/">QskListViewNode</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskListViewSkinlet/">QskListViewSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskMargins/">QskMargins</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskMessageSubWindow/">QskMessageSubWindow</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskMessageWindow/">QskMessageWindow</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskMetaFunction/">QskMetaFunction</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskMetaInvokable/">QskMetaInvokable</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskObjectCounter/">QskObjectCounter</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskObjectCounterHook/">QskObjectCounterHook</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskPageIndicator/">QskPageIndicator</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskPageIndicatorSkinlet/">QskPageIndicatorSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskPaintedNode/">QskPaintedNode</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskPainterCommand/">QskPainterCommand</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskPanGesture/">QskPanGesture</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskPanGestureRecognizer/">QskPanGestureRecognizer</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskPopup/">QskPopup</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskPopupEvent/">QskPopupEvent</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskPopupSkinlet/">QskPopupSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskProgressBar/">QskProgressBar</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskProgressBarSkinlet/">QskProgressBarSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskPushButton/">QskPushButton</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskPushButtonSkinlet/">QskPushButtonSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskQuickItem/">QskQuickItem</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskRgbPalette/">QskRgbPalette</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskScaleEngine/">QskScaleEngine</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskScaleRenderer/">QskScaleRenderer</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskScaleTickmarks/">QskScaleTickmarks</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskScrollArea/">QskScrollArea</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskScrollBox/">QskScrollBox</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskScrollView/">QskScrollView</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskScrollViewSkinlet/">QskScrollViewSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSelectionSubWindow/">QskSelectionSubWindow</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSelectionWindow/">QskSelectionWindow</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSeparator/">QskSeparator</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSeparatorSkinlet/">QskSeparatorSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSetup/">QskSetup</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskShadowMetrics/">QskShadowMetrics</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskShortcutHandler/">QskShortcutHandler</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskShortcutMap/">QskShortcutMap</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSimpleListBox/">QskSimpleListBox</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSizePolicy/">QskSizePolicy</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSkin/">QskSkin</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSkinFactory/">QskSkinFactory</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSkinHintStatus/">QskSkinHintStatus</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSkinHintTable/">QskSkinHintTable</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSkinHintTableEditor/">QskSkinHintTableEditor</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSkinManager/">QskSkinManager</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSkinTransition/">QskSkinTransition</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSkinlet/">QskSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSlider/">QskSlider</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSliderSkinlet/">QskSliderSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskStackBox/">QskStackBox</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskStackBoxAnimator/">QskStackBoxAnimator</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskStackBoxAnimator1/">QskStackBoxAnimator1</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskStackBoxAnimator3/">QskStackBoxAnimator3</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskStandardSymbol/">QskStandardSymbol</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskStatusIndicator/">QskStatusIndicator</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskStatusIndicatorSkinlet/">QskStatusIndicatorSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSubWindow/">QskSubWindow</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSubWindowArea/">QskSubWindowArea</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSubWindowAreaSkinlet/">QskSubWindowAreaSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSubWindowSkinlet/">QskSubWindowSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskSwipeGesture/">QskSwipeGesture</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTabBar/">QskTabBar</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTabButton/">QskTabButton</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTabButtonSkinlet/">QskTabButtonSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTabView/">QskTabView</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTabViewSkinlet/">QskTabViewSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTapAndHoldGesture/">QskTapAndHoldGesture</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTapGesture/">QskTapGesture</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTextColors/">QskTextColors</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTextInput/">QskTextInput</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTextInputSkinlet/">QskTextInputSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTextLabel/">QskTextLabel</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTextLabelSkinlet/">QskTextLabelSkinlet</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTextNode/">QskTextNode</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTextOptions/">QskTextOptions</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTextPredictor/">QskTextPredictor</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTextureNode/">QskTextureNode</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTextureNodePrivate/">QskTextureNodePrivate</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTickmarksNode/">QskTickmarksNode</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskTickmarksNodePrivate/">QskTickmarksNodePrivate</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskVariantAnimator/">QskVariantAnimator</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskVirtualKeyboard/">QskVirtualKeyboard</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskWindow/">QskWindow</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskWindowChangeEvent/">QskWindowChangeEvent</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/classQskWindowPrivate/">QskWindowPrivate</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/classes/structQskVirtualKeyboardLayouts/">QskVirtualKeyboardLayouts</a>
+    </li>
+  
+</ul>
+
+            
+          </li>
+        
+          
+          
+          
+          
+          
+          
+          
+          <li class="docs-menu-item has-children active">
+            <a href="/docs/files/">Files</a>
+            
+            
+              <button class="docs-submenu-toggle"><span class="screen-reader-text">Submenu</span><span class="icon-angle-right" aria-hidden="true"></span></button>
+              
+              
+
+
+<ul class="docs-submenu">
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskAbstractButton_8cpp/">controls/QskAbstractButton.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskAbstractButton_8h/">controls/QskAbstractButton.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskAnimationHint_8h/">controls/QskAnimationHint.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskAnimator_8cpp/">controls/QskAnimator.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskAnimator_8h/">controls/QskAnimator.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskAspect_8cpp/">common/QskAspect.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskAspect_8h/">common/QskAspect.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoundedControl_8cpp/">controls/QskBoundedControl.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoundedControl_8h/">controls/QskBoundedControl.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoundedInput_8cpp/">controls/QskBoundedInput.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoundedInput_8h/">controls/QskBoundedInput.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoundedRangeInput_8cpp/">controls/QskBoundedRangeInput.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoundedRangeInput_8h/">controls/QskBoundedRangeInput.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoundedValueInput_8cpp/">controls/QskBoundedValueInput.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoundedValueInput_8h/">controls/QskBoundedValueInput.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxBorderColors_8cpp/">common/QskBoxBorderColors.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxBorderColors_8h/">common/QskBoxBorderColors.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxBorderMetrics_8cpp/">common/QskBoxBorderMetrics.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxBorderMetrics_8h/">common/QskBoxBorderMetrics.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxClipNode_8cpp/">nodes/QskBoxClipNode.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxClipNode_8h/">nodes/QskBoxClipNode.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxNode_8cpp/">nodes/QskBoxNode.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item current">
+      <a href="/docs/files/QskBoxNode_8h/">nodes/QskBoxNode.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxRendererColorMap_8h/">nodes/QskBoxRendererColorMap.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxRendererDEllipse_8cpp/">nodes/QskBoxRendererDEllipse.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxRendererEllipse_8cpp/">nodes/QskBoxRendererEllipse.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxRendererRect_8cpp/">nodes/QskBoxRendererRect.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxRenderer_8h/">nodes/QskBoxRenderer.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxShapeMetrics_8cpp/">common/QskBoxShapeMetrics.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxShapeMetrics_8h/">common/QskBoxShapeMetrics.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxSkinlet_8cpp/">controls/QskBoxSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBoxSkinlet_8h/">controls/QskBoxSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBox_8cpp/">controls/QskBox.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskBox_8h/">controls/QskBox.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskColorFilter_8cpp/">graphic/QskColorFilter.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskColorFilter_8h/">graphic/QskColorFilter.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskControl_8cpp/">controls/QskControl.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskControl_8h/">controls/QskControl.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskCorner_8cpp/">common/QskCorner.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskCorner_8h/">common/QskCorner.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDialogButtonBox_8cpp/">dialogs/QskDialogButtonBox.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDialogButtonBox_8h/">dialogs/QskDialogButtonBox.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDialogButton_8cpp/">dialogs/QskDialogButton.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDialogButton_8h/">dialogs/QskDialogButton.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDialogSubWindow_8cpp/">dialogs/QskDialogSubWindow.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDialogSubWindow_8h/">dialogs/QskDialogSubWindow.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDialogWindow_8cpp/">dialogs/QskDialogWindow.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDialogWindow_8h/">dialogs/QskDialogWindow.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDialog_8cpp/">dialogs/QskDialog.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDialog_8h/">dialogs/QskDialog.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDirtyItemFilter_8cpp/">controls/QskDirtyItemFilter.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskDirtyItemFilter_8h/">controls/QskDirtyItemFilter.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskEvent_8cpp/">controls/QskEvent.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskEvent_8h/">controls/QskEvent.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskFlags_8h/">common/QskFlags.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskFlickAnimator_8cpp/">controls/QskFlickAnimator.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskFlickAnimator_8h/">controls/QskFlickAnimator.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskFocusIndicatorSkinlet_8cpp/">controls/QskFocusIndicatorSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskFocusIndicatorSkinlet_8h/">controls/QskFocusIndicatorSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskFocusIndicator_8cpp/">controls/QskFocusIndicator.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskFocusIndicator_8h/">controls/QskFocusIndicator.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskFunctions_8cpp/">common/QskFunctions.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskFunctions_8h/">common/QskFunctions.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGestureRecognizer_8cpp/">controls/QskGestureRecognizer.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGestureRecognizer_8h/">controls/QskGestureRecognizer.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGesture_8cpp/">controls/QskGesture.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGesture_8h/">controls/QskGesture.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGlobal_8h/">common/QskGlobal.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGradient_8cpp/">common/QskGradient.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGradient_8h/">common/QskGradient.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicIO_8cpp/">graphic/QskGraphicIO.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicIO_8h/">graphic/QskGraphicIO.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicImageProvider_8cpp/">graphic/QskGraphicImageProvider.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicImageProvider_8h/">graphic/QskGraphicImageProvider.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicLabelSkinlet_8cpp/">controls/QskGraphicLabelSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicLabelSkinlet_8h/">controls/QskGraphicLabelSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicLabel_8cpp/">controls/QskGraphicLabel.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicLabel_8h/">controls/QskGraphicLabel.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicNode_8cpp/">nodes/QskGraphicNode.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicNode_8h/">nodes/QskGraphicNode.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicPaintEngine_8cpp/">graphic/QskGraphicPaintEngine.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicPaintEngine_8h/">graphic/QskGraphicPaintEngine.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicProviderMap_8cpp/">graphic/QskGraphicProviderMap.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicProviderMap_8h/">graphic/QskGraphicProviderMap.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicProvider_8cpp/">graphic/QskGraphicProvider.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicProvider_8h/">graphic/QskGraphicProvider.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicTextureFactory_8cpp/">graphic/QskGraphicTextureFactory.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphicTextureFactory_8h/">graphic/QskGraphicTextureFactory.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphic_8cpp/">graphic/QskGraphic.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGraphic_8h/">graphic/QskGraphic.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGridBox_8cpp/">layouts/QskGridBox.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGridBox_8h/">layouts/QskGridBox.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGridLayoutEngine_8cpp/">layouts/QskGridLayoutEngine.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskGridLayoutEngine_8h/">layouts/QskGridLayoutEngine.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskHintAnimator_8cpp/">controls/QskHintAnimator.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskHintAnimator_8h/">controls/QskHintAnimator.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskIndexedLayoutBox_8cpp/">layouts/QskIndexedLayoutBox.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskIndexedLayoutBox_8h/">layouts/QskIndexedLayoutBox.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskInputContext_8cpp/">inputpanel/QskInputContext.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskInputContext_8h/">inputpanel/QskInputContext.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskInputGrabber_8cpp/">controls/QskInputGrabber.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskInputGrabber_8h/">controls/QskInputGrabber.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskInputPanelBox_8cpp/">inputpanel/QskInputPanelBox.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskInputPanelBox_8h/">inputpanel/QskInputPanelBox.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskInputPanel_8cpp/">inputpanel/QskInputPanel.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskInputPanel_8h/">inputpanel/QskInputPanel.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskInputPredictionBar_8cpp/">inputpanel/QskInputPredictionBar.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskInputPredictionBar_8h/">inputpanel/QskInputPredictionBar.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskIntervalF_8cpp/">common/QskIntervalF.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskIntervalF_8h/">common/QskIntervalF.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskLayoutChain_8cpp/">layouts/QskLayoutChain.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskLayoutChain_8h/">layouts/QskLayoutChain.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskLayoutEngine2D_8cpp/">layouts/QskLayoutEngine2D.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskLayoutEngine2D_8h/">layouts/QskLayoutEngine2D.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskLayoutHint_8cpp/">layouts/QskLayoutHint.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskLayoutHint_8h/">layouts/QskLayoutHint.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskLinearBox_8cpp/">layouts/QskLinearBox.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskLinearBox_8h/">layouts/QskLinearBox.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskLinearLayoutEngine_8cpp/">layouts/QskLinearLayoutEngine.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskLinearLayoutEngine_8h/">layouts/QskLinearLayoutEngine.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskListViewSkinlet_8cpp/">controls/QskListViewSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskListViewSkinlet_8h/">controls/QskListViewSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskListView_8cpp/">controls/QskListView.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskListView_8h/">controls/QskListView.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskMargins_8cpp/">common/QskMargins.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskMargins_8h/">common/QskMargins.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskMessageSubWindow_8cpp/">dialogs/QskMessageSubWindow.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskMessageSubWindow_8h/">dialogs/QskMessageSubWindow.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskMessageWindow_8cpp/">dialogs/QskMessageWindow.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskMessageWindow_8h/">dialogs/QskMessageWindow.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskMetaFunction_8cpp/">common/QskMetaFunction.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskMetaFunction_8h/">common/QskMetaFunction.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskMetaFunction_8hpp/">common/QskMetaFunction.hpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskMetaInvokable_8cpp/">common/QskMetaInvokable.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskMetaInvokable_8h/">common/QskMetaInvokable.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskNamespace_8h/">common/QskNamespace.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskObjectCounter_8cpp/">common/QskObjectCounter.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskObjectCounter_8h/">common/QskObjectCounter.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskObjectTree_8cpp/">controls/QskObjectTree.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskObjectTree_8h/">controls/QskObjectTree.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPageIndicatorSkinlet_8cpp/">controls/QskPageIndicatorSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPageIndicatorSkinlet_8h/">controls/QskPageIndicatorSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPageIndicator_8cpp/">controls/QskPageIndicator.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPageIndicator_8h/">controls/QskPageIndicator.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPaintedNode_8cpp/">nodes/QskPaintedNode.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPaintedNode_8h/">nodes/QskPaintedNode.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPainterCommand_8cpp/">graphic/QskPainterCommand.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPainterCommand_8h/">graphic/QskPainterCommand.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPanGestureRecognizer_8cpp/">controls/QskPanGestureRecognizer.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPanGestureRecognizer_8h/">controls/QskPanGestureRecognizer.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPlainTextRenderer_8cpp/">nodes/QskPlainTextRenderer.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPlainTextRenderer_8h/">nodes/QskPlainTextRenderer.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPopupSkinlet_8cpp/">controls/QskPopupSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPopupSkinlet_8h/">controls/QskPopupSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPopup_8cpp/">controls/QskPopup.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPopup_8h/">controls/QskPopup.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskProgressBarSkinlet_8cpp/">controls/QskProgressBarSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskProgressBarSkinlet_8h/">controls/QskProgressBarSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskProgressBar_8cpp/">controls/QskProgressBar.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskProgressBar_8h/">controls/QskProgressBar.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPushButtonSkinlet_8cpp/">controls/QskPushButtonSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPushButtonSkinlet_8h/">controls/QskPushButtonSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPushButton_8cpp/">controls/QskPushButton.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskPushButton_8h/">controls/QskPushButton.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskQuickItem_8cpp/">controls/QskQuickItem.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskQuickItem_8h/">controls/QskQuickItem.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskQuick_8cpp/">controls/QskQuick.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskQuick_8h/">controls/QskQuick.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskRgbPalette_8cpp/">common/QskRgbPalette.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskRgbPalette_8h/">common/QskRgbPalette.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskRgbValue_8cpp/">common/QskRgbValue.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskRgbValue_8h/">common/QskRgbValue.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskRichTextRenderer_8cpp/">nodes/QskRichTextRenderer.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskRichTextRenderer_8h/">nodes/QskRichTextRenderer.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSGNode_8cpp/">nodes/QskSGNode.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSGNode_8h/">nodes/QskSGNode.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScaleEngine_8cpp/">common/QskScaleEngine.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScaleEngine_8h/">common/QskScaleEngine.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScaleRenderer_8cpp/">nodes/QskScaleRenderer.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScaleRenderer_8h/">nodes/QskScaleRenderer.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScaleTickmarks_8cpp/">common/QskScaleTickmarks.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScaleTickmarks_8h/">common/QskScaleTickmarks.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScrollArea_8cpp/">controls/QskScrollArea.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScrollArea_8h/">controls/QskScrollArea.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScrollBox_8cpp/">controls/QskScrollBox.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScrollBox_8h/">controls/QskScrollBox.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScrollViewSkinlet_8cpp/">controls/QskScrollViewSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScrollViewSkinlet_8h/">controls/QskScrollViewSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScrollView_8cpp/">controls/QskScrollView.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskScrollView_8h/">controls/QskScrollView.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSelectionSubWindow_8cpp/">dialogs/QskSelectionSubWindow.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSelectionSubWindow_8h/">dialogs/QskSelectionSubWindow.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSelectionWindow_8cpp/">dialogs/QskSelectionWindow.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSelectionWindow_8h/">dialogs/QskSelectionWindow.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSeparatorSkinlet_8cpp/">controls/QskSeparatorSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSeparatorSkinlet_8h/">controls/QskSeparatorSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSeparator_8cpp/">controls/QskSeparator.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSeparator_8h/">controls/QskSeparator.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSetup_8cpp/">controls/QskSetup.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSetup_8h/">controls/QskSetup.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskShadowMetrics_8cpp/">common/QskShadowMetrics.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskShadowMetrics_8h/">common/QskShadowMetrics.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskShortcutMap_8cpp/">controls/QskShortcutMap.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskShortcutMap_8h/">controls/QskShortcutMap.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSimpleListBox_8cpp/">controls/QskSimpleListBox.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSimpleListBox_8h/">controls/QskSimpleListBox.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSizePolicy_8cpp/">common/QskSizePolicy.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSizePolicy_8h/">common/QskSizePolicy.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinFactory_8cpp/">controls/QskSkinFactory.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinFactory_8h/">controls/QskSkinFactory.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinHintTableEditor_8cpp/">controls/QskSkinHintTableEditor.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinHintTableEditor_8h/">controls/QskSkinHintTableEditor.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinHintTable_8cpp/">controls/QskSkinHintTable.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinHintTable_8h/">controls/QskSkinHintTable.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinManager_8cpp/">controls/QskSkinManager.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinManager_8h/">controls/QskSkinManager.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinTransition_8cpp/">controls/QskSkinTransition.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinTransition_8h/">controls/QskSkinTransition.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkin_8cpp/">controls/QskSkin.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkin_8h/">controls/QskSkin.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinlet_8cpp/">controls/QskSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinlet_8h/">controls/QskSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinnable_8cpp/">controls/QskSkinnable.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSkinnable_8h/">controls/QskSkinnable.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSliderSkinlet_8cpp/">controls/QskSliderSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSliderSkinlet_8h/">controls/QskSliderSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSlider_8cpp/">controls/QskSlider.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSlider_8h/">controls/QskSlider.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskStackBoxAnimator_8cpp/">layouts/QskStackBoxAnimator.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskStackBoxAnimator_8h/">layouts/QskStackBoxAnimator.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskStackBox_8cpp/">layouts/QskStackBox.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskStackBox_8h/">layouts/QskStackBox.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskStandardSymbol_8cpp/">graphic/QskStandardSymbol.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskStandardSymbol_8h/">graphic/QskStandardSymbol.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskStatusIndicatorSkinlet_8cpp/">controls/QskStatusIndicatorSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskStatusIndicatorSkinlet_8h/">controls/QskStatusIndicatorSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskStatusIndicator_8cpp/">controls/QskStatusIndicator.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskStatusIndicator_8h/">controls/QskStatusIndicator.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSubWindowAreaSkinlet_8cpp/">controls/QskSubWindowAreaSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSubWindowAreaSkinlet_8h/">controls/QskSubWindowAreaSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSubWindowArea_8cpp/">controls/QskSubWindowArea.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSubWindowArea_8h/">controls/QskSubWindowArea.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSubWindowSkinlet_8cpp/">controls/QskSubWindowSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSubWindowSkinlet_8h/">controls/QskSubWindowSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSubWindow_8cpp/">controls/QskSubWindow.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskSubWindow_8h/">controls/QskSubWindow.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTabBar_8cpp/">controls/QskTabBar.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTabBar_8h/">controls/QskTabBar.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTabButtonSkinlet_8cpp/">controls/QskTabButtonSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTabButtonSkinlet_8h/">controls/QskTabButtonSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTabButton_8cpp/">controls/QskTabButton.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTabButton_8h/">controls/QskTabButton.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTabViewSkinlet_8cpp/">controls/QskTabViewSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTabViewSkinlet_8h/">controls/QskTabViewSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTabView_8cpp/">controls/QskTabView.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTabView_8h/">controls/QskTabView.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextColors_8cpp/">common/QskTextColors.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextColors_8h/">common/QskTextColors.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextInputSkinlet_8cpp/">controls/QskTextInputSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextInputSkinlet_8h/">controls/QskTextInputSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextInput_8cpp/">controls/QskTextInput.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextInput_8h/">controls/QskTextInput.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextLabelSkinlet_8cpp/">controls/QskTextLabelSkinlet.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextLabelSkinlet_8h/">controls/QskTextLabelSkinlet.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextLabel_8cpp/">controls/QskTextLabel.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextLabel_8h/">controls/QskTextLabel.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextNode_8cpp/">nodes/QskTextNode.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextNode_8h/">nodes/QskTextNode.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextOptions_8cpp/">common/QskTextOptions.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextOptions_8h/">common/QskTextOptions.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextPredictor_8cpp/">inputpanel/QskTextPredictor.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextPredictor_8h/">inputpanel/QskTextPredictor.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextRenderer_8cpp/">nodes/QskTextRenderer.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextRenderer_8h/">nodes/QskTextRenderer.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextureNode_8cpp/">nodes/QskTextureNode.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextureNode_8h/">nodes/QskTextureNode.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextureRenderer_8cpp/">nodes/QskTextureRenderer.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTextureRenderer_8h/">nodes/QskTextureRenderer.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTickmarksNode_8cpp/">nodes/QskTickmarksNode.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskTickmarksNode_8h/">nodes/QskTickmarksNode.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskVariantAnimator_8cpp/">controls/QskVariantAnimator.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskVariantAnimator_8h/">controls/QskVariantAnimator.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskVertex_8cpp/">nodes/QskVertex.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskVertex_8h/">nodes/QskVertex.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskVirtualKeyboardLayouts_8cpp/">inputpanel/QskVirtualKeyboardLayouts.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskVirtualKeyboard_8cpp/">inputpanel/QskVirtualKeyboard.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskVirtualKeyboard_8h/">inputpanel/QskVirtualKeyboard.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskWindow_8cpp/">controls/QskWindow.cpp</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/QskWindow_8h/">controls/QskWindow.h</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/dir_3367554fba2c52f1c04b4bdcbbcfa03d/">layouts</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/dir_546733639134b9431ef34ac72f6d1288/">graphic</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/dir_7afd03d72c1de07a6d47e666c364824c/">controls</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/dir_9870864803860a03def48f6710b1f137/">dialogs</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/dir_b50dc725db71458029b22868a9250dc9/">nodes</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/dir_f8eda551c9202cae9063524ab5c4921d/">inputpanel</a>
+    </li>
+  
+    <li class="docs-menu-item">
+      <a href="/docs/files/dir_fdedb0aba14d44ce9d99bc100e026e6a/">common</a>
+    </li>
+  
+</ul>
+
+            
+          </li>
+        
+      </ul><!-- .docs-menu -->
+    </div><!-- .docs-nav-menu -->
+  </div><!-- .docs-nav-inside -->
+</nav><!-- .docs-nav -->
+
+    <article class="post type-docs">
+      <div class="post-inside">
+        <header class="post-header">
+          <h1 class="post-title line-left">nodes/QskBoxNode.h</h1>
+        </header><!-- .post-header -->
+        <div class="post-content">
+          <h2 id="source-code">Source code</h2>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp">   <span class="mi">1</span><span class="o">:</span> <span class="cm">/******************************************************************************
+   2:  * QSkinny - Copyright (C) 2016 Uwe Rathmann
+   3:  * This file may be used under the terms of the QSkinny License, Version 1.0
+   4:  *****************************************************************************/</span>
+   <span class="mi">5</span><span class="o">:</span> 
+   <span class="mi">6</span><span class="o">:</span> <span class="err">#</span><span class="n">ifndef</span> <span class="n">QSK_BOX_NODE_H</span>
+   <span class="mi">7</span><span class="o">:</span> <span class="err">#</span><span class="n">define</span> <span class="n">QSK_BOX_NODE_H</span>
+   <span class="mi">8</span><span class="o">:</span> 
+   <span class="mi">9</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="s">"QskGlobal.h"</span>
+  <span class="mi">10</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qsgnode</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+  <span class="mi">11</span><span class="o">:</span> 
+  <span class="mi">12</span><span class="o">:</span> <span class="k">class</span> <span class="nc">QskBoxShapeMetrics</span><span class="p">;</span>
+  <span class="mi">13</span><span class="o">:</span> <span class="k">class</span> <span class="nc">QskBoxBorderMetrics</span><span class="p">;</span>
+  <span class="mi">14</span><span class="o">:</span> <span class="k">class</span> <span class="nc">QskBoxBorderColors</span><span class="p">;</span>
+  <span class="mi">15</span><span class="o">:</span> <span class="k">class</span> <span class="nc">QskGradient</span><span class="p">;</span>
+  <span class="mi">16</span><span class="o">:</span> 
+  <span class="mi">17</span><span class="o">:</span> <span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskBoxNode</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QSGGeometryNode</span>
+  <span class="mi">18</span><span class="o">:</span> <span class="p">{</span>
+  <span class="mi">19</span><span class="o">:</span>   <span class="k">public</span><span class="o">:</span>
+  <span class="mi">20</span><span class="o">:</span>     <span class="n">QskBoxNode</span><span class="p">();</span>
+  <span class="mi">21</span><span class="o">:</span>     <span class="o">~</span><span class="n">QskBoxNode</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+  <span class="mi">22</span><span class="o">:</span> 
+  <span class="mi">23</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">setBoxData</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span>
+  <span class="mi">24</span><span class="o">:</span>         <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span><span class="p">,</span>
+  <span class="mi">25</span><span class="o">:</span>         <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="p">);</span>
+  <span class="mi">26</span><span class="o">:</span> 
+  <span class="mi">27</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">setBoxData</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="p">);</span>
+  <span class="mi">28</span><span class="o">:</span> 
+  <span class="mi">29</span><span class="o">:</span>   <span class="k">private</span><span class="o">:</span>
+  <span class="mi">30</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">setMonochrome</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
+  <span class="mi">31</span><span class="o">:</span> 
+  <span class="mi">32</span><span class="o">:</span>     <span class="n">uint</span> <span class="n">m_metricsHash</span><span class="p">;</span>
+  <span class="mi">33</span><span class="o">:</span>     <span class="n">uint</span> <span class="n">m_colorsHash</span><span class="p">;</span>
+  <span class="mi">34</span><span class="o">:</span>     <span class="n">QRectF</span> <span class="n">m_rect</span><span class="p">;</span>
+  <span class="mi">35</span><span class="o">:</span> 
+  <span class="mi">36</span><span class="o">:</span>     <span class="n">QSGGeometry</span> <span class="n">m_geometry</span><span class="p">;</span>
+  <span class="mi">37</span><span class="o">:</span> <span class="p">};</span>
+  <span class="mi">38</span><span class="o">:</span> 
+  <span class="mi">39</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span></code></pre></figure>
+
+<hr />
+
+<p>Updated on 21 April 2021 at 16:01:50 CEST</p>
+
+          
+          
+          
+            
+            
+            
+            
+            
+          
+        </div><!-- .post-content -->
+      </div><!-- .post-inside -->
+    </article><!-- .post -->
+    <nav id="page-nav" class="page-nav">
+      <div id="page-nav-inside" class="page-nav-inside sticky">
+        <h2 class="page-nav-title">Jump to Section</h2>
+        <div id="page-nav-link-container"></div>
+      </div><!-- .page-nav-inside -->
+    </nav><!-- .page-nav -->
+  </div><!-- .docs-content -->
+</div><!-- .inner-->
+
+  </main><!-- .site-content -->
+  <footer id="colophon" class="site-footer outer">
+  <div class="inner">
+    <div class="site-footer-inside">
+      <p class="site-info">
+        
+        
+        <span class="copyright">&copy; Stackbit. All rights reserved. This Jamstack site was created on <a href="https://www.stackbit.com" target="_blank" rel="noopener">Stackbit</a>. Get yours <a href="https://app.stackbit.com/create?theme=libris" target="_blank" rel="noopener">here</a>.</span>
+        
+        
+      </p><!-- .site-info -->
+      
+      
+      <div class="social-links">
+        
+          
+          
+<a class="button button-icon" href="https://twitter.com/" target="_blank" rel="noopener">
+  
+  <span class="icon fab fa-twitter" aria-hidden="true"></span><span class="screen-reader-text">Twitter</span>
+  
+</a>
+
+        
+          
+          
+<a class="button button-icon" href="https://www.linkedin.com/" target="_blank" rel="noopener">
+  
+  <span class="icon fab fa-linkedin" aria-hidden="true"></span><span class="screen-reader-text">LinkedIn</span>
+  
+</a>
+
+        
+          
+          
+<a class="button button-icon" href="https://github.com/" target="_blank" rel="noopener">
+  
+  <span class="icon fab fa-github" aria-hidden="true"></span><span class="screen-reader-text">GitHub</span>
+  
+</a>
+
+        
+      </div><!-- .social-links -->
+      
+    </div><!-- .site-footer-inside -->
+  </div><!-- .inner -->
+</footer><!-- .site-footer -->
+
+</div><!-- .site -->
+
+        <!-- Scripts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="/assets/js/plugins.js"></script>
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/page-load.js"></script>
+        <script src="/assets/js/qskinny-search.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    </body>
+</html>
