@@ -2051,6 +2051,10 @@
     </li>
   
     <li class="docs-menu-item">
+      <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
+    </li>
+  
+    <li class="docs-menu-item">
       <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
     </li>
   
@@ -2111,49 +2115,50 @@
   <span class="mi">17</span><span class="o">:</span> <span class="k">class</span> <span class="nc">QString</span><span class="p">;</span>
   <span class="mi">18</span><span class="o">:</span> 
   <span class="mi">19</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">qreal</span> <span class="nf">qskDpiScaled</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">);</span>
-  <span class="mi">20</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="kt">bool</span> <span class="nf">qskHasPlatformWindowManagement</span><span class="p">();</span>
-  <span class="mi">21</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRect</span> <span class="nf">qskPlatformScreenGeometry</span><span class="p">(</span> <span class="k">const</span> <span class="n">QScreen</span><span class="o">*</span> <span class="p">);</span>
-  <span class="mi">22</span><span class="o">:</span> 
-  <span class="mi">23</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRect</span> <span class="nf">qskAlignedRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRect</span><span class="o">&amp;</span> <span class="n">outerRect</span><span class="p">,</span>
-  <span class="mi">24</span><span class="o">:</span>     <span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">);</span>
-  <span class="mi">25</span><span class="o">:</span> 
-  <span class="mi">26</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRectF</span> <span class="nf">qskAlignedRectF</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">outerRect</span><span class="p">,</span>
-  <span class="mi">27</span><span class="o">:</span>     <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">);</span>
-  <span class="mi">28</span><span class="o">:</span> 
-  <span class="mi">29</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRect</span> <span class="nf">qskInnerRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">);</span>
-  <span class="mi">30</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRectF</span> <span class="nf">qskInnerRectF</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">);</span>
-  <span class="mi">31</span><span class="o">:</span> 
-  <span class="mi">32</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRectF</span> <span class="nf">qskValidOrEmptyInnerRect</span><span class="p">(</span>
-  <span class="mi">33</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QMarginsF</span><span class="o">&amp;</span> <span class="n">margins</span> <span class="p">);</span>
-  <span class="mi">34</span><span class="o">:</span> 
-  <span class="mi">35</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">qreal</span> <span class="nf">qskHorizontalAdvance</span><span class="p">(</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
-  <span class="mi">36</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">qreal</span> <span class="nf">qskHorizontalAdvance</span><span class="p">(</span> <span class="k">const</span> <span class="n">QFontMetricsF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
-  <span class="mi">37</span><span class="o">:</span> 
-  <span class="mi">38</span><span class="o">:</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskFuzzyCompare</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">value2</span> <span class="p">)</span>
-  <span class="mi">39</span><span class="o">:</span> <span class="p">{</span>
-  <span class="mi">40</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">value1</span> <span class="p">)</span> <span class="p">)</span>
-  <span class="mi">41</span><span class="o">:</span>         <span class="k">return</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">value2</span> <span class="p">);</span>
-  <span class="mi">42</span><span class="o">:</span> 
-  <span class="mi">43</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">value2</span> <span class="p">)</span> <span class="p">)</span>
-  <span class="mi">44</span><span class="o">:</span>         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-  <span class="mi">45</span><span class="o">:</span> 
-  <span class="mi">46</span><span class="o">:</span>     <span class="k">return</span> <span class="nf">qFuzzyCompare</span><span class="p">(</span> <span class="n">value1</span><span class="p">,</span> <span class="n">value2</span> <span class="p">);</span>
-  <span class="mi">47</span><span class="o">:</span> <span class="err">}</span>
-  <span class="mi">48</span><span class="o">:</span> 
-  <span class="mi">49</span><span class="o">:</span> <span class="kr">inline</span> <span class="n">QMarginsF</span> <span class="nf">qskMargins</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">innerRect</span> <span class="p">)</span>
-  <span class="mi">50</span><span class="o">:</span> <span class="p">{</span>
-  <span class="mi">51</span><span class="o">:</span>     <span class="k">return</span> <span class="n">QMarginsF</span><span class="p">(</span>
-  <span class="mi">52</span><span class="o">:</span>         <span class="n">innerRect</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">-</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span>
-  <span class="mi">53</span><span class="o">:</span>         <span class="n">innerRect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">-</span> <span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">(),</span>
-  <span class="mi">54</span><span class="o">:</span>         <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="o">-</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">right</span><span class="p">(),</span>
-  <span class="mi">55</span><span class="o">:</span>         <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
-  <span class="mi">56</span><span class="o">:</span> <span class="err">}</span>
-  <span class="mi">57</span><span class="o">:</span> 
-  <span class="mi">58</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span></code></pre></figure>
+  <span class="mi">20</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">qreal</span> <span class="nf">qskGlobalScaleFactor</span><span class="p">();</span>
+  <span class="mi">21</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="kt">bool</span> <span class="nf">qskHasPlatformWindowManagement</span><span class="p">();</span>
+  <span class="mi">22</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRect</span> <span class="nf">qskPlatformScreenGeometry</span><span class="p">(</span> <span class="k">const</span> <span class="n">QScreen</span><span class="o">*</span> <span class="p">);</span>
+  <span class="mi">23</span><span class="o">:</span> 
+  <span class="mi">24</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRect</span> <span class="nf">qskAlignedRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRect</span><span class="o">&amp;</span> <span class="n">outerRect</span><span class="p">,</span>
+  <span class="mi">25</span><span class="o">:</span>     <span class="kt">int</span> <span class="n">width</span><span class="p">,</span> <span class="kt">int</span> <span class="n">height</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">);</span>
+  <span class="mi">26</span><span class="o">:</span> 
+  <span class="mi">27</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRectF</span> <span class="nf">qskAlignedRectF</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">outerRect</span><span class="p">,</span>
+  <span class="mi">28</span><span class="o">:</span>     <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">);</span>
+  <span class="mi">29</span><span class="o">:</span> 
+  <span class="mi">30</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRect</span> <span class="nf">qskInnerRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">);</span>
+  <span class="mi">31</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRectF</span> <span class="nf">qskInnerRectF</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">);</span>
+  <span class="mi">32</span><span class="o">:</span> 
+  <span class="mi">33</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">QRectF</span> <span class="nf">qskValidOrEmptyInnerRect</span><span class="p">(</span>
+  <span class="mi">34</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QMarginsF</span><span class="o">&amp;</span> <span class="n">margins</span> <span class="p">);</span>
+  <span class="mi">35</span><span class="o">:</span> 
+  <span class="mi">36</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">qreal</span> <span class="nf">qskHorizontalAdvance</span><span class="p">(</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+  <span class="mi">37</span><span class="o">:</span> <span class="n">QSK_EXPORT</span> <span class="n">qreal</span> <span class="nf">qskHorizontalAdvance</span><span class="p">(</span> <span class="k">const</span> <span class="n">QFontMetricsF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+  <span class="mi">38</span><span class="o">:</span> 
+  <span class="mi">39</span><span class="o">:</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskFuzzyCompare</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">value2</span> <span class="p">)</span>
+  <span class="mi">40</span><span class="o">:</span> <span class="p">{</span>
+  <span class="mi">41</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">value1</span> <span class="p">)</span> <span class="p">)</span>
+  <span class="mi">42</span><span class="o">:</span>         <span class="k">return</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">value2</span> <span class="p">);</span>
+  <span class="mi">43</span><span class="o">:</span> 
+  <span class="mi">44</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">value2</span> <span class="p">)</span> <span class="p">)</span>
+  <span class="mi">45</span><span class="o">:</span>         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+  <span class="mi">46</span><span class="o">:</span> 
+  <span class="mi">47</span><span class="o">:</span>     <span class="k">return</span> <span class="nf">qFuzzyCompare</span><span class="p">(</span> <span class="n">value1</span><span class="p">,</span> <span class="n">value2</span> <span class="p">);</span>
+  <span class="mi">48</span><span class="o">:</span> <span class="err">}</span>
+  <span class="mi">49</span><span class="o">:</span> 
+  <span class="mi">50</span><span class="o">:</span> <span class="kr">inline</span> <span class="n">QMarginsF</span> <span class="nf">qskMargins</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">innerRect</span> <span class="p">)</span>
+  <span class="mi">51</span><span class="o">:</span> <span class="p">{</span>
+  <span class="mi">52</span><span class="o">:</span>     <span class="k">return</span> <span class="n">QMarginsF</span><span class="p">(</span>
+  <span class="mi">53</span><span class="o">:</span>         <span class="n">innerRect</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">-</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span>
+  <span class="mi">54</span><span class="o">:</span>         <span class="n">innerRect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">-</span> <span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">(),</span>
+  <span class="mi">55</span><span class="o">:</span>         <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="o">-</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">right</span><span class="p">(),</span>
+  <span class="mi">56</span><span class="o">:</span>         <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
+  <span class="mi">57</span><span class="o">:</span> <span class="err">}</span>
+  <span class="mi">58</span><span class="o">:</span> 
+  <span class="mi">59</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span></code></pre></figure>
 
 <hr />
 
-<p>Updated on 23 April 2021 at 11:41:05 CEST</p>
+<p>Updated on 23 April 2021 at 17:39:58 CEST</p>
 
           
           

@@ -2051,6 +2051,10 @@
     </li>
   
     <li class="docs-menu-item">
+      <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
+    </li>
+  
+    <li class="docs-menu-item">
       <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
     </li>
   
@@ -2137,6 +2141,14 @@
       <td><strong><a href="/docs/classes/classQskIntervalF/#function-setupperbound">setUpperBound</a></strong>(qreal value)</td>
     </tr>
     <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-spanfromlowerbound">spanFromLowerBound</a></strong>(qreal value)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-spanfromupperbound">spanFromUpperBound</a></strong>(qreal value)</td>
+    </tr>
+    <tr>
       <td>constexpr qreal</td>
       <td><strong><a href="/docs/classes/classQskIntervalF/#function-width">width</a></strong>() const</td>
     </tr>
@@ -2153,12 +2165,20 @@
       <td><strong><a href="/docs/classes/classQskIntervalF/#function-contains">contains</a></strong>(const QskIntervalF &amp; interval) const</td>
     </tr>
     <tr>
+      <td>constexpr bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-isboundary">isBoundary</a></strong>(qreal value) const</td>
+    </tr>
+    <tr>
       <td>bool</td>
       <td><strong><a href="/docs/classes/classQskIntervalF/#function-fuzzycontains">fuzzyContains</a></strong>(qreal value) const</td>
     </tr>
     <tr>
       <td>bool</td>
       <td><strong><a href="/docs/classes/classQskIntervalF/#function-fuzzycontains">fuzzyContains</a></strong>(const QskIntervalF &amp; interval) const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-fuzzyisboundary">fuzzyIsBoundary</a></strong>(qreal value) const</td>
     </tr>
     <tr>
       <td>void</td>
@@ -2289,7 +2309,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskIntervalF</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">lowerBound</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">upperBound</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 93.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 100.
 <br /><br /></p>
 
   </div>
@@ -2302,7 +2322,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">setInterval</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">lowerBound</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">upperBound</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 99.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 106.
 <br /><br /></p>
 
   </div>
@@ -2315,7 +2335,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 200.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 212.
 <br /><br /></p>
 
   </div>
@@ -2328,7 +2348,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 206.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 218.
 <br /><br /></p>
 
   </div>
@@ -2341,7 +2361,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">lowerBound</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 115.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 122.
 <br /><br /></p>
 
   </div>
@@ -2354,7 +2374,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">setLowerBound</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 105.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 112.
 <br /><br /></p>
 
   </div>
@@ -2367,7 +2387,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">upperBound</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 120.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 127.
 <br /><br /></p>
 
   </div>
@@ -2380,7 +2400,33 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">setUpperBound</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 110.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 117.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-function" id="function-spanfromlowerbound">function spanFromLowerBound</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">spanFromLowerBound</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskIntervalF_8cpp">QskIntervalF.cpp</a> in line 155.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-function" id="function-spanfromupperbound">function spanFromUpperBound</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">spanFromUpperBound</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskIntervalF_8cpp">QskIntervalF.cpp</a> in line 170.
 <br /><br /></p>
 
   </div>
@@ -2393,7 +2439,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 125.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 132.
 <br /><br /></p>
 
   </div>
@@ -2406,7 +2452,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">setWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 130.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 137.
 <br /><br /></p>
 
   </div>
@@ -2419,7 +2465,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">contains</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 151.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 158.
 <br /><br /></p>
 
   </div>
@@ -2432,7 +2478,20 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">contains</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">interval</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 156.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 163.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-function" id="function-isboundary">function isBoundary</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">isBoundary</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 169.
 <br /><br /></p>
 
   </div>
@@ -2445,7 +2504,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">fuzzyContains</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8cpp">QskIntervalF.cpp</a> in line 155.
+    <p>Defined in <a href="../../files/QskIntervalF_8cpp">QskIntervalF.cpp</a> in line 185.
 <br /><br /></p>
 
   </div>
@@ -2458,7 +2517,20 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">fuzzyContains</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">interval</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8cpp">QskIntervalF.cpp</a> in line 169.
+    <p>Defined in <a href="../../files/QskIntervalF_8cpp">QskIntervalF.cpp</a> in line 199.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-function" id="function-fuzzyisboundary">function fuzzyIsBoundary</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">fuzzyIsBoundary</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskIntervalF_8cpp">QskIntervalF.cpp</a> in line 219.
 <br /><br /></p>
 
   </div>
@@ -2471,7 +2543,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">translate</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">offset</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 162.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 174.
 <br /><br /></p>
 
   </div>
@@ -2484,7 +2556,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskIntervalF</span> <span class="n">translated</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">offset</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 168.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 180.
 <br /><br /></p>
 
   </div>
@@ -2575,7 +2647,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="k">operator</span><span class="o">|</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 183.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 195.
 <br /><br /></p>
 
   </div>
@@ -2588,7 +2660,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="k">operator</span><span class="o">&amp;</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 178.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 190.
 <br /><br /></p>
 
   </div>
@@ -2601,7 +2673,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">|=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 188.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 200.
 <br /><br /></p>
 
   </div>
@@ -2614,7 +2686,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">&amp;=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 194.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 206.
 <br /><br /></p>
 
   </div>
@@ -2627,7 +2699,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="k">operator</span><span class="o">|</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 211.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 223.
 <br /><br /></p>
 
   </div>
@@ -2640,7 +2712,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">|=</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 216.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 228.
 <br /><br /></p>
 
   </div>
@@ -2653,7 +2725,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">isValid</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 135.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 142.
 <br /><br /></p>
 
   </div>
@@ -2666,7 +2738,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">isNull</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 140.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 147.
 <br /><br /></p>
 
   </div>
@@ -2679,7 +2751,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">invalidate</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 145.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 152.
 <br /><br /></p>
 
   </div>
@@ -2705,7 +2777,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskIntervalF</span> <span class="n">normalized</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value1</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">value2</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 173.
+    <p>Defined in <a href="../../files/QskIntervalF_8h">QskIntervalF.h</a> in line 185.
 <br /><br /></p>
 
   </div>
@@ -2767,7 +2839,7 @@
 
 <hr />
 
-<p>Updated on 23 April 2021 at 11:41:04 CEST</p>
+<p>Updated on 23 April 2021 at 17:39:56 CEST</p>
 
           
           

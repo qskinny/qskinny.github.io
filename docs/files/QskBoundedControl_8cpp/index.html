@@ -2051,6 +2051,10 @@
     </li>
   
     <li class="docs-menu-item">
+      <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
+    </li>
+  
+    <li class="docs-menu-item">
       <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
     </li>
   
@@ -2211,40 +2215,47 @@
  <span class="mi">117</span><span class="o">:</span>     <span class="p">}</span>
  <span class="mi">118</span><span class="o">:</span> 
  <span class="mi">119</span><span class="o">:</span>     <span class="n">Q_EMIT</span> <span class="n">boundariesChanged</span><span class="p">(</span> <span class="n">boundaries</span><span class="p">()</span> <span class="p">);</span>
- <span class="mi">120</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">121</span><span class="o">:</span> 
- <span class="mi">122</span><span class="o">:</span> <span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">boundaryLength</span><span class="p">()</span> <span class="k">const</span>
- <span class="mi">123</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">124</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_maximum</span> <span class="o">-</span> <span class="n">m_minimum</span><span class="p">;</span>
- <span class="mi">125</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">126</span><span class="o">:</span> 
- <span class="mi">127</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">componentComplete</span><span class="p">()</span>
- <span class="mi">128</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">129</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">componentComplete</span><span class="p">();</span>
- <span class="mi">130</span><span class="o">:</span>     <span class="n">adjustBoundaries</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
- <span class="mi">131</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">132</span><span class="o">:</span> 
- <span class="mi">133</span><span class="o">:</span> <span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">boundedValue</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
- <span class="mi">134</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">135</span><span class="o">:</span>     <span class="k">return</span> <span class="n">qBound</span><span class="p">(</span> <span class="n">minimum</span><span class="p">(),</span> <span class="n">value</span><span class="p">,</span> <span class="n">maximum</span><span class="p">()</span> <span class="p">);</span>
- <span class="mi">136</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">137</span><span class="o">:</span> 
- <span class="mi">138</span><span class="o">:</span> <span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">valueAsRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
- <span class="mi">139</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">140</span><span class="o">:</span>     <span class="k">return</span> <span class="p">(</span> <span class="n">value</span> <span class="o">-</span> <span class="n">m_minimum</span> <span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="n">m_maximum</span> <span class="o">-</span> <span class="n">m_minimum</span> <span class="p">);</span>
- <span class="mi">141</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">142</span><span class="o">:</span> 
- <span class="mi">143</span><span class="o">:</span> <span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">valueFromRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span> <span class="k">const</span>
- <span class="mi">144</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">145</span><span class="o">:</span>     <span class="n">ratio</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">);</span>
- <span class="mi">146</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_minimum</span> <span class="o">+</span> <span class="n">ratio</span> <span class="o">*</span> <span class="p">(</span> <span class="n">m_maximum</span> <span class="o">-</span> <span class="n">m_minimum</span> <span class="p">);</span>
- <span class="mi">147</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">148</span><span class="o">:</span> 
- <span class="mi">149</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="s">"moc_QskBoundedControl.cpp"</span></code></pre></figure>
+ <span class="mi">120</span><span class="o">:</span>     <span class="n">update</span><span class="p">();</span>
+ <span class="mi">121</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">122</span><span class="o">:</span> 
+ <span class="mi">123</span><span class="o">:</span> <span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">boundaryLength</span><span class="p">()</span> <span class="k">const</span>
+ <span class="mi">124</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">125</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_maximum</span> <span class="o">-</span> <span class="n">m_minimum</span><span class="p">;</span>
+ <span class="mi">126</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">127</span><span class="o">:</span> 
+ <span class="mi">128</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">componentComplete</span><span class="p">()</span>
+ <span class="mi">129</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">130</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">componentComplete</span><span class="p">();</span>
+ <span class="mi">131</span><span class="o">:</span>     <span class="n">adjustBoundaries</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+ <span class="mi">132</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">133</span><span class="o">:</span> 
+ <span class="mi">134</span><span class="o">:</span> <span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">boundedValue</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+ <span class="mi">135</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">136</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">minimum</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">137</span><span class="o">:</span>         <span class="k">return</span> <span class="n">minimum</span><span class="p">();</span>
+ <span class="mi">138</span><span class="o">:</span> 
+ <span class="mi">139</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">maximum</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">140</span><span class="o">:</span>         <span class="k">return</span> <span class="n">maximum</span><span class="p">();</span>
+ <span class="mi">141</span><span class="o">:</span> 
+ <span class="mi">142</span><span class="o">:</span>     <span class="k">return</span> <span class="n">qBound</span><span class="p">(</span> <span class="n">minimum</span><span class="p">(),</span> <span class="n">value</span><span class="p">,</span> <span class="n">maximum</span><span class="p">()</span> <span class="p">);</span>
+ <span class="mi">143</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">144</span><span class="o">:</span> 
+ <span class="mi">145</span><span class="o">:</span> <span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">valueAsRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+ <span class="mi">146</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">147</span><span class="o">:</span>     <span class="k">return</span> <span class="p">(</span> <span class="n">value</span> <span class="o">-</span> <span class="n">m_minimum</span> <span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="n">m_maximum</span> <span class="o">-</span> <span class="n">m_minimum</span> <span class="p">);</span>
+ <span class="mi">148</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">149</span><span class="o">:</span> 
+ <span class="mi">150</span><span class="o">:</span> <span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">valueFromRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span> <span class="k">const</span>
+ <span class="mi">151</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">152</span><span class="o">:</span>     <span class="n">ratio</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">);</span>
+ <span class="mi">153</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_minimum</span> <span class="o">+</span> <span class="n">ratio</span> <span class="o">*</span> <span class="p">(</span> <span class="n">m_maximum</span> <span class="o">-</span> <span class="n">m_minimum</span> <span class="p">);</span>
+ <span class="mi">154</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">155</span><span class="o">:</span> 
+ <span class="mi">156</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="s">"moc_QskBoundedControl.cpp"</span></code></pre></figure>
 
 <hr />
 
-<p>Updated on 23 April 2021 at 11:41:05 CEST</p>
+<p>Updated on 23 April 2021 at 17:39:58 CEST</p>
 
           
           

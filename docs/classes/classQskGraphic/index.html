@@ -2051,6 +2051,10 @@
     </li>
   
     <li class="docs-menu-item">
+      <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
+    </li>
+  
+    <li class="docs-menu-item">
       <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
     </li>
   
@@ -2090,7 +2094,11 @@
           <h1 class="post-title line-left">QskGraphic</h1>
         </header><!-- .post-header -->
         <div class="post-content">
-          <object type="image/svg+xml" data="../svg/classQskGraphic__inherit__graph.svg">
+          <p>A paint device for scalable graphics.  <a href="#detailed-description">More…</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">#include &lt;QskGraphic.h&gt;</code></p>
+
+<object type="image/svg+xml" data="../svg/classQskGraphic__inherit__graph.svg">
 </object>
 <p><br /></p>
 
@@ -2144,12 +2152,12 @@
     </tr>
     <tr>
       <td> </td>
-      <td><strong><a href="/docs/classes/classQskGraphic/#function-qskgraphic">QskGraphic</a></strong>(const QskGraphic &amp; other)</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-qskgraphic">QskGraphic</a></strong>(const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; other)</td>
       <td> </td>
     </tr>
     <tr>
       <td> </td>
-      <td><strong><a href="/docs/classes/classQskGraphic/#function-qskgraphic">QskGraphic</a></strong>(QskGraphic &amp;&amp; other)</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-qskgraphic">QskGraphic</a></strong>(<a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp;&amp; other)</td>
       <td> </td>
     </tr>
     <tr>
@@ -2158,23 +2166,23 @@
       <td> </td>
     </tr>
     <tr>
-      <td>QskGraphic &amp;</td>
-      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator">operator=</a></strong>(const QskGraphic &amp; other)</td>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp;</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator">operator=</a></strong>(const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; other)</td>
       <td> </td>
     </tr>
     <tr>
-      <td>QskGraphic &amp;</td>
-      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator">operator=</a></strong>(QskGraphic &amp;&amp; other)</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>bool</td>
-      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator">operator==</a></strong>(const QskGraphic &amp; other) const</td>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp;</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator">operator=</a></strong>(<a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp;&amp; other)</td>
       <td> </td>
     </tr>
     <tr>
       <td>bool</td>
-      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator">operator!=</a></strong>(const QskGraphic &amp; other) const</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator">operator==</a></strong>(const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; other) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator">operator!=</a></strong>(const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; other) const</td>
       <td> </td>
     </tr>
     <tr>
@@ -2328,12 +2336,12 @@
       <td> </td>
     </tr>
     <tr>
-      <td>QskGraphic</td>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a></td>
       <td><strong><a href="/docs/classes/classQskGraphic/#function-fromimage">fromImage</a></strong>(const QImage &amp; image)</td>
       <td> </td>
     </tr>
     <tr>
-      <td>QskGraphic</td>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a></td>
       <td><strong><a href="/docs/classes/classQskGraphic/#function-frompixmap">fromPixmap</a></strong>(const QPixmap &amp; pixmap)</td>
       <td> </td>
     </tr>
@@ -2389,6 +2397,36 @@
     </tr>
   </tbody>
 </table>
+
+<h2 id="detailed-description">Detailed Description</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">QskGraphic</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>A paint device for scalable graphics.</p>
+
+<p><a href="/docs/classes/classQskGraphic/">QskGraphic</a> is the representation of a graphic that is tailored for scalability. Like QPicture it will be initialized by QPainter operations and can be replayed later to any target paint device. It can be stored and loaded from disk using the operators from QskGraphicIO. Together with QSvgRenderer it can be used to implement a simple SVG compiler.</p>
+
+<p><a href="/docs/classes/classQskGraphic/">QskGraphic</a> maps all scalable drawing primitives to a QPainterPath and stores them together with the painter state changes ( pen, brush, transformation … ) in a list of QskPainterCommand. For being a complete QPaintDevice it also stores pixmaps or images, what is somehow against the idea of the class, because these objects can’t be scaled without a loss in quality.</p>
+
+<p>The main issue about scaling a <a href="/docs/classes/classQskGraphic/">QskGraphic</a> object are the pens used for drawing the outlines of the painter paths. While non cosmetic pens ( QPen::isCosmetic() ) are scaled with the same ratio as the path, cosmetic pens have a fixed width. A graphic might have paths with different pens - cosmetic and non-cosmetic.</p>
+
+<p><a href="/docs/classes/classQskGraphic/">QskGraphic</a> caches 2 different rectangles:</p>
+
+<ul>
+  <li>control point rectangle</li>
+</ul>
+
+<p>The control point rectangle is the bounding rectangle of all control point rectangles of the painter paths, or the target rectangle of the pixmaps/images.</p>
+<ul>
+  <li>bounding rectangle</li>
+</ul>
+
+<p>The bounding rectangle extends the control point rectangle by what is needed for rendering the outline with an unscaled pen.
+Because the offset for drawing the outline depends on the shape of the painter path ( the peak of a triangle is different than the flat side ) scaling with a fixed aspect ratio always needs to be calculated from the control point rectangle.</p>
+
+<p>Defined in <a href="../../files/QskGraphic_8h">QskGraphic.h</a> in line 28.
+<br /><br /></p>
 
 <h2 id="public-types-documentation">Public Types Documentation</h2>
 
@@ -3108,7 +3146,7 @@
 
 <hr />
 
-<p>Updated on 23 April 2021 at 11:41:04 CEST</p>
+<p>Updated on 23 April 2021 at 17:39:56 CEST</p>
 
           
           

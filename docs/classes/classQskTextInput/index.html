@@ -2051,6 +2051,10 @@
     </li>
   
     <li class="docs-menu-item">
+      <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
+    </li>
+  
+    <li class="docs-menu-item">
       <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
     </li>
   
@@ -2098,56 +2102,6 @@
 <a href="/docs/classes/classQskControl/">QskControl</a></p>
 
 <p>Is drawn by <a href="/docs/classes/classQskTextInputSkinlet/">QskTextInputSkinlet</a></p>
-
-<h2 id="public-subcontrols">Public Subcontrols</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th> </th>
-      <th>Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td> </td>
-      <td><strong><a href="/docs/classes/classQskTextInput/#subcontrol-panel">Panel</a></strong></td>
-    </tr>
-    <tr>
-      <td> </td>
-      <td><strong><a href="/docs/classes/classQskTextInput/#subcontrol-text">Text</a></strong></td>
-    </tr>
-    <tr>
-      <td> </td>
-      <td><strong><a href="/docs/classes/classQskTextInput/#subcontrol-panelselected">PanelSelected</a></strong></td>
-    </tr>
-    <tr>
-      <td> </td>
-      <td><strong><a href="/docs/classes/classQskTextInput/#subcontrol-textselected">TextSelected</a></strong></td>
-    </tr>
-  </tbody>
-</table>
-
-<h2 id="public-states">Public States</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th> </th>
-      <th>Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td> </td>
-      <td><strong><a href="/docs/classes/classQskTextInput/#state-readonly">ReadOnly</a></strong></td>
-    </tr>
-    <tr>
-      <td> </td>
-      <td><strong><a href="/docs/classes/classQskTextInput/#state-editing">Editing</a></strong></td>
-    </tr>
-  </tbody>
-</table>
 
 <h2 id="public-types">Public Types</h2>
 
@@ -2207,6 +2161,14 @@
     <tr>
       <td>QString</td>
       <td><strong><a href="/docs/classes/classQskTextInput/#function-description">description</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskTextInput/#function-setpanel">setPanel</a></strong>(bool on)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskTextInput/#function-haspanel">hasPanel</a></strong>() const</td>
     </tr>
     <tr>
       <td>void</td>
@@ -2464,7 +2426,15 @@
     </tr>
     <tr>
       <td>void</td>
+      <td><strong><a href="/docs/classes/classQskTextInput/#signal-panelchanged">panelChanged</a></strong>(bool )</td>
+    </tr>
+    <tr>
+      <td>void</td>
       <td><strong><a href="/docs/classes/classQskTextInput/#signal-textchanged">textChanged</a></strong>(const QString &amp; )</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskTextInput/#signal-displaytextchanged">displayTextChanged</a></strong>(const QString &amp; )</td>
     </tr>
     <tr>
       <td>void</td>
@@ -2588,78 +2558,49 @@
       <td>int</td>
       <td><strong><a href="/docs/classes/classQskTextInput/#property-passwordmaskdelay">passwordMaskDelay</a></strong></td>
     </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskTextInput/#property-panel">panel</a></strong></td>
+    </tr>
   </tbody>
 </table>
 
-<h2 id="public-subcontrols-documentation">Public Subcontrols Documentation</h2>
+<h2 id="public-attributes">Public Attributes</h2>
 
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-subcontrol" id="subcontrol-panel">subcontrol Panel</h3>
-
-  <div class="qskinny-inner-block">
-
-    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 50.
-<br /><br /></p>
-
-  </div>
-</div>
-
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-subcontrol" id="subcontrol-text">subcontrol Text</h3>
-
-  <div class="qskinny-inner-block">
-
-    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 50.
-<br /><br /></p>
-
-  </div>
-</div>
-
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-subcontrol" id="subcontrol-panelselected">subcontrol PanelSelected</h3>
-
-  <div class="qskinny-inner-block">
-
-    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 50.
-<br /><br /></p>
-
-  </div>
-</div>
-
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-subcontrol" id="subcontrol-textselected">subcontrol TextSelected</h3>
-
-  <div class="qskinny-inner-block">
-
-    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 50.
-<br /><br /></p>
-
-  </div>
-</div>
-
-<h2 id="public-states-documentation">Public States Documentation</h2>
-
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-state" id="state-readonly">state ReadOnly</h3>
-
-  <div class="qskinny-inner-block">
-
-    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 51.
-<br /><br /></p>
-
-  </div>
-</div>
-
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-state" id="state-editing">state Editing</h3>
-
-  <div class="qskinny-inner-block">
-
-    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 51.
-<br /><br /></p>
-
-  </div>
-</div>
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskTextInput/#variable-panel">Panel</a></strong></td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskTextInput/#variable-text">Text</a></strong></td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskTextInput/#variable-panelselected">PanelSelected</a></strong></td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskTextInput/#variable-textselected">TextSelected</a></strong></td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-state">QskAspect::State</a></td>
+      <td><strong><a href="/docs/classes/classQskTextInput/#variable-readonly">ReadOnly</a></strong></td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-state">QskAspect::State</a></td>
+      <td><strong><a href="/docs/classes/classQskTextInput/#variable-editing">Editing</a></strong></td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="public-types-documentation">Public Types Documentation</h2>
 
@@ -2758,7 +2699,7 @@
       </tbody>
     </table>
 
-    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 54.
+    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 57.
 <br /><br /></p>
 
   </div>
@@ -2829,7 +2770,7 @@
       </tbody>
     </table>
 
-    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 69.
+    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 72.
 <br /><br /></p>
 
   </div>
@@ -2844,7 +2785,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskTextInput</span><span class="p">(</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 292.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 296.
 <br /><br /></p>
 
   </div>
@@ -2857,7 +2798,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskTextInput</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>  <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 319.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 324.
 <br /><br /></p>
 
   </div>
@@ -2870,7 +2811,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskTextInput</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 325.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 330.
 <br /><br /></p>
 
   </div>
@@ -2883,7 +2824,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setupFrom</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 850.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 875.
 <br /><br /></p>
 
   </div>
@@ -2896,7 +2837,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QString</span> <span class="n">text</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 493.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 518.
 <br /><br /></p>
 
   </div>
@@ -2909,7 +2850,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setDescription</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 503.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 528.
 <br /><br /></p>
 
   </div>
@@ -2922,7 +2863,33 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QString</span> <span class="n">description</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 512.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 537.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-function" id="function-setpanel">function setPanel</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setPanel</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 334.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-function" id="function-haspanel">function hasPanel</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">hasPanel</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 346.
 <br /><br /></p>
 
   </div>
@@ -2935,7 +2902,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setFontRole</span><span class="p">(</span> <span class="kt">int</span> <span class="n">role</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 541.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 566.
 <br /><br /></p>
 
   </div>
@@ -2948,7 +2915,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetFontRole</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 550.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 575.
 <br /><br /></p>
 
   </div>
@@ -2961,7 +2928,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">fontRole</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 559.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 584.
 <br /><br /></p>
 
   </div>
@@ -2974,7 +2941,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 564.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 589.
 <br /><br /></p>
 
   </div>
@@ -2987,7 +2954,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetAlignment</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 573.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 598.
 <br /><br /></p>
 
   </div>
@@ -3000,7 +2967,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 582.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 607.
 <br /><br /></p>
 
   </div>
@@ -3013,7 +2980,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setActivationModes</span><span class="p">(</span> <span class="n">ActivationModes</span> <span class="n">modes</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 522.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 547.
 <br /><br /></p>
 
   </div>
@@ -3026,7 +2993,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ActivationModes</span> <span class="n">activationModes</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 517.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 542.
 <br /><br /></p>
 
   </div>
@@ -3039,7 +3006,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isEditing</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 651.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 676.
 <br /><br /></p>
 
   </div>
@@ -3052,7 +3019,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QFont</span> <span class="n">font</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 587.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 612.
 <br /><br /></p>
 
   </div>
@@ -3065,7 +3032,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isReadOnly</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 592.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 617.
 <br /><br /></p>
 
   </div>
@@ -3078,7 +3045,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setReadOnly</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 597.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 622.
 <br /><br /></p>
 
   </div>
@@ -3091,7 +3058,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">cursorPosition</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 661.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 686.
 <br /><br /></p>
 
   </div>
@@ -3104,7 +3071,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setCursorPosition</span><span class="p">(</span> <span class="kt">int</span> <span class="n">pos</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 666.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 691.
 <br /><br /></p>
 
   </div>
@@ -3117,7 +3084,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">maxLength</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 671.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 696.
 <br /><br /></p>
 
   </div>
@@ -3130,7 +3097,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMaxLength</span><span class="p">(</span> <span class="kt">int</span> <span class="n">length</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 676.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 701.
 <br /><br /></p>
 
   </div>
@@ -3143,7 +3110,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QValidator</span> <span class="o">*</span> <span class="n">validator</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 681.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 706.
 <br /><br /></p>
 
   </div>
@@ -3156,7 +3123,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setValidator</span><span class="p">(</span> <span class="n">QValidator</span> <span class="o">*</span> <span class="n">validator</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 686.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 711.
 <br /><br /></p>
 
   </div>
@@ -3169,7 +3136,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QString</span> <span class="n">inputMask</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 691.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 716.
 <br /><br /></p>
 
   </div>
@@ -3182,7 +3149,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setInputMask</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">mask</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 696.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 721.
 <br /><br /></p>
 
   </div>
@@ -3195,7 +3162,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">EchoMode</span> <span class="n">echoMode</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 701.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 726.
 <br /><br /></p>
 
   </div>
@@ -3208,7 +3175,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setEchoMode</span><span class="p">(</span> <span class="n">EchoMode</span> <span class="n">mode</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 707.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 732.
 <br /><br /></p>
 
   </div>
@@ -3221,7 +3188,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QString</span> <span class="n">passwordCharacter</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 718.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 743.
 <br /><br /></p>
 
   </div>
@@ -3234,7 +3201,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setPasswordCharacter</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 723.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 748.
 <br /><br /></p>
 
   </div>
@@ -3247,7 +3214,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetPasswordCharacter</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 728.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 753.
 <br /><br /></p>
 
   </div>
@@ -3260,7 +3227,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">passwordMaskDelay</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 734.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 759.
 <br /><br /></p>
 
   </div>
@@ -3273,7 +3240,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setPasswordMaskDelay</span><span class="p">(</span> <span class="kt">int</span> <span class="n">ms</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 739.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 764.
 <br /><br /></p>
 
   </div>
@@ -3286,7 +3253,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetPasswordMaskDelay</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 744.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 769.
 <br /><br /></p>
 
   </div>
@@ -3299,7 +3266,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QString</span> <span class="n">displayText</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 749.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 774.
 <br /><br /></p>
 
   </div>
@@ -3312,7 +3279,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QString</span> <span class="n">preeditText</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 754.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 779.
 <br /><br /></p>
 
   </div>
@@ -3325,7 +3292,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">overwriteMode</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 762.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 787.
 <br /><br /></p>
 
   </div>
@@ -3338,7 +3305,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setOverwriteMode</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">overwrite</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 767.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 792.
 <br /><br /></p>
 
   </div>
@@ -3351,7 +3318,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">hasAcceptableInput</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 774.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 799.
 <br /><br /></p>
 
   </div>
@@ -3364,7 +3331,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">fixup</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 779.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 804.
 <br /><br /></p>
 
   </div>
@@ -3377,7 +3344,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QVariant</span> <span class="n">inputMethodQuery</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQuery</span> <span class="n">property</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 784.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 809.
 <br /><br /></p>
 
   </div>
@@ -3390,7 +3357,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QVariant</span> <span class="n">inputMethodQuery</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQuery</span> <span class="n">query</span><span class="p">,</span>  <span class="n">QVariant</span> <span class="n">argument</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 790.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 815.
 <br /><br /></p>
 
   </div>
@@ -3403,7 +3370,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">canUndo</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 826.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 851.
 <br /><br /></p>
 
   </div>
@@ -3416,7 +3383,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">canRedo</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 831.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 856.
 <br /><br /></p>
 
   </div>
@@ -3429,7 +3396,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="n">inputMethodHints</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 836.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 861.
 <br /><br /></p>
 
   </div>
@@ -3442,7 +3409,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setInputMethodHints</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="n">hints</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 841.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 866.
 <br /><br /></p>
 
   </div>
@@ -3455,7 +3422,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">ensureVisible</span><span class="p">(</span> <span class="kt">int</span> <span class="n">position</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 656.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 681.
 <br /><br /></p>
 
   </div>
@@ -3470,7 +3437,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 329.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 351.
 <br /><br /></p>
 
   </div>
@@ -3483,7 +3450,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">inputMethodEvent</span><span class="p">(</span> <span class="n">QInputMethodEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 420.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 442.
 <br /><br /></p>
 
   </div>
@@ -3496,7 +3463,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">focusInEvent</span><span class="p">(</span> <span class="n">QFocusEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 425.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 447.
 <br /><br /></p>
 
   </div>
@@ -3509,7 +3476,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">focusOutEvent</span><span class="p">(</span> <span class="n">QFocusEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 443.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 465.
 <br /><br /></p>
 
   </div>
@@ -3522,7 +3489,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">mousePressEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 394.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 416.
 <br /><br /></p>
 
   </div>
@@ -3535,7 +3502,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">mouseMoveEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 402.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 424.
 <br /><br /></p>
 
   </div>
@@ -3548,7 +3515,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">mouseReleaseEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 407.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 429.
 <br /><br /></p>
 
   </div>
@@ -3561,7 +3528,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">mouseDoubleClickEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 415.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 437.
 <br /><br /></p>
 
   </div>
@@ -3574,7 +3541,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">keyPressEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 343.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 365.
 <br /><br /></p>
 
   </div>
@@ -3587,7 +3554,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">keyReleaseEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 389.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 411.
 <br /><br /></p>
 
   </div>
@@ -3600,7 +3567,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>  <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span>  <span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 462.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 484.
 <br /><br /></p>
 
   </div>
@@ -3613,7 +3580,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">updateLayout</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 479.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 504.
 <br /><br /></p>
 
   </div>
@@ -3626,7 +3593,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">updateNode</span><span class="p">(</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 487.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 512.
 <br /><br /></p>
 
   </div>
@@ -3671,10 +3638,34 @@
 </div>
 
 <div class="qskinny-outter-block">
+  <h3 class="qskinny-signal" id="signal-panelchanged">signal panelChanged</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">panelChanged</span><span class="p">(</span> <span class="kt">bool</span>  <span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p><br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
   <h3 class="qskinny-signal" id="signal-textchanged">signal textChanged</h3>
 
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">textChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span>  <span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p><br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-signal" id="signal-displaytextchanged">signal displayTextChanged</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">displayTextChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span>  <span class="p">)</span>
 </code></pre></div>    </div>
 
     <p><br /><br /></p>
@@ -3835,7 +3826,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setText</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 498.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 523.
 <br /><br /></p>
 
   </div>
@@ -3848,7 +3839,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setEditing</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 618.
+    <p>Defined in <a href="../../files/QskTextInput_8cpp">QskTextInput.cpp</a> in line 643.
 <br /><br /></p>
 
   </div>
@@ -3986,9 +3977,102 @@
   </div>
 </div>
 
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-property" id="property-panel">property panel</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">panel</span><span class="p">;</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 48.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-attribute" id="variable-panel">variable Panel</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">Panel</span><span class="p">;</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 53.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-attribute" id="variable-text">variable Text</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">Text</span><span class="p">;</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 53.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-attribute" id="variable-panelselected">variable PanelSelected</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">PanelSelected</span><span class="p">;</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 53.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-attribute" id="variable-textselected">variable TextSelected</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">TextSelected</span><span class="p">;</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 53.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-attribute" id="variable-readonly">variable ReadOnly</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">ReadOnly</span><span class="p">;</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 54.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-attribute" id="variable-editing">variable Editing</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">Editing</span><span class="p">;</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskTextInput_8h">QskTextInput.h</a> in line 54.
+<br /><br /></p>
+
+  </div>
+</div>
+
 <hr />
 
-<p>Updated on 23 April 2021 at 11:41:02 CEST</p>
+<p>Updated on 23 April 2021 at 17:39:54 CEST</p>
 
           
           

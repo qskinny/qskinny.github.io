@@ -2051,6 +2051,10 @@
     </li>
   
     <li class="docs-menu-item">
+      <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
+    </li>
+  
+    <li class="docs-menu-item">
       <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
     </li>
   
@@ -2227,74 +2231,77 @@
  <span class="mi">133</span><span class="o">:</span> 
  <span class="mi">134</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">mouseUngrabEvent</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span> 
  <span class="mi">135</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">touchUngrabEvent</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
- <span class="mi">136</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">windowDeactivateEvent</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
- <span class="mi">137</span><span class="o">:</span> 
- <span class="mi">138</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span> <span class="n">ItemChange</span><span class="p">,</span> <span class="k">const</span> <span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
- <span class="mi">139</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&gt;=</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
- <span class="mi">140</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">geometryChange</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
- <span class="mi">141</span><span class="o">:</span> <span class="err">#</span><span class="k">else</span>
- <span class="mi">142</span><span class="o">:</span>     <span class="c1">// using geometryChange also for Qt5</span>
- <span class="mi">143</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">geometryChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
- <span class="mi">144</span><span class="o">:</span>     <span class="k">virtual</span> <span class="kt">void</span> <span class="n">geometryChange</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="p">);</span>
- <span class="mi">145</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
- <span class="mi">146</span><span class="o">:</span> 
- <span class="mi">147</span><span class="o">:</span>     <span class="k">virtual</span> <span class="kt">void</span> <span class="n">aboutToShow</span><span class="p">();</span>  <span class="c1">// called in updatePolish</span>
- <span class="mi">148</span><span class="o">:</span> 
- <span class="mi">149</span><span class="o">:</span>   <span class="k">private</span><span class="o">:</span>
- <span class="mi">150</span><span class="o">:</span>     <span class="c1">// don't use boundingRect - it seems to be deprecated</span>
- <span class="mi">151</span><span class="o">:</span>     <span class="n">QRectF</span> <span class="n">boundingRect</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span> <span class="k">final</span> <span class="p">{</span> <span class="k">return</span> <span class="n">rect</span><span class="p">();</span> <span class="p">}</span>
- <span class="mi">152</span><span class="o">:</span> 
- <span class="mi">153</span><span class="o">:</span>     <span class="cm">/*
- 154:          childrenRect()/childrenRectChanged does not make much sense
- 155:          in a system, where the parent is responsible for laying out
- 156:          its children.
- 157:      */</span>
- <span class="mi">158</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">childrenRect</span><span class="p">()</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
- <span class="mi">159</span><span class="o">:</span> 
- <span class="mi">160</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">applyUpdateFlag</span><span class="p">(</span> <span class="n">UpdateFlag</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
- <span class="mi">161</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">sendEnabledChangeEvent</span><span class="p">();</span>
+ <span class="mi">136</span><span class="o">:</span> 
+ <span class="mi">137</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">138</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">windowDeactivateEvent</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+ <span class="mi">139</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">140</span><span class="o">:</span> 
+ <span class="mi">141</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span> <span class="n">ItemChange</span><span class="p">,</span> <span class="k">const</span> <span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+ <span class="mi">142</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&gt;=</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">143</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">geometryChange</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+ <span class="mi">144</span><span class="o">:</span> <span class="err">#</span><span class="k">else</span>
+ <span class="mi">145</span><span class="o">:</span>     <span class="c1">// using geometryChange also for Qt5</span>
+ <span class="mi">146</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">geometryChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+ <span class="mi">147</span><span class="o">:</span>     <span class="k">virtual</span> <span class="kt">void</span> <span class="n">geometryChange</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="p">);</span>
+ <span class="mi">148</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">149</span><span class="o">:</span> 
+ <span class="mi">150</span><span class="o">:</span>     <span class="k">virtual</span> <span class="kt">void</span> <span class="n">aboutToShow</span><span class="p">();</span>  <span class="c1">// called in updatePolish</span>
+ <span class="mi">151</span><span class="o">:</span> 
+ <span class="mi">152</span><span class="o">:</span>   <span class="k">private</span><span class="o">:</span>
+ <span class="mi">153</span><span class="o">:</span>     <span class="c1">// don't use boundingRect - it seems to be deprecated</span>
+ <span class="mi">154</span><span class="o">:</span>     <span class="n">QRectF</span> <span class="n">boundingRect</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span> <span class="k">final</span> <span class="p">{</span> <span class="k">return</span> <span class="n">rect</span><span class="p">();</span> <span class="p">}</span>
+ <span class="mi">155</span><span class="o">:</span> 
+ <span class="mi">156</span><span class="o">:</span>     <span class="cm">/*
+ 157:          childrenRect()/childrenRectChanged does not make much sense
+ 158:          in a system, where the parent is responsible for laying out
+ 159:          its children.
+ 160:      */</span>
+ <span class="mi">161</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">childrenRect</span><span class="p">()</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
  <span class="mi">162</span><span class="o">:</span> 
- <span class="mi">163</span><span class="o">:</span>     <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updatePaintNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span><span class="p">,</span> <span class="n">UpdatePaintNodeData</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
- <span class="mi">164</span><span class="o">:</span>     <span class="k">virtual</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updateItemPaintNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="p">);</span>
+ <span class="mi">163</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">applyUpdateFlag</span><span class="p">(</span> <span class="n">UpdateFlag</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
+ <span class="mi">164</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">sendEnabledChangeEvent</span><span class="p">();</span>
  <span class="mi">165</span><span class="o">:</span> 
- <span class="mi">166</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">updatePolish</span><span class="p">()</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
- <span class="mi">167</span><span class="o">:</span>     <span class="k">virtual</span> <span class="kt">void</span> <span class="n">updateItemPolish</span><span class="p">();</span>
+ <span class="mi">166</span><span class="o">:</span>     <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updatePaintNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span><span class="p">,</span> <span class="n">UpdatePaintNodeData</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+ <span class="mi">167</span><span class="o">:</span>     <span class="k">virtual</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updateItemPaintNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="p">);</span>
  <span class="mi">168</span><span class="o">:</span> 
- <span class="mi">169</span><span class="o">:</span>     <span class="n">Q_DECLARE_PRIVATE</span><span class="p">(</span> <span class="n">QskQuickItem</span> <span class="p">)</span>
- <span class="mi">170</span><span class="o">:</span> <span class="p">};</span>
+ <span class="mi">169</span><span class="o">:</span>     <span class="kt">void</span> <span class="n">updatePolish</span><span class="p">()</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+ <span class="mi">170</span><span class="o">:</span>     <span class="k">virtual</span> <span class="kt">void</span> <span class="n">updateItemPolish</span><span class="p">();</span>
  <span class="mi">171</span><span class="o">:</span> 
- <span class="mi">172</span><span class="o">:</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">hasChildItems</span><span class="p">()</span> <span class="k">const</span>
- <span class="mi">173</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">174</span><span class="o">:</span>     <span class="k">return</span> <span class="o">!</span><span class="n">childItems</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">();</span>
- <span class="mi">175</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">176</span><span class="o">:</span> 
- <span class="mi">177</span><span class="o">:</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">setGeometry</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">)</span>
- <span class="mi">178</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">179</span><span class="o">:</span>     <span class="n">setGeometry</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
- <span class="mi">180</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">181</span><span class="o">:</span> 
- <span class="mi">182</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
- <span class="mi">183</span><span class="o">:</span> 
- <span class="mi">184</span><span class="o">:</span> <span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span>
- <span class="mi">185</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">186</span><span class="o">:</span>     <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">width</span><span class="p">(),</span> <span class="n">height</span><span class="p">()</span> <span class="p">);</span>
- <span class="mi">187</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">188</span><span class="o">:</span> 
- <span class="mi">189</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
- <span class="mi">190</span><span class="o">:</span> 
- <span class="mi">191</span><span class="o">:</span> <span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">implicitSize</span><span class="p">()</span> <span class="k">const</span>
- <span class="mi">192</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">193</span><span class="o">:</span>     <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">implicitWidth</span><span class="p">(),</span> <span class="n">implicitHeight</span><span class="p">()</span> <span class="p">);</span>
- <span class="mi">194</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">195</span><span class="o">:</span> 
- <span class="mi">196</span><span class="o">:</span> <span class="n">Q_DECLARE_OPERATORS_FOR_FLAGS</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="p">)</span>
- <span class="mi">197</span><span class="o">:</span> <span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="p">)</span>
+ <span class="mi">172</span><span class="o">:</span>     <span class="n">Q_DECLARE_PRIVATE</span><span class="p">(</span> <span class="n">QskQuickItem</span> <span class="p">)</span>
+ <span class="mi">173</span><span class="o">:</span> <span class="p">};</span>
+ <span class="mi">174</span><span class="o">:</span> 
+ <span class="mi">175</span><span class="o">:</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">hasChildItems</span><span class="p">()</span> <span class="k">const</span>
+ <span class="mi">176</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">177</span><span class="o">:</span>     <span class="k">return</span> <span class="o">!</span><span class="n">childItems</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">();</span>
+ <span class="mi">178</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">179</span><span class="o">:</span> 
+ <span class="mi">180</span><span class="o">:</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">setGeometry</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">)</span>
+ <span class="mi">181</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">182</span><span class="o">:</span>     <span class="n">setGeometry</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+ <span class="mi">183</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">184</span><span class="o">:</span> 
+ <span class="mi">185</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">186</span><span class="o">:</span> 
+ <span class="mi">187</span><span class="o">:</span> <span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span>
+ <span class="mi">188</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">189</span><span class="o">:</span>     <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">width</span><span class="p">(),</span> <span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+ <span class="mi">190</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">191</span><span class="o">:</span> 
+ <span class="mi">192</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">193</span><span class="o">:</span> 
+ <span class="mi">194</span><span class="o">:</span> <span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">implicitSize</span><span class="p">()</span> <span class="k">const</span>
+ <span class="mi">195</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">196</span><span class="o">:</span>     <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">implicitWidth</span><span class="p">(),</span> <span class="n">implicitHeight</span><span class="p">()</span> <span class="p">);</span>
+ <span class="mi">197</span><span class="o">:</span> <span class="p">}</span>
  <span class="mi">198</span><span class="o">:</span> 
- <span class="mi">199</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span></code></pre></figure>
+ <span class="mi">199</span><span class="o">:</span> <span class="n">Q_DECLARE_OPERATORS_FOR_FLAGS</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="p">)</span>
+ <span class="mi">200</span><span class="o">:</span> <span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="p">)</span>
+ <span class="mi">201</span><span class="o">:</span> 
+ <span class="mi">202</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span></code></pre></figure>
 
 <hr />
 
-<p>Updated on 23 April 2021 at 11:41:06 CEST</p>
+<p>Updated on 23 April 2021 at 17:39:58 CEST</p>
 
           
           

@@ -2051,6 +2051,10 @@
     </li>
   
     <li class="docs-menu-item">
+      <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
+    </li>
+  
+    <li class="docs-menu-item">
       <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
     </li>
   
@@ -2733,11 +2737,107 @@
  <span class="mi">639</span><span class="o">:</span>     <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">children</span> <span class="o">=</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">childItems</span><span class="p">;</span>
  <span class="mi">640</span><span class="o">:</span>     <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">child</span> <span class="o">:</span> <span class="n">children</span> <span class="p">)</span>
  <span class="mi">641</span><span class="o">:</span>         <span class="n">qskItemUpdateRecursive</span><span class="p">(</span> <span class="n">child</span> <span class="p">);</span>
- <span class="mi">642</span><span class="o">:</span> <span class="p">}</span></code></pre></figure>
+ <span class="mi">642</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">643</span><span class="o">:</span> 
+ <span class="mi">644</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&gt;=</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">645</span><span class="o">:</span> 
+ <span class="mi">646</span><span class="o">:</span> <span class="k">static</span> <span class="k">const</span> <span class="n">QQuickPointerTouchEvent</span><span class="o">*</span> <span class="n">qskPointerPressEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickWindowPrivate</span><span class="o">*</span> <span class="n">wd</span> <span class="p">)</span>
+ <span class="mi">647</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">648</span><span class="o">:</span>     <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">event</span> <span class="o">:</span> <span class="n">wd</span><span class="o">-&gt;</span><span class="n">pointerEventInstances</span> <span class="p">)</span>
+ <span class="mi">649</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">650</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">touchEvent</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">asPointerTouchEvent</span><span class="p">()</span> <span class="p">)</span>
+ <span class="mi">651</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">652</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">touchEvent</span><span class="o">-&gt;</span><span class="n">isPressEvent</span><span class="p">()</span> <span class="p">)</span>
+ <span class="mi">653</span><span class="o">:</span>                 <span class="k">return</span> <span class="n">touchEvent</span><span class="p">;</span>
+ <span class="mi">654</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">655</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">656</span><span class="o">:</span> 
+ <span class="mi">657</span><span class="o">:</span>     <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+ <span class="mi">658</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">659</span><span class="o">:</span> 
+ <span class="mi">660</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">661</span><span class="o">:</span> 
+ <span class="mi">662</span><span class="o">:</span> <span class="kt">bool</span> <span class="n">qskGrabMouse</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+ <span class="mi">663</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">664</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+ <span class="mi">665</span><span class="o">:</span>         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">666</span><span class="o">:</span> 
+ <span class="mi">667</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">mouseGrabber</span> <span class="o">=</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">mouseGrabberItem</span><span class="p">()</span> <span class="p">)</span>
+ <span class="mi">668</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">669</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">mouseGrabber</span> <span class="o">==</span> <span class="n">item</span> <span class="p">)</span>
+ <span class="mi">670</span><span class="o">:</span>             <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+ <span class="mi">671</span><span class="o">:</span> 
+ <span class="mi">672</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">mouseGrabber</span><span class="o">-&gt;</span><span class="n">keepMouseGrab</span><span class="p">()</span> <span class="p">)</span>
+ <span class="mi">673</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">674</span><span class="o">:</span>             <span class="c1">// we respect this</span>
+ <span class="mi">675</span><span class="o">:</span>             <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">676</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">677</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">678</span><span class="o">:</span> 
+ <span class="mi">679</span><span class="o">:</span>     <span class="n">item</span><span class="o">-&gt;</span><span class="n">setKeepMouseGrab</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+ <span class="mi">680</span><span class="o">:</span> 
+ <span class="mi">681</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&gt;=</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">682</span><span class="o">:</span> 
+ <span class="mi">683</span><span class="o">:</span>     <span class="k">auto</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">QQuickWindowPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">);</span>
+ <span class="mi">684</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">wd</span><span class="o">-&gt;</span><span class="n">touchMouseDevice</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+ <span class="mi">685</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">686</span><span class="o">:</span>         <span class="cm">/*
+ 687:             For synthesized mouse events QQuickWindow sends
+ 688:             an initial QEvent::MouseButtonPress before setting
+ 689:             touchMouseDevice/touchMouseId. As the mouse grabber is
+ 690:             stored depending on these attributes the following
+ 691:             mouse event callbacks will look for the grabber at a
+ 692:             a different place as it was stored.
+ 693:         */</span>
+ <span class="mi">694</span><span class="o">:</span> 
+ <span class="mi">695</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">event</span> <span class="o">=</span> <span class="n">qskPointerPressEvent</span><span class="p">(</span> <span class="n">wd</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">696</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">697</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">p</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">point</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">698</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">699</span><span class="o">:</span>                 <span class="n">wd</span><span class="o">-&gt;</span><span class="n">touchMouseDevice</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">device</span><span class="p">();</span>
+ <span class="mi">700</span><span class="o">:</span>                 <span class="n">wd</span><span class="o">-&gt;</span><span class="n">touchMouseId</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">pointId</span><span class="p">();</span>
+ <span class="mi">701</span><span class="o">:</span> 
+ <span class="mi">702</span><span class="o">:</span>                 <span class="n">item</span><span class="o">-&gt;</span><span class="n">grabMouse</span><span class="p">();</span>
+ <span class="mi">703</span><span class="o">:</span> 
+ <span class="mi">704</span><span class="o">:</span>                 <span class="n">wd</span><span class="o">-&gt;</span><span class="n">touchMouseDevice</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+ <span class="mi">705</span><span class="o">:</span>                 <span class="n">wd</span><span class="o">-&gt;</span><span class="n">touchMouseId</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+ <span class="mi">706</span><span class="o">:</span> 
+ <span class="mi">707</span><span class="o">:</span>                 <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+ <span class="mi">708</span><span class="o">:</span>             <span class="p">}</span>
+ <span class="mi">709</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">710</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">711</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">712</span><span class="o">:</span> 
+ <span class="mi">713</span><span class="o">:</span>     <span class="n">item</span><span class="o">-&gt;</span><span class="n">grabMouse</span><span class="p">();</span>
+ <span class="mi">714</span><span class="o">:</span>     <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+ <span class="mi">715</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">716</span><span class="o">:</span> 
+ <span class="mi">717</span><span class="o">:</span> <span class="kt">void</span> <span class="nf">qskUngrabMouse</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+ <span class="mi">718</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">719</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+ <span class="mi">720</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">721</span><span class="o">:</span>         <span class="n">item</span><span class="o">-&gt;</span><span class="n">setKeepMouseGrab</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+ <span class="mi">722</span><span class="o">:</span> 
+ <span class="mi">723</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsMouseGrabber</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">724</span><span class="o">:</span>             <span class="n">item</span><span class="o">-&gt;</span><span class="n">ungrabMouse</span><span class="p">();</span>
+ <span class="mi">725</span><span class="o">:</span> 
+ <span class="mi">726</span><span class="o">:</span>     <span class="err">}</span>
+ <span class="mi">727</span><span class="o">:</span> <span class="err">}</span>
+ <span class="mi">728</span><span class="o">:</span> 
+ <span class="mi">729</span><span class="o">:</span> <span class="kt">bool</span> <span class="n">qskIsMouseGrabber</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+ <span class="mi">730</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">731</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+ <span class="mi">732</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">733</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">window</span> <span class="o">=</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">)</span>
+ <span class="mi">734</span><span class="o">:</span>             <span class="k">return</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">mouseGrabberItem</span><span class="p">()</span> <span class="o">==</span> <span class="n">item</span><span class="p">;</span>
+ <span class="mi">735</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">736</span><span class="o">:</span> 
+ <span class="mi">737</span><span class="o">:</span>     <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">738</span><span class="o">:</span> <span class="p">}</span></code></pre></figure>
 
 <hr />
 
-<p>Updated on 23 April 2021 at 11:41:06 CEST</p>
+<p>Updated on 23 April 2021 at 17:39:58 CEST</p>
 
           
           

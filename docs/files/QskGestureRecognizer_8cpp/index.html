@@ -2051,6 +2051,10 @@
     </li>
   
     <li class="docs-menu-item">
+      <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
+    </li>
+  
+    <li class="docs-menu-item">
       <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
     </li>
   
@@ -2094,562 +2098,506 @@
 
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp">   <span class="mi">1</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="s">"QskGestureRecognizer.h"</span>
    <span class="mi">2</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="s">"QskEvent.h"</span>
-   <span class="mi">3</span><span class="o">:</span> 
-   <span class="mi">4</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qbasictimer</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
-   <span class="mi">5</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qcoreapplication</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
-   <span class="mi">6</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qcoreevent</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
-   <span class="mi">7</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qquickitem</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
-   <span class="mi">8</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qquickwindow</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
-   <span class="mi">9</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qscopedpointer</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
-  <span class="mi">10</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qvector</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
-  <span class="mi">11</span><span class="o">:</span> 
+   <span class="mi">3</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="s">"QskQuick.h"</span>
+   <span class="mi">4</span><span class="o">:</span> 
+   <span class="mi">5</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qbasictimer</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+   <span class="mi">6</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qcoreapplication</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+   <span class="mi">7</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qcoreevent</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+   <span class="mi">8</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qquickitem</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+   <span class="mi">9</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qquickwindow</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+  <span class="mi">10</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qscopedpointer</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+  <span class="mi">11</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">qvector</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
   <span class="mi">12</span><span class="o">:</span> 
-  <span class="mi">13</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="k">private</span><span class="o">/</span><span class="n">qquickwindow_p</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
-  <span class="mi">14</span><span class="o">:</span> 
+  <span class="mi">13</span><span class="o">:</span> 
+  <span class="mi">14</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="k">private</span><span class="o">/</span><span class="n">qquickwindow_p</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
   <span class="mi">15</span><span class="o">:</span> 
-  <span class="mi">16</span><span class="o">:</span> <span class="k">static</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="nf">qskClonedMouseEventAt</span><span class="p">(</span>
-  <span class="mi">17</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span><span class="p">,</span> <span class="n">QPointF</span><span class="o">*</span> <span class="n">localPos</span> <span class="p">)</span>
-  <span class="mi">18</span><span class="o">:</span> <span class="p">{</span>
-  <span class="mi">19</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
-  <span class="mi">20</span><span class="o">:</span> 
-  <span class="mi">21</span><span class="o">:</span>     <span class="k">auto</span> <span class="n">clonedEvent</span> <span class="o">=</span> <span class="n">QQuickWindowPrivate</span><span class="o">::</span><span class="n">cloneMouseEvent</span><span class="p">(</span>
-  <span class="mi">22</span><span class="o">:</span>         <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">),</span> <span class="n">localPos</span> <span class="p">);</span>
-  <span class="mi">23</span><span class="o">:</span> 
-  <span class="mi">24</span><span class="o">:</span> <span class="err">#</span><span class="k">else</span>
-  <span class="mi">25</span><span class="o">:</span>     <span class="k">auto</span> <span class="n">clonedEvent</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">();</span>
-  <span class="mi">26</span><span class="o">:</span> 
-  <span class="mi">27</span><span class="o">:</span>     <span class="k">auto</span><span class="o">&amp;</span> <span class="n">point</span> <span class="o">=</span> <span class="n">QMutableEventPoint</span><span class="o">::</span><span class="n">from</span><span class="p">(</span> <span class="n">clonedEvent</span><span class="o">-&gt;</span><span class="n">point</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">);</span>
-  <span class="mi">28</span><span class="o">:</span>     <span class="n">point</span><span class="p">.</span><span class="n">detach</span><span class="p">();</span>
-  <span class="mi">29</span><span class="o">:</span>     <span class="n">point</span><span class="p">.</span><span class="n">setTimestamp</span><span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">()</span> <span class="p">);</span>
-  <span class="mi">30</span><span class="o">:</span> 
-  <span class="mi">31</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">localPos</span> <span class="p">)</span>
-  <span class="mi">32</span><span class="o">:</span>         <span class="n">point</span><span class="p">.</span><span class="n">setPosition</span><span class="p">(</span> <span class="o">*</span><span class="n">localPos</span> <span class="p">);</span>
-  <span class="mi">33</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
-  <span class="mi">34</span><span class="o">:</span> 
-  <span class="mi">35</span><span class="o">:</span>     <span class="k">return</span> <span class="n">clonedEvent</span><span class="p">;</span>
-  <span class="mi">36</span><span class="o">:</span> <span class="err">}</span>
-  <span class="mi">37</span><span class="o">:</span> 
-  <span class="mi">38</span><span class="o">:</span> <span class="k">static</span> <span class="kr">inline</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">qskClonedMouseEvent</span><span class="p">(</span>
-  <span class="mi">39</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">mouseEvent</span><span class="p">,</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
-  <span class="mi">40</span><span class="o">:</span> <span class="p">{</span>
-  <span class="mi">41</span><span class="o">:</span>     <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">clonedEvent</span><span class="p">;</span>
-  <span class="mi">42</span><span class="o">:</span>     <span class="k">auto</span> <span class="n">event</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
-  <span class="mi">43</span><span class="o">:</span> 
-  <span class="mi">44</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
-  <span class="mi">45</span><span class="o">:</span>     <span class="p">{</span>
-  <span class="mi">46</span><span class="o">:</span>         <span class="k">auto</span> <span class="n">localPos</span> <span class="o">=</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">mapFromScene</span><span class="p">(</span> <span class="n">qskMouseScenePosition</span><span class="p">(</span> <span class="n">event</span> <span class="p">)</span> <span class="p">);</span>
-  <span class="mi">47</span><span class="o">:</span>         <span class="n">clonedEvent</span> <span class="o">=</span> <span class="n">qskClonedMouseEventAt</span><span class="p">(</span> <span class="n">event</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">localPos</span> <span class="p">);</span>
-  <span class="mi">48</span><span class="o">:</span>     <span class="p">}</span>
-  <span class="mi">49</span><span class="o">:</span>     <span class="k">else</span>
-  <span class="mi">50</span><span class="o">:</span>     <span class="p">{</span>
-  <span class="mi">51</span><span class="o">:</span>         <span class="n">clonedEvent</span> <span class="o">=</span> <span class="n">qskClonedMouseEventAt</span><span class="p">(</span> <span class="n">event</span><span class="p">,</span> <span class="nb">nullptr</span> <span class="p">);</span>
-  <span class="mi">52</span><span class="o">:</span>     <span class="p">}</span>
-  <span class="mi">53</span><span class="o">:</span> 
-  <span class="mi">54</span><span class="o">:</span>     <span class="n">clonedEvent</span><span class="o">-&gt;</span><span class="n">setAccepted</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
-  <span class="mi">55</span><span class="o">:</span>     <span class="k">return</span> <span class="n">clonedEvent</span><span class="p">;</span>
-  <span class="mi">56</span><span class="o">:</span> <span class="p">}</span>
-  <span class="mi">57</span><span class="o">:</span> 
-  <span class="mi">58</span><span class="o">:</span> <span class="k">namespace</span>
-  <span class="mi">59</span><span class="o">:</span> <span class="p">{</span>
-  <span class="mi">60</span><span class="o">:</span>     <span class="cm">/*
-  61:         As we don't want QskGestureRecognizer being a QObject
-  62:         we need some extra timers - usually one per screen.
-  63:      */</span>
-  <span class="mi">64</span><span class="o">:</span> 
-  <span class="mi">65</span><span class="o">:</span>     <span class="k">class</span> <span class="nc">Timer</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
-  <span class="mi">66</span><span class="o">:</span>     <span class="p">{</span>
-  <span class="mi">67</span><span class="o">:</span>       <span class="k">public</span><span class="o">:</span>
-  <span class="mi">68</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">start</span><span class="p">(</span> <span class="kt">int</span> <span class="n">ms</span><span class="p">,</span> <span class="n">QskGestureRecognizer</span><span class="o">*</span> <span class="n">recognizer</span> <span class="p">)</span>
-  <span class="mi">69</span><span class="o">:</span>         <span class="p">{</span>
-  <span class="mi">70</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">m_timer</span><span class="p">.</span><span class="n">isActive</span><span class="p">()</span> <span class="p">)</span>
-  <span class="mi">71</span><span class="o">:</span>                 <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskGestureRecognizer: resetting an active timer"</span><span class="p">;</span>
-  <span class="mi">72</span><span class="o">:</span> 
-  <span class="mi">73</span><span class="o">:</span>             <span class="n">m_recognizer</span> <span class="o">=</span> <span class="n">recognizer</span><span class="p">;</span>
-  <span class="mi">74</span><span class="o">:</span>             <span class="n">m_timer</span><span class="p">.</span><span class="n">start</span><span class="p">(</span> <span class="n">ms</span><span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
-  <span class="mi">75</span><span class="o">:</span>         <span class="p">}</span>
-  <span class="mi">76</span><span class="o">:</span> 
-  <span class="mi">77</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">stop</span><span class="p">()</span>
-  <span class="mi">78</span><span class="o">:</span>         <span class="p">{</span>
-  <span class="mi">79</span><span class="o">:</span>             <span class="n">m_timer</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
-  <span class="mi">80</span><span class="o">:</span>             <span class="n">m_recognizer</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
-  <span class="mi">81</span><span class="o">:</span>         <span class="p">}</span>
-  <span class="mi">82</span><span class="o">:</span> 
-  <span class="mi">83</span><span class="o">:</span>         <span class="k">const</span> <span class="n">QskGestureRecognizer</span><span class="o">*</span> <span class="n">recognizer</span><span class="p">()</span> <span class="k">const</span>
-  <span class="mi">84</span><span class="o">:</span>         <span class="p">{</span>
-  <span class="mi">85</span><span class="o">:</span>             <span class="k">return</span> <span class="n">m_recognizer</span><span class="p">;</span>
-  <span class="mi">86</span><span class="o">:</span>         <span class="p">}</span>
-  <span class="mi">87</span><span class="o">:</span> 
-  <span class="mi">88</span><span class="o">:</span>       <span class="k">protected</span><span class="o">:</span>
-  <span class="mi">89</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">timerEvent</span><span class="p">(</span> <span class="n">QTimerEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span>
-  <span class="mi">90</span><span class="o">:</span>         <span class="p">{</span>
-  <span class="mi">91</span><span class="o">:</span>             <span class="n">m_timer</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
-  <span class="mi">92</span><span class="o">:</span> 
-  <span class="mi">93</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">m_recognizer</span> <span class="p">)</span>
-  <span class="mi">94</span><span class="o">:</span>             <span class="p">{</span>
-  <span class="mi">95</span><span class="o">:</span>                 <span class="k">auto</span> <span class="n">recognizer</span> <span class="o">=</span> <span class="n">m_recognizer</span><span class="p">;</span>
-  <span class="mi">96</span><span class="o">:</span>                 <span class="n">m_recognizer</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
-  <span class="mi">97</span><span class="o">:</span> 
-  <span class="mi">98</span><span class="o">:</span>                 <span class="n">recognizer</span><span class="o">-&gt;</span><span class="n">reject</span><span class="p">();</span>
-  <span class="mi">99</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">100</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">101</span><span class="o">:</span> 
- <span class="mi">102</span><span class="o">:</span>         <span class="n">QBasicTimer</span> <span class="n">m_timer</span><span class="p">;</span>
- <span class="mi">103</span><span class="o">:</span>         <span class="n">QskGestureRecognizer</span><span class="o">*</span> <span class="n">m_recognizer</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
- <span class="mi">104</span><span class="o">:</span>     <span class="p">};</span>
- <span class="mi">105</span><span class="o">:</span> 
- <span class="mi">106</span><span class="o">:</span>     <span class="k">class</span> <span class="nc">TimerTable</span>
- <span class="mi">107</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">108</span><span class="o">:</span>       <span class="k">public</span><span class="o">:</span>
- <span class="mi">109</span><span class="o">:</span>         <span class="o">~</span><span class="n">TimerTable</span><span class="p">()</span>
- <span class="mi">110</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">111</span><span class="o">:</span>             <span class="n">qDeleteAll</span><span class="p">(</span> <span class="n">m_table</span> <span class="p">);</span>
- <span class="mi">112</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">113</span><span class="o">:</span> 
- <span class="mi">114</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">startTimer</span><span class="p">(</span> <span class="kt">int</span> <span class="n">ms</span><span class="p">,</span> <span class="n">QskGestureRecognizer</span><span class="o">*</span> <span class="n">recognizer</span> <span class="p">)</span>
- <span class="mi">115</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">116</span><span class="o">:</span>             <span class="n">Timer</span><span class="o">*</span> <span class="n">timer</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
- <span class="mi">117</span><span class="o">:</span> 
- <span class="mi">118</span><span class="o">:</span>             <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">t</span> <span class="o">:</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="n">m_table</span> <span class="p">)</span> <span class="p">)</span>
- <span class="mi">119</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">120</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">t</span><span class="o">-&gt;</span><span class="n">recognizer</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span>
- <span class="mi">121</span><span class="o">:</span>                     <span class="n">t</span><span class="o">-&gt;</span><span class="n">recognizer</span><span class="p">()</span> <span class="o">==</span> <span class="n">recognizer</span> <span class="p">)</span>
- <span class="mi">122</span><span class="o">:</span>                 <span class="p">{</span>
- <span class="mi">123</span><span class="o">:</span>                     <span class="n">timer</span> <span class="o">=</span> <span class="n">t</span><span class="p">;</span>
- <span class="mi">124</span><span class="o">:</span>                     <span class="k">break</span><span class="p">;</span>
- <span class="mi">125</span><span class="o">:</span>                 <span class="p">}</span>
- <span class="mi">126</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">127</span><span class="o">:</span> 
- <span class="mi">128</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">timer</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
- <span class="mi">129</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">130</span><span class="o">:</span>                 <span class="n">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Timer</span><span class="p">();</span>
- <span class="mi">131</span><span class="o">:</span>                 <span class="n">m_table</span> <span class="o">+=</span> <span class="n">timer</span><span class="p">;</span>
- <span class="mi">132</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">133</span><span class="o">:</span> 
- <span class="mi">134</span><span class="o">:</span>             <span class="n">timer</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">(</span> <span class="n">ms</span><span class="p">,</span> <span class="n">recognizer</span> <span class="p">);</span>
- <span class="mi">135</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">136</span><span class="o">:</span> 
- <span class="mi">137</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">stopTimer</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGestureRecognizer</span><span class="o">*</span> <span class="n">recognizer</span> <span class="p">)</span>
- <span class="mi">138</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">139</span><span class="o">:</span>             <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">timer</span> <span class="o">:</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="n">m_table</span> <span class="p">)</span> <span class="p">)</span>
- <span class="mi">140</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">141</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">timer</span><span class="o">-&gt;</span><span class="n">recognizer</span><span class="p">()</span> <span class="o">==</span> <span class="n">recognizer</span> <span class="p">)</span>
- <span class="mi">142</span><span class="o">:</span>                 <span class="p">{</span>
- <span class="mi">143</span><span class="o">:</span>                     <span class="c1">// we keep the timer to be used later again</span>
- <span class="mi">144</span><span class="o">:</span>                     <span class="n">timer</span><span class="o">-&gt;</span><span class="n">stop</span><span class="p">();</span>
- <span class="mi">145</span><span class="o">:</span>                     <span class="k">return</span><span class="p">;</span>
- <span class="mi">146</span><span class="o">:</span>                 <span class="p">}</span>
- <span class="mi">147</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">148</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">149</span><span class="o">:</span> 
- <span class="mi">150</span><span class="o">:</span>       <span class="k">private</span><span class="o">:</span>
- <span class="mi">151</span><span class="o">:</span>         <span class="cm">/*
- 152:             Usually we have not more than one entry.
- 153:             Only when having more than one screen we
- 154:             might have mouse events to be processed
- 155:             simultaneously.
- 156:          */</span>
- <span class="mi">157</span><span class="o">:</span>         <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">Timer</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">m_table</span><span class="p">;</span>
- <span class="mi">158</span><span class="o">:</span>     <span class="p">};</span>
- <span class="mi">159</span><span class="o">:</span> 
- <span class="mi">160</span><span class="o">:</span>     <span class="k">class</span> <span class="nc">PendingEvents</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span>
- <span class="mi">161</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">162</span><span class="o">:</span>       <span class="k">public</span><span class="o">:</span>
- <span class="mi">163</span><span class="o">:</span>         <span class="o">~</span><span class="n">PendingEvents</span><span class="p">()</span>
- <span class="mi">164</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">165</span><span class="o">:</span>             <span class="n">qDeleteAll</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span> <span class="p">);</span>
- <span class="mi">166</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">167</span><span class="o">:</span> 
- <span class="mi">168</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
- <span class="mi">169</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">170</span><span class="o">:</span>             <span class="n">qDeleteAll</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span> <span class="p">);</span>
- <span class="mi">171</span><span class="o">:</span>             <span class="n">clear</span><span class="p">();</span>
- <span class="mi">172</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">173</span><span class="o">:</span>     <span class="p">};</span>
- <span class="mi">174</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">175</span><span class="o">:</span> 
- <span class="mi">176</span><span class="o">:</span> <span class="n">Q_GLOBAL_STATIC</span><span class="p">(</span> <span class="n">TimerTable</span><span class="p">,</span> <span class="n">qskTimerTable</span> <span class="p">)</span>
- <span class="mi">177</span><span class="o">:</span> 
- <span class="mi">178</span><span class="o">:</span> <span class="k">class</span> <span class="nc">QskGestureRecognizer</span><span class="o">::</span><span class="n">PrivateData</span>
- <span class="mi">179</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">180</span><span class="o">:</span>   <span class="k">public</span><span class="o">:</span>
- <span class="mi">181</span><span class="o">:</span>     <span class="n">PrivateData</span><span class="p">()</span>
- <span class="mi">182</span><span class="o">:</span>         <span class="o">:</span> <span class="n">watchedItem</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">)</span>
- <span class="mi">183</span><span class="o">:</span>         <span class="p">,</span> <span class="n">timestamp</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
- <span class="mi">184</span><span class="o">:</span>         <span class="p">,</span> <span class="n">timestampProcessed</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
- <span class="mi">185</span><span class="o">:</span>         <span class="p">,</span> <span class="n">timeout</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
- <span class="mi">186</span><span class="o">:</span>         <span class="p">,</span> <span class="n">buttons</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoButton</span> <span class="p">)</span>
- <span class="mi">187</span><span class="o">:</span>         <span class="p">,</span> <span class="n">state</span><span class="p">(</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">Idle</span> <span class="p">)</span>
- <span class="mi">188</span><span class="o">:</span>         <span class="p">,</span> <span class="n">isReplayingEvents</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
- <span class="mi">189</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">190</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">191</span><span class="o">:</span> 
- <span class="mi">192</span><span class="o">:</span>     <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">watchedItem</span><span class="p">;</span>
- <span class="mi">193</span><span class="o">:</span> 
- <span class="mi">194</span><span class="o">:</span>     <span class="n">PendingEvents</span> <span class="n">pendingEvents</span><span class="p">;</span>
- <span class="mi">195</span><span class="o">:</span>     <span class="n">ulong</span> <span class="n">timestamp</span><span class="p">;</span>
- <span class="mi">196</span><span class="o">:</span>     <span class="n">ulong</span> <span class="n">timestampProcessed</span><span class="p">;</span>
- <span class="mi">197</span><span class="o">:</span> 
- <span class="mi">198</span><span class="o">:</span>     <span class="kt">int</span> <span class="n">timeout</span><span class="p">;</span> <span class="c1">// ms</span>
- <span class="mi">199</span><span class="o">:</span> 
- <span class="mi">200</span><span class="o">:</span>     <span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="n">buttons</span><span class="p">;</span>
- <span class="mi">201</span><span class="o">:</span> 
- <span class="mi">202</span><span class="o">:</span>     <span class="kt">int</span> <span class="n">state</span> <span class="o">:</span> <span class="mi">4</span><span class="p">;</span>
- <span class="mi">203</span><span class="o">:</span>     <span class="kt">bool</span> <span class="n">isReplayingEvents</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// not exception safe !!!</span>
- <span class="mi">204</span><span class="o">:</span> <span class="p">};</span>
- <span class="mi">205</span><span class="o">:</span> 
- <span class="mi">206</span><span class="o">:</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">QskGestureRecognizer</span><span class="p">()</span>
- <span class="mi">207</span><span class="o">:</span>     <span class="o">:</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
- <span class="mi">208</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">209</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">210</span><span class="o">:</span> 
- <span class="mi">211</span><span class="o">:</span> <span class="n">QskGestureRecognizer</span><span class="o">::~</span><span class="n">QskGestureRecognizer</span><span class="p">()</span>
- <span class="mi">212</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">213</span><span class="o">:</span>     <span class="n">qskTimerTable</span><span class="o">-&gt;</span><span class="n">stopTimer</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
- <span class="mi">214</span><span class="o">:</span> <span class="err">}</span>
- <span class="mi">215</span><span class="o">:</span> 
- <span class="mi">216</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">setWatchedItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
- <span class="mi">217</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">218</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span> <span class="p">)</span>
- <span class="mi">219</span><span class="o">:</span>         <span class="n">reset</span><span class="p">();</span>
- <span class="mi">220</span><span class="o">:</span> 
- <span class="mi">221</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
- <span class="mi">222</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">223</span><span class="o">:</span> 
- <span class="mi">224</span><span class="o">:</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">watchedItem</span><span class="p">()</span> <span class="k">const</span>
- <span class="mi">225</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">226</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span><span class="p">;</span>
- <span class="mi">227</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">228</span><span class="o">:</span> 
- <span class="mi">229</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">setAcceptedMouseButtons</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="n">buttons</span> <span class="p">)</span>
- <span class="mi">230</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">231</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttons</span> <span class="o">=</span> <span class="n">buttons</span><span class="p">;</span>
- <span class="mi">232</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">233</span><span class="o">:</span> 
- <span class="mi">234</span><span class="o">:</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">acceptedMouseButtons</span><span class="p">()</span> <span class="k">const</span>
- <span class="mi">235</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">236</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttons</span><span class="p">;</span>
- <span class="mi">237</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">238</span><span class="o">:</span> 
- <span class="mi">239</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">setTimeout</span><span class="p">(</span> <span class="kt">int</span> <span class="n">ms</span> <span class="p">)</span>
- <span class="mi">240</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">241</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">ms</span><span class="p">;</span>
- <span class="mi">242</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">243</span><span class="o">:</span> 
- <span class="mi">244</span><span class="o">:</span> <span class="kt">int</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">timeout</span><span class="p">()</span> <span class="k">const</span>
- <span class="mi">245</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">246</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timeout</span><span class="p">;</span>
- <span class="mi">247</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">248</span><span class="o">:</span> 
- <span class="mi">249</span><span class="o">:</span> <span class="n">ulong</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">timestamp</span><span class="p">()</span> <span class="k">const</span>
- <span class="mi">250</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">251</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">;</span>
- <span class="mi">252</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">253</span><span class="o">:</span> 
- <span class="mi">254</span><span class="o">:</span> <span class="kt">bool</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">hasProcessedBefore</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">const</span>
- <span class="mi">255</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">256</span><span class="o">:</span>     <span class="k">return</span> <span class="n">event</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestampProcessed</span> <span class="p">);</span>
- <span class="mi">257</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">258</span><span class="o">:</span> 
- <span class="mi">259</span><span class="o">:</span> <span class="kt">bool</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">isReplaying</span><span class="p">()</span> <span class="k">const</span>
- <span class="mi">260</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">261</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isReplayingEvents</span><span class="p">;</span>
- <span class="mi">262</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">263</span><span class="o">:</span> 
- <span class="mi">264</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">setState</span><span class="p">(</span> <span class="n">State</span> <span class="n">state</span> <span class="p">)</span>
- <span class="mi">265</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">266</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">state</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="p">)</span>
- <span class="mi">267</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">268</span><span class="o">:</span>         <span class="k">const</span> <span class="n">State</span> <span class="n">oldState</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">State</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="p">);</span>
- <span class="mi">269</span><span class="o">:</span>         <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span><span class="p">;</span>
- <span class="mi">270</span><span class="o">:</span> 
- <span class="mi">271</span><span class="o">:</span>         <span class="n">stateChanged</span><span class="p">(</span> <span class="n">oldState</span><span class="p">,</span> <span class="n">state</span> <span class="p">);</span>
- <span class="mi">272</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">273</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">274</span><span class="o">:</span> 
- <span class="mi">275</span><span class="o">:</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">State</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">state</span><span class="p">()</span> <span class="k">const</span>
- <span class="mi">276</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">277</span><span class="o">:</span>     <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">State</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="p">);</span>
- <span class="mi">278</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">279</span><span class="o">:</span> 
- <span class="mi">280</span><span class="o">:</span> <span class="kt">bool</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">processEvent</span><span class="p">(</span>
- <span class="mi">281</span><span class="o">:</span>     <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">blockReplayedEvents</span> <span class="p">)</span>
- <span class="mi">282</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">283</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isReplayingEvents</span> <span class="o">&amp;&amp;</span> <span class="n">blockReplayedEvents</span> <span class="p">)</span>
- <span class="mi">284</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">285</span><span class="o">:</span>         <span class="cm">/*
- 286:             This one is a replayed event after we had decided
- 287:             that this interaction is to be ignored
- 288:          */</span>
- <span class="mi">289</span><span class="o">:</span>         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
- <span class="mi">290</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">291</span><span class="o">:</span> 
- <span class="mi">292</span><span class="o">:</span>     <span class="k">auto</span><span class="o">&amp;</span> <span class="n">watchedItem</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span><span class="p">;</span>
- <span class="mi">293</span><span class="o">:</span> 
- <span class="mi">294</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">watchedItem</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="o">!</span><span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">isEnabled</span><span class="p">()</span> <span class="o">||</span>
- <span class="mi">295</span><span class="o">:</span>         <span class="o">!</span><span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">isVisible</span><span class="p">()</span> <span class="o">||</span> <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
- <span class="mi">296</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">297</span><span class="o">:</span>         <span class="n">reset</span><span class="p">();</span>
- <span class="mi">298</span><span class="o">:</span>         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
- <span class="mi">299</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">300</span><span class="o">:</span> 
- <span class="mi">301</span><span class="o">:</span>     <span class="n">QScopedPointer</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span> <span class="o">&gt;</span> <span class="n">clonedPress</span><span class="p">;</span>
- <span class="mi">302</span><span class="o">:</span> 
- <span class="mi">303</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span> <span class="p">)</span>
- <span class="mi">304</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">305</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">!=</span> <span class="n">Idle</span> <span class="p">)</span>
- <span class="mi">306</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">307</span><span class="o">:</span>             <span class="c1">// should not happen, when using the recognizer correctly</span>
- <span class="mi">308</span><span class="o">:</span>             <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskGestureRecognizer: pressed, while not being idle"</span><span class="p">;</span>
- <span class="mi">309</span><span class="o">:</span>             <span class="n">abort</span><span class="p">();</span>
- <span class="mi">310</span><span class="o">:</span>             <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
- <span class="mi">311</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">312</span><span class="o">:</span> 
- <span class="mi">313</span><span class="o">:</span>         <span class="k">auto</span> <span class="n">mouseGrabber</span> <span class="o">=</span> <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">mouseGrabberItem</span><span class="p">();</span>
- <span class="mi">314</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">mouseGrabber</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">mouseGrabber</span> <span class="o">!=</span> <span class="n">watchedItem</span> <span class="p">)</span> <span class="p">)</span>
- <span class="mi">315</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">316</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">mouseGrabber</span><span class="o">-&gt;</span><span class="n">keepMouseGrab</span><span class="p">()</span> <span class="o">||</span> <span class="n">mouseGrabber</span><span class="o">-&gt;</span><span class="n">keepTouchGrab</span><span class="p">()</span> <span class="p">)</span>
- <span class="mi">317</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">318</span><span class="o">:</span>                 <span class="cm">/*
- 319:                     Another child has grabbed mouse/touch and is not willing to
- 320:                     be intercepted: we respect this.
- 321:                  */</span>
- <span class="mi">322</span><span class="o">:</span> 
- <span class="mi">323</span><span class="o">:</span>                 <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
- <span class="mi">324</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">325</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">326</span><span class="o">:</span> 
- <span class="mi">327</span><span class="o">:</span>         <span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="n">buttons</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttons</span><span class="p">;</span>
- <span class="mi">328</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">buttons</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoButton</span> <span class="p">)</span>
- <span class="mi">329</span><span class="o">:</span>             <span class="n">buttons</span> <span class="o">=</span> <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">acceptedMouseButtons</span><span class="p">();</span>
+  <span class="mi">16</span><span class="o">:</span> 
+  <span class="mi">17</span><span class="o">:</span> <span class="k">static</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="nf">qskClonedMouseEventAt</span><span class="p">(</span>
+  <span class="mi">18</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span><span class="p">,</span> <span class="n">QPointF</span><span class="o">*</span> <span class="n">localPos</span> <span class="p">)</span>
+  <span class="mi">19</span><span class="o">:</span> <span class="p">{</span>
+  <span class="mi">20</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+  <span class="mi">21</span><span class="o">:</span> 
+  <span class="mi">22</span><span class="o">:</span>     <span class="k">auto</span> <span class="n">clonedEvent</span> <span class="o">=</span> <span class="n">QQuickWindowPrivate</span><span class="o">::</span><span class="n">cloneMouseEvent</span><span class="p">(</span>
+  <span class="mi">23</span><span class="o">:</span>         <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">),</span> <span class="n">localPos</span> <span class="p">);</span>
+  <span class="mi">24</span><span class="o">:</span> 
+  <span class="mi">25</span><span class="o">:</span> <span class="err">#</span><span class="k">else</span>
+  <span class="mi">26</span><span class="o">:</span>     <span class="k">auto</span> <span class="n">clonedEvent</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">clone</span><span class="p">();</span>
+  <span class="mi">27</span><span class="o">:</span> 
+  <span class="mi">28</span><span class="o">:</span>     <span class="k">auto</span><span class="o">&amp;</span> <span class="n">point</span> <span class="o">=</span> <span class="n">QMutableEventPoint</span><span class="o">::</span><span class="n">from</span><span class="p">(</span> <span class="n">clonedEvent</span><span class="o">-&gt;</span><span class="n">point</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">);</span>
+  <span class="mi">29</span><span class="o">:</span>     <span class="n">point</span><span class="p">.</span><span class="n">detach</span><span class="p">();</span>
+  <span class="mi">30</span><span class="o">:</span>     <span class="n">point</span><span class="p">.</span><span class="n">setTimestamp</span><span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">()</span> <span class="p">);</span>
+  <span class="mi">31</span><span class="o">:</span> 
+  <span class="mi">32</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">localPos</span> <span class="p">)</span>
+  <span class="mi">33</span><span class="o">:</span>         <span class="n">point</span><span class="p">.</span><span class="n">setPosition</span><span class="p">(</span> <span class="o">*</span><span class="n">localPos</span> <span class="p">);</span>
+  <span class="mi">34</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+  <span class="mi">35</span><span class="o">:</span> 
+  <span class="mi">36</span><span class="o">:</span>     <span class="k">return</span> <span class="n">clonedEvent</span><span class="p">;</span>
+  <span class="mi">37</span><span class="o">:</span> <span class="err">}</span>
+  <span class="mi">38</span><span class="o">:</span> 
+  <span class="mi">39</span><span class="o">:</span> <span class="k">static</span> <span class="kr">inline</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">qskClonedMouseEvent</span><span class="p">(</span>
+  <span class="mi">40</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">mouseEvent</span><span class="p">,</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+  <span class="mi">41</span><span class="o">:</span> <span class="p">{</span>
+  <span class="mi">42</span><span class="o">:</span>     <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">clonedEvent</span><span class="p">;</span>
+  <span class="mi">43</span><span class="o">:</span>     <span class="k">auto</span> <span class="n">event</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
+  <span class="mi">44</span><span class="o">:</span> 
+  <span class="mi">45</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+  <span class="mi">46</span><span class="o">:</span>     <span class="p">{</span>
+  <span class="mi">47</span><span class="o">:</span>         <span class="k">auto</span> <span class="n">localPos</span> <span class="o">=</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">mapFromScene</span><span class="p">(</span> <span class="n">qskMouseScenePosition</span><span class="p">(</span> <span class="n">event</span> <span class="p">)</span> <span class="p">);</span>
+  <span class="mi">48</span><span class="o">:</span>         <span class="n">clonedEvent</span> <span class="o">=</span> <span class="n">qskClonedMouseEventAt</span><span class="p">(</span> <span class="n">event</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">localPos</span> <span class="p">);</span>
+  <span class="mi">49</span><span class="o">:</span>     <span class="p">}</span>
+  <span class="mi">50</span><span class="o">:</span>     <span class="k">else</span>
+  <span class="mi">51</span><span class="o">:</span>     <span class="p">{</span>
+  <span class="mi">52</span><span class="o">:</span>         <span class="n">clonedEvent</span> <span class="o">=</span> <span class="n">qskClonedMouseEventAt</span><span class="p">(</span> <span class="n">event</span><span class="p">,</span> <span class="nb">nullptr</span> <span class="p">);</span>
+  <span class="mi">53</span><span class="o">:</span>     <span class="p">}</span>
+  <span class="mi">54</span><span class="o">:</span> 
+  <span class="mi">55</span><span class="o">:</span>     <span class="n">clonedEvent</span><span class="o">-&gt;</span><span class="n">setAccepted</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+  <span class="mi">56</span><span class="o">:</span>     <span class="k">return</span> <span class="n">clonedEvent</span><span class="p">;</span>
+  <span class="mi">57</span><span class="o">:</span> <span class="p">}</span>
+  <span class="mi">58</span><span class="o">:</span> 
+  <span class="mi">59</span><span class="o">:</span> <span class="k">namespace</span>
+  <span class="mi">60</span><span class="o">:</span> <span class="p">{</span>
+  <span class="mi">61</span><span class="o">:</span>     <span class="cm">/*
+  62:         As we don't want QskGestureRecognizer being a QObject
+  63:         we need some extra timers - usually one per screen.
+  64:      */</span>
+  <span class="mi">65</span><span class="o">:</span> 
+  <span class="mi">66</span><span class="o">:</span>     <span class="k">class</span> <span class="nc">Timer</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+  <span class="mi">67</span><span class="o">:</span>     <span class="p">{</span>
+  <span class="mi">68</span><span class="o">:</span>       <span class="k">public</span><span class="o">:</span>
+  <span class="mi">69</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">start</span><span class="p">(</span> <span class="kt">int</span> <span class="n">ms</span><span class="p">,</span> <span class="n">QskGestureRecognizer</span><span class="o">*</span> <span class="n">recognizer</span> <span class="p">)</span>
+  <span class="mi">70</span><span class="o">:</span>         <span class="p">{</span>
+  <span class="mi">71</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">m_timer</span><span class="p">.</span><span class="n">isActive</span><span class="p">()</span> <span class="p">)</span>
+  <span class="mi">72</span><span class="o">:</span>                 <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskGestureRecognizer: resetting an active timer"</span><span class="p">;</span>
+  <span class="mi">73</span><span class="o">:</span> 
+  <span class="mi">74</span><span class="o">:</span>             <span class="n">m_recognizer</span> <span class="o">=</span> <span class="n">recognizer</span><span class="p">;</span>
+  <span class="mi">75</span><span class="o">:</span>             <span class="n">m_timer</span><span class="p">.</span><span class="n">start</span><span class="p">(</span> <span class="n">ms</span><span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
+  <span class="mi">76</span><span class="o">:</span>         <span class="p">}</span>
+  <span class="mi">77</span><span class="o">:</span> 
+  <span class="mi">78</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">stop</span><span class="p">()</span>
+  <span class="mi">79</span><span class="o">:</span>         <span class="p">{</span>
+  <span class="mi">80</span><span class="o">:</span>             <span class="n">m_timer</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
+  <span class="mi">81</span><span class="o">:</span>             <span class="n">m_recognizer</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+  <span class="mi">82</span><span class="o">:</span>         <span class="p">}</span>
+  <span class="mi">83</span><span class="o">:</span> 
+  <span class="mi">84</span><span class="o">:</span>         <span class="k">const</span> <span class="n">QskGestureRecognizer</span><span class="o">*</span> <span class="n">recognizer</span><span class="p">()</span> <span class="k">const</span>
+  <span class="mi">85</span><span class="o">:</span>         <span class="p">{</span>
+  <span class="mi">86</span><span class="o">:</span>             <span class="k">return</span> <span class="n">m_recognizer</span><span class="p">;</span>
+  <span class="mi">87</span><span class="o">:</span>         <span class="p">}</span>
+  <span class="mi">88</span><span class="o">:</span> 
+  <span class="mi">89</span><span class="o">:</span>       <span class="k">protected</span><span class="o">:</span>
+  <span class="mi">90</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">timerEvent</span><span class="p">(</span> <span class="n">QTimerEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span>
+  <span class="mi">91</span><span class="o">:</span>         <span class="p">{</span>
+  <span class="mi">92</span><span class="o">:</span>             <span class="n">m_timer</span><span class="p">.</span><span class="n">stop</span><span class="p">();</span>
+  <span class="mi">93</span><span class="o">:</span> 
+  <span class="mi">94</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">m_recognizer</span> <span class="p">)</span>
+  <span class="mi">95</span><span class="o">:</span>             <span class="p">{</span>
+  <span class="mi">96</span><span class="o">:</span>                 <span class="k">auto</span> <span class="n">recognizer</span> <span class="o">=</span> <span class="n">m_recognizer</span><span class="p">;</span>
+  <span class="mi">97</span><span class="o">:</span>                 <span class="n">m_recognizer</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+  <span class="mi">98</span><span class="o">:</span> 
+  <span class="mi">99</span><span class="o">:</span>                 <span class="n">recognizer</span><span class="o">-&gt;</span><span class="n">reject</span><span class="p">();</span>
+ <span class="mi">100</span><span class="o">:</span>             <span class="p">}</span>
+ <span class="mi">101</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">102</span><span class="o">:</span> 
+ <span class="mi">103</span><span class="o">:</span>         <span class="n">QBasicTimer</span> <span class="n">m_timer</span><span class="p">;</span>
+ <span class="mi">104</span><span class="o">:</span>         <span class="n">QskGestureRecognizer</span><span class="o">*</span> <span class="n">m_recognizer</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+ <span class="mi">105</span><span class="o">:</span>     <span class="p">};</span>
+ <span class="mi">106</span><span class="o">:</span> 
+ <span class="mi">107</span><span class="o">:</span>     <span class="k">class</span> <span class="nc">TimerTable</span>
+ <span class="mi">108</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">109</span><span class="o">:</span>       <span class="k">public</span><span class="o">:</span>
+ <span class="mi">110</span><span class="o">:</span>         <span class="o">~</span><span class="n">TimerTable</span><span class="p">()</span>
+ <span class="mi">111</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">112</span><span class="o">:</span>             <span class="n">qDeleteAll</span><span class="p">(</span> <span class="n">m_table</span> <span class="p">);</span>
+ <span class="mi">113</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">114</span><span class="o">:</span> 
+ <span class="mi">115</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">startTimer</span><span class="p">(</span> <span class="kt">int</span> <span class="n">ms</span><span class="p">,</span> <span class="n">QskGestureRecognizer</span><span class="o">*</span> <span class="n">recognizer</span> <span class="p">)</span>
+ <span class="mi">116</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">117</span><span class="o">:</span>             <span class="n">Timer</span><span class="o">*</span> <span class="n">timer</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+ <span class="mi">118</span><span class="o">:</span> 
+ <span class="mi">119</span><span class="o">:</span>             <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">t</span> <span class="o">:</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="n">m_table</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">120</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">121</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">t</span><span class="o">-&gt;</span><span class="n">recognizer</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span>
+ <span class="mi">122</span><span class="o">:</span>                     <span class="n">t</span><span class="o">-&gt;</span><span class="n">recognizer</span><span class="p">()</span> <span class="o">==</span> <span class="n">recognizer</span> <span class="p">)</span>
+ <span class="mi">123</span><span class="o">:</span>                 <span class="p">{</span>
+ <span class="mi">124</span><span class="o">:</span>                     <span class="n">timer</span> <span class="o">=</span> <span class="n">t</span><span class="p">;</span>
+ <span class="mi">125</span><span class="o">:</span>                     <span class="k">break</span><span class="p">;</span>
+ <span class="mi">126</span><span class="o">:</span>                 <span class="p">}</span>
+ <span class="mi">127</span><span class="o">:</span>             <span class="p">}</span>
+ <span class="mi">128</span><span class="o">:</span> 
+ <span class="mi">129</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">timer</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+ <span class="mi">130</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">131</span><span class="o">:</span>                 <span class="n">timer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Timer</span><span class="p">();</span>
+ <span class="mi">132</span><span class="o">:</span>                 <span class="n">m_table</span> <span class="o">+=</span> <span class="n">timer</span><span class="p">;</span>
+ <span class="mi">133</span><span class="o">:</span>             <span class="p">}</span>
+ <span class="mi">134</span><span class="o">:</span> 
+ <span class="mi">135</span><span class="o">:</span>             <span class="n">timer</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">(</span> <span class="n">ms</span><span class="p">,</span> <span class="n">recognizer</span> <span class="p">);</span>
+ <span class="mi">136</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">137</span><span class="o">:</span> 
+ <span class="mi">138</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">stopTimer</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGestureRecognizer</span><span class="o">*</span> <span class="n">recognizer</span> <span class="p">)</span>
+ <span class="mi">139</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">140</span><span class="o">:</span>             <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">timer</span> <span class="o">:</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="n">m_table</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">141</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">142</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">timer</span><span class="o">-&gt;</span><span class="n">recognizer</span><span class="p">()</span> <span class="o">==</span> <span class="n">recognizer</span> <span class="p">)</span>
+ <span class="mi">143</span><span class="o">:</span>                 <span class="p">{</span>
+ <span class="mi">144</span><span class="o">:</span>                     <span class="c1">// we keep the timer to be used later again</span>
+ <span class="mi">145</span><span class="o">:</span>                     <span class="n">timer</span><span class="o">-&gt;</span><span class="n">stop</span><span class="p">();</span>
+ <span class="mi">146</span><span class="o">:</span>                     <span class="k">return</span><span class="p">;</span>
+ <span class="mi">147</span><span class="o">:</span>                 <span class="p">}</span>
+ <span class="mi">148</span><span class="o">:</span>             <span class="p">}</span>
+ <span class="mi">149</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">150</span><span class="o">:</span> 
+ <span class="mi">151</span><span class="o">:</span>       <span class="k">private</span><span class="o">:</span>
+ <span class="mi">152</span><span class="o">:</span>         <span class="cm">/*
+ 153:             Usually we have not more than one entry.
+ 154:             Only when having more than one screen we
+ 155:             might have mouse events to be processed
+ 156:             simultaneously.
+ 157:          */</span>
+ <span class="mi">158</span><span class="o">:</span>         <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">Timer</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">m_table</span><span class="p">;</span>
+ <span class="mi">159</span><span class="o">:</span>     <span class="p">};</span>
+ <span class="mi">160</span><span class="o">:</span> 
+ <span class="mi">161</span><span class="o">:</span>     <span class="k">class</span> <span class="nc">PendingEvents</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span>
+ <span class="mi">162</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">163</span><span class="o">:</span>       <span class="k">public</span><span class="o">:</span>
+ <span class="mi">164</span><span class="o">:</span>         <span class="o">~</span><span class="n">PendingEvents</span><span class="p">()</span>
+ <span class="mi">165</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">166</span><span class="o">:</span>             <span class="n">qDeleteAll</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span> <span class="p">);</span>
+ <span class="mi">167</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">168</span><span class="o">:</span> 
+ <span class="mi">169</span><span class="o">:</span>         <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
+ <span class="mi">170</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">171</span><span class="o">:</span>             <span class="n">qDeleteAll</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span> <span class="p">);</span>
+ <span class="mi">172</span><span class="o">:</span>             <span class="n">clear</span><span class="p">();</span>
+ <span class="mi">173</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">174</span><span class="o">:</span>     <span class="p">};</span>
+ <span class="mi">175</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">176</span><span class="o">:</span> 
+ <span class="mi">177</span><span class="o">:</span> <span class="n">Q_GLOBAL_STATIC</span><span class="p">(</span> <span class="n">TimerTable</span><span class="p">,</span> <span class="n">qskTimerTable</span> <span class="p">)</span>
+ <span class="mi">178</span><span class="o">:</span> 
+ <span class="mi">179</span><span class="o">:</span> <span class="k">class</span> <span class="nc">QskGestureRecognizer</span><span class="o">::</span><span class="n">PrivateData</span>
+ <span class="mi">180</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">181</span><span class="o">:</span>   <span class="k">public</span><span class="o">:</span>
+ <span class="mi">182</span><span class="o">:</span>     <span class="n">PrivateData</span><span class="p">()</span>
+ <span class="mi">183</span><span class="o">:</span>         <span class="o">:</span> <span class="n">watchedItem</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">)</span>
+ <span class="mi">184</span><span class="o">:</span>         <span class="p">,</span> <span class="n">timestamp</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">185</span><span class="o">:</span>         <span class="p">,</span> <span class="n">timestampProcessed</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">186</span><span class="o">:</span>         <span class="p">,</span> <span class="n">timeout</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+ <span class="mi">187</span><span class="o">:</span>         <span class="p">,</span> <span class="n">buttons</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoButton</span> <span class="p">)</span>
+ <span class="mi">188</span><span class="o">:</span>         <span class="p">,</span> <span class="n">state</span><span class="p">(</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">Idle</span> <span class="p">)</span>
+ <span class="mi">189</span><span class="o">:</span>         <span class="p">,</span> <span class="n">isReplayingEvents</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+ <span class="mi">190</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">191</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">192</span><span class="o">:</span> 
+ <span class="mi">193</span><span class="o">:</span>     <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">watchedItem</span><span class="p">;</span>
+ <span class="mi">194</span><span class="o">:</span> 
+ <span class="mi">195</span><span class="o">:</span>     <span class="n">PendingEvents</span> <span class="n">pendingEvents</span><span class="p">;</span>
+ <span class="mi">196</span><span class="o">:</span>     <span class="n">ulong</span> <span class="n">timestamp</span><span class="p">;</span>
+ <span class="mi">197</span><span class="o">:</span>     <span class="n">ulong</span> <span class="n">timestampProcessed</span><span class="p">;</span>
+ <span class="mi">198</span><span class="o">:</span> 
+ <span class="mi">199</span><span class="o">:</span>     <span class="kt">int</span> <span class="n">timeout</span><span class="p">;</span> <span class="c1">// ms</span>
+ <span class="mi">200</span><span class="o">:</span> 
+ <span class="mi">201</span><span class="o">:</span>     <span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="n">buttons</span><span class="p">;</span>
+ <span class="mi">202</span><span class="o">:</span> 
+ <span class="mi">203</span><span class="o">:</span>     <span class="kt">int</span> <span class="n">state</span> <span class="o">:</span> <span class="mi">4</span><span class="p">;</span>
+ <span class="mi">204</span><span class="o">:</span>     <span class="kt">bool</span> <span class="n">isReplayingEvents</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// not exception safe !!!</span>
+ <span class="mi">205</span><span class="o">:</span> <span class="p">};</span>
+ <span class="mi">206</span><span class="o">:</span> 
+ <span class="mi">207</span><span class="o">:</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">QskGestureRecognizer</span><span class="p">()</span>
+ <span class="mi">208</span><span class="o">:</span>     <span class="o">:</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+ <span class="mi">209</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">210</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">211</span><span class="o">:</span> 
+ <span class="mi">212</span><span class="o">:</span> <span class="n">QskGestureRecognizer</span><span class="o">::~</span><span class="n">QskGestureRecognizer</span><span class="p">()</span>
+ <span class="mi">213</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">214</span><span class="o">:</span>     <span class="n">qskTimerTable</span><span class="o">-&gt;</span><span class="n">stopTimer</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+ <span class="mi">215</span><span class="o">:</span> <span class="err">}</span>
+ <span class="mi">216</span><span class="o">:</span> 
+ <span class="mi">217</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">setWatchedItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+ <span class="mi">218</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">219</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span> <span class="p">)</span>
+ <span class="mi">220</span><span class="o">:</span>         <span class="n">reset</span><span class="p">();</span>
+ <span class="mi">221</span><span class="o">:</span> 
+ <span class="mi">222</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+ <span class="mi">223</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">224</span><span class="o">:</span> 
+ <span class="mi">225</span><span class="o">:</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">watchedItem</span><span class="p">()</span> <span class="k">const</span>
+ <span class="mi">226</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">227</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span><span class="p">;</span>
+ <span class="mi">228</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">229</span><span class="o">:</span> 
+ <span class="mi">230</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">setAcceptedMouseButtons</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="n">buttons</span> <span class="p">)</span>
+ <span class="mi">231</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">232</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttons</span> <span class="o">=</span> <span class="n">buttons</span><span class="p">;</span>
+ <span class="mi">233</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">234</span><span class="o">:</span> 
+ <span class="mi">235</span><span class="o">:</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">acceptedMouseButtons</span><span class="p">()</span> <span class="k">const</span>
+ <span class="mi">236</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">237</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttons</span><span class="p">;</span>
+ <span class="mi">238</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">239</span><span class="o">:</span> 
+ <span class="mi">240</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">setTimeout</span><span class="p">(</span> <span class="kt">int</span> <span class="n">ms</span> <span class="p">)</span>
+ <span class="mi">241</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">242</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">ms</span><span class="p">;</span>
+ <span class="mi">243</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">244</span><span class="o">:</span> 
+ <span class="mi">245</span><span class="o">:</span> <span class="kt">int</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">timeout</span><span class="p">()</span> <span class="k">const</span>
+ <span class="mi">246</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">247</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timeout</span><span class="p">;</span>
+ <span class="mi">248</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">249</span><span class="o">:</span> 
+ <span class="mi">250</span><span class="o">:</span> <span class="n">ulong</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">timestamp</span><span class="p">()</span> <span class="k">const</span>
+ <span class="mi">251</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">252</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">;</span>
+ <span class="mi">253</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">254</span><span class="o">:</span> 
+ <span class="mi">255</span><span class="o">:</span> <span class="kt">bool</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">hasProcessedBefore</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">const</span>
+ <span class="mi">256</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">257</span><span class="o">:</span>     <span class="k">return</span> <span class="n">event</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestampProcessed</span> <span class="p">);</span>
+ <span class="mi">258</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">259</span><span class="o">:</span> 
+ <span class="mi">260</span><span class="o">:</span> <span class="kt">bool</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">isReplaying</span><span class="p">()</span> <span class="k">const</span>
+ <span class="mi">261</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">262</span><span class="o">:</span>     <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isReplayingEvents</span><span class="p">;</span>
+ <span class="mi">263</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">264</span><span class="o">:</span> 
+ <span class="mi">265</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">setState</span><span class="p">(</span> <span class="n">State</span> <span class="n">state</span> <span class="p">)</span>
+ <span class="mi">266</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">267</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">state</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="p">)</span>
+ <span class="mi">268</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">269</span><span class="o">:</span>         <span class="k">const</span> <span class="n">State</span> <span class="n">oldState</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">State</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="p">);</span>
+ <span class="mi">270</span><span class="o">:</span>         <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span><span class="p">;</span>
+ <span class="mi">271</span><span class="o">:</span> 
+ <span class="mi">272</span><span class="o">:</span>         <span class="n">stateChanged</span><span class="p">(</span> <span class="n">oldState</span><span class="p">,</span> <span class="n">state</span> <span class="p">);</span>
+ <span class="mi">273</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">274</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">275</span><span class="o">:</span> 
+ <span class="mi">276</span><span class="o">:</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">State</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">state</span><span class="p">()</span> <span class="k">const</span>
+ <span class="mi">277</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">278</span><span class="o">:</span>     <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">State</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="p">);</span>
+ <span class="mi">279</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">280</span><span class="o">:</span> 
+ <span class="mi">281</span><span class="o">:</span> <span class="kt">bool</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">processEvent</span><span class="p">(</span>
+ <span class="mi">282</span><span class="o">:</span>     <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">blockReplayedEvents</span> <span class="p">)</span>
+ <span class="mi">283</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">284</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isReplayingEvents</span> <span class="o">&amp;&amp;</span> <span class="n">blockReplayedEvents</span> <span class="p">)</span>
+ <span class="mi">285</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">286</span><span class="o">:</span>         <span class="cm">/*
+ 287:             This one is a replayed event after we had decided
+ 288:             that this interaction is to be ignored
+ 289:          */</span>
+ <span class="mi">290</span><span class="o">:</span>         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">291</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">292</span><span class="o">:</span> 
+ <span class="mi">293</span><span class="o">:</span>     <span class="k">auto</span><span class="o">&amp;</span> <span class="n">watchedItem</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span><span class="p">;</span>
+ <span class="mi">294</span><span class="o">:</span> 
+ <span class="mi">295</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">watchedItem</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="o">!</span><span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">isEnabled</span><span class="p">()</span> <span class="o">||</span>
+ <span class="mi">296</span><span class="o">:</span>         <span class="o">!</span><span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">isVisible</span><span class="p">()</span> <span class="o">||</span> <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+ <span class="mi">297</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">298</span><span class="o">:</span>         <span class="n">reset</span><span class="p">();</span>
+ <span class="mi">299</span><span class="o">:</span>         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">300</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">301</span><span class="o">:</span> 
+ <span class="mi">302</span><span class="o">:</span>     <span class="n">QScopedPointer</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span> <span class="o">&gt;</span> <span class="n">clonedPress</span><span class="p">;</span>
+ <span class="mi">303</span><span class="o">:</span> 
+ <span class="mi">304</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span> <span class="p">)</span>
+ <span class="mi">305</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">306</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">!=</span> <span class="n">Idle</span> <span class="p">)</span>
+ <span class="mi">307</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">308</span><span class="o">:</span>             <span class="c1">// should not happen, when using the recognizer correctly</span>
+ <span class="mi">309</span><span class="o">:</span>             <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskGestureRecognizer: pressed, while not being idle"</span><span class="p">;</span>
+ <span class="mi">310</span><span class="o">:</span>             <span class="n">abort</span><span class="p">();</span>
+ <span class="mi">311</span><span class="o">:</span>             <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">312</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">313</span><span class="o">:</span> 
+ <span class="mi">314</span><span class="o">:</span>         <span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="n">buttons</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttons</span><span class="p">;</span>
+ <span class="mi">315</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">buttons</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoButton</span> <span class="p">)</span>
+ <span class="mi">316</span><span class="o">:</span>             <span class="n">buttons</span> <span class="o">=</span> <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">acceptedMouseButtons</span><span class="p">();</span>
+ <span class="mi">317</span><span class="o">:</span> 
+ <span class="mi">318</span><span class="o">:</span>         <span class="k">auto</span> <span class="n">mouseEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+ <span class="mi">319</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">buttons</span> <span class="o">&amp;</span> <span class="n">mouseEvent</span><span class="o">-&gt;</span><span class="n">button</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">320</span><span class="o">:</span>             <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">321</span><span class="o">:</span> 
+ <span class="mi">322</span><span class="o">:</span>         <span class="cm">/*
+ 323:             We try to grab the mouse for watchedItem and indicate, that we want
+ 324:             to keep it. Then all mouse events should end up at watchedItem.
+ 325:          */</span>
+ <span class="mi">326</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">qskGrabMouse</span><span class="p">(</span> <span class="n">watchedItem</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">327</span><span class="o">:</span>             <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">328</span><span class="o">:</span> 
+ <span class="mi">329</span><span class="o">:</span>         <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">mouseEvent</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">();</span>
  <span class="mi">330</span><span class="o">:</span> 
- <span class="mi">331</span><span class="o">:</span>         <span class="k">auto</span> <span class="n">mouseEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
- <span class="mi">332</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">buttons</span> <span class="o">&amp;</span> <span class="n">mouseEvent</span><span class="o">-&gt;</span><span class="n">button</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
- <span class="mi">333</span><span class="o">:</span>             <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
- <span class="mi">334</span><span class="o">:</span> 
- <span class="mi">335</span><span class="o">:</span>         <span class="cm">/*
- 336:             We grab the mouse for watchedItem and indicate, that we want
- 337:             to keep it. From now on all mouse events should end up at watchedItem.
- 338:          */</span>
- <span class="mi">339</span><span class="o">:</span>         <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">grabMouse</span><span class="p">();</span>
- <span class="mi">340</span><span class="o">:</span>         <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">setKeepMouseGrab</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+ <span class="mi">331</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">!=</span> <span class="n">watchedItem</span> <span class="p">)</span>
+ <span class="mi">332</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">333</span><span class="o">:</span>             <span class="cm">/*
+ 334:                 The first press happens before having the mouse grab and might
+ 335:                 have been for a child of watchedItem. Then we create a clone
+ 336:                 of the event with positions translated into the coordinate system
+ 337:                 of watchedItem.
+ 338:              */</span>
+ <span class="mi">339</span><span class="o">:</span> 
+ <span class="mi">340</span><span class="o">:</span>             <span class="n">clonedPress</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span> <span class="n">qskClonedMouseEvent</span><span class="p">(</span> <span class="n">mouseEvent</span><span class="p">,</span> <span class="n">watchedItem</span> <span class="p">)</span> <span class="p">);</span>
  <span class="mi">341</span><span class="o">:</span> 
- <span class="mi">342</span><span class="o">:</span>         <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">mouseEvent</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">();</span>
- <span class="mi">343</span><span class="o">:</span> 
- <span class="mi">344</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">!=</span> <span class="n">watchedItem</span> <span class="p">)</span>
- <span class="mi">345</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">346</span><span class="o">:</span>             <span class="cm">/*
- 347:                 The first press happens before having the mouse grab and might
- 348:                 have been for a child of watchedItem. Then we create a clone
- 349:                 of the event with positions translated into the coordinate system
- 350:                 of watchedItem.
+ <span class="mi">342</span><span class="o">:</span>             <span class="n">item</span> <span class="o">=</span> <span class="n">watchedItem</span><span class="p">;</span>
+ <span class="mi">343</span><span class="o">:</span>             <span class="n">event</span> <span class="o">=</span> <span class="n">clonedPress</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+ <span class="mi">344</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">345</span><span class="o">:</span> 
+ <span class="mi">346</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timeout</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">347</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">348</span><span class="o">:</span>             <span class="cm">/*
+ 349:                 We need to be able to replay the press in case we later find
+ 350:                 out, that we don't want to handle the mouse event sequence,
  351:              */</span>
  <span class="mi">352</span><span class="o">:</span> 
- <span class="mi">353</span><span class="o">:</span>             <span class="n">clonedPress</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span> <span class="n">qskClonedMouseEvent</span><span class="p">(</span> <span class="n">mouseEvent</span><span class="p">,</span> <span class="n">watchedItem</span> <span class="p">)</span> <span class="p">);</span>
- <span class="mi">354</span><span class="o">:</span> 
- <span class="mi">355</span><span class="o">:</span>             <span class="n">item</span> <span class="o">=</span> <span class="n">watchedItem</span><span class="p">;</span>
- <span class="mi">356</span><span class="o">:</span>             <span class="n">event</span> <span class="o">=</span> <span class="n">clonedPress</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+ <span class="mi">353</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">354</span><span class="o">:</span>                 <span class="n">qskTimerTable</span><span class="o">-&gt;</span><span class="n">startTimer</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timeout</span><span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
+ <span class="mi">355</span><span class="o">:</span> 
+ <span class="mi">356</span><span class="o">:</span>             <span class="n">setState</span><span class="p">(</span> <span class="n">Pending</span> <span class="p">);</span>
  <span class="mi">357</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">358</span><span class="o">:</span> 
- <span class="mi">359</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timeout</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span>
- <span class="mi">360</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">361</span><span class="o">:</span>             <span class="cm">/*
- 362:                 We need to be able to replay the press in case we later find
- 363:                 out, that we don't want to handle the mouse event sequence,
- 364:              */</span>
- <span class="mi">365</span><span class="o">:</span> 
- <span class="mi">366</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
- <span class="mi">367</span><span class="o">:</span>                 <span class="n">qskTimerTable</span><span class="o">-&gt;</span><span class="n">startTimer</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timeout</span><span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
- <span class="mi">368</span><span class="o">:</span> 
- <span class="mi">369</span><span class="o">:</span>             <span class="n">setState</span><span class="p">(</span> <span class="n">Pending</span> <span class="p">);</span>
- <span class="mi">370</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">371</span><span class="o">:</span>         <span class="k">else</span>
- <span class="mi">372</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">373</span><span class="o">:</span>             <span class="n">setState</span><span class="p">(</span> <span class="n">Accepted</span> <span class="p">);</span>
- <span class="mi">374</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">375</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">358</span><span class="o">:</span>         <span class="k">else</span>
+ <span class="mi">359</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">360</span><span class="o">:</span>             <span class="n">setState</span><span class="p">(</span> <span class="n">Accepted</span> <span class="p">);</span>
+ <span class="mi">361</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">362</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">363</span><span class="o">:</span> 
+ <span class="mi">364</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="n">watchedItem</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">&gt;</span> <span class="n">Idle</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">365</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">366</span><span class="o">:</span>         <span class="k">switch</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="p">)</span>
+ <span class="mi">367</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">368</span><span class="o">:</span>             <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span><span class="p">:</span>
+ <span class="mi">369</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">370</span><span class="o">:</span>                 <span class="k">auto</span> <span class="n">mouseEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+ <span class="mi">371</span><span class="o">:</span>                 <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span> <span class="o">+=</span> <span class="n">qskClonedMouseEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
+ <span class="mi">372</span><span class="o">:</span> 
+ <span class="mi">373</span><span class="o">:</span>                 <span class="n">pressEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
+ <span class="mi">374</span><span class="o">:</span>                 <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+ <span class="mi">375</span><span class="o">:</span>             <span class="p">}</span>
  <span class="mi">376</span><span class="o">:</span> 
- <span class="mi">377</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="n">watchedItem</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">&gt;</span> <span class="n">Idle</span> <span class="p">)</span> <span class="p">)</span>
- <span class="mi">378</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">379</span><span class="o">:</span>         <span class="k">switch</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="p">)</span>
- <span class="mi">380</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">381</span><span class="o">:</span>             <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span><span class="p">:</span>
- <span class="mi">382</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">383</span><span class="o">:</span>                 <span class="k">auto</span> <span class="n">mouseEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
- <span class="mi">384</span><span class="o">:</span>                 <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span> <span class="o">+=</span> <span class="n">qskClonedMouseEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
+ <span class="mi">377</span><span class="o">:</span>             <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseMove</span><span class="p">:</span>
+ <span class="mi">378</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">379</span><span class="o">:</span>                 <span class="k">auto</span> <span class="n">mouseEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+ <span class="mi">380</span><span class="o">:</span>                 <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span> <span class="o">+=</span> <span class="n">qskClonedMouseEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
+ <span class="mi">381</span><span class="o">:</span> 
+ <span class="mi">382</span><span class="o">:</span>                 <span class="n">moveEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
+ <span class="mi">383</span><span class="o">:</span>                 <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+ <span class="mi">384</span><span class="o">:</span>             <span class="p">}</span>
  <span class="mi">385</span><span class="o">:</span> 
- <span class="mi">386</span><span class="o">:</span>                 <span class="n">pressEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
- <span class="mi">387</span><span class="o">:</span>                 <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
- <span class="mi">388</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">389</span><span class="o">:</span> 
- <span class="mi">390</span><span class="o">:</span>             <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseMove</span><span class="p">:</span>
- <span class="mi">391</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">392</span><span class="o">:</span>                 <span class="k">auto</span> <span class="n">mouseEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
- <span class="mi">393</span><span class="o">:</span>                 <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span> <span class="o">+=</span> <span class="n">qskClonedMouseEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
- <span class="mi">394</span><span class="o">:</span> 
- <span class="mi">395</span><span class="o">:</span>                 <span class="n">moveEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
- <span class="mi">396</span><span class="o">:</span>                 <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
- <span class="mi">397</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">398</span><span class="o">:</span> 
- <span class="mi">399</span><span class="o">:</span>             <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonRelease</span><span class="p">:</span>
- <span class="mi">400</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">401</span><span class="o">:</span>                 <span class="k">auto</span> <span class="n">mouseEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
- <span class="mi">402</span><span class="o">:</span>                 <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span> <span class="o">+=</span> <span class="n">qskClonedMouseEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
+ <span class="mi">386</span><span class="o">:</span>             <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonRelease</span><span class="p">:</span>
+ <span class="mi">387</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">388</span><span class="o">:</span>                 <span class="k">auto</span> <span class="n">mouseEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+ <span class="mi">389</span><span class="o">:</span>                 <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span> <span class="o">+=</span> <span class="n">qskClonedMouseEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
+ <span class="mi">390</span><span class="o">:</span> 
+ <span class="mi">391</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">==</span> <span class="n">Pending</span> <span class="p">)</span>
+ <span class="mi">392</span><span class="o">:</span>                 <span class="p">{</span>
+ <span class="mi">393</span><span class="o">:</span>                     <span class="n">reject</span><span class="p">();</span>
+ <span class="mi">394</span><span class="o">:</span>                 <span class="p">}</span>
+ <span class="mi">395</span><span class="o">:</span>                 <span class="k">else</span>
+ <span class="mi">396</span><span class="o">:</span>                 <span class="p">{</span>
+ <span class="mi">397</span><span class="o">:</span>                     <span class="n">releaseEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
+ <span class="mi">398</span><span class="o">:</span>                     <span class="n">reset</span><span class="p">();</span>
+ <span class="mi">399</span><span class="o">:</span>                 <span class="p">}</span>
+ <span class="mi">400</span><span class="o">:</span> 
+ <span class="mi">401</span><span class="o">:</span>                 <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+ <span class="mi">402</span><span class="o">:</span>             <span class="p">}</span>
  <span class="mi">403</span><span class="o">:</span> 
- <span class="mi">404</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">state</span> <span class="o">==</span> <span class="n">Pending</span> <span class="p">)</span>
- <span class="mi">405</span><span class="o">:</span>                 <span class="p">{</span>
- <span class="mi">406</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&gt;=</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
- <span class="mi">407</span><span class="o">:</span>                     <span class="k">if</span> <span class="p">(</span> <span class="n">mouseEvent</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MouseEventSynthesizedByQt</span> <span class="p">)</span>
- <span class="mi">408</span><span class="o">:</span>                     <span class="p">{</span>
- <span class="mi">409</span><span class="o">:</span>                         <span class="cm">/*
- 410:                             When replaying mouse events inside of handling synthesized
- 411:                             mouse event Qt runs into a situation where
- 412:                             QQuickWindow::mouseGrabberItem() returns the value from the
- 413:                             wrong input device. So we can't call reject() immediately.
- 414: 
- 415:                             Unfortunately this introduces a gap where other events might
- 416:                             be delivered before the QEvent::timer gets processed.
- 417:                             In the long run it might be better to record and replay
- 418:                             real touch events - what is necessary for multi touch gestures
- 419:                             anyway.
- 420:                          */</span>
- <span class="mi">421</span><span class="o">:</span>                         <span class="n">qskTimerTable</span><span class="o">-&gt;</span><span class="n">stopTimer</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
- <span class="mi">422</span><span class="o">:</span>                         <span class="n">qskTimerTable</span><span class="o">-&gt;</span><span class="n">startTimer</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
- <span class="mi">423</span><span class="o">:</span>                     <span class="p">}</span>
- <span class="mi">424</span><span class="o">:</span>                     <span class="k">else</span>
- <span class="mi">425</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
- <span class="mi">426</span><span class="o">:</span>                     <span class="p">{</span>
- <span class="mi">427</span><span class="o">:</span>                         <span class="n">reject</span><span class="p">();</span>
- <span class="mi">428</span><span class="o">:</span>                     <span class="p">}</span>
- <span class="mi">429</span><span class="o">:</span>                 <span class="p">}</span>
- <span class="mi">430</span><span class="o">:</span>                 <span class="k">else</span>
- <span class="mi">431</span><span class="o">:</span>                 <span class="p">{</span>
- <span class="mi">432</span><span class="o">:</span>                     <span class="n">releaseEvent</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">);</span>
- <span class="mi">433</span><span class="o">:</span>                     <span class="n">reset</span><span class="p">();</span>
- <span class="mi">434</span><span class="o">:</span>                 <span class="p">}</span>
+ <span class="mi">404</span><span class="o">:</span>             <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">UngrabMouse</span><span class="p">:</span>
+ <span class="mi">405</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">406</span><span class="o">:</span>                 <span class="c1">// someone took away our grab, we have to give up</span>
+ <span class="mi">407</span><span class="o">:</span>                 <span class="n">reset</span><span class="p">();</span>
+ <span class="mi">408</span><span class="o">:</span>                 <span class="k">break</span><span class="p">;</span>
+ <span class="mi">409</span><span class="o">:</span>             <span class="p">}</span>
+ <span class="mi">410</span><span class="o">:</span>             <span class="k">default</span><span class="o">:</span>
+ <span class="mi">411</span><span class="o">:</span>                 <span class="k">break</span><span class="p">;</span>
+ <span class="mi">412</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">413</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">414</span><span class="o">:</span> 
+ <span class="mi">415</span><span class="o">:</span>     <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">416</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">417</span><span class="o">:</span> 
+ <span class="mi">418</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">pressEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">)</span>
+ <span class="mi">419</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">420</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">421</span><span class="o">:</span> 
+ <span class="mi">422</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">moveEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">)</span>
+ <span class="mi">423</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">424</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">425</span><span class="o">:</span> 
+ <span class="mi">426</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">releaseEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">)</span>
+ <span class="mi">427</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">428</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">429</span><span class="o">:</span> 
+ <span class="mi">430</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">stateChanged</span><span class="p">(</span> <span class="n">State</span> <span class="n">from</span><span class="p">,</span> <span class="n">State</span> <span class="n">to</span> <span class="p">)</span>
+ <span class="mi">431</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">432</span><span class="o">:</span>     <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">from</span> <span class="p">)</span>
+ <span class="mi">433</span><span class="o">:</span>     <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">to</span> <span class="p">)</span>
+ <span class="mi">434</span><span class="o">:</span> <span class="p">}</span>
  <span class="mi">435</span><span class="o">:</span> 
- <span class="mi">436</span><span class="o">:</span>                 <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
- <span class="mi">437</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">438</span><span class="o">:</span> 
- <span class="mi">439</span><span class="o">:</span>             <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">UngrabMouse</span><span class="p">:</span>
- <span class="mi">440</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">441</span><span class="o">:</span>                 <span class="c1">// someone took away our grab, we have to give up</span>
- <span class="mi">442</span><span class="o">:</span>                 <span class="n">reset</span><span class="p">();</span>
- <span class="mi">443</span><span class="o">:</span>                 <span class="k">break</span><span class="p">;</span>
- <span class="mi">444</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">445</span><span class="o">:</span>             <span class="k">default</span><span class="o">:</span>
- <span class="mi">446</span><span class="o">:</span>                 <span class="k">break</span><span class="p">;</span>
- <span class="mi">447</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">448</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">449</span><span class="o">:</span> 
- <span class="mi">450</span><span class="o">:</span>     <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
- <span class="mi">451</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">452</span><span class="o">:</span> 
- <span class="mi">453</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">pressEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">)</span>
- <span class="mi">454</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">455</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">456</span><span class="o">:</span> 
- <span class="mi">457</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">moveEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">)</span>
- <span class="mi">458</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">459</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">436</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">accept</span><span class="p">()</span>
+ <span class="mi">437</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">438</span><span class="o">:</span>     <span class="n">qskTimerTable</span><span class="o">-&gt;</span><span class="n">stopTimer</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+ <span class="mi">439</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+ <span class="mi">440</span><span class="o">:</span> 
+ <span class="mi">441</span><span class="o">:</span>     <span class="n">setState</span><span class="p">(</span> <span class="n">Accepted</span> <span class="p">);</span>
+ <span class="mi">442</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">443</span><span class="o">:</span> 
+ <span class="mi">444</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">reject</span><span class="p">()</span>
+ <span class="mi">445</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">446</span><span class="o">:</span>     <span class="k">const</span> <span class="k">auto</span> <span class="n">events</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span><span class="p">;</span>
+ <span class="mi">447</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+ <span class="mi">448</span><span class="o">:</span> 
+ <span class="mi">449</span><span class="o">:</span>     <span class="n">reset</span><span class="p">();</span>
+ <span class="mi">450</span><span class="o">:</span> 
+ <span class="mi">451</span><span class="o">:</span>     <span class="k">auto</span> <span class="n">watchedItem</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span><span class="p">;</span>
+ <span class="mi">452</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">watchedItem</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+ <span class="mi">453</span><span class="o">:</span>         <span class="k">return</span><span class="p">;</span>
+ <span class="mi">454</span><span class="o">:</span> 
+ <span class="mi">455</span><span class="o">:</span>     <span class="k">const</span> <span class="k">auto</span> <span class="n">window</span> <span class="o">=</span> <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">();</span>
+ <span class="mi">456</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">window</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+ <span class="mi">457</span><span class="o">:</span>         <span class="k">return</span><span class="p">;</span>
+ <span class="mi">458</span><span class="o">:</span> 
+ <span class="mi">459</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isReplayingEvents</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
  <span class="mi">460</span><span class="o">:</span> 
- <span class="mi">461</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">releaseEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">)</span>
- <span class="mi">462</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">463</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">464</span><span class="o">:</span> 
- <span class="mi">465</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">stateChanged</span><span class="p">(</span> <span class="n">State</span> <span class="n">from</span><span class="p">,</span> <span class="n">State</span> <span class="n">to</span> <span class="p">)</span>
- <span class="mi">466</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">467</span><span class="o">:</span>     <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">from</span> <span class="p">)</span>
- <span class="mi">468</span><span class="o">:</span>     <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">to</span> <span class="p">)</span>
- <span class="mi">469</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">470</span><span class="o">:</span> 
- <span class="mi">471</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">accept</span><span class="p">()</span>
- <span class="mi">472</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">473</span><span class="o">:</span>     <span class="n">qskTimerTable</span><span class="o">-&gt;</span><span class="n">stopTimer</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
- <span class="mi">474</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+ <span class="mi">461</span><span class="o">:</span>     <span class="n">qskUngrabMouse</span><span class="p">(</span> <span class="n">watchedItem</span> <span class="p">);</span>
+ <span class="mi">462</span><span class="o">:</span> 
+ <span class="mi">463</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">events</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+ <span class="mi">464</span><span class="o">:</span>         <span class="p">(</span> <span class="n">events</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">465</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">466</span><span class="o">:</span>         <span class="cm">/*
+ 467:             In a situation of several recognizers ( f.e a vertical
+ 468:             scroll view inside a horizontal swipe view ), we might receive
+ 469:             cloned events from another recognizer.
+ 470:             To avoid to process them twice we store the most recent timestamp
+ 471:             of the cloned events we have already processed, but reposted.
+ 472:          */</span>
+ <span class="mi">473</span><span class="o">:</span> 
+ <span class="mi">474</span><span class="o">:</span>         <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestampProcessed</span> <span class="o">=</span> <span class="n">events</span><span class="p">.</span><span class="n">last</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">();</span>
  <span class="mi">475</span><span class="o">:</span> 
- <span class="mi">476</span><span class="o">:</span>     <span class="n">setState</span><span class="p">(</span> <span class="n">Accepted</span> <span class="p">);</span>
- <span class="mi">477</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">478</span><span class="o">:</span> 
- <span class="mi">479</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">reject</span><span class="p">()</span>
- <span class="mi">480</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">481</span><span class="o">:</span>     <span class="k">const</span> <span class="k">auto</span> <span class="n">events</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span><span class="p">;</span>
- <span class="mi">482</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
- <span class="mi">483</span><span class="o">:</span> 
- <span class="mi">484</span><span class="o">:</span>     <span class="n">reset</span><span class="p">();</span>
- <span class="mi">485</span><span class="o">:</span> 
- <span class="mi">486</span><span class="o">:</span>     <span class="k">auto</span> <span class="n">watchedItem</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span><span class="p">;</span>
- <span class="mi">487</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">watchedItem</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
- <span class="mi">488</span><span class="o">:</span>         <span class="k">return</span><span class="p">;</span>
- <span class="mi">489</span><span class="o">:</span> 
- <span class="mi">490</span><span class="o">:</span>     <span class="k">const</span> <span class="k">auto</span> <span class="n">window</span> <span class="o">=</span> <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">();</span>
- <span class="mi">491</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">window</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
- <span class="mi">492</span><span class="o">:</span>         <span class="k">return</span><span class="p">;</span>
+ <span class="mi">476</span><span class="o">:</span>         <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">event</span> <span class="o">:</span> <span class="n">events</span> <span class="p">)</span>
+ <span class="mi">477</span><span class="o">:</span>             <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="n">event</span> <span class="p">);</span>
+ <span class="mi">478</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">479</span><span class="o">:</span> 
+ <span class="mi">480</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isReplayingEvents</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">481</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">482</span><span class="o">:</span> 
+ <span class="mi">483</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">abort</span><span class="p">()</span>
+ <span class="mi">484</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">485</span><span class="o">:</span>     <span class="n">reset</span><span class="p">();</span>
+ <span class="mi">486</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">487</span><span class="o">:</span> 
+ <span class="mi">488</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">reset</span><span class="p">()</span>
+ <span class="mi">489</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">490</span><span class="o">:</span>     <span class="n">qskTimerTable</span><span class="o">-&gt;</span><span class="n">stopTimer</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+ <span class="mi">491</span><span class="o">:</span> 
+ <span class="mi">492</span><span class="o">:</span>     <span class="n">qskUngrabMouse</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span> <span class="p">);</span>
  <span class="mi">493</span><span class="o">:</span> 
- <span class="mi">494</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isReplayingEvents</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
- <span class="mi">495</span><span class="o">:</span> 
- <span class="mi">496</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">mouseGrabberItem</span><span class="p">()</span> <span class="o">==</span> <span class="n">watchedItem</span> <span class="p">)</span>
- <span class="mi">497</span><span class="o">:</span>         <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">ungrabMouse</span><span class="p">();</span>
- <span class="mi">498</span><span class="o">:</span> 
- <span class="mi">499</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">events</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
- <span class="mi">500</span><span class="o">:</span>         <span class="p">(</span> <span class="n">events</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span> <span class="p">)</span> <span class="p">)</span>
- <span class="mi">501</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">502</span><span class="o">:</span>         <span class="cm">/*
- 503:             In a situation of several recognizers ( f.e a vertical
- 504:             scroll view inside a horizontal swipe view ), we might receive
- 505:             cloned events from another recognizer.
- 506:             To avoid to process them twice we store the most recent timestamp
- 507:             of the cloned events we have already processed, but reposted.
- 508:          */</span>
- <span class="mi">509</span><span class="o">:</span> 
- <span class="mi">510</span><span class="o">:</span>         <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestampProcessed</span> <span class="o">=</span> <span class="n">events</span><span class="p">.</span><span class="n">last</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">();</span>
- <span class="mi">511</span><span class="o">:</span> 
- <span class="mi">512</span><span class="o">:</span>         <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="n">events</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="p">);</span>
- <span class="mi">513</span><span class="o">:</span> 
- <span class="mi">514</span><span class="o">:</span>         <span class="cm">/*
- 515:             After resending the initial press someone else
- 516:             might be interested in this sequence.
- 517:          */</span>
- <span class="mi">518</span><span class="o">:</span> 
- <span class="mi">519</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">mouseGrabberItem</span><span class="p">()</span> <span class="p">)</span>
- <span class="mi">520</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">521</span><span class="o">:</span>             <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">events</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
- <span class="mi">522</span><span class="o">:</span>                 <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="n">events</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="p">);</span>
- <span class="mi">523</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">524</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">525</span><span class="o">:</span> 
- <span class="mi">526</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isReplayingEvents</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
- <span class="mi">527</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">528</span><span class="o">:</span> 
- <span class="mi">529</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">abort</span><span class="p">()</span>
- <span class="mi">530</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">531</span><span class="o">:</span>     <span class="n">reset</span><span class="p">();</span>
- <span class="mi">532</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">533</span><span class="o">:</span> 
- <span class="mi">534</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">reset</span><span class="p">()</span>
- <span class="mi">535</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">536</span><span class="o">:</span>     <span class="n">qskTimerTable</span><span class="o">-&gt;</span><span class="n">stopTimer</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
- <span class="mi">537</span><span class="o">:</span> 
- <span class="mi">538</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">watchedItem</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span> <span class="p">)</span>
- <span class="mi">539</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">540</span><span class="o">:</span>         <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">setKeepMouseGrab</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
- <span class="mi">541</span><span class="o">:</span> 
- <span class="mi">542</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">window</span> <span class="o">=</span> <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">)</span>
- <span class="mi">543</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">544</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">mouseGrabberItem</span><span class="p">()</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">watchedItem</span> <span class="p">)</span>
- <span class="mi">545</span><span class="o">:</span>                 <span class="n">watchedItem</span><span class="o">-&gt;</span><span class="n">ungrabMouse</span><span class="p">();</span>
- <span class="mi">546</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">547</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">548</span><span class="o">:</span> 
- <span class="mi">549</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
- <span class="mi">550</span><span class="o">:</span> 
- <span class="mi">551</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestamp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
- <span class="mi">552</span><span class="o">:</span> 
- <span class="mi">553</span><span class="o">:</span>     <span class="n">setState</span><span class="p">(</span> <span class="n">Idle</span> <span class="p">);</span>
- <span class="mi">554</span><span class="o">:</span> <span class="p">}</span></code></pre></figure>
+ <span class="mi">494</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pendingEvents</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+ <span class="mi">495</span><span class="o">:</span>     <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestamp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ <span class="mi">496</span><span class="o">:</span> 
+ <span class="mi">497</span><span class="o">:</span>     <span class="n">setState</span><span class="p">(</span> <span class="n">Idle</span> <span class="p">);</span>
+ <span class="mi">498</span><span class="o">:</span> <span class="p">}</span></code></pre></figure>
 
 <hr />
 
-<p>Updated on 23 April 2021 at 11:41:06 CEST</p>
+<p>Updated on 23 April 2021 at 17:39:58 CEST</p>
 
           
           

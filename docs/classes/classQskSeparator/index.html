@@ -2051,6 +2051,10 @@
     </li>
   
     <li class="docs-menu-item">
+      <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
+    </li>
+  
+    <li class="docs-menu-item">
       <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
     </li>
   
@@ -2090,7 +2094,11 @@
           <h1 class="post-title line-left">QskSeparator</h1>
         </header><!-- .post-header -->
         <div class="post-content">
-          <object type="image/svg+xml" data="../svg/classQskSeparator__inherit__graph.svg">
+          <p>Separates a group of items from adjacent items.  <a href="#detailed-description">More…</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">#include &lt;QskSeparator.h&gt;</code></p>
+
+<object type="image/svg+xml" data="../svg/classQskSeparator__inherit__graph.svg">
 </object>
 <p><br /></p>
 
@@ -2098,23 +2106,6 @@
 <a href="/docs/classes/classQskControl/">QskControl</a></p>
 
 <p>Is drawn by <a href="/docs/classes/classQskSeparatorSkinlet/">QskSeparatorSkinlet</a></p>
-
-<h2 id="public-subcontrols">Public Subcontrols</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th> </th>
-      <th>Name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td> </td>
-      <td><strong><a href="/docs/classes/classQskSeparator/#subcontrol-panel">Panel</a></strong></td>
-    </tr>
-  </tbody>
-</table>
 
 <h2 id="public-functions">Public Functions</h2>
 
@@ -2159,7 +2150,7 @@
       <td><strong><a href="/docs/classes/classQskSeparator/#function-extent">extent</a></strong>() const</td>
     </tr>
     <tr>
-      <td>QskAspect::Placement</td>
+      <td>virtual <a href="/docs/classes/classQskAspect/#enum-placement">QskAspect::Placement</a></td>
       <td><strong><a href="/docs/classes/classQskSeparator/#function-effectiveplacement">effectivePlacement</a></strong>() const override</td>
     </tr>
   </tbody>
@@ -2198,7 +2189,7 @@
   <tbody>
     <tr>
       <td>Qt::Orientation</td>
-      <td><strong><a href="/docs/classes/classQskSeparator/#property-orientation">orientation</a></strong></td>
+      <td><strong><a href="/docs/classes/classQskSeparator/#property-orientation">orientation</a></strong> <br />Orientation of the separator - Qt::Horizontal (the default) or Qt::Vertical.</td>
     </tr>
     <tr>
       <td>qreal</td>
@@ -2207,18 +2198,42 @@
   </tbody>
 </table>
 
-<h2 id="public-subcontrols-documentation">Public Subcontrols Documentation</h2>
+<h2 id="public-attributes">Public Attributes</h2>
 
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-subcontrol" id="subcontrol-panel">subcontrol Panel</h3>
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskSeparator/#variable-panel">Panel</a></strong></td>
+    </tr>
+  </tbody>
+</table>
 
-  <div class="qskinny-inner-block">
+<h2 id="detailed-description">Detailed Description</h2>
 
-    <p>Defined in <a href="../../files/QskSeparator_8h">QskSeparator.h</a> in line 24.
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">QskSeparator</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Separates a group of items from adjacent items.</p>
+
+<p><a href="/docs/classes/classQskSeparator/">QskSeparator</a> is used to visually distinguish between groups of items. It can be used in horizontal or vertical direction by setting the orientation property to Qt::Vertical or Qt::Horizontal, respectively.</p>
+
+<p>Subcontrols:</p>
+
+<p><a href="/docs/classes/classQskSeparator/#variable-panel">QskSeparator::Panel</a></p>
+
+<p>Default Skinlet:</p>
+
+<p>QskSeparatorSkinlet</p>
+
+<p>Defined in <a href="../../files/QskSeparator_8h">QskSeparator.h</a> in line 12.
 <br /><br /></p>
-
-  </div>
-</div>
 
 <h2 id="public-functions-documentation">Public Functions Documentation</h2>
 
@@ -2228,6 +2243,8 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskSeparator</span><span class="p">(</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
 </code></pre></div>    </div>
+
+    <p>Constructs a horizontal separator with the given parent.</p>
 
     <p>Defined in <a href="../../files/QskSeparator_8cpp">QskSeparator.cpp</a> in line 11.
 <br /><br /></p>
@@ -2242,6 +2259,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskSeparator</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span>  <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
+    <p>Constructs a separator with the given parent. The orientation parameter determines whether the separator is horizontal or vertical.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskSeparator/#property-orientation">orientation</a></p>
+
     <p>Defined in <a href="../../files/QskSeparator_8cpp">QskSeparator.cpp</a> in line 16.
 <br /><br /></p>
 
@@ -2254,6 +2275,8 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskSeparator</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
+
+    <p>Destroys this separator.</p>
 
     <p>Defined in <a href="../../files/QskSeparator_8cpp">QskSeparator.cpp</a> in line 26.
 <br /><br /></p>
@@ -2268,6 +2291,15 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
+    <p>Set the orientation of the separator</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>orientation</strong> Qt::Vertical or Qt::Horizontal</li>
+    </ul>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskSeparator/#property-orientation">orientation</a></p>
+
     <p>Defined in <a href="../../files/QskSeparator_8cpp">QskSeparator.cpp</a> in line 30.
 <br /><br /></p>
 
@@ -2280,6 +2312,8 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
+
+    <p><strong>Returns</strong>: Value of the <a href="/docs/classes/classQskSeparator/#property-orientation">orientation</a> property</p>
 
     <p>Defined in <a href="../../files/QskSeparator_8cpp">QskSeparator.cpp</a> in line 48.
 <br /><br /></p>
@@ -2330,8 +2364,16 @@
   <h3 class="qskinny-function" id="function-effectiveplacement">function effectivePlacement</h3>
 
   <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="n">effectivePlacement</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span>
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="n">effectivePlacement</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span>
 </code></pre></div>    </div>
+
+    <p>The placements bits are added to an unresolved aspect when inserting or looking up values in the hint table.</p>
+
+    <p><strong>Returns</strong>: The default implementation returns <a href="/docs/classes/classQskAspect/#enumvalue-noplacement">QskAspect::NoPlacement</a>;</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#enum-placement">QskAspect::Placement</a>, <a href="/docs/classes/classQskSkinnable/#function-effectiveskinhint">effectiveSkinHint()</a></p>
+
+    <p><strong>Reimplements</strong>: <a href="/docs/classes/classQskSkinnable/#function-effectiveplacement">QskSkinnable::effectivePlacement</a></p>
 
     <p>Defined in <a href="../../files/QskSeparator_8cpp">QskSeparator.cpp</a> in line 73.
 <br /><br /></p>
@@ -2348,7 +2390,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">orientationChanged</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span>  <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p><br /><br /></p>
+    <p>The orientation of the layout has changed</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskSeparator/#property-orientation">orientation</a>
+<br /><br /></p>
 
   </div>
 </div>
@@ -2374,6 +2419,14 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">;</span>
 </code></pre></div>    </div>
 
+    <p>Orientation of the separator - Qt::Horizontal (the default) or Qt::Vertical.</p>
+
+    <p>A separator is often represented by some line - for a orientation of Qt::Horizontal it might be a vertical line.</p>
+
+    <p>Access functions:</p>
+
+    <p><a href="/docs/classes/classQskSeparator/#property-orientation">orientation()</a>, <a href="/docs/classes/classQskSeparator/#function-setorientation">setOrientation()</a>, <a href="/docs/classes/classQskSeparator/#signal-orientationchanged">orientationChanged()</a></p>
+
     <p>Defined in <a href="../../files/QskSeparator_8h">QskSeparator.h</a> in line 16.
 <br /><br /></p>
 
@@ -2393,9 +2446,26 @@
   </div>
 </div>
 
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-attribute" id="variable-panel">variable Panel</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">Panel</span><span class="p">;</span>
+</code></pre></div>    </div>
+
+    <p><strong>See also</strong>: QskSeparatorSkinlet</p>
+
+    <p>Defined in <a href="../../files/QskSeparator_8h">QskSeparator.h</a> in line 24.
+<br /><br /></p>
+
+  </div>
+</div>
+
 <hr />
 
-<p>Updated on 23 April 2021 at 11:41:03 CEST</p>
+<p>Updated on 23 April 2021 at 17:39:55 CEST</p>
 
           
           

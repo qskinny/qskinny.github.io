@@ -2051,6 +2051,10 @@
     </li>
   
     <li class="docs-menu-item">
+      <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
+    </li>
+  
+    <li class="docs-menu-item">
       <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
     </li>
   
@@ -2090,7 +2094,11 @@
           <h1 class="post-title line-left">QskQuickItem</h1>
         </header><!-- .post-header -->
         <div class="post-content">
-          <object type="image/svg+xml" data="../svg/classQskQuickItem__inherit__graph_org.svg">
+          <p><a href="#detailed-description">More…</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">#include &lt;QskQuickItem.h&gt;</code></p>
+
+<object type="image/svg+xml" data="../svg/classQskQuickItem__inherit__graph_org.svg">
 </object>
 <p><br /></p>
 
@@ -2208,15 +2216,15 @@
     </tr>
     <tr>
       <td>Q_INVOKABLE void</td>
-      <td><strong><a href="/docs/classes/classQskQuickItem/#function-setupdateflag">setUpdateFlag</a></strong>(UpdateFlag flag, bool on =true)</td>
+      <td><strong><a href="/docs/classes/classQskQuickItem/#function-setupdateflag">setUpdateFlag</a></strong>(<a href="/docs/classes/classQskQuickItem/#enum-updateflag">UpdateFlag</a> flag, bool on =true)</td>
     </tr>
     <tr>
       <td>Q_INVOKABLE void</td>
-      <td><strong><a href="/docs/classes/classQskQuickItem/#function-resetupdateflag">resetUpdateFlag</a></strong>(UpdateFlag flag)</td>
+      <td><strong><a href="/docs/classes/classQskQuickItem/#function-resetupdateflag">resetUpdateFlag</a></strong>(<a href="/docs/classes/classQskQuickItem/#enum-updateflag">UpdateFlag</a> flag)</td>
     </tr>
     <tr>
       <td>Q_INVOKABLE bool</td>
-      <td><strong><a href="/docs/classes/classQskQuickItem/#function-testupdateflag">testUpdateFlag</a></strong>(UpdateFlag flag) const</td>
+      <td><strong><a href="/docs/classes/classQskQuickItem/#function-testupdateflag">testUpdateFlag</a></strong>(<a href="/docs/classes/classQskQuickItem/#enum-updateflag">UpdateFlag</a> flag) const</td>
     </tr>
     <tr>
       <td>void</td>
@@ -2286,10 +2294,6 @@
     <tr>
       <td>void</td>
       <td><strong><a href="/docs/classes/classQskQuickItem/#function-touchungrabevent">touchUngrabEvent</a></strong>() override</td>
-    </tr>
-    <tr>
-      <td>void</td>
-      <td><strong><a href="/docs/classes/classQskQuickItem/#function-windowdeactivateevent">windowDeactivateEvent</a></strong>() override</td>
     </tr>
     <tr>
       <td>void</td>
@@ -2413,6 +2417,16 @@
   </tbody>
 </table>
 
+<h2 id="detailed-description">Detailed Description</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">QskQuickItem</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><a href="/docs/classes/classQskQuickItem/">QskQuickItem</a> completes the C++ API of QQuickItem and re-establishs basic concepts like events. It also offers better control over the operations happening in the update cycle.</p>
+
+<p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 17.
+<br /><br /></p>
+
 <h2 id="public-types-documentation">Public Types Documentation</h2>
 
 <div class="qskinny-outter-block">
@@ -2435,6 +2449,20 @@
       </tbody>
     </table>
 
+    <p>Creating of scene graph nodes is blocked when being invisible.</p>
+
+    <p>The default implementation of Qt/Quick creates scene graph nodes for all items
+in the scene what might become a significant factor for the startup performance
+( and memory footprint ) of large user interfaces.</p>
+
+    <p>Instead of trying to work around these problems by asynchrounous instantiation
+strategies ( QQmlIncubator ) the DeferredUpdate flag offers a much simpler
+and obvious solution: don’t instantiate before really needed.</p>
+
+    <p><strong>See also</strong>: QQuickItem::isVisible()</p>
+
+    <p><strong>Note</strong>: Some more advanced algorithms have not yet been implemented, such as viewport frustrum culling (i.e. hiding items outside of the window geometry).</p>
+
     <table>
       <thead>
         <tr>
@@ -2449,6 +2477,12 @@
         </tr>
       </tbody>
     </table>
+
+    <p>Polishing an item is blocked when being invisible.
+F.e for all items being derived from QskControl the layout calculations
+happen during polishing.</p>
+
+    <p><strong>See also</strong>: QQuickItem::updatePolish(), QQuickItem::polish()</p>
 
     <table>
       <thead>
@@ -2465,6 +2499,24 @@
       </tbody>
     </table>
 
+    <p>Recalculations of the implicitSize are blocked until being explicitly requested.</p>
+
+    <p>When being enabled the item indicates layout relevant changes by
+sending a QEvent::LayoutRequest ( similar to QWidget ) to its parent item
+without recalculating the actual size hints ( f.e the implicitSize ).</p>
+
+    <p>When having layout code that relies on binding the implicit width/height
+the QskQuickItem::DeferredLayout flag needs to be disabled.</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#slot-resetimplicitsize">QskQuickItem::resetImplicitSize()</a></li>
+      <li>QQuickItem::implicitSize()</li>
+    </ul>
+
+    <p><strong>Note</strong>: All layout classes offered by the Qt/Quick modules of the Qt Company ( f.e anchors ) do require immediate updates of the implicit size.</p>
+
     <table>
       <thead>
         <tr>
@@ -2479,6 +2531,12 @@
         </tr>
       </tbody>
     </table>
+
+    <p>Delete scene graph nodes, when the item becomes hidden.
+Enabling this mode will reduce the memory footprint, but comes at the cost
+of having to recreate nodes once the item gets shown again.</p>
+
+    <p><strong>See also</strong>: QQuickItem::isVisible()</p>
 
     <table>
       <thead>
@@ -2495,6 +2553,9 @@
       </tbody>
     </table>
 
+    <p>When creating textures from QskGraphic, prefer the raster paint
+engine over the OpenGL paint engine.</p>
+
     <table>
       <thead>
         <tr>
@@ -2509,6 +2570,14 @@
         </tr>
       </tbody>
     </table>
+
+    <p>Always fill the background of the item with a random color.</p>
+
+    <p><strong>Note</strong>: This flag is useful when analyzing layouts.</p>
+
+    <p>Qt/Quick classes have a tendency to update items too early and too often. To avoid processing of unwanted operations <a href="/docs/classes/classQskQuickItem/">QskQuickItem</a> implements a couple of modifications, that can be en/disabled individually.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#property-updateflags">updateFlags()</a>, <a href="/docs/classes/classQskQuickItem/#function-resetupdateflags">resetUpdateFlags()</a><a href="/docs/classes/classQskQuickItem/#function-testupdateflag">testUpdateFlag()</a>, <a href="/docs/classes/classQskQuickItem/#function-setupdateflag">setUpdateFlag()</a>, <a href="/docs/classes/classQskQuickItem/#function-resetupdateflag">resetUpdateFlag()</a></p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 42.
 <br /><br /></p>
@@ -2538,6 +2607,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">className</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
+    <p>A convenience wrapper for metaObject()-&gt;<a href="/docs/classes/classQskQuickItem/#function-classname">className()</a></p>
+
+    <p><strong>Returns</strong>: Class name</p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 183.
 <br /><br /></p>
 
@@ -2550,6 +2623,17 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isVisibleTo</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">ancestor</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
+
+    <p>The true case occurs if neither the item itself nor any parent up to but excluding ancestor has been explicitly hidden.</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>ancestor</strong> Ancestor is the parentItem() hierarchy</li>
+    </ul>
+
+    <p><strong>Returns</strong>: true if this item would become visible if ancestor is shown; otherwise returns false.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#property-visibletoparent">visibleToParent</a></p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 241.
 <br /><br /></p>
@@ -2564,6 +2648,17 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isVisibleToParent</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
+    <p>An item might be invisible because it has been explicitly hidden or one of its ancestors has been hidden. <a href="/docs/classes/classQskQuickItem/#function-isvisibletoparent">isVisibleToParent()</a> indicates the first situation.</p>
+
+    <p><strong>Returns</strong>: true once setVisible( false ) has been called</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#property-visibletoparent">visibleToParent</a></li>
+      <li>QQuickItem::setVisible()</li>
+    </ul>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 246.
 <br /><br /></p>
 
@@ -2577,7 +2672,11 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">bool</span> <span class="n">hasChildItems</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 172.
+    <p><strong>Returns</strong>: true, if the item has child items</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#property-haschilditems">hasChildItems</a></p>
+
+    <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 175.
 <br /><br /></p>
 
   </div>
@@ -2589,6 +2688,10 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">rect</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
+
+    <p><strong>Returns</strong>: Internal geometry of the item, where the position is always at ( 0, 0 )</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#property-geometry">geometry</a></p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 304.
 <br /><br /></p>
@@ -2603,7 +2706,22 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">implicitSize</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 191.
+    <p>Qt/Quick offers an oversimplified layout system of Qt/Quick that is based on the property bindings of implicit width and height. QSkinny restablishs a layout system that can compete with what is available in the Qt/Widgets or Qt/Graphics technologies.</p>
+
+    <p>In the QSkinny layout system the implicitSize is a synonym for what is also known as sizeHint or preferredSize.</p>
+
+    <p><strong>Returns</strong>: Implicit size,</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskControl/#property-preferredsize">QskControl::preferredSize()</a>, <a href="/docs/classes/classQskControl/#function-sizehint">QskControl::sizeHint()</a></li>
+      <li>QQuickItem::implicitWidth(), QQuickItem::implicitHeight()</li>
+    </ul>
+
+    <p><strong>Note</strong>: Layout code that relies on property bindings of the implicit width a height needs to disable the <a href="/docs/classes/classQskQuickItem/#enumvalue-deferredlayout">QskQuickItem::DeferredLayout</a> flag</p>
+
+    <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 194.
 <br /><br /></p>
 
   </div>
@@ -2615,6 +2733,23 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setGeometry</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">x</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">y</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
 </code></pre></div>    </div>
+
+    <p>Set the position and the size of an item</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>x</strong> X ( = left ) coordinate relative to the parent item</li>
+      <li><strong>y</strong> Y ( = top ) coordinate relative to the parent item</li>
+      <li><strong>width</strong> Width</li>
+      <li><strong>height</strong> Height</li>
+    </ul>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#property-geometry">geometry()</a>, <a href="/docs/classes/classQskQuickItem/#function-geometrychange">geometryChange()</a></li>
+      <li>QQuickItem::size(), QQuickItem::position()</li>
+    </ul>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 251.
 <br /><br /></p>
@@ -2629,6 +2764,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">geometry</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
+    <p><strong>Returns</strong>: Position and size relative to the parent item</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#property-geometry">geometry</a>, <a href="/docs/classes/classQskQuickItem/#function-setgeometry">setGeometry()</a></p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 310.
 <br /><br /></p>
 
@@ -2641,6 +2780,10 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setPolishOnResize</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
 </code></pre></div>    </div>
+
+    <p>Set or clear the polishOnResize flag.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#property-polishonresize">polishOnResize</a></p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 346.
 <br /><br /></p>
@@ -2655,6 +2798,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">polishOnResize</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
+    <p><strong>Returns</strong>: Value of the polishOnResize flag</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-setpolishonresize">setPolishOnResize()</a></p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 358.
 <br /><br /></p>
 
@@ -2667,6 +2814,10 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setTransparentForPositioner</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
 </code></pre></div>    </div>
+
+    <p>Set or clear the transparentForPositioner flag</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-istransparentforpositioner">isTransparentForPositioner()</a></p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 316.
 <br /><br /></p>
@@ -2681,6 +2832,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isTransparentForPositioner</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
+    <p><strong>Returns</strong>: Value of the transparentForPositioner flag</p>
+
+    <p><strong>See also</strong>: transparentForPositioner</p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 326.
 <br /><br /></p>
 
@@ -2693,6 +2848,10 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setTabFence</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
 </code></pre></div>    </div>
+
+    <p>Set or clear the tabFence property</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-istabfence">isTabFence()</a></p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 331.
 <br /><br /></p>
@@ -2707,6 +2866,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isTabFence</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
+    <p><strong>Returns</strong>: Value of the tabFence property</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-settransparentforpositioner">setTransparentForPositioner()</a></p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 341.
 <br /><br /></p>
 
@@ -2719,6 +2882,20 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setLayoutMirroring</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span><span class="p">,</span>  <span class="kt">bool</span> <span class="n">childrenInherit</span> <span class="o">=</span> <span class="nb">false</span> <span class="p">)</span>
 </code></pre></div>    </div>
+
+    <p>Change the direction how the content is laid out horizontally.</p>
+
+    <p>Changes of this property will be indicated by a QEvent::LayoutDirectionChange.</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>on</strong> True enables layoutMirroring</li>
+      <li><strong>childrenInherit</strong> If true the mirroring behavior is propagated to all child items as well.</li>
+    </ul>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-layoutmirroring">layoutMirroring</a>, <a href="/docs/classes/classQskQuickItem/#function-resetlayoutmirroring">resetLayoutMirroring()</a>, <a href="/docs/classes/classQskQuickItem/#function-changeevent">changeEvent()</a></p>
+
+    <p><strong>Note</strong>: In Qml the parameters are routed through the attached LayoutMirroring property to have something declarative</p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 377.
 <br /><br /></p>
@@ -2733,6 +2910,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetLayoutMirroring</span><span class="p">()</span>
 </code></pre></div>    </div>
 
+    <p>Clear the layoutMirroring property</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-setlayoutmirroring">setLayoutMirroring()</a>, <a href="/docs/classes/classQskQuickItem/#function-layoutmirroring">layoutMirroring</a></p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 405.
 <br /><br /></p>
 
@@ -2745,6 +2926,26 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">layoutMirroring</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
+
+    <p>Direction how the content is layed out horizontally.</p>
+
+    <p>If no value has been explicitly assigned it is inherited from the closest ancestor, where the attribute has been assigned with the childrenInherit parameter. If such an ancestor does not exists layoutMirroring is false.</p>
+
+    <p><strong>Returns</strong>: Inherited or explicitly assigned value</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#function-setlayoutmirroring">setLayoutMirroring()</a>, <a href="/docs/classes/classQskQuickItem/#function-layoutmirroring">layoutMirroring()</a></li>
+      <li><a href="/docs/classes/classQskQuickItem/#function-setlayoutmirroring">setLayoutMirroring()</a>, <a href="/docs/classes/classQskQuickItem/#function-resetlayoutmirroring">resetLayoutMirroring()</a></li>
+    </ul>
+
+    <p><strong>Note</strong>:</p>
+
+    <ul>
+      <li>Several controls do not respect this flag</li>
+      <li>In Qml the parameters are routed through the attached LayoutMirroring property to have something declarative</li>
+    </ul>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 363.
 <br /><br /></p>
@@ -2759,6 +2960,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetUpdateFlags</span><span class="p">()</span>
 </code></pre></div>    </div>
 
+    <p>Reset all flags to the default settings</p>
+
+    <p><strong>See also</strong>: QskSetup::itemUpdateFlags(), <a href="/docs/classes/classQskQuickItem/#property-updateflags">updateFlags()</a>, <a href="/docs/classes/classQskQuickItem/#property-updateflags">updateFlags</a></p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 460.
 <br /><br /></p>
 
@@ -2771,6 +2976,10 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">UpdateFlags</span> <span class="n">updateFlags</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
+
+    <p><strong>Returns</strong>: Flags affecting the item update process</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-testupdateflag">testUpdateFlag()</a>, <a href="/docs/classes/classQskQuickItem/#function-setupdateflag">setUpdateFlag()</a>, <a href="/docs/classes/classQskQuickItem/#property-updateflags">updateFlags</a></p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 455.
 <br /><br /></p>
@@ -2785,6 +2994,18 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="kt">void</span> <span class="n">setUpdateFlag</span><span class="p">(</span> <span class="n">UpdateFlag</span> <span class="n">flag</span><span class="p">,</span>  <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span> <span class="nb">true</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
+    <p><a href="/docs/classes/classQskQuickItem/">QskQuickItem</a> offers several tweaks to the Qt/Quick update cycle, that can be en/disables individually.</p>
+
+    <p>The default settings for these flags are taken from QskSetup::itemUpdateFlags() When calling <a href="/docs/classes/classQskQuickItem/#function-setupdateflag">setUpdateFlag()</a> the value for the particular flag is decoupled from the corresponding default bit - even if both bits have the same value. This can be reverted by calling <a href="/docs/classes/classQskQuickItem/#function-resetupdateflag">resetUpdateFlag()</a></p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>flag</strong> Flag affecting the item update process</li>
+      <li><strong>on</strong> En/Disable the behaviour related to the flag</li>
+    </ul>
+
+    <p><strong>See also</strong>: QskSetup::itemUpdateFlags(), <a href="/docs/classes/classQskQuickItem/#function-testupdateflag">testUpdateFlag()</a>. <a href="/docs/classes/classQskQuickItem/#property-updateflags">updateFlags</a></p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 469.
 <br /><br /></p>
 
@@ -2797,6 +3018,15 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="kt">void</span> <span class="n">resetUpdateFlag</span><span class="p">(</span> <span class="n">UpdateFlag</span> <span class="n">flag</span> <span class="p">)</span>
 </code></pre></div>    </div>
+
+    <p>Reset the value for flag to the default settings from <a href="/docs/classes/classQskSetup/">QskSetup</a>. Future changes of the corresponding bit with QskSetup::setItemUpdateFlag() will affect the behaviour of this item.</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>flag</strong> Flag affecting the item update process</li>
+    </ul>
+
+    <p><strong>See also</strong>: QskSetup::itemUpdateFlags(), <a href="/docs/classes/classQskQuickItem/#property-updateflags">updateFlags()</a>, <a href="/docs/classes/classQskQuickItem/#function-testupdateflag">testUpdateFlag()</a>, <a href="/docs/classes/classQskQuickItem/#property-updateflags">updateFlags</a></p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 482.
 <br /><br /></p>
@@ -2811,6 +3041,15 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="kt">bool</span> <span class="n">testUpdateFlag</span><span class="p">(</span> <span class="n">UpdateFlag</span> <span class="n">flag</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>Flag</strong> affecting the item update process</li>
+    </ul>
+
+    <p><strong>Returns</strong>: true, when the corresponding bit is effective</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-setupdateflag">setUpdateFlag()</a>, QskSetup::itemUpdateFlag(), <a href="/docs/classes/classQskQuickItem/#property-updateflags">updateFlags</a></p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 497.
 <br /><br /></p>
 
@@ -2823,6 +3062,19 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">classBegin</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
+
+    <p>The QML engine initializes an item as being incomplete by explicitly calling <a href="/docs/classes/classQskQuickItem/#function-classbegin">classBegin()</a>. Once the item has been constructed <a href="/docs/classes/classQskQuickItem/#function-componentcomplete">componentComplete()</a> is called. This way temporary operations during the construction can be avoided.</p>
+
+    <p>In the C++ case the item indicates being complete from the beginning and both hooks are never called.</p>
+
+    <p>The overloaded version calls the base class and has no purpose beside being an entry point for debugging.</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#function-componentcomplete">componentComplete()</a></li>
+      <li>QQuickItem::classBegin, QQuickItem::isComponentComplete()</li>
+    </ul>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 188.
 <br /><br /></p>
@@ -2837,6 +3089,19 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">componentComplete</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
+    <p>The QML engine initilizes an item as being incomplete by explicitly calling QQuickItem::classBegin(). Once the item has been constructed <a href="/docs/classes/classQskQuickItem/#function-componentcomplete">componentComplete()</a> is called. This way temporary operations during the construction can be avoided.</p>
+
+    <p>In the C++ case the item indicates being complete from the beginning and both hooks are never called.</p>
+
+    <p>The overloaded does some sanity checks in debug mode and calls the base class.</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#function-classbegin">classBegin()</a></li>
+      <li>QQuickItem::isComponentComplete(), QQuickItem::componentComplete</li>
+    </ul>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 193.
 <br /><br /></p>
 
@@ -2849,6 +3114,12 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">releaseResources</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
+
+    <p>This specific hook is called, when the item is about to be removed from the window it was previously rendering to.</p>
+
+    <p>The implementation stores the values needed for the following QskWindowChangeEvent.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-windowchangeevent">windowChangeEvent()</a></p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 208.
 <br /><br /></p>
@@ -2863,6 +3134,15 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isPolishScheduled</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
+    <p><strong>Returns</strong>: True, if the item will be polished in the next scene graph update cycle.</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#function-isupdatenodescheduled">isUpdateNodeScheduled()</a></li>
+      <li>QQuickItem::polish()</li>
+    </ul>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 417.
 <br /><br /></p>
 
@@ -2875,6 +3155,8 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isUpdateNodeScheduled</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
+
+    <p><strong>Returns</strong>: True, if the item will update the paint node in the next scene graph update cycle</p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 422.
 <br /><br /></p>
@@ -2889,6 +3171,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isInitiallyPainted</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
+    <p><strong>Returns</strong>: Value of the initiallyPainted property</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#property-initiallypainted">initiallyPainted</a></p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 430.
 <br /><br /></p>
 
@@ -2901,6 +3187,12 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">maybeUnresized</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
+
+    <p>Flag indicating a potential state, where the item is waiting to be sized by the layout system.</p>
+
+    <p>Unfortunately the list of items to-be-polished is not processed in top/down order and a container might be requested to calculate the geometries for its children before having a proper size itself.</p>
+
+    <p>Some of these situations can be avoided by ignoring these requests depending on the maybeUnresized flag.</p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 435.
 <br /><br /></p>
@@ -2917,6 +3209,8 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskQuickItem</span><span class="p">(</span> <span class="n">QskQuickItemPrivate</span> <span class="o">&amp;</span> <span class="n">dd</span><span class="p">,</span>  <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
+    <p>Sets the QQuickItem::ItemHasContents flag to true.</p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 148.
 <br /><br /></p>
 
@@ -2929,6 +3223,28 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
+
+    <p><a href="/docs/classes/classQskQuickItem/">QskQuickItem</a> handles the additional type of events.</p>
+
+    <p>For some reason the QQuick classes introduced proprietory notfier hooks instead of using the well established and powerful concept of events. <a href="/docs/classes/classQskQuickItem/">QskQuickItem</a> tries to revert this decision by mapping notifications to events, when possible.</p>
+
+    <p>The following notification events are added by QSkinny - usually with a very similar to how they are used known for Qt/Widgets:</p>
+
+    <ul>
+      <li>QEvent::ContentsRectChange</li>
+      <li>QEvent::LocaleChange</li>
+      <li>QEvent::ParentChange</li>
+      <li>QEvent::EnabledChange</li>
+      <li>QEvent::ReadOnlyChange</li>
+      <li>QEvent::LayoutDirectionChange</li>
+      <li>QEvent::LayoutRequest
+Furthermore events derived from QskEvent are used.</li>
+    </ul>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>event</strong> Qt event</li>
+    </ul>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 589.
 <br /><br /></p>
@@ -2943,7 +3259,28 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">changeEvent</span><span class="p">(</span> <span class="n">QEvent</span> <span class="o">*</span>  <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 684.
+    <p>This event handler can be reimplemented to handle certain state changes:</p>
+
+    <ul>
+      <li>QEvent::StyleChange</li>
+      <li>QEvent::ContentsRectChange</li>
+      <li>QEvent::FontChange</li>
+      <li>QEvent::PaletteChange</li>
+      <li>QEvent::ReadOnlyChange</li>
+      <li>QEvent::EnabledChange</li>
+      <li>QEvent::LocaleChange</li>
+      <li>QEvent::ParentChange</li>
+      <li>QEvent::LayoutDirectionChange</li>
+    </ul>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>event</strong> Qt event</li>
+    </ul>
+
+    <p><strong>Note</strong>: QEvent::PaletteChange, QEvent::FontChange are handled, but both event types do not fit to the themeing concept of QSkinny and are not posted. However it is possible to post them if an application has a concept, where they make sense.</p>
+
+    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 703.
 <br /><br /></p>
 
   </div>
@@ -2956,7 +3293,25 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">geometryChangeEvent</span><span class="p">(</span> <span class="n">QskGeometryChangeEvent</span> <span class="o">*</span>  <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 680.
+    <p>For no known reason QQuickItem propagates changes of position and size by calling QQuickItem::geometryChange(), instead of using events.</p>
+
+    <p><a href="/docs/classes/classQskQuickItem/">QskQuickItem</a> reestablished the more powerful concept of events by sending/posting events, that can be preprocessed by event filtering.</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>event</strong> Event indicating the geometry change</li>
+    </ul>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#function-geometrychange">geometryChange()</a></li>
+      <li>QObject::installEventFilter()</li>
+    </ul>
+
+    <p><strong>Reimplemented by</strong>: <a href="/docs/classes/classQskLinearBox/#function-geometrychangeevent">QskLinearBox::geometryChangeEvent</a></p>
+
+    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 699.
 <br /><br /></p>
 
   </div>
@@ -2969,7 +3324,19 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">windowChangeEvent</span><span class="p">(</span> <span class="n">QskWindowChangeEvent</span> <span class="o">*</span>  <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 676.
+    <p>This event handler can be reimplemented to handle situations, where an item is added, removed or transferred between windows. It corresponds to the QQuickItem::ItemSceneChange notification, but is more convenient:</p>
+
+    <ul>
+      <li>being an event it can be processed by event filtering</li>
+      <li>the previous window is available</li>
+    </ul>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>event</strong> Event with the old/new windows</li>
+    </ul>
+
+    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 695.
 <br /><br /></p>
 
   </div>
@@ -2982,7 +3349,11 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">mouseUngrabEvent</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 853.
+    <p>Notification, that is overloaded for debuging purposes, without doing anything beside calling the base class.</p>
+
+    <p><strong>See also</strong>: QQuickItem::mouseUngrabEvent</p>
+
+    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 880.
 <br /><br /></p>
 
   </div>
@@ -2995,20 +3366,11 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">touchUngrabEvent</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 858.
-<br /><br /></p>
+    <p>Notification, that is overloaded for debuging purposes, without doing anything beside calling the base class.</p>
 
-  </div>
-</div>
+    <p><strong>See also</strong>: QQuickItem::touchUngrabEvent</p>
 
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-function" id="function-windowdeactivateevent">function windowDeactivateEvent</h3>
-
-  <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">windowDeactivateEvent</span><span class="p">()</span> <span class="k">override</span>
-</code></pre></div>    </div>
-
-    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 863.
+    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 885.
 <br /><br /></p>
 
   </div>
@@ -3021,7 +3383,29 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span> <span class="n">ItemChange</span> <span class="p">,</span>  <span class="k">const</span> <span class="n">ItemChangeData</span> <span class="o">&amp;</span>  <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 688.
+    <p>For no obvious reason Qt/Quick has introduced an additional callback mechanism beside events and signals.</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>change</strong> Indicator, to identify what has changed</li>
+      <li><strong>changeData</strong> Extra information relating to the change</li>
+    </ul>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#function-event">event()</a></li>
+      <li>QQuickItem::itemChange()</li>
+    </ul>
+
+    <p><strong>Note</strong>:</p>
+
+    <ul>
+      <li>It is recommended to avoid using this type of notifications where possible. Netter rely on overloading the corresponding event handlers, what allows application code to make use of convenient and well established concepts like event filtering ( QObject::installEventFilter() ).</li>
+      <li>If you re-implement this method in a subclass, be sure to call the overloaded method of the base class.</li>
+    </ul>
+
+    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 707.
 <br /><br /></p>
 
   </div>
@@ -3034,7 +3418,11 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">geometryChange</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">newGeometry</span><span class="p">,</span>  <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">oldGeometry</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 833.
+    <p>This overloaded notifier calls QQuickItem::polish() depending on the <a href="/docs/classes/classQskQuickItem/#property-polishonresize">polishOnResize()</a> flag and forwards the notification to the event queue.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-geometrychangeevent">geometryChangeEvent()</a>, <a href="/docs/classes/classQskQuickItem/#property-polishonresize">polishOnResize()</a></p>
+
+    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 860.
 <br /><br /></p>
 
   </div>
@@ -3047,7 +3435,18 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">aboutToShow</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 896.
+    <p>A specific hook that is intended to be overloaded by controls that need to do some specific operations, when an item is painted the first time after becoming visible.</p>
+
+    <p>The default implementation is a no operation.</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#property-initiallypainted">initiallyPainted</a></li>
+      <li>QQuickItem::setVisible()</li>
+    </ul>
+
+    <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 927.
 <br /><br /></p>
 
   </div>
@@ -3062,6 +3461,14 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">itemFlagsChanged</span><span class="p">()</span>
 </code></pre></div>    </div>
 
+    <p>Signal indicating that at least one if the following attributes has changed:</p>
+
+    <ul>
+      <li>transparentForPositioners</li>
+      <li>tabFence</li>
+      <li>polishOnResize</li>
+    </ul>
+
     <p><br /><br /></p>
 
   </div>
@@ -3074,7 +3481,15 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">updateFlagsChanged</span><span class="p">(</span> <span class="n">UpdateFlags</span>  <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p><br /><br /></p>
+    <p>Signal indicating, that the effective update flags have changed</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>flags</strong> Effective flags, might be derived in parts from QskSetup::itemUpdateFlags()</li>
+    </ul>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#property-updateflags">updateFlags</a>
+<br /><br /></p>
 
   </div>
 </div>
@@ -3088,7 +3503,21 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">setGeometry</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 177.
+    <p>Set the position and the size of an item</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>rect</strong> Geometry relative to the parent item</li>
+    </ul>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#property-geometry">geometry()</a>, <a href="/docs/classes/classQskQuickItem/#function-geometrychange">geometryChange()</a></li>
+      <li>QQuickItem::size(), QQuickItem::position()</li>
+    </ul>
+
+    <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 180.
 <br /><br /></p>
 
   </div>
@@ -3100,6 +3529,15 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">show</span><span class="p">()</span>
 </code></pre></div>    </div>
+
+    <p>An alternative way to call setVisible( true ). Useful for signal/slot connections</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#slot-hide">hide()</a></li>
+      <li>QQuickItem::setVisible()</li>
+    </ul>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 231.
 <br /><br /></p>
@@ -3114,6 +3552,15 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">hide</span><span class="p">()</span>
 </code></pre></div>    </div>
 
+    <p>An alternative way to call setVisible( false ). Useful for signal/slot connections</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#slot-show">show()</a></li>
+      <li>QQuickItem::setVisible()</li>
+    </ul>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 236.
 <br /><br /></p>
 
@@ -3126,6 +3573,10 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setHidden</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
 </code></pre></div>    </div>
+
+    <p>Convenience function, equivalent to setVisible( !on ).
+\sa 
+  QQuickItem::setVisible()</p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 226.
 <br /><br /></p>
@@ -3140,6 +3591,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setDisabled</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
+    <p>Convenience function, equivalent to setEnabled( !on ).</p>
+
+    <p><strong>See also</strong>: QQuickItem::setEnabled()</p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 221.
 <br /><br /></p>
 
@@ -3152,6 +3607,12 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetImplicitSize</span><span class="p">()</span>
 </code></pre></div>    </div>
+
+    <p>Notifies the layout system that attributes affecting the layout system have changed.</p>
+
+    <p>If the <a href="/docs/classes/classQskQuickItem/#enumvalue-deferredlayout">QskQuickItem::DeferredLayout</a> flag is enabled ( = default ) the cached <a href="/docs/classes/classQskQuickItem/#function-implicitsize">implicitSize()</a> gets invalidated and a QEvent::LayoutRequest is sent to the parent item ( like QWidget::updateGeometry ).</p>
+
+    <p>Otherwise the <a href="/docs/classes/classQskQuickItem/#function-implicitsize">implicitSize()</a> gets recalculated and layout updates can be executed using property bindings.</p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8cpp">QskQuickItem.cpp</a> in line 569.
 <br /><br /></p>
@@ -3168,6 +3629,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">geometry</span><span class="p">;</span>
 </code></pre></div>    </div>
 
+    <p>This property holds the geometry of the item relative to its parent item. When changing the geometry, the item receives a QskEvent::GeometryChange event.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-geometrychangeevent">geometryChangeEvent()</a>, <a href="/docs/classes/classQskQuickItem/#function-geometrychange">geometryChange()</a>, <a href="/docs/classes/classQskQuickItem/#property-rect">rect</a></p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 20.
 <br /><br /></p>
 
@@ -3180,6 +3645,10 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">rect</span><span class="p">;</span>
 </code></pre></div>    </div>
+
+    <p>This property returns the internal geometry of the item. It equals QRect(0, 0, width(), height() ).</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-geometrychangeevent">geometryChangeEvent()</a>, <a href="/docs/classes/classQskQuickItem/#function-geometrychange">geometryChange()</a>, <a href="/docs/classes/classQskQuickItem/#property-geometry">geometry</a></p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 21.
 <br /><br /></p>
@@ -3194,6 +3663,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">transparentForPositioners</span><span class="p">;</span>
 </code></pre></div>    </div>
 
+    <p>When transparentForPositioners is set the item indicates, that it should be excluded from any layout calculations. This flag is actually a concept of QQuickItem, that has not been exposed to its public API.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-istransparentforpositioner">isTransparentForPositioner()</a></p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 24.
 <br /><br /></p>
 
@@ -3206,6 +3679,17 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">tabFence</span><span class="p">;</span>
 </code></pre></div>    </div>
+
+    <p>The tabFence flag can be used to create local tab focus chains. It is usually used in combination with QQuickItem::ItemIsFocusScope.</p>
+
+    <p>QskPopup is an example where the focus tab chain is expected to continue with the first child instead of leaving the popup, when reaching its end.</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#function-istabfence">isTabFence()</a>, QQuickItem::ItemIsFocusScope</li>
+      <li>QQuickItem::ItemIsFocusScope</li>
+    </ul>
 
     <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 27.
 <br /><br /></p>
@@ -3220,6 +3704,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">polishOnResize</span><span class="p">;</span>
 </code></pre></div>    </div>
 
+    <p>When polishOnResize is set QQuickItem::polish() will be called automatically whenever the size of the item has been changed. This is usually necessary when the item is a container and the layout of its children depends on the size of the container.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-updatelayout">QskControl::updateLayout()</a>, <a href="/docs/classes/classQskControl/#property-autolayoutchildren">QskControl::autoLayoutChildren</a></p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 30.
 <br /><br /></p>
 
@@ -3232,6 +3720,17 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">visibleToParent</span><span class="p">;</span>
 </code></pre></div>    </div>
+
+    <p>Flag indicating if an item would become visible if its parentItem() is shown. The implementation relies on the internal explicitVisible flag, that has not been exposed by the public API of QQuickItem.</p>
+
+    <p>In many situations it is important to know if an item has been explicitly hidden because of a setVisible( false ) or it is a child of an item, that is in an invisible state. F,e for calculating the size hint for a hidden container it is necessary to know which children would stay hidden when the container becomes visible.</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskQuickItem/#function-isvisibletoparent">isVisibleToParent()</a></li>
+      <li>QQuickItem::setVisible()</li>
+    </ul>
 
     <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 32.
 <br /><br /></p>
@@ -3246,6 +3745,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">hasChildItems</span><span class="p">;</span>
 </code></pre></div>    </div>
 
+    <p>A property indicating if the item has child items.</p>
+
+    <p><strong>See also</strong>: QQuickItem::childItems(), QQuickItem::parentItem()</p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 33.
 <br /><br /></p>
 
@@ -3258,6 +3761,12 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">initiallyPainted</span><span class="p">;</span>
 </code></pre></div>    </div>
+
+    <p>Status flag indicating that there has already been a call of QQuickItem::updatePaintNode() since the item has become visible.</p>
+
+    <p>Before each initial call of updatePaintNode() the specific hook <a href="/docs/classes/classQskQuickItem/#function-abouttoshow">aboutToShow()</a> is called, that is intended to be overloaded.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#function-isinitiallypainted">isInitiallyPainted()</a>, <a href="/docs/classes/classQskQuickItem/#function-abouttoshow">aboutToShow()</a></p>
 
     <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 34.
 <br /><br /></p>
@@ -3272,6 +3781,12 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">UpdateFlags</span> <span class="n">updateFlags</span><span class="p">;</span>
 </code></pre></div>    </div>
 
+    <p><a href="/docs/classes/classQskQuickItem/">QskQuickItem</a> offers several tweaks to the Qt/Quick update cycle, that can be en/disabled individually.</p>
+
+    <p>The flags are a combination from bits that have been explicitly set by <a href="/docs/classes/classQskQuickItem/#function-setupdateflag">setUpdateFlag()</a> and those being derived from the aapplication wide default settings, that can be set with <a href="/docs/classes/classQskSetup/">QskSetup</a>.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#enum-updateflag">QskQuickItem::UpdateFlag</a>, <a href="/docs/classes/classQskQuickItem/#property-updateflags">QskQuickItem::updateFlags()</a>, QskSetup::itemUpdateFlags()</p>
+
     <p>Defined in <a href="../../files/QskQuickItem_8h">QskQuickItem.h</a> in line 36.
 <br /><br /></p>
 
@@ -3280,7 +3795,7 @@
 
 <hr />
 
-<p>Updated on 23 April 2021 at 11:41:03 CEST</p>
+<p>Updated on 23 April 2021 at 17:39:55 CEST</p>
 
           
           

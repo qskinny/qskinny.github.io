@@ -2,7 +2,7 @@
 <html lang="en">
     <head>    
 
-        <title>controls/QskPopupSkinlet.cpp - The QSkinny UI framework</title>
+        <title>classes - The QSkinny UI framework</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="A documentation theme"/>
@@ -1494,7 +1494,7 @@
       <a href="/docs/files/QskPlainTextRenderer_8h/">nodes/QskPlainTextRenderer.h</a>
     </li>
   
-    <li class="docs-menu-item current">
+    <li class="docs-menu-item">
       <a href="/docs/files/QskPopupSkinlet_8cpp/">controls/QskPopupSkinlet.cpp</a>
     </li>
   
@@ -2050,7 +2050,7 @@
       <a href="/docs/files/dir_546733639134b9431ef34ac72f6d1288/">graphic</a>
     </li>
   
-    <li class="docs-menu-item">
+    <li class="docs-menu-item current">
       <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
     </li>
   
@@ -2091,55 +2091,12 @@
     <article class="post type-docs">
       <div class="post-inside">
         <header class="post-header">
-          <h1 class="post-title line-left">controls/QskPopupSkinlet.cpp</h1>
+          <h1 class="post-title line-left">classes</h1>
         </header><!-- .post-header -->
         <div class="post-content">
-          <h2 id="source-code">Source code</h2>
+          <hr />
 
-<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp">   <span class="mi">1</span><span class="o">:</span> <span class="cm">/******************************************************************************
-   2:  * QSkinny - Copyright (C) 2016 Uwe Rathmann
-   3:  * This file may be used under the terms of the QSkinny License, Version 1.0
-   4:  *****************************************************************************/</span>
-   <span class="mi">5</span><span class="o">:</span> 
-   <span class="mi">6</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="s">"QskPopupSkinlet.h"</span>
-   <span class="mi">7</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="s">"QskPopup.h"</span>
-   <span class="mi">8</span><span class="o">:</span> 
-   <span class="mi">9</span><span class="o">:</span> <span class="n">QskPopupSkinlet</span><span class="o">::</span><span class="n">QskPopupSkinlet</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
-  <span class="mi">10</span><span class="o">:</span>     <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">skin</span> <span class="p">)</span>
-  <span class="mi">11</span><span class="o">:</span> <span class="p">{</span>
-  <span class="mi">12</span><span class="o">:</span>     <span class="n">appendNodeRoles</span><span class="p">(</span> <span class="p">{</span> <span class="n">OverlayRole</span> <span class="p">}</span> <span class="p">);</span>
-  <span class="mi">13</span><span class="o">:</span> <span class="p">}</span>
-  <span class="mi">14</span><span class="o">:</span> 
-  <span class="mi">15</span><span class="o">:</span> <span class="n">QskPopupSkinlet</span><span class="o">::~</span><span class="n">QskPopupSkinlet</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
-  <span class="mi">16</span><span class="o">:</span> 
-  <span class="mi">17</span><span class="o">:</span> <span class="n">QRectF</span> <span class="n">QskPopupSkinlet</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
-  <span class="mi">18</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
-  <span class="mi">19</span><span class="o">:</span> <span class="p">{</span>
-  <span class="mi">20</span><span class="o">:</span>     <span class="k">const</span> <span class="k">auto</span> <span class="n">popup</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskPopup</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
-  <span class="mi">21</span><span class="o">:</span> 
-  <span class="mi">22</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">Overlay</span> <span class="p">)</span>
-  <span class="mi">23</span><span class="o">:</span>         <span class="k">return</span> <span class="n">popup</span><span class="o">-&gt;</span><span class="n">overlayRect</span><span class="p">();</span>
-  <span class="mi">24</span><span class="o">:</span> 
-  <span class="mi">25</span><span class="o">:</span>     <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">subControl</span> <span class="p">);</span>
-  <span class="mi">26</span><span class="o">:</span> <span class="p">}</span>
-  <span class="mi">27</span><span class="o">:</span> 
-  <span class="mi">28</span><span class="o">:</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskPopupSkinlet</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span>
-  <span class="mi">29</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
-  <span class="mi">30</span><span class="o">:</span> <span class="p">{</span>
-  <span class="mi">31</span><span class="o">:</span>     <span class="k">switch</span> <span class="p">(</span> <span class="n">nodeRole</span> <span class="p">)</span>
-  <span class="mi">32</span><span class="o">:</span>     <span class="p">{</span>
-  <span class="mi">33</span><span class="o">:</span>         <span class="k">case</span> <span class="n">OverlayRole</span><span class="p">:</span>
-  <span class="mi">34</span><span class="o">:</span>             <span class="k">return</span> <span class="n">updateBoxNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">Overlay</span> <span class="p">);</span>
-  <span class="mi">35</span><span class="o">:</span>     <span class="p">}</span>
-  <span class="mi">36</span><span class="o">:</span> 
-  <span class="mi">37</span><span class="o">:</span>     <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
-  <span class="mi">38</span><span class="o">:</span> <span class="p">}</span>
-  <span class="mi">39</span><span class="o">:</span> 
-  <span class="mi">40</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="s">"moc_QskPopupSkinlet.cpp"</span></code></pre></figure>
-
-<hr />
-
-<p>Updated on 23 April 2021 at 17:39:58 CEST</p>
+<p>Updated on 23 April 2021 at 17:40:00 CEST</p>
 
           
           

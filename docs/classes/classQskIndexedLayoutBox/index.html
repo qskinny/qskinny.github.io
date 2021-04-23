@@ -2051,6 +2051,10 @@
     </li>
   
     <li class="docs-menu-item">
+      <a href="/docs/files/dir_642c141dc41d50796cd757b87656e351/">classes</a>
+    </li>
+  
+    <li class="docs-menu-item">
       <a href="/docs/files/dir_68267d1309a1af8e8297ef4c3efbcdba/">src</a>
     </li>
   
@@ -2090,7 +2094,10 @@
           <h1 class="post-title line-left">QskIndexedLayoutBox</h1>
         </header><!-- .post-header -->
         <div class="post-content">
-          <object type="image/svg+xml" data="../svg/classQskIndexedLayoutBox__inherit__graph.svg">
+          <p>Base class of layouts with index ordered elements. 
+<code class="language-plaintext highlighter-rouge">#include &lt;QskIndexedLayoutBox.h&gt;</code></p>
+
+<object type="image/svg+xml" data="../svg/classQskIndexedLayoutBox__inherit__graph.svg">
 </object>
 <p><br /></p>
 
@@ -2111,15 +2118,15 @@
   <tbody>
     <tr>
       <td> </td>
-      <td><strong><a href="/docs/classes/classQskIndexedLayoutBox/#function-qskindexedlayoutbox">QskIndexedLayoutBox</a></strong>(QQuickItem * parent =nullptr)</td>
+      <td><strong><a href="/docs/classes/classQskIndexedLayoutBox/#function-qskindexedlayoutbox">QskIndexedLayoutBox</a></strong>(QQuickItem * parent =nullptr)<br />Constructor.</td>
     </tr>
     <tr>
       <td> </td>
-      <td><strong><a href="/docs/classes/classQskIndexedLayoutBox/#function-~qskindexedlayoutbox">~QskIndexedLayoutBox</a></strong>() override</td>
+      <td><strong><a href="/docs/classes/classQskIndexedLayoutBox/#function-~qskindexedlayoutbox">~QskIndexedLayoutBox</a></strong>() override<br />Destructor.</td>
     </tr>
     <tr>
       <td>void</td>
-      <td><strong><a href="/docs/classes/classQskIndexedLayoutBox/#function-setautoaddchildren">setAutoAddChildren</a></strong>(bool on =true)</td>
+      <td><strong><a href="/docs/classes/classQskIndexedLayoutBox/#function-setautoaddchildren">setAutoAddChildren</a></strong>(bool on =true)<br />En/Disable auto appending of children.</td>
     </tr>
     <tr>
       <td>bool</td>
@@ -2182,7 +2189,7 @@
   <tbody>
     <tr>
       <td>bool</td>
-      <td><strong><a href="/docs/classes/classQskIndexedLayoutBox/#property-autoaddchildren">autoAddChildren</a></strong></td>
+      <td><strong><a href="/docs/classes/classQskIndexedLayoutBox/#property-autoaddchildren">autoAddChildren</a></strong> <br />Flag controlling whether to automatically append children to the layout.</td>
     </tr>
   </tbody>
 </table>
@@ -2195,6 +2202,15 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">explicit</span> <span class="n">QskIndexedLayoutBox</span><span class="p">(</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
 </code></pre></div>    </div>
+
+    <p>Constructor.</p>
+
+    <p>Create a layout having autoAddChildren set to false.</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>parent</strong> Parent item</li>
+    </ul>
 
     <p>Defined in <a href="../../files/QskIndexedLayoutBox_8cpp">QskIndexedLayoutBox.cpp</a> in line 22.
 <br /><br /></p>
@@ -2209,6 +2225,8 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskIndexedLayoutBox</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
+    <p>Destructor.</p>
+
     <p>Defined in <a href="../../files/QskIndexedLayoutBox_8cpp">QskIndexedLayoutBox.cpp</a> in line 29.
 <br /><br /></p>
 
@@ -2222,6 +2240,17 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setAutoAddChildren</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span> <span class="nb">true</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
+    <p>En/Disable auto appending of children.</p>
+
+    <p>When <a href="/docs/classes/classQskIndexedLayoutBox/#property-autoaddchildren">autoAddChildren()</a> is enabled new children are automatically appended to the layout. Otherwise items have to be inserted manually using addItem() or insertItem().</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>on</strong> When true autoAddChildren is enabled</li>
+    </ul>
+
+    <p><strong>Note</strong>: Existing children, that have not been inserted before remain being not seen by the layout.</p>
+
     <p>Defined in <a href="../../files/QskIndexedLayoutBox_8cpp">QskIndexedLayoutBox.cpp</a> in line 33.
 <br /><br /></p>
 
@@ -2234,6 +2263,8 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">autoAddChildren</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
+
+    <p><strong>Returns</strong>: Value of the <a href="/docs/classes/classQskIndexedLayoutBox/#property-autoaddchildren">autoAddChildren</a> property</p>
 
     <p>Defined in <a href="../../files/QskIndexedLayoutBox_8cpp">QskIndexedLayoutBox.cpp</a> in line 42.
 <br /><br /></p>
@@ -2249,6 +2280,10 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span> <span class="n">ItemChange</span> <span class="p">,</span>  <span class="k">const</span> <span class="n">ItemChangeData</span> <span class="o">&amp;</span>  <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
+
+    <p>Checking ItemChildAddedChange/ItemChildRemovedChange changes to implement the <a href="/docs/classes/classQskIndexedLayoutBox/#property-autoaddchildren">autoAddChildren</a> mode</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskIndexedLayoutBox/#property-autoaddchildren">autoAddChildren</a></p>
 
     <p>Defined in <a href="../../files/QskIndexedLayoutBox_8cpp">QskIndexedLayoutBox.cpp</a> in line 47.
 <br /><br /></p>
@@ -2291,7 +2326,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">autoAddChildrenChanged</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p><br /><br /></p>
+    <p>The autoAddChildren property has changed</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskIndexedLayoutBox/#function-setautoaddchildren">setAutoAddChildren()</a>, <a href="/docs/classes/classQskIndexedLayoutBox/#property-autoaddchildren">autoAddChildren()</a>
+<br /><br /></p>
 
   </div>
 </div>
@@ -2305,6 +2343,16 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">autoAddChildren</span><span class="p">;</span>
 </code></pre></div>    </div>
 
+    <p>Flag controlling whether to automatically append children to the layout.</p>
+
+    <p>When autoAddChildren is enabled new children are automatically appended to the layout. Otherwise items have to be inserted manually using addItem() or insertItem().</p>
+
+    <p><strong>Note</strong>: Children being transparent for positioners are ignored</p>
+
+    <p>Access functions:</p>
+
+    <p><a href="/docs/classes/classQskIndexedLayoutBox/#property-autoaddchildren">autoAddChildren()</a>, <a href="/docs/classes/classQskIndexedLayoutBox/#function-setautoaddchildren">setAutoAddChildren()</a>, <a href="/docs/classes/classQskIndexedLayoutBox/#signal-autoaddchildrenchanged">autoAddChildrenChanged()</a></p>
+
     <p>Defined in <a href="../../files/QskIndexedLayoutBox_8h">QskIndexedLayoutBox.h</a> in line 16.
 <br /><br /></p>
 
@@ -2313,7 +2361,7 @@
 
 <hr />
 
-<p>Updated on 23 April 2021 at 11:41:04 CEST</p>
+<p>Updated on 23 April 2021 at 17:39:56 CEST</p>
 
           
           
