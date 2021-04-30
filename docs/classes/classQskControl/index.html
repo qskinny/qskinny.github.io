@@ -2120,7 +2120,7 @@
   <tbody>
     <tr>
       <td>enum</td>
-      <td><strong><a href="/docs/classes/classQskControl/#enum-layouthint">LayoutHint</a></strong> {<br />    RetainSizeWhenHidden = 1 « 0,<br />    LayoutOutWhenHidden = 1 « 1<br />}</td>
+      <td><strong><a href="/docs/classes/classQskControl/#enum-layouthint">LayoutHint</a></strong> {<br />    RetainSizeWhenHidden = 1 « 0,<br />    LayoutWhenHidden = 1 « 1<br />}</td>
     </tr>
   </tbody>
 </table>
@@ -2656,7 +2656,7 @@
 
 <p>States:</p>
 
-<p>Disabled, Hovered, Focused</p>
+<p><a href="/docs/classes/classQskControl/#variable-disabled">QskControl::Disabled</a>, <a href="/docs/classes/classQskControl/#variable-hovered">QskControl::Hovered</a>, <a href="/docs/classes/classQskControl/#variable-focused">QskControl::Focused</a></p>
 
 <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 22.
 <br /><br /></p>
@@ -2683,7 +2683,10 @@
       </tbody>
     </table>
 
-    <p>bla</p>
+    <p>When being enabled the layout code should retain the necessary space
+for the control even when it is hidden.</p>
+
+    <p><br /><b>See also in the Qt documentation:</b> <a href="https://doc.qt.io/qt-5/qsizepolicy.html#retainSizeWhenHidden" style="color: #17a81a" target="_blank">QSizePolicy::retainSizeWhenHidden() ↗</a></p>
 
     <table>
       <thead>
@@ -2694,15 +2697,18 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>LayoutOutWhenHidden</strong></td>
+          <td><strong>LayoutWhenHidden</strong></td>
           <td>1 « 1</td>
         </tr>
       </tbody>
     </table>
 
-    <p>bla</p>
+    <p>When being enabled the layout code should set the geometry
+to the control - even if it is not visible.</p>
 
-    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-setlayouthint">setLayoutHint()</a>, <a href="/docs/classes/classQskControl/#function-testlayouthint">testLayoutHint()</a>, <a href="/docs/classes/classQskControl/#function-setlayouthints">setLayoutHints()</a>, <a href="/docs/classes/classQskControl/#function-layouthints">layoutHints()</a></p>
+    <p>Hints, that can be used by the layout code</p>
+
+    <p><strong>See also</strong>: setLayoutHint(), testLayoutHint(), setLayoutHints(), layoutHints() <a href="/docs/classes/classQskControl/#function-setautolayoutchildren">setAutoLayoutChildren()</a>, <a href="/docs/classes/classQskLinearBox/">QskLinearBox</a>, QskGridBox, QskStackBox</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 61.
 <br /><br /></p>
@@ -2719,8 +2725,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskControl</span><span class="p">(</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 32.
 <br /><br /></p>
 
@@ -2733,8 +2737,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskControl</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 44.
 <br /><br /></p>
@@ -2749,7 +2751,36 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMargins</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">margin</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p>Sets the margins around the contents of the control</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>The value is stored in the local hint table for the aspect: QskControl::Control</td>
+          <td><a href="/docs/classes/classQskAspect/#enumvalue-metric">QskAspect::Metric</a></td>
+          <td>QskAspect::Margin</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>margin</strong> Margin for all sides</li>
+    </ul>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-contentsrect">contentsRect()</a>, <a href="/docs/classes/classQskControl/#property-margins">margins()</a>, <a href="/docs/classes/classQskSkinnable/#function-setmarginhint">QskSkinnable::setMarginHint()</a></p>
+
+    <p>Aspect</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>QskControl::Control</td>
+          <td><a href="/docs/classes/classQskAspect/#enumvalue-metric">QskAspect::Metric</a></td>
+          <td>QskAspect::Margin</td>
+        </tr>
+      </tbody>
+    </table>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 162.
 <br /><br /></p>
@@ -2764,7 +2795,26 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMargins</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMarginsF</span> <span class="o">&amp;</span> <span class="n">margins</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p>Sets the margins around the contents of the control</p>
+
+    <p><strong>Parameters</strong>:</p>
+    <ul>
+      <li><strong>margins</strong> Margins</li>
+    </ul>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-contentsrect">contentsRect()</a>, <a href="/docs/classes/classQskControl/#property-margins">margins()</a><br /><b>See also in the Qt documentation:</b> <a href="https://doc.qt.io/qt-5/qevent.html#ContentsRectChange" style="color: #17a81a" target="_blank">QEvent::ContentsRectChange ↗</a></p>
+
+    <p>Aspect</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>QskControl::Control</td>
+          <td><a href="/docs/classes/classQskAspect/#enumvalue-metric">QskAspect::Metric</a></td>
+          <td>QskAspect::Margin</td>
+        </tr>
+      </tbody>
+    </table>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 167.
 <br /><br /></p>
@@ -2779,7 +2829,21 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetMargins</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p>Reset the margins to the default value provided from the skin</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-contentsrect">contentsRect()</a>, <a href="/docs/classes/classQskControl/#function-setmargins">setMargins()</a>, <a href="/docs/classes/classQskControl/#property-margins">margins()</a><br /><b>See also in the Qt documentation:</b> <a href="https://doc.qt.io/qt-5/qevent.html#ContentsRectChange" style="color: #17a81a" target="_blank">QEvent::ContentsRectChange ↗</a></p>
+
+    <p>Aspect</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>QskControl::Control</td>
+          <td><a href="/docs/classes/classQskAspect/#enumvalue-metric">QskAspect::Metric</a></td>
+          <td>QskAspect::Margin</td>
+        </tr>
+      </tbody>
+    </table>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 178.
 <br /><br /></p>
@@ -2794,7 +2858,21 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QMarginsF</span> <span class="n">margins</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p><strong>Returns</strong>: margins around the contents of the control</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-contentsrect">contentsRect()</a>, <a href="/docs/classes/classQskControl/#function-setmargins">setMargins()</a><br /><b>See also in the Qt documentation:</b> <a href="https://doc.qt.io/qt-5/qevent.html#ContentsRectChange" style="color: #17a81a" target="_blank">QEvent::ContentsRectChange ↗</a></p>
+
+    <p>Aspect</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>QskControl::Control</td>
+          <td><a href="/docs/classes/classQskAspect/#enumvalue-metric">QskAspect::Metric</a></td>
+          <td>QskAspect::Margin</td>
+        </tr>
+      </tbody>
+    </table>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 187.
 <br /><br /></p>
@@ -2809,7 +2887,14 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setBackgroundColor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p>A conveninece method that enables the autoFillBackground property and sets a solid color as background. Usually used for debugging layout problems.</p>
+
+    <p><strong>See also</strong>:</p>
+
+    <ul>
+      <li><a href="/docs/classes/classQskControl/#function-setbackground">setBackground()</a>, <a href="/docs/classes/classQskControl/#function-setautofillbackground">setAutoFillBackground()</a></li>
+      <li><a href="/docs/classes/classQskQuickItem/#enumvalue-debugforcebackground">QskQuickItem::DebugForceBackground</a></li>
+    </ul>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 139.
 <br /><br /></p>
@@ -2824,7 +2909,20 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setBackground</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGradient</span> <span class="o">&amp;</span> <span class="n">gradient</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p>Set the gradient that is used to fill the background, when autoFillBackground is enabled.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-resetbackground">resetBackground()</a>, <a href="/docs/classes/classQskControl/#property-background">background()</a>, <a href="/docs/classes/classQskControl/#property-autofillbackground">autoFillBackground()</a></p>
+
+    <p>Aspect</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>QskControl::Control</td>
+          <td><a href="/docs/classes/classQskAspect/#enumvalue-color">QskAspect::Color</a></td>
+        </tr>
+      </tbody>
+    </table>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 145.
 <br /><br /></p>
@@ -2839,7 +2937,20 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetBackground</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p>Reset the background gradient to the default colors from the skin</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-setbackground">setBackground()</a>, <a href="/docs/classes/classQskControl/#property-background">background()</a>, <a href="/docs/classes/classQskControl/#property-autofillbackground">autoFillBackground()</a></p>
+
+    <p>Aspect</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>QskControl::Control</td>
+          <td><a href="/docs/classes/classQskAspect/#enumvalue-color">QskAspect::Color</a></td>
+        </tr>
+      </tbody>
+    </table>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 151.
 <br /><br /></p>
@@ -2854,7 +2965,20 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGradient</span> <span class="n">background</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p><strong>Returns</strong>: Gradient that is used to fill the background, when autoFillBackground is enabled.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-setbackground">setBackground()</a>, <a href="/docs/classes/classQskControl/#function-resetbackground">resetBackground()</a>, <a href="/docs/classes/classQskControl/#property-autofillbackground">autoFillBackground()</a></p>
+
+    <p>Aspect</p>
+
+    <table>
+      <tbody>
+        <tr>
+          <td>QskControl::Control</td>
+          <td><a href="/docs/classes/classQskAspect/#enumvalue-color">QskAspect::Color</a></td>
+        </tr>
+      </tbody>
+    </table>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 157.
 <br /><br /></p>
@@ -2869,7 +2993,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">contentsRect</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#property-margins">margins()</a>, <a href="/docs/classes/classQskControl/#function-setmargins">setMargins()</a>,</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 192.
 <br /><br /></p>
@@ -2884,8 +3008,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">layoutRect</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 923.
 <br /><br /></p>
 
@@ -2898,8 +3020,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QRectF</span> <span class="n">layoutRectForSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 933.
 <br /><br /></p>
@@ -2914,8 +3034,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QRectF</span> <span class="n">gestureRect</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 939.
 <br /><br /></p>
 
@@ -2928,8 +3046,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QRectF</span> <span class="n">focusIndicatorRect</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 944.
 <br /><br /></p>
@@ -2944,8 +3060,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QRectF</span> <span class="n">focusIndicatorClipRect</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 949.
 <br /><br /></p>
 
@@ -2958,8 +3072,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 197.
 <br /><br /></p>
@@ -2974,8 +3086,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span>  <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 202.
 <br /><br /></p>
 
@@ -2988,8 +3098,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">subControlContentsRect</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 211.
 <br /><br /></p>
@@ -3004,8 +3112,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">subControlContentsRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span>  <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 216.
 <br /><br /></p>
 
@@ -3019,7 +3125,9 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setAutoFillBackground</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p>Set or clear the autoFillBackground property</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#property-autofillbackground">autoFillBackground()</a></p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 59.
 <br /><br /></p>
@@ -3034,7 +3142,9 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">autoFillBackground</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p><strong>Returns</strong>: Value of the autoFillBackground property</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-setautofillbackground">setAutoFillBackground()</a></p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 69.
 <br /><br /></p>
@@ -3049,7 +3159,9 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setAutoLayoutChildren</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p>Set or clear the autoLayoutChildren property</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#property-autofillbackground">autoFillBackground()</a></p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 74.
 <br /><br /></p>
@@ -3064,7 +3176,9 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">autoLayoutChildren</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
+    <p><strong>Returns</strong>: Value of the autoLayoutChildren property</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#property-autolayoutchildren">autoLayoutChildren()</a></p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 85.
 <br /><br /></p>
@@ -3079,8 +3193,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWheelEnabled</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 90.
 <br /><br /></p>
 
@@ -3093,8 +3205,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isWheelEnabled</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 100.
 <br /><br /></p>
@@ -3109,8 +3219,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setFocusPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">FocusPolicy</span> <span class="n">policy</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 105.
 <br /><br /></p>
 
@@ -3123,8 +3231,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">FocusPolicy</span> <span class="n">focusPolicy</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 130.
 <br /><br /></p>
@@ -3139,8 +3245,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="n">horizontalPolicy</span><span class="p">,</span>  <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="n">verticalPolicy</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 295.
 <br /><br /></p>
 
@@ -3153,8 +3257,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span> <span class="n">policy</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 278.
 <br /><br /></p>
@@ -3169,8 +3271,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span>  <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="n">policy</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 302.
 <br /><br /></p>
 
@@ -3183,8 +3283,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskSizePolicy</span> <span class="n">sizePolicy</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 314.
 <br /><br /></p>
@@ -3199,8 +3297,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="n">sizePolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 319.
 <br /><br /></p>
 
@@ -3213,8 +3309,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setLayoutAlignmentHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 332.
 <br /><br /></p>
@@ -3229,8 +3323,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">layoutAlignmentHint</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 343.
 <br /><br /></p>
 
@@ -3243,8 +3335,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setLayoutHint</span><span class="p">(</span> <span class="n">LayoutHint</span> <span class="n">flag</span><span class="p">,</span>  <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span> <span class="nb">true</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 348.
 <br /><br /></p>
@@ -3259,8 +3349,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">testLayoutHint</span><span class="p">(</span> <span class="n">LayoutHint</span> <span class="n">hint</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 362.
 <br /><br /></p>
 
@@ -3273,8 +3361,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setLayoutHints</span><span class="p">(</span> <span class="n">LayoutHints</span> <span class="n">hints</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 367.
 <br /><br /></p>
@@ -3289,8 +3375,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">LayoutHints</span> <span class="n">layoutHints</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 377.
 <br /><br /></p>
 
@@ -3303,8 +3387,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isVisibleToLayout</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 382.
 <br /><br /></p>
@@ -3319,8 +3401,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMinimumSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 410.
 <br /><br /></p>
 
@@ -3333,8 +3413,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMinimumSize</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 415.
 <br /><br /></p>
@@ -3349,8 +3427,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMinimumWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 420.
 <br /><br /></p>
 
@@ -3363,8 +3439,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMinimumHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 426.
 <br /><br /></p>
@@ -3379,8 +3453,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMaximumSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 432.
 <br /><br /></p>
 
@@ -3393,8 +3465,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMaximumSize</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 437.
 <br /><br /></p>
@@ -3409,8 +3479,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMaximumWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 442.
 <br /><br /></p>
 
@@ -3423,8 +3491,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMaximumHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 448.
 <br /><br /></p>
@@ -3439,8 +3505,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setPreferredSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 388.
 <br /><br /></p>
 
@@ -3453,8 +3517,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setPreferredSize</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 393.
 <br /><br /></p>
@@ -3469,8 +3531,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setPreferredWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 398.
 <br /><br /></p>
 
@@ -3483,8 +3543,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setPreferredHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 404.
 <br /><br /></p>
@@ -3499,8 +3557,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setFixedSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 454.
 <br /><br /></p>
 
@@ -3513,8 +3569,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setFixedSize</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 472.
 <br /><br /></p>
@@ -3529,8 +3583,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setFixedWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 477.
 <br /><br /></p>
 
@@ -3543,8 +3595,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setFixedHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 498.
 <br /><br /></p>
@@ -3559,8 +3609,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setExplicitSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">whichHint</span><span class="p">,</span>  <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 533.
 <br /><br /></p>
 
@@ -3573,8 +3621,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setExplicitSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">whichHint</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span>  <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 550.
 <br /><br /></p>
@@ -3589,8 +3635,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetExplicitSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">whichHint</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 519.
 <br /><br /></p>
 
@@ -3603,8 +3647,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">minimumSize</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 241.
 <br /><br /></p>
@@ -3619,8 +3661,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">maximumSize</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 246.
 <br /><br /></p>
 
@@ -3633,8 +3673,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">preferredSize</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 251.
 <br /><br /></p>
@@ -3649,8 +3687,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">explicitSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">whichHint</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 556.
 <br /><br /></p>
 
@@ -3663,8 +3699,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">implicitSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">whichHint</span><span class="p">,</span>  <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 564.
 <br /><br /></p>
@@ -3679,8 +3713,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">sizeHint</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 236.
 <br /><br /></p>
 
@@ -3693,8 +3725,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">heightForWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 671.
 <br /><br /></p>
@@ -3709,8 +3739,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">widthForHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 679.
 <br /><br /></p>
 
@@ -3723,8 +3751,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">effectiveSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>  <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span> <span class="o">=</span> <span class="n">QSizeF</span><span class="p">()</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 592.
 <br /><br /></p>
@@ -3739,8 +3765,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">sizeConstraint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>  <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span> <span class="o">=</span> <span class="n">QSizeF</span><span class="p">()</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 687.
 <br /><br /></p>
 
@@ -3753,8 +3777,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">sizeConstraint</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 231.
 <br /><br /></p>
@@ -3769,8 +3791,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QLocale</span> <span class="n">locale</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 225.
 <br /><br /></p>
 
@@ -3784,8 +3804,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetLocale</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 244.
 <br /><br /></p>
 
@@ -3798,8 +3816,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="o">&gt;</span> <span class="n">subControls</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 1008.
 <br /><br /></p>
@@ -3870,8 +3886,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 693.
 <br /><br /></p>
 
@@ -3884,8 +3898,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">gestureEvent</span><span class="p">(</span> <span class="n">QskGestureEvent</span> <span class="o">*</span>  <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 813.
 <br /><br /></p>
@@ -3900,8 +3912,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">hoverEnterEvent</span><span class="p">(</span> <span class="n">QHoverEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 817.
 <br /><br /></p>
 
@@ -3914,8 +3924,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">hoverLeaveEvent</span><span class="p">(</span> <span class="n">QHoverEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 823.
 <br /><br /></p>
@@ -3930,8 +3938,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">childMouseEventFilter</span><span class="p">(</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>  <span class="n">QEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 754.
 <br /><br /></p>
 
@@ -3944,8 +3950,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">bool</span> <span class="n">gestureFilter</span><span class="p">(</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="p">,</span>  <span class="n">QEvent</span> <span class="o">*</span>  <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 808.
 <br /><br /></p>
@@ -3960,8 +3964,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span> <span class="n">ItemChange</span> <span class="p">,</span>  <span class="k">const</span> <span class="n">ItemChangeData</span> <span class="o">&amp;</span>  <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 829.
 <br /><br /></p>
 
@@ -3974,8 +3976,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">geometryChange</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">newGeometry</span><span class="p">,</span>  <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">oldGeometry</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 866.
 <br /><br /></p>
@@ -3990,8 +3990,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="n">horizontalPolicy</span><span class="p">,</span>  <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="n">verticalPolicy</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 255.
 <br /><br /></p>
 
@@ -4005,8 +4003,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">updateResources</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 958.
 <br /><br /></p>
 
@@ -4019,8 +4015,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">updateLayout</span><span class="p">()</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p><strong>Reimplemented by</strong>: <a href="/docs/classes/classQskLinearBox/#function-updatelayout">QskLinearBox::updateLayout</a></p>
 
@@ -4037,8 +4031,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QSizeF</span> <span class="n">contentsSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>  <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 962.
 <br /><br /></p>
 
@@ -4051,8 +4043,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>  <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p><strong>Reimplemented by</strong>: <a href="/docs/classes/classQskLinearBox/#function-layoutsizehint">QskLinearBox::layoutSizeHint</a></p>
 
@@ -4071,8 +4061,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">backgroundChanged</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p><br /><br /></p>
 
   </div>
@@ -4084,8 +4072,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">marginsChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMarginsF</span> <span class="o">&amp;</span>  <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p><br /><br /></p>
 
@@ -4099,8 +4085,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">focusIndicatorRectChanged</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p><br /><br /></p>
 
   </div>
@@ -4112,8 +4096,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">localeChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span> <span class="o">&amp;</span>  <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p><br /><br /></p>
 
@@ -4127,8 +4109,6 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">focusPolicyChanged</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>bla</p>
-
     <p><br /><br /></p>
 
   </div>
@@ -4140,8 +4120,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">wheelEnabledChanged</span><span class="p">()</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p><br /><br /></p>
 
@@ -4156,8 +4134,6 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setLocale</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span> <span class="o">&amp;</span> <span class="n">locale</span> <span class="p">)</span>
 </code></pre></div>    </div>
-
-    <p>bla</p>
 
     <p>Defined in <a href="../../files/QskControl_8cpp">QskControl.cpp</a> in line 230.
 <br /><br /></p>
@@ -4176,7 +4152,7 @@
 
     <p>Access functions:</p>
 
-    <p><a href="/docs/classes/classQskControl/#property-locale">locale()</a>, <a href="/docs/classes/classQskControl/#slot-setlocale">setLocale()</a>, <a href="/docs/classes/classQskControl/#function-resetlocale">resetLocale()</a>, <a href="/docs/classes/classQskControl/#signal-localechanged">localeChanged()</a></p>
+    <p><a href="/docs/classes/classQskControl/#property-locale">locale()</a>, setLocale(), resetLocale(), localeChanged()</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 26.
 <br /><br /></p>
@@ -4191,7 +4167,9 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">autoFillBackground</span><span class="p">;</span>
 </code></pre></div>    </div>
 
-    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-setbackgroundcolor">setBackgroundColor()</a></p>
+    <p>This property holds whether the background is filled automatically with the background gradient.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#property-background">background()</a><br /><b>See also in the Qt documentation:</b> <a href="https://doc.qt.io/qt-5/qwidget.html#autoFillBackground-prop" style="color: #17a81a" target="_blank">QWidget::autoFillBackground ↗</a></p>
 
     <p>Access functions:</p>
 
@@ -4229,7 +4207,7 @@
 
     <p>Access functions:</p>
 
-    <p><a href="/docs/classes/classQskControl/#property-focuspolicy">focusPolicy()</a>, <a href="/docs/classes/classQskControl/#function-setfocuspolicy">setFocusPolicy()</a>, <a href="/docs/classes/classQskControl/#signal-focuspolicychanged">focusPolicyChanged()</a></p>
+    <p><a href="/docs/classes/classQskControl/#property-focuspolicy">focusPolicy()</a>, setFocusPolicy(), focusPolicyChanged()</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 35.
 <br /><br /></p>
@@ -4246,7 +4224,7 @@
 
     <p>Access functions:</p>
 
-    <p><a href="/docs/classes/classQskControl/#function-iswheelenabled">isWheelEnabled()</a>, <a href="/docs/classes/classQskControl/#function-setwheelenabled">setWheelEnabled()</a>, <a href="/docs/classes/classQskControl/#signal-wheelenabledchanged">wheelEnabledChanged()</a></p>
+    <p>isWheelEnabled(), setWheelEnabled(), wheelEnabledChanged()</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 38.
 <br /><br /></p>
@@ -4263,7 +4241,7 @@
 
     <p>Access functions:</p>
 
-    <p><a href="/docs/classes/classQskControl/#function-isvisibletolayout">isVisibleToLayout()</a></p>
+    <p>isVisibleToLayout()</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 40.
 <br /><br /></p>
@@ -4280,7 +4258,7 @@
 
     <p>Access functions:</p>
 
-    <p><a href="/docs/classes/classQskControl/#property-margins">margins()</a>, <a href="/docs/classes/classQskControl/#function-setmargins">setMargins()</a>, <a href="/docs/classes/classQskControl/#function-resetmargins">resetMargins()</a>, <a href="/docs/classes/classQskControl/#signal-marginschanged">marginsChanged()</a></p>
+    <p><a href="/docs/classes/classQskControl/#property-margins">margins()</a>, <a href="/docs/classes/classQskControl/#function-setmargins">setMargins()</a>, <a href="/docs/classes/classQskControl/#function-resetmargins">resetMargins()</a>, marginsChanged()</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 43.
 <br /><br /></p>
@@ -4297,7 +4275,7 @@
 
     <p>Access functions:</p>
 
-    <p><a href="/docs/classes/classQskControl/#property-background">background()</a>, <a href="/docs/classes/classQskControl/#function-setbackground">setBackground()</a>, <a href="/docs/classes/classQskControl/#function-resetbackground">resetBackground()</a>, <a href="/docs/classes/classQskControl/#signal-backgroundchanged">backgroundChanged()</a></p>
+    <p><a href="/docs/classes/classQskControl/#property-background">background()</a>, <a href="/docs/classes/classQskControl/#function-setbackground">setBackground()</a>, <a href="/docs/classes/classQskControl/#function-resetbackground">resetBackground()</a>, backgroundChanged()</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 46.
 <br /><br /></p>
@@ -4314,7 +4292,7 @@
 
     <p>Access functions:</p>
 
-    <p><a href="/docs/classes/classQskControl/#property-sizepolicy">sizePolicy()</a>, <a href="/docs/classes/classQskControl/#function-setsizepolicy">setSizePolicy()</a></p>
+    <p><a href="/docs/classes/classQskControl/#property-sizepolicy">sizePolicy()</a>, setSizePolicy()</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 48.
 <br /><br /></p>
@@ -4329,11 +4307,11 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">minimumSize</span><span class="p">;</span>
 </code></pre></div>    </div>
 
-    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-effectivesizehint">effectiveSizeHint()</a>, <a href="/docs/classes/classQskControl/#function-setexplicitsizehint">setExplicitSizeHint()</a><a href="/docs/classes/classQskControl/#function-setminimumwidth">setMinimumWidth()</a>, <a href="/docs/classes/classQskControl/#function-setminimumheight">setMinimumHeight()</a></p>
+    <p><strong>See also</strong>: effectiveSizeHint(), setExplicitSizeHint() setMinimumWidth(), setMinimumHeight()</p>
 
     <p>Access functions:</p>
 
-    <p><a href="/docs/classes/classQskControl/#property-minimumsize">minimumSize()</a>, <a href="/docs/classes/classQskControl/#function-setminimumsize">setMinimumSize()</a></p>
+    <p><a href="/docs/classes/classQskControl/#property-minimumsize">minimumSize()</a>, setMinimumSize()</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 50.
 <br /><br /></p>
@@ -4348,11 +4326,11 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">maximumSize</span><span class="p">;</span>
 </code></pre></div>    </div>
 
-    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-effectivesizehint">effectiveSizeHint()</a>, <a href="/docs/classes/classQskControl/#function-setexplicitsizehint">setExplicitSizeHint()</a><a href="/docs/classes/classQskControl/#function-setmaximumwidth">setMaximumWidth()</a>, <a href="/docs/classes/classQskControl/#function-setmaximumheight">setMaximumHeight()</a></p>
+    <p><strong>See also</strong>: effectiveSizeHint(), setExplicitSizeHint() setMaximumWidth(), setMaximumHeight()</p>
 
     <p>Access functions:</p>
 
-    <p><a href="/docs/classes/classQskControl/#property-maximumsize">maximumSize()</a>, <a href="/docs/classes/classQskControl/#function-setmaximumsize">setMaximumSize()</a></p>
+    <p><a href="/docs/classes/classQskControl/#property-maximumsize">maximumSize()</a>, setMaximumSize()</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 51.
 <br /><br /></p>
@@ -4367,11 +4345,11 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">preferredSize</span><span class="p">;</span>
 </code></pre></div>    </div>
 
-    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#function-effectivesizehint">effectiveSizeHint()</a>, <a href="/docs/classes/classQskControl/#function-setexplicitsizehint">setExplicitSizeHint()</a>, <a href="/docs/classes/classQskControl/#function-setpreferredwidth">setPreferredWidth()</a>, <a href="/docs/classes/classQskControl/#function-setpreferredheight">setPreferredHeight()</a></p>
+    <p><strong>See also</strong>: effectiveSizeHint(), setExplicitSizeHint(), setPreferredWidth(), setPreferredHeight()</p>
 
     <p>Access functions:</p>
 
-    <p><a href="/docs/classes/classQskControl/#property-preferredsize">preferredSize()</a>, <a href="/docs/classes/classQskControl/#function-setpreferredsize">setPreferredSize()</a></p>
+    <p><a href="/docs/classes/classQskControl/#property-preferredsize">preferredSize()</a>, setPreferredSize()</p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 52.
 <br /><br /></p>
@@ -4405,6 +4383,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">Disabled</span><span class="p">;</span>
 </code></pre></div>    </div>
 
+    <p>A state bit that is set, when QQuickItem::isEnabled() == false.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskQuickItem/#slot-setdisabled">QskQuickItem::setDisabled()</a><br /><b>See also in the Qt documentation:</b> <a href="https://doc.qt.io/qt-5/qquickitem.html#enabled-prop" style="color: #17a81a" target="_blank">QQuickItem::enabled ↗</a></p>
+
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 58.
 <br /><br /></p>
 
@@ -4417,6 +4399,12 @@
   <div class="qskinny-inner-block">
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">Hovered</span><span class="p">;</span>
 </code></pre></div>    </div>
+
+    <p>A state bit that is set, when the item is hovered
+It allows to define a specific representation in the skin,
+when being hovered.</p>
+
+    <p><br /><b>See also in the Qt documentation:</b> <a href="https://doc.qt.io/qt-5/qquickitem.html#acceptHoverEvents" style="color: #17a81a" target="_blank">QQuickItem::acceptHoverEvents() ↗</a>, <a href="https://doc.qt.io/qt-5/qquickitem.html#hoverEnterEvent" style="color: #17a81a" target="_blank">QQuickItem::hoverEnterEvent() ↗</a>, <a href="https://doc.qt.io/qt-5/qquickitem.html#hoverLeaveEvent" style="color: #17a81a" target="_blank">QQuickItem::hoverLeaveEvent() ↗</a></p>
 
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 58.
 <br /><br /></p>
@@ -4431,6 +4419,10 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">Focused</span><span class="p">;</span>
 </code></pre></div>    </div>
 
+    <p>A state bit that is set, when the item is the active focus item</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskControl/#property-focuspolicy">focusPolicy</a><br /><b>See also in the Qt documentation:</b> <a href="https://doc.qt.io/qt-5/qquickitem.html#acceptHoverEvents" style="color: #17a81a" target="_blank">QQuickItem::acceptHoverEvents() ↗</a>, <a href="https://doc.qt.io/qt-5/qquickitem.html#focusInEvent" style="color: #17a81a" target="_blank">QQuickItem::focusInEvent() ↗</a>, <a href="https://doc.qt.io/qt-5/qquickitem.html#focusOutEvent" style="color: #17a81a" target="_blank">QQuickItem::focusOutEvent() ↗</a></p>
+
     <p>Defined in <a href="../../files/QskControl_8h">QskControl.h</a> in line 58.
 <br /><br /></p>
 
@@ -4439,7 +4431,7 @@
 
 <hr />
 
-<p>Updated on 23 April 2021 at 17:39:57 CEST</p>
+<p>Updated on 30 April 2021 at 10:41:47 CEST</p>
 
           
           

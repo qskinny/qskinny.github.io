@@ -2818,249 +2818,255 @@
  <span class="mi">720</span><span class="o">:</span> 
  <span class="mi">721</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="mi">1</span>
  <span class="mi">722</span><span class="o">:</span>             <span class="k">auto</span> <span class="n">oldWindow</span> <span class="o">=</span> <span class="n">qskReleasedWindowCounter</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">();</span>
- <span class="mi">723</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">oldWindow</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">oldWindow</span><span class="o">-&gt;</span><span class="n">activeFocusItem</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
- <span class="mi">724</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">725</span><span class="o">:</span>                 <span class="cm">/*
- 726:                     Removing an item from the scene might result in
- 727:                     changes of the active focus item. Unfortunately the corresponding
- 728:                     FocusIn/Out events are sent, while the item tree is in an
- 729:                     invalid state.
- 730:                     When having event handlers, that do modifications of the focus
- 731:                     ( f.e. assigning the local focus, inside of a focus scope )
- 732:                     we might end up with having a dangling pointer for
- 733:                     oldWindow-&gt;activeFocusItem().
- 734:                  */</span>
- <span class="mi">735</span><span class="o">:</span> 
- <span class="mi">736</span><span class="o">:</span>                 <span class="k">auto</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">QQuickWindowPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">oldWindow</span> <span class="p">);</span>
- <span class="mi">737</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">scope</span> <span class="o">=</span> <span class="n">qskNearestFocusScope</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
- <span class="mi">738</span><span class="o">:</span>                 <span class="p">{</span>
- <span class="mi">739</span><span class="o">:</span>                     <span class="n">wd</span><span class="o">-&gt;</span><span class="n">clearFocusInScope</span><span class="p">(</span> <span class="n">scope</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">OtherFocusReason</span> <span class="p">);</span>
- <span class="mi">740</span><span class="o">:</span>                 <span class="p">}</span>
- <span class="mi">741</span><span class="o">:</span>                 <span class="k">else</span>
- <span class="mi">742</span><span class="o">:</span>                 <span class="p">{</span>
- <span class="mi">743</span><span class="o">:</span>                     <span class="n">wd</span><span class="o">-&gt;</span><span class="n">activeFocusItem</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
- <span class="mi">744</span><span class="o">:</span>                 <span class="p">}</span>
- <span class="mi">745</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">746</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
- <span class="mi">747</span><span class="o">:</span> 
- <span class="mi">748</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="mi">1</span>
- <span class="mi">749</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">changeData</span><span class="p">.</span><span class="n">window</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
- <span class="mi">750</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">751</span><span class="o">:</span>                 <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskQuickItem</span> <span class="p">);</span>
- <span class="mi">752</span><span class="o">:</span> 
- <span class="mi">753</span><span class="o">:</span>                 <span class="k">if</span><span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">focus</span> <span class="p">)</span>
- <span class="mi">754</span><span class="o">:</span>                 <span class="p">{</span>
- <span class="mi">755</span><span class="o">:</span>                     <span class="cm">/*
- 756:                         The focus flag is not cleared, when removing an
- 757:                         item from the window. In situations where the item gets
- 758:                         reinserted into the window - or transferred to another one -
- 759:                         we might run into situations, where 2 items in the same scope
- 760:                         have the "focus" flag being set.
- 761:                         A better solution might be to check the flag when reinserting
- 762:                         into a window ...
- 763:                      */</span>
- <span class="mi">764</span><span class="o">:</span>                     <span class="n">d</span><span class="o">-&gt;</span><span class="n">focus</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
- <span class="mi">765</span><span class="o">:</span>                 <span class="p">}</span>
- <span class="mi">766</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">767</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
- <span class="mi">768</span><span class="o">:</span> 
- <span class="mi">769</span><span class="o">:</span>             <span class="n">QskWindowChangeEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">oldWindow</span><span class="p">,</span> <span class="n">changeData</span><span class="p">.</span><span class="n">window</span> <span class="p">);</span>
- <span class="mi">770</span><span class="o">:</span>             <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
- <span class="mi">771</span><span class="o">:</span> 
- <span class="mi">772</span><span class="o">:</span>             <span class="k">break</span><span class="p">;</span>
- <span class="mi">773</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">774</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&gt;=</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
- <span class="mi">775</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemEnabledHasChanged</span><span class="p">:</span>
- <span class="mi">776</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">777</span><span class="o">:</span>             <span class="n">sendEnabledChangeEvent</span><span class="p">();</span>
+ <span class="mi">723</span><span class="o">:</span> 
+ <span class="mi">724</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">oldWindow</span> <span class="o">&amp;&amp;</span> <span class="n">oldWindow</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="p">()</span>
+ <span class="mi">725</span><span class="o">:</span>                 <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">oldWindow</span><span class="o">-&gt;</span><span class="n">activeFocusItem</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">726</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">727</span><span class="o">:</span>                 <span class="cm">/*
+ 728:                     Removing an item from the scene might result in
+ 729:                     changes of the active focus item. Unfortunately the corresponding
+ 730:                     FocusIn/Out events are sent, while the item tree is in an
+ 731:                     invalid state.
+ 732:                     When having event handlers, that do modifications of the focus
+ 733:                     ( f.e. assigning the local focus, inside of a focus scope )
+ 734:                     we might end up with having a dangling pointer for
+ 735:                     oldWindow-&gt;activeFocusItem().
+ 736:                  */</span>
+ <span class="mi">737</span><span class="o">:</span> 
+ <span class="mi">738</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&gt;=</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">739</span><span class="o">:</span>                 <span class="k">auto</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">QQuickWindowPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">oldWindow</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">deliveryAgentPrivate</span><span class="p">();</span>
+ <span class="mi">740</span><span class="o">:</span> <span class="err">#</span><span class="k">else</span>           
+ <span class="mi">741</span><span class="o">:</span>                 <span class="k">auto</span> <span class="n">wd</span> <span class="o">=</span> <span class="n">QQuickWindowPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">oldWindow</span> <span class="p">);</span>
+ <span class="mi">742</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">743</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">scope</span> <span class="o">=</span> <span class="n">qskNearestFocusScope</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">744</span><span class="o">:</span>                 <span class="p">{</span>
+ <span class="mi">745</span><span class="o">:</span>                     <span class="n">wd</span><span class="o">-&gt;</span><span class="n">clearFocusInScope</span><span class="p">(</span> <span class="n">scope</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">OtherFocusReason</span> <span class="p">);</span>
+ <span class="mi">746</span><span class="o">:</span>                 <span class="p">}</span>
+ <span class="mi">747</span><span class="o">:</span>                 <span class="k">else</span>
+ <span class="mi">748</span><span class="o">:</span>                 <span class="p">{</span>
+ <span class="mi">749</span><span class="o">:</span>                     <span class="n">wd</span><span class="o">-&gt;</span><span class="n">activeFocusItem</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+ <span class="mi">750</span><span class="o">:</span>                 <span class="p">}</span>
+ <span class="mi">751</span><span class="o">:</span>             <span class="p">}</span>
+ <span class="mi">752</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">753</span><span class="o">:</span> 
+ <span class="mi">754</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="mi">1</span>
+ <span class="mi">755</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">changeData</span><span class="p">.</span><span class="n">window</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+ <span class="mi">756</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">757</span><span class="o">:</span>                 <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskQuickItem</span> <span class="p">);</span>
+ <span class="mi">758</span><span class="o">:</span> 
+ <span class="mi">759</span><span class="o">:</span>                 <span class="k">if</span><span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">focus</span> <span class="p">)</span>
+ <span class="mi">760</span><span class="o">:</span>                 <span class="p">{</span>
+ <span class="mi">761</span><span class="o">:</span>                     <span class="cm">/*
+ 762:                         The focus flag is not cleared, when removing an
+ 763:                         item from the window. In situations where the item gets
+ 764:                         reinserted into the window - or transferred to another one -
+ 765:                         we might run into situations, where 2 items in the same scope
+ 766:                         have the "focus" flag being set.
+ 767:                         A better solution might be to check the flag when reinserting
+ 768:                         into a window ...
+ 769:                      */</span>
+ <span class="mi">770</span><span class="o">:</span>                     <span class="n">d</span><span class="o">-&gt;</span><span class="n">focus</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">771</span><span class="o">:</span>                 <span class="p">}</span>
+ <span class="mi">772</span><span class="o">:</span>             <span class="p">}</span>
+ <span class="mi">773</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">774</span><span class="o">:</span> 
+ <span class="mi">775</span><span class="o">:</span>             <span class="n">QskWindowChangeEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">oldWindow</span><span class="p">,</span> <span class="n">changeData</span><span class="p">.</span><span class="n">window</span> <span class="p">);</span>
+ <span class="mi">776</span><span class="o">:</span>             <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+ <span class="mi">777</span><span class="o">:</span> 
  <span class="mi">778</span><span class="o">:</span>             <span class="k">break</span><span class="p">;</span>
  <span class="mi">779</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">780</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
- <span class="mi">781</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemVisibleHasChanged</span><span class="p">:</span>
+ <span class="mi">780</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&gt;=</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">781</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemEnabledHasChanged</span><span class="p">:</span>
  <span class="mi">782</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">783</span><span class="o">:</span>             <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskQuickItem</span> <span class="p">);</span>
- <span class="mi">784</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="mi">1</span>
- <span class="mi">785</span><span class="o">:</span>             <span class="cm">/*
- 786:                 ~QQuickItem sends QQuickItem::ItemVisibleHasChanged recursively
- 787:                 to all childItems. When being a child ( not only a childItem() )
- 788:                 we are short before being destructed too and any updates
- 789:                 done here are totally pointless. TODO ...
- 790:              */</span>
- <span class="mi">791</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
- <span class="mi">792</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">changeData</span><span class="p">.</span><span class="n">boolValue</span> <span class="p">)</span>
- <span class="mi">793</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">794</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">blockedPolish</span> <span class="p">)</span>
- <span class="mi">795</span><span class="o">:</span>                     <span class="n">polish</span><span class="p">();</span>
- <span class="mi">796</span><span class="o">:</span> 
- <span class="mi">797</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">updateFlags</span> <span class="o">&amp;</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">DeferredUpdate</span> <span class="p">)</span>
- <span class="mi">798</span><span class="o">:</span>                 <span class="p">{</span>
- <span class="mi">799</span><span class="o">:</span>                     <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">dirtyAttributes</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemHasContents</span> <span class="p">)</span> <span class="p">)</span>
- <span class="mi">800</span><span class="o">:</span>                         <span class="n">update</span><span class="p">();</span>
- <span class="mi">801</span><span class="o">:</span>                 <span class="p">}</span>
- <span class="mi">802</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">803</span><span class="o">:</span>             <span class="k">else</span>
- <span class="mi">804</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">805</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">updateFlags</span> <span class="o">&amp;</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">CleanupOnVisibility</span> <span class="p">)</span>
- <span class="mi">806</span><span class="o">:</span>                     <span class="n">d</span><span class="o">-&gt;</span><span class="n">cleanupNodes</span><span class="p">();</span>
- <span class="mi">807</span><span class="o">:</span> 
- <span class="mi">808</span><span class="o">:</span>                 <span class="n">d</span><span class="o">-&gt;</span><span class="n">initiallyPainted</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
- <span class="mi">809</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">810</span><span class="o">:</span> 
- <span class="mi">811</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">parentItem</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">parentItem</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">isVisible</span><span class="p">()</span> <span class="p">)</span>
- <span class="mi">812</span><span class="o">:</span>             <span class="p">{</span>
- <span class="mi">813</span><span class="o">:</span>                 <span class="cm">/*
- 814:                     Layout code might consider the visiblility of the children
- 815:                     and therefore needs to be updated. Posting a statement about
- 816:                     changed layout constraints has this effect, but is not correct.
- 817:                     The right way to go would be to create show/hide events and to
- 818:                     handle them, where visibility of the children matters.
- 819:                     TODO ...
- 820:                  */</span>
- <span class="mi">821</span><span class="o">:</span> 
- <span class="mi">822</span><span class="o">:</span>                 <span class="n">d</span><span class="o">-&gt;</span><span class="n">layoutConstraintChanged</span><span class="p">();</span>
- <span class="mi">823</span><span class="o">:</span>             <span class="p">}</span>
- <span class="mi">824</span><span class="o">:</span> 
- <span class="mi">825</span><span class="o">:</span>             <span class="k">break</span><span class="p">;</span>
- <span class="mi">826</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">783</span><span class="o">:</span>             <span class="n">sendEnabledChangeEvent</span><span class="p">();</span>
+ <span class="mi">784</span><span class="o">:</span>             <span class="k">break</span><span class="p">;</span>
+ <span class="mi">785</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">786</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">787</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemVisibleHasChanged</span><span class="p">:</span>
+ <span class="mi">788</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">789</span><span class="o">:</span>             <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskQuickItem</span> <span class="p">);</span>
+ <span class="mi">790</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="mi">1</span>
+ <span class="mi">791</span><span class="o">:</span>             <span class="cm">/*
+ 792:                 ~QQuickItem sends QQuickItem::ItemVisibleHasChanged recursively
+ 793:                 to all childItems. When being a child ( not only a childItem() )
+ 794:                 we are short before being destructed too and any updates
+ 795:                 done here are totally pointless. TODO ...
+ 796:              */</span>
+ <span class="mi">797</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">798</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">changeData</span><span class="p">.</span><span class="n">boolValue</span> <span class="p">)</span>
+ <span class="mi">799</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">800</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">blockedPolish</span> <span class="p">)</span>
+ <span class="mi">801</span><span class="o">:</span>                     <span class="n">polish</span><span class="p">();</span>
+ <span class="mi">802</span><span class="o">:</span> 
+ <span class="mi">803</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">updateFlags</span> <span class="o">&amp;</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">DeferredUpdate</span> <span class="p">)</span>
+ <span class="mi">804</span><span class="o">:</span>                 <span class="p">{</span>
+ <span class="mi">805</span><span class="o">:</span>                     <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">dirtyAttributes</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemHasContents</span> <span class="p">)</span> <span class="p">)</span>
+ <span class="mi">806</span><span class="o">:</span>                         <span class="n">update</span><span class="p">();</span>
+ <span class="mi">807</span><span class="o">:</span>                 <span class="p">}</span>
+ <span class="mi">808</span><span class="o">:</span>             <span class="p">}</span>
+ <span class="mi">809</span><span class="o">:</span>             <span class="k">else</span>
+ <span class="mi">810</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">811</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">updateFlags</span> <span class="o">&amp;</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">CleanupOnVisibility</span> <span class="p">)</span>
+ <span class="mi">812</span><span class="o">:</span>                     <span class="n">d</span><span class="o">-&gt;</span><span class="n">cleanupNodes</span><span class="p">();</span>
+ <span class="mi">813</span><span class="o">:</span> 
+ <span class="mi">814</span><span class="o">:</span>                 <span class="n">d</span><span class="o">-&gt;</span><span class="n">initiallyPainted</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">815</span><span class="o">:</span>             <span class="p">}</span>
+ <span class="mi">816</span><span class="o">:</span> 
+ <span class="mi">817</span><span class="o">:</span>             <span class="k">if</span> <span class="p">(</span> <span class="n">parentItem</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">parentItem</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">isVisible</span><span class="p">()</span> <span class="p">)</span>
+ <span class="mi">818</span><span class="o">:</span>             <span class="p">{</span>
+ <span class="mi">819</span><span class="o">:</span>                 <span class="cm">/*
+ 820:                     Layout code might consider the visiblility of the children
+ 821:                     and therefore needs to be updated. Posting a statement about
+ 822:                     changed layout constraints has this effect, but is not correct.
+ 823:                     The right way to go would be to create show/hide events and to
+ 824:                     handle them, where visibility of the children matters.
+ 825:                     TODO ...
+ 826:                  */</span>
  <span class="mi">827</span><span class="o">:</span> 
- <span class="mi">828</span><span class="o">:</span> 
- <span class="mi">829</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemParentHasChanged</span><span class="p">:</span>
- <span class="mi">830</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChildAddedChange</span><span class="p">:</span>
- <span class="mi">831</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChildRemovedChange</span><span class="p">:</span>
- <span class="mi">832</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">833</span><span class="o">:</span>             <span class="c1">// do we want to have events for those ???</span>
- <span class="mi">834</span><span class="o">:</span>             <span class="k">break</span><span class="p">;</span>
- <span class="mi">835</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">836</span><span class="o">:</span> 
- <span class="mi">837</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemOpacityHasChanged</span><span class="p">:</span>
- <span class="mi">838</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemActiveFocusHasChanged</span><span class="p">:</span>
- <span class="mi">839</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemRotationHasChanged</span><span class="p">:</span>
- <span class="mi">840</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemAntialiasingHasChanged</span><span class="p">:</span>
- <span class="mi">841</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemDevicePixelRatioHasChanged</span><span class="p">:</span>
- <span class="mi">842</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">843</span><span class="o">:</span>             <span class="k">break</span><span class="p">;</span>
- <span class="mi">844</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">845</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">846</span><span class="o">:</span> 
- <span class="mi">847</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span> <span class="n">change</span><span class="p">,</span> <span class="n">changeData</span> <span class="p">);</span>
- <span class="mi">848</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">849</span><span class="o">:</span> 
- <span class="mi">850</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
- <span class="mi">851</span><span class="o">:</span> 
- <span class="mi">852</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">geometryChanged</span><span class="p">(</span>
- <span class="mi">853</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">oldGeometry</span> <span class="p">)</span>
- <span class="mi">854</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">855</span><span class="o">:</span>     <span class="n">geometryChange</span><span class="p">(</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="n">oldGeometry</span> <span class="p">);</span>
- <span class="mi">856</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">828</span><span class="o">:</span>                 <span class="n">d</span><span class="o">-&gt;</span><span class="n">layoutConstraintChanged</span><span class="p">();</span>
+ <span class="mi">829</span><span class="o">:</span>             <span class="p">}</span>
+ <span class="mi">830</span><span class="o">:</span> 
+ <span class="mi">831</span><span class="o">:</span>             <span class="k">break</span><span class="p">;</span>
+ <span class="mi">832</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">833</span><span class="o">:</span> 
+ <span class="mi">834</span><span class="o">:</span> 
+ <span class="mi">835</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemParentHasChanged</span><span class="p">:</span>
+ <span class="mi">836</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChildAddedChange</span><span class="p">:</span>
+ <span class="mi">837</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChildRemovedChange</span><span class="p">:</span>
+ <span class="mi">838</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">839</span><span class="o">:</span>             <span class="c1">// do we want to have events for those ???</span>
+ <span class="mi">840</span><span class="o">:</span>             <span class="k">break</span><span class="p">;</span>
+ <span class="mi">841</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">842</span><span class="o">:</span> 
+ <span class="mi">843</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemOpacityHasChanged</span><span class="p">:</span>
+ <span class="mi">844</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemActiveFocusHasChanged</span><span class="p">:</span>
+ <span class="mi">845</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemRotationHasChanged</span><span class="p">:</span>
+ <span class="mi">846</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemAntialiasingHasChanged</span><span class="p">:</span>
+ <span class="mi">847</span><span class="o">:</span>         <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemDevicePixelRatioHasChanged</span><span class="p">:</span>
+ <span class="mi">848</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">849</span><span class="o">:</span>             <span class="k">break</span><span class="p">;</span>
+ <span class="mi">850</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">851</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">852</span><span class="o">:</span> 
+ <span class="mi">853</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span> <span class="n">change</span><span class="p">,</span> <span class="n">changeData</span> <span class="p">);</span>
+ <span class="mi">854</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">855</span><span class="o">:</span> 
+ <span class="mi">856</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
  <span class="mi">857</span><span class="o">:</span> 
- <span class="mi">858</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
- <span class="mi">859</span><span class="o">:</span> 
- <span class="mi">860</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">geometryChange</span><span class="p">(</span>
- <span class="mi">861</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">oldGeometry</span> <span class="p">)</span>
- <span class="mi">862</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">863</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
- <span class="mi">864</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">geometryChanged</span><span class="p">(</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="n">oldGeometry</span> <span class="p">);</span>
- <span class="mi">865</span><span class="o">:</span> <span class="err">#</span><span class="k">else</span>
- <span class="mi">866</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">geometryChange</span><span class="p">(</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="n">oldGeometry</span> <span class="p">);</span>
- <span class="mi">867</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
- <span class="mi">868</span><span class="o">:</span> 
- <span class="mi">869</span><span class="o">:</span>     <span class="n">Q_D</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskQuickItem</span> <span class="p">);</span>
- <span class="mi">870</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">polishScheduled</span> <span class="o">&amp;&amp;</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">polishOnResize</span> <span class="p">)</span>
- <span class="mi">871</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">872</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">newGeometry</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="n">oldGeometry</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">)</span>
- <span class="mi">873</span><span class="o">:</span>             <span class="n">polish</span><span class="p">();</span>
- <span class="mi">874</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">875</span><span class="o">:</span> 
- <span class="mi">876</span><span class="o">:</span>     <span class="n">QskGeometryChangeEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="n">oldGeometry</span> <span class="p">);</span>
- <span class="mi">877</span><span class="o">:</span>     <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
- <span class="mi">878</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">879</span><span class="o">:</span> 
- <span class="mi">880</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">mouseUngrabEvent</span><span class="p">()</span>
- <span class="mi">881</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">882</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">mouseUngrabEvent</span><span class="p">();</span>
- <span class="mi">883</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">884</span><span class="o">:</span> 
- <span class="mi">885</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">touchUngrabEvent</span><span class="p">()</span>
- <span class="mi">886</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">887</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">touchUngrabEvent</span><span class="p">();</span>
- <span class="mi">888</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">889</span><span class="o">:</span> 
- <span class="mi">890</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
- <span class="mi">891</span><span class="o">:</span> 
- <span class="mi">892</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">windowDeactivateEvent</span><span class="p">()</span>
- <span class="mi">893</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">894</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">windowDeactivateEvent</span><span class="p">();</span>
- <span class="mi">895</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">896</span><span class="o">:</span> 
- <span class="mi">897</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
- <span class="mi">898</span><span class="o">:</span> 
- <span class="mi">899</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">updatePolish</span><span class="p">()</span>
- <span class="mi">900</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">901</span><span class="o">:</span>     <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskQuickItem</span> <span class="p">);</span>
+ <span class="mi">858</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">geometryChanged</span><span class="p">(</span>
+ <span class="mi">859</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">oldGeometry</span> <span class="p">)</span>
+ <span class="mi">860</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">861</span><span class="o">:</span>     <span class="n">geometryChange</span><span class="p">(</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="n">oldGeometry</span> <span class="p">);</span>
+ <span class="mi">862</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">863</span><span class="o">:</span> 
+ <span class="mi">864</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">865</span><span class="o">:</span> 
+ <span class="mi">866</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">geometryChange</span><span class="p">(</span>
+ <span class="mi">867</span><span class="o">:</span>     <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">oldGeometry</span> <span class="p">)</span>
+ <span class="mi">868</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">869</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">870</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">geometryChanged</span><span class="p">(</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="n">oldGeometry</span> <span class="p">);</span>
+ <span class="mi">871</span><span class="o">:</span> <span class="err">#</span><span class="k">else</span>
+ <span class="mi">872</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">geometryChange</span><span class="p">(</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="n">oldGeometry</span> <span class="p">);</span>
+ <span class="mi">873</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">874</span><span class="o">:</span> 
+ <span class="mi">875</span><span class="o">:</span>     <span class="n">Q_D</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskQuickItem</span> <span class="p">);</span>
+ <span class="mi">876</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">polishScheduled</span> <span class="o">&amp;&amp;</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">polishOnResize</span> <span class="p">)</span>
+ <span class="mi">877</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">878</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="n">newGeometry</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="n">oldGeometry</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">)</span>
+ <span class="mi">879</span><span class="o">:</span>             <span class="n">polish</span><span class="p">();</span>
+ <span class="mi">880</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">881</span><span class="o">:</span> 
+ <span class="mi">882</span><span class="o">:</span>     <span class="n">QskGeometryChangeEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="n">oldGeometry</span> <span class="p">);</span>
+ <span class="mi">883</span><span class="o">:</span>     <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+ <span class="mi">884</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">885</span><span class="o">:</span> 
+ <span class="mi">886</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">mouseUngrabEvent</span><span class="p">()</span>
+ <span class="mi">887</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">888</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">mouseUngrabEvent</span><span class="p">();</span>
+ <span class="mi">889</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">890</span><span class="o">:</span> 
+ <span class="mi">891</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">touchUngrabEvent</span><span class="p">()</span>
+ <span class="mi">892</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">893</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">touchUngrabEvent</span><span class="p">();</span>
+ <span class="mi">894</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">895</span><span class="o">:</span> 
+ <span class="mi">896</span><span class="o">:</span> <span class="err">#</span><span class="k">if</span> <span class="n">QT_VERSION</span> <span class="o">&lt;</span> <span class="n">QT_VERSION_CHECK</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+ <span class="mi">897</span><span class="o">:</span> 
+ <span class="mi">898</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">windowDeactivateEvent</span><span class="p">()</span>
+ <span class="mi">899</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">900</span><span class="o">:</span>     <span class="n">Inherited</span><span class="o">::</span><span class="n">windowDeactivateEvent</span><span class="p">();</span>
+ <span class="mi">901</span><span class="o">:</span> <span class="p">}</span>
  <span class="mi">902</span><span class="o">:</span> 
- <span class="mi">903</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">updateFlags</span> <span class="o">&amp;</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">DeferredPolish</span> <span class="p">)</span>
- <span class="mi">904</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">905</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isVisible</span><span class="p">()</span> <span class="p">)</span>
- <span class="mi">906</span><span class="o">:</span>         <span class="p">{</span>
- <span class="mi">907</span><span class="o">:</span>             <span class="n">d</span><span class="o">-&gt;</span><span class="n">blockedPolish</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
- <span class="mi">908</span><span class="o">:</span>             <span class="k">return</span><span class="p">;</span>
- <span class="mi">909</span><span class="o">:</span>         <span class="p">}</span>
- <span class="mi">910</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">911</span><span class="o">:</span> 
- <span class="mi">912</span><span class="o">:</span>     <span class="n">d</span><span class="o">-&gt;</span><span class="n">blockedPolish</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
- <span class="mi">913</span><span class="o">:</span> 
- <span class="mi">914</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">initiallyPainted</span> <span class="p">)</span>
- <span class="mi">915</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">916</span><span class="o">:</span>         <span class="cm">/*
- 917:             We should find a better way for identifying, when
- 918:             an item is about to be shown, than making it dependend
- 919:             from polishing and the existence of scene graph nodes. TODO ...
- 920:          */</span>
- <span class="mi">921</span><span class="o">:</span>         <span class="n">aboutToShow</span><span class="p">();</span>
- <span class="mi">922</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">923</span><span class="o">:</span> 
- <span class="mi">924</span><span class="o">:</span>     <span class="n">updateItemPolish</span><span class="p">();</span>
- <span class="mi">925</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">926</span><span class="o">:</span> 
- <span class="mi">927</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">aboutToShow</span><span class="p">()</span>
- <span class="mi">928</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">929</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">930</span><span class="o">:</span> 
- <span class="mi">931</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">updateItemPolish</span><span class="p">()</span>
- <span class="mi">932</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">933</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">934</span><span class="o">:</span> 
- <span class="mi">935</span><span class="o">:</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">updatePaintNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span><span class="p">,</span> <span class="n">UpdatePaintNodeData</span><span class="o">*</span> <span class="n">data</span> <span class="p">)</span>
- <span class="mi">936</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">937</span><span class="o">:</span>     <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">data</span> <span class="p">);</span>
- <span class="mi">938</span><span class="o">:</span> 
- <span class="mi">939</span><span class="o">:</span>     <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskQuickItem</span> <span class="p">);</span>
+ <span class="mi">903</span><span class="o">:</span> <span class="err">#</span><span class="n">endif</span>
+ <span class="mi">904</span><span class="o">:</span> 
+ <span class="mi">905</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">updatePolish</span><span class="p">()</span>
+ <span class="mi">906</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">907</span><span class="o">:</span>     <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskQuickItem</span> <span class="p">);</span>
+ <span class="mi">908</span><span class="o">:</span> 
+ <span class="mi">909</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">updateFlags</span> <span class="o">&amp;</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">DeferredPolish</span> <span class="p">)</span>
+ <span class="mi">910</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">911</span><span class="o">:</span>         <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isVisible</span><span class="p">()</span> <span class="p">)</span>
+ <span class="mi">912</span><span class="o">:</span>         <span class="p">{</span>
+ <span class="mi">913</span><span class="o">:</span>             <span class="n">d</span><span class="o">-&gt;</span><span class="n">blockedPolish</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+ <span class="mi">914</span><span class="o">:</span>             <span class="k">return</span><span class="p">;</span>
+ <span class="mi">915</span><span class="o">:</span>         <span class="p">}</span>
+ <span class="mi">916</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">917</span><span class="o">:</span> 
+ <span class="mi">918</span><span class="o">:</span>     <span class="n">d</span><span class="o">-&gt;</span><span class="n">blockedPolish</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">919</span><span class="o">:</span> 
+ <span class="mi">920</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">initiallyPainted</span> <span class="p">)</span>
+ <span class="mi">921</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">922</span><span class="o">:</span>         <span class="cm">/*
+ 923:             We should find a better way for identifying, when
+ 924:             an item is about to be shown, than making it dependend
+ 925:             from polishing and the existence of scene graph nodes. TODO ...
+ 926:          */</span>
+ <span class="mi">927</span><span class="o">:</span>         <span class="n">aboutToShow</span><span class="p">();</span>
+ <span class="mi">928</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">929</span><span class="o">:</span> 
+ <span class="mi">930</span><span class="o">:</span>     <span class="n">updateItemPolish</span><span class="p">();</span>
+ <span class="mi">931</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">932</span><span class="o">:</span> 
+ <span class="mi">933</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">aboutToShow</span><span class="p">()</span>
+ <span class="mi">934</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">935</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">936</span><span class="o">:</span> 
+ <span class="mi">937</span><span class="o">:</span> <span class="kt">void</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">updateItemPolish</span><span class="p">()</span>
+ <span class="mi">938</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">939</span><span class="o">:</span> <span class="p">}</span>
  <span class="mi">940</span><span class="o">:</span> 
- <span class="mi">941</span><span class="o">:</span>     <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">isVisible</span><span class="p">()</span> <span class="o">||</span> <span class="o">!</span><span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">updateFlags</span> <span class="o">&amp;</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">DeferredUpdate</span> <span class="p">)</span> <span class="p">);</span>
- <span class="mi">942</span><span class="o">:</span> 
- <span class="mi">943</span><span class="o">:</span>     <span class="n">d</span><span class="o">-&gt;</span><span class="n">initiallyPainted</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+ <span class="mi">941</span><span class="o">:</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">updatePaintNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span><span class="p">,</span> <span class="n">UpdatePaintNodeData</span><span class="o">*</span> <span class="n">data</span> <span class="p">)</span>
+ <span class="mi">942</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">943</span><span class="o">:</span>     <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">data</span> <span class="p">);</span>
  <span class="mi">944</span><span class="o">:</span> 
- <span class="mi">945</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">clearPreviousNodes</span> <span class="p">)</span>
- <span class="mi">946</span><span class="o">:</span>     <span class="p">{</span>
- <span class="mi">947</span><span class="o">:</span>         <span class="k">delete</span> <span class="n">node</span><span class="p">;</span>
- <span class="mi">948</span><span class="o">:</span>         <span class="n">node</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
- <span class="mi">949</span><span class="o">:</span> 
- <span class="mi">950</span><span class="o">:</span>         <span class="n">d</span><span class="o">-&gt;</span><span class="n">clearPreviousNodes</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
- <span class="mi">951</span><span class="o">:</span>     <span class="p">}</span>
- <span class="mi">952</span><span class="o">:</span> 
- <span class="mi">953</span><span class="o">:</span>     <span class="k">return</span> <span class="n">updateItemPaintNode</span><span class="p">(</span> <span class="n">node</span> <span class="p">);</span>
- <span class="mi">954</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">945</span><span class="o">:</span>     <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskQuickItem</span> <span class="p">);</span>
+ <span class="mi">946</span><span class="o">:</span> 
+ <span class="mi">947</span><span class="o">:</span>     <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">isVisible</span><span class="p">()</span> <span class="o">||</span> <span class="o">!</span><span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">updateFlags</span> <span class="o">&amp;</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">DeferredUpdate</span> <span class="p">)</span> <span class="p">);</span>
+ <span class="mi">948</span><span class="o">:</span> 
+ <span class="mi">949</span><span class="o">:</span>     <span class="n">d</span><span class="o">-&gt;</span><span class="n">initiallyPainted</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+ <span class="mi">950</span><span class="o">:</span> 
+ <span class="mi">951</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">clearPreviousNodes</span> <span class="p">)</span>
+ <span class="mi">952</span><span class="o">:</span>     <span class="p">{</span>
+ <span class="mi">953</span><span class="o">:</span>         <span class="k">delete</span> <span class="n">node</span><span class="p">;</span>
+ <span class="mi">954</span><span class="o">:</span>         <span class="n">node</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
  <span class="mi">955</span><span class="o">:</span> 
- <span class="mi">956</span><span class="o">:</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">updateItemPaintNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span>
- <span class="mi">957</span><span class="o">:</span> <span class="p">{</span>
- <span class="mi">958</span><span class="o">:</span>     <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
- <span class="mi">959</span><span class="o">:</span> <span class="p">}</span>
- <span class="mi">960</span><span class="o">:</span> 
- <span class="mi">961</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="s">"moc_QskQuickItem.cpp"</span></code></pre></figure>
+ <span class="mi">956</span><span class="o">:</span>         <span class="n">d</span><span class="o">-&gt;</span><span class="n">clearPreviousNodes</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+ <span class="mi">957</span><span class="o">:</span>     <span class="p">}</span>
+ <span class="mi">958</span><span class="o">:</span> 
+ <span class="mi">959</span><span class="o">:</span>     <span class="k">return</span> <span class="n">updateItemPaintNode</span><span class="p">(</span> <span class="n">node</span> <span class="p">);</span>
+ <span class="mi">960</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">961</span><span class="o">:</span> 
+ <span class="mi">962</span><span class="o">:</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">updateItemPaintNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span>
+ <span class="mi">963</span><span class="o">:</span> <span class="p">{</span>
+ <span class="mi">964</span><span class="o">:</span>     <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+ <span class="mi">965</span><span class="o">:</span> <span class="p">}</span>
+ <span class="mi">966</span><span class="o">:</span> 
+ <span class="mi">967</span><span class="o">:</span> <span class="err">#</span><span class="n">include</span> <span class="s">"moc_QskQuickItem.cpp"</span></code></pre></figure>
 
 <hr />
 
-<p>Updated on 23 April 2021 at 17:39:58 CEST</p>
+<p>Updated on 30 April 2021 at 10:41:49 CEST</p>
 
           
           

@@ -3175,31 +3175,31 @@
 <span class="mi">1077</span><span class="o">:</span>     <span class="k">if</span> <span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">animated</span> <span class="o">&amp;&amp;</span> <span class="n">isTransitionAccepted</span><span class="p">(</span> <span class="n">QskAspect</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
 <span class="mi">1078</span><span class="o">:</span>     <span class="p">{</span>
 <span class="mi">1079</span><span class="o">:</span>         <span class="k">const</span> <span class="k">auto</span> <span class="n">placement</span> <span class="o">=</span> <span class="n">effectivePlacement</span><span class="p">();</span>
-<span class="mi">1080</span><span class="o">:</span> 
-<span class="mi">1081</span><span class="o">:</span>         <span class="k">const</span> <span class="k">auto</span> <span class="n">subControls</span> <span class="o">=</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">subControls</span><span class="p">();</span>
-<span class="mi">1082</span><span class="o">:</span>         <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">subControl</span> <span class="o">:</span> <span class="n">subControls</span> <span class="p">)</span>
-<span class="mi">1083</span><span class="o">:</span>         <span class="p">{</span>
-<span class="mi">1084</span><span class="o">:</span>             <span class="k">auto</span> <span class="n">aspect</span> <span class="o">=</span> <span class="n">subControl</span> <span class="o">|</span> <span class="n">placement</span><span class="p">;</span>
-<span class="mi">1085</span><span class="o">:</span> 
-<span class="mi">1086</span><span class="o">:</span>             <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">skinTable</span> <span class="o">=</span> <span class="n">skin</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">();</span>
-<span class="mi">1087</span><span class="o">:</span> 
-<span class="mi">1088</span><span class="o">:</span>             <span class="k">for</span> <span class="p">(</span> <span class="n">uint</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">typeCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
-<span class="mi">1089</span><span class="o">:</span>             <span class="p">{</span>
-<span class="mi">1090</span><span class="o">:</span>                 <span class="k">const</span> <span class="k">auto</span> <span class="n">type</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Type</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
-<span class="mi">1091</span><span class="o">:</span> 
-<span class="mi">1092</span><span class="o">:</span>                 <span class="k">const</span> <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">effectiveAnimation</span><span class="p">(</span> <span class="n">type</span><span class="p">,</span> <span class="n">subControl</span><span class="p">,</span> <span class="n">newState</span> <span class="p">);</span>
-<span class="mi">1093</span><span class="o">:</span> 
-<span class="mi">1094</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">hint</span><span class="p">.</span><span class="n">duration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
-<span class="mi">1095</span><span class="o">:</span>                 <span class="p">{</span>
-<span class="mi">1096</span><span class="o">:</span>                     <span class="cm">/*
-1097:                         Starting an animator for all primitives,
-1098:                         that differ between the states
-1099:                      */</span>
-<span class="mi">1100</span><span class="o">:</span> 
-<span class="mi">1101</span><span class="o">:</span>                     <span class="k">const</span> <span class="k">auto</span> <span class="n">primitiveCount</span> <span class="o">=</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">primitiveCount</span><span class="p">(</span> <span class="n">type</span> <span class="p">);</span>
-<span class="mi">1102</span><span class="o">:</span> 
-<span class="mi">1103</span><span class="o">:</span>                     <span class="k">for</span> <span class="p">(</span> <span class="n">uint</span> <span class="n">primitive</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">primitive</span> <span class="o">&lt;</span> <span class="n">primitiveCount</span><span class="p">;</span> <span class="n">primitive</span><span class="o">++</span> <span class="p">)</span>
-<span class="mi">1104</span><span class="o">:</span>                     <span class="p">{</span>
+<span class="mi">1080</span><span class="o">:</span>         <span class="k">const</span> <span class="k">auto</span> <span class="n">primitiveCount</span> <span class="o">=</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">primitiveCount</span><span class="p">();</span>
+<span class="mi">1081</span><span class="o">:</span> 
+<span class="mi">1082</span><span class="o">:</span>         <span class="k">const</span> <span class="k">auto</span> <span class="n">subControls</span> <span class="o">=</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">subControls</span><span class="p">();</span>
+<span class="mi">1083</span><span class="o">:</span>         <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">subControl</span> <span class="o">:</span> <span class="n">subControls</span> <span class="p">)</span>
+<span class="mi">1084</span><span class="o">:</span>         <span class="p">{</span>
+<span class="mi">1085</span><span class="o">:</span>             <span class="k">auto</span> <span class="n">aspect</span> <span class="o">=</span> <span class="n">subControl</span> <span class="o">|</span> <span class="n">placement</span><span class="p">;</span>
+<span class="mi">1086</span><span class="o">:</span> 
+<span class="mi">1087</span><span class="o">:</span>             <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">skinTable</span> <span class="o">=</span> <span class="n">skin</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">();</span>
+<span class="mi">1088</span><span class="o">:</span> 
+<span class="mi">1089</span><span class="o">:</span>             <span class="k">for</span> <span class="p">(</span> <span class="n">uint</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">typeCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+<span class="mi">1090</span><span class="o">:</span>             <span class="p">{</span>
+<span class="mi">1091</span><span class="o">:</span>                 <span class="k">const</span> <span class="k">auto</span> <span class="n">type</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Type</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+<span class="mi">1092</span><span class="o">:</span> 
+<span class="mi">1093</span><span class="o">:</span>                 <span class="k">const</span> <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">effectiveAnimation</span><span class="p">(</span> <span class="n">type</span><span class="p">,</span> <span class="n">subControl</span><span class="p">,</span> <span class="n">newState</span> <span class="p">);</span>
+<span class="mi">1094</span><span class="o">:</span> 
+<span class="mi">1095</span><span class="o">:</span>                 <span class="k">if</span> <span class="p">(</span> <span class="n">hint</span><span class="p">.</span><span class="n">duration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="mi">1096</span><span class="o">:</span>                 <span class="p">{</span>
+<span class="mi">1097</span><span class="o">:</span>                     <span class="cm">/*
+1098:                         Starting an animator for all primitives,
+1099:                         that differ between the states
+1100:                      */</span>
+<span class="mi">1101</span><span class="o">:</span> 
+<span class="mi">1102</span><span class="o">:</span>                     <span class="k">for</span> <span class="p">(</span> <span class="n">uint</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">primitiveCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+<span class="mi">1103</span><span class="o">:</span>                     <span class="p">{</span>
+<span class="mi">1104</span><span class="o">:</span>                         <span class="k">const</span> <span class="k">auto</span> <span class="n">primitive</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Primitive</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
 <span class="mi">1105</span><span class="o">:</span>                         <span class="n">aspect</span><span class="p">.</span><span class="n">setPrimitive</span><span class="p">(</span> <span class="n">type</span><span class="p">,</span> <span class="n">primitive</span> <span class="p">);</span>
 <span class="mi">1106</span><span class="o">:</span> 
 <span class="mi">1107</span><span class="o">:</span>                         <span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinState</span><span class="p">;</span>
@@ -3331,7 +3331,7 @@
 
 <hr />
 
-<p>Updated on 23 April 2021 at 17:39:59 CEST</p>
+<p>Updated on 30 April 2021 at 10:41:49 CEST</p>
 
           
           
