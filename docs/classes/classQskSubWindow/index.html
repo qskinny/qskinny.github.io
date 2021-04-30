@@ -2125,7 +2125,7 @@
   <tbody>
     <tr>
       <td>enum</td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#enum-windowbutton">WindowButton</a></strong> {<br />    MinimizeButton = 0x1,<br />    MaximizeButton = 0x2,<br />    CloseButton = 0x4<br />}</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#enum-decoration">Decoration</a></strong> {<br />    NoDecoration = 0,<br />    TitleBar = 1 « 0,<br />    Title = 1 « 1,<br />    Symbol = 1 « 2<br />}</td>
     </tr>
   </tbody>
 </table>
@@ -2150,11 +2150,23 @@
     </tr>
     <tr>
       <td>void</td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setdecorated">setDecorated</a></strong>(bool on)</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setdecorations">setDecorations</a></strong>(Decorations decorations)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-resetdecorations">resetDecorations</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>Decorations</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-decorations">decorations</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setdecoration">setDecoration</a></strong>(Decoration decoration, bool on =true)</td>
     </tr>
     <tr>
       <td>bool</td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#function-isdecorated">isDecorated</a></strong>() const</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-hasdecoration">hasDecoration</a></strong>(Decoration decoration) const</td>
     </tr>
     <tr>
       <td>void</td>
@@ -2195,22 +2207,6 @@
     <tr>
       <td>bool</td>
       <td><strong><a href="/docs/classes/classQskSubWindow/#function-haswindowicon">hasWindowIcon</a></strong>() const</td>
-    </tr>
-    <tr>
-      <td>void</td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setwindowbuttons">setWindowButtons</a></strong>(WindowButtons buttons)</td>
-    </tr>
-    <tr>
-      <td>WindowButtons</td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#function-windowbuttons">windowButtons</a></strong>() const</td>
-    </tr>
-    <tr>
-      <td>void</td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setwindowbutton">setWindowButton</a></strong>(WindowButton button, bool on =true)</td>
-    </tr>
-    <tr>
-      <td>bool</td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#function-testwindowbutton">testWindowButton</a></strong>(WindowButton button) const</td>
     </tr>
     <tr>
       <td>QRectF</td>
@@ -2264,7 +2260,7 @@
   <tbody>
     <tr>
       <td>void</td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#signal-decoratedchanged">decoratedChanged</a></strong>()</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#signal-decorationschanged">decorationsChanged</a></strong>(Decorations )</td>
     </tr>
     <tr>
       <td>void</td>
@@ -2282,10 +2278,6 @@
       <td>void</td>
       <td><strong><a href="/docs/classes/classQskSubWindow/#signal-windowiconsourcechanged">windowIconSourceChanged</a></strong>()</td>
     </tr>
-    <tr>
-      <td>void</td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#signal-windowbuttonschanged">windowButtonsChanged</a></strong>()</td>
-    </tr>
   </tbody>
 </table>
 
@@ -2300,8 +2292,8 @@
   </thead>
   <tbody>
     <tr>
-      <td>bool</td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#property-decorated">decorated</a></strong></td>
+      <td>Decorations</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#property-decorations">decorations</a></strong></td>
     </tr>
     <tr>
       <td>QString</td>
@@ -2318,10 +2310,6 @@
     <tr>
       <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a></td>
       <td><strong><a href="/docs/classes/classQskSubWindow/#property-windowicon">windowIcon</a></strong></td>
-    </tr>
-    <tr>
-      <td>WindowButtons</td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#property-windowbuttons">windowButtons</a></strong></td>
     </tr>
   </tbody>
 </table>
@@ -2342,7 +2330,7 @@
     </tr>
     <tr>
       <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
-      <td><strong><a href="/docs/classes/classQskSubWindow/#variable-titlebar">TitleBar</a></strong></td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#variable-titlebarpanel">TitleBarPanel</a></strong></td>
     </tr>
     <tr>
       <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
@@ -2358,7 +2346,7 @@
 <h2 id="public-types-documentation">Public Types Documentation</h2>
 
 <div class="qskinny-outter-block">
-  <h3 class="qskinny-type" id="enum-windowbutton">enum WindowButton</h3>
+  <h3 class="qskinny-type" id="enum-decoration">enum Decoration</h3>
 
   <div class="qskinny-inner-block">
 
@@ -2371,8 +2359,8 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>MinimizeButton</strong></td>
-          <td>0x1</td>
+          <td><strong>NoDecoration</strong></td>
+          <td>0</td>
         </tr>
       </tbody>
     </table>
@@ -2386,8 +2374,8 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>MaximizeButton</strong></td>
-          <td>0x2</td>
+          <td><strong>TitleBar</strong></td>
+          <td>1 « 0</td>
         </tr>
       </tbody>
     </table>
@@ -2401,13 +2389,28 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>CloseButton</strong></td>
-          <td>0x4</td>
+          <td><strong>Title</strong></td>
+          <td>1 « 1</td>
         </tr>
       </tbody>
     </table>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 41.
+    <table>
+      <thead>
+        <tr>
+          <th>Enumerator</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Symbol</strong></td>
+          <td>1 « 2</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 38.
 <br /><br /></p>
 
   </div>
@@ -2422,7 +2425,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskSubWindow</span><span class="p">(</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 46.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 47.
 <br /><br /></p>
 
   </div>
@@ -2435,33 +2438,72 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskSubWindow</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 56.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 57.
 <br /><br /></p>
 
   </div>
 </div>
 
 <div class="qskinny-outter-block">
-  <h3 class="qskinny-function" id="function-setdecorated">function setDecorated</h3>
+  <h3 class="qskinny-function" id="function-setdecorations">function setDecorations</h3>
 
   <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setDecorated</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setDecorations</span><span class="p">(</span> <span class="n">Decorations</span> <span class="n">decorations</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 60.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 61.
 <br /><br /></p>
 
   </div>
 </div>
 
 <div class="qskinny-outter-block">
-  <h3 class="qskinny-function" id="function-isdecorated">function isDecorated</h3>
+  <h3 class="qskinny-function" id="function-resetdecorations">function resetDecorations</h3>
 
   <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isDecorated</span><span class="p">()</span> <span class="k">const</span>
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetDecorations</span><span class="p">()</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 75.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 84.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-function" id="function-decorations">function decorations</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Decorations</span> <span class="n">decorations</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 67.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-function" id="function-setdecoration">function setDecoration</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setDecoration</span><span class="p">(</span> <span class="n">Decoration</span> <span class="n">decoration</span><span class="p">,</span>  <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span> <span class="nb">true</span> <span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 72.
+<br /><br /></p>
+
+  </div>
+</div>
+
+<div class="qskinny-outter-block">
+  <h3 class="qskinny-function" id="function-hasdecoration">function hasDecoration</h3>
+
+  <div class="qskinny-inner-block">
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">hasDecoration</span><span class="p">(</span> <span class="n">Decoration</span> <span class="n">decoration</span> <span class="p">)</span> <span class="k">const</span>
+</code></pre></div>    </div>
+
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 90.
 <br /><br /></p>
 
   </div>
@@ -2474,7 +2516,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowTitleTextOptions</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span> <span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 96.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 111.
 <br /><br /></p>
 
   </div>
@@ -2487,7 +2529,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskTextOptions</span> <span class="n">windowTitleTextOptions</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 107.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 122.
 <br /><br /></p>
 
   </div>
@@ -2500,7 +2542,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowTitle</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">title</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 80.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 95.
 <br /><br /></p>
 
   </div>
@@ -2513,7 +2555,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QString</span> <span class="n">windowTitle</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 91.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 106.
 <br /><br /></p>
 
   </div>
@@ -2526,7 +2568,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowIconSource</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 112.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 127.
 <br /><br /></p>
 
   </div>
@@ -2539,7 +2581,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowIconSource</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span> <span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 117.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 132.
 <br /><br /></p>
 
   </div>
@@ -2552,7 +2594,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QUrl</span> <span class="n">windowIconSource</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 133.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 148.
 <br /><br /></p>
 
   </div>
@@ -2565,7 +2607,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowIcon</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="n">graphic</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 138.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 153.
 <br /><br /></p>
 
   </div>
@@ -2578,7 +2620,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGraphic</span> <span class="n">windowIcon</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 159.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 174.
 <br /><br /></p>
 
   </div>
@@ -2591,59 +2633,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">hasWindowIcon</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 164.
-<br /><br /></p>
-
-  </div>
-</div>
-
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-function" id="function-setwindowbuttons">function setWindowButtons</h3>
-
-  <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowButtons</span><span class="p">(</span> <span class="n">WindowButtons</span> <span class="n">buttons</span> <span class="p">)</span>
-</code></pre></div>    </div>
-
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 170.
-<br /><br /></p>
-
-  </div>
-</div>
-
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-function" id="function-windowbuttons">function windowButtons</h3>
-
-  <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WindowButtons</span> <span class="n">windowButtons</span><span class="p">()</span> <span class="k">const</span>
-</code></pre></div>    </div>
-
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 181.
-<br /><br /></p>
-
-  </div>
-</div>
-
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-function" id="function-setwindowbutton">function setWindowButton</h3>
-
-  <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowButton</span><span class="p">(</span> <span class="n">WindowButton</span> <span class="n">button</span><span class="p">,</span>  <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span> <span class="nb">true</span> <span class="p">)</span>
-</code></pre></div>    </div>
-
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 186.
-<br /><br /></p>
-
-  </div>
-</div>
-
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-function" id="function-testwindowbutton">function testWindowButton</h3>
-
-  <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">testWindowButton</span><span class="p">(</span> <span class="n">WindowButton</span> <span class="n">button</span> <span class="p">)</span> <span class="k">const</span>
-</code></pre></div>    </div>
-
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 199.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 179.
 <br /><br /></p>
 
   </div>
@@ -2656,7 +2646,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">titleBarRect</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 204.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 184.
 <br /><br /></p>
 
   </div>
@@ -2669,7 +2659,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">layoutRectForSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 233.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 213.
 <br /><br /></p>
 
   </div>
@@ -2684,7 +2674,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span> <span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 209.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 189.
 <br /><br /></p>
 
   </div>
@@ -2697,7 +2687,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">updateLayout</span><span class="p">()</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 217.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 197.
 <br /><br /></p>
 
   </div>
@@ -2710,7 +2700,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>  <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 242.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 222.
 <br /><br /></p>
 
   </div>
@@ -2723,7 +2713,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChange</span> <span class="n">change</span><span class="p">,</span>  <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChangeData</span> <span class="o">&amp;</span> <span class="n">value</span> <span class="p">)</span> <span class="k">override</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 261.
+    <p>Defined in <a href="../../files/QskSubWindow_8cpp">QskSubWindow.cpp</a> in line 241.
 <br /><br /></p>
 
   </div>
@@ -2732,10 +2722,10 @@
 <h2 id="public-signals-documentation">Public Signals Documentation</h2>
 
 <div class="qskinny-outter-block">
-  <h3 class="qskinny-signal" id="signal-decoratedchanged">signal decoratedChanged</h3>
+  <h3 class="qskinny-signal" id="signal-decorationschanged">signal decorationsChanged</h3>
 
   <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">decoratedChanged</span><span class="p">()</span>
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">decorationsChanged</span><span class="p">(</span> <span class="n">Decorations</span>  <span class="p">)</span>
 </code></pre></div>    </div>
 
     <p><br /><br /></p>
@@ -2791,25 +2781,13 @@
   </div>
 </div>
 
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-signal" id="signal-windowbuttonschanged">signal windowButtonsChanged</h3>
-
-  <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">windowButtonsChanged</span><span class="p">()</span>
-</code></pre></div>    </div>
-
-    <p><br /><br /></p>
-
-  </div>
-</div>
-
 <h2 id="public-property-documentation">Public Property Documentation</h2>
 
 <div class="qskinny-outter-block">
-  <h3 class="qskinny-property" id="property-decorated">property decorated</h3>
+  <h3 class="qskinny-property" id="property-decorations">property decorations</h3>
 
   <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">decorated</span><span class="p">;</span>
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Decorations</span> <span class="n">decorations</span><span class="p">;</span>
 </code></pre></div>    </div>
 
     <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 20.
@@ -2870,19 +2848,6 @@
   </div>
 </div>
 
-<div class="qskinny-outter-block">
-  <h3 class="qskinny-property" id="property-windowbuttons">property windowButtons</h3>
-
-  <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">WindowButtons</span> <span class="n">windowButtons</span><span class="p">;</span>
-</code></pre></div>    </div>
-
-    <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 35.
-<br /><br /></p>
-
-  </div>
-</div>
-
 <h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
 
 <div class="qskinny-outter-block">
@@ -2892,20 +2857,20 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">Panel</span><span class="p">;</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 50.
+    <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 56.
 <br /><br /></p>
 
   </div>
 </div>
 
 <div class="qskinny-outter-block">
-  <h3 class="qskinny-attribute" id="variable-titlebar">variable TitleBar</h3>
+  <h3 class="qskinny-attribute" id="variable-titlebarpanel">variable TitleBarPanel</h3>
 
   <div class="qskinny-inner-block">
-    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">TitleBar</span><span class="p">;</span>
+    <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">TitleBarPanel</span><span class="p">;</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 50.
+    <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 56.
 <br /><br /></p>
 
   </div>
@@ -2918,7 +2883,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">TitleBarSymbol</span><span class="p">;</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 50.
+    <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 56.
 <br /><br /></p>
 
   </div>
@@ -2931,7 +2896,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">TitleBarText</span><span class="p">;</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 50.
+    <p>Defined in <a href="../../files/QskSubWindow_8h">QskSubWindow.h</a> in line 56.
 <br /><br /></p>
 
   </div>
@@ -2939,7 +2904,7 @@
 
 <hr />
 
-<p>Updated on 30 April 2021 at 15:02:42 CEST</p>
+<p>Updated on 30 April 2021 at 15:11:52 CEST</p>
 
           
           

@@ -2122,15 +2122,15 @@
     </tr>
     <tr>
       <td>enum quint8</td>
-      <td><strong><a href="/docs/classes/classQskAspect/#enum-primitive">Primitive</a></strong> {<br />    NoPrimitive = 0,<br />    Alignment,<br />    Direction,<br />    Style,<br />    Decoration,<br />    GraphicRole,<br />    FontRole,<br />    TextColor,<br />    StyleColor,<br />    LinkColor,<br />    StrutSize,<br />    Size,<br />    Position,<br />    Margin,<br />    Padding,<br />    Spacing,<br />    Shadow,<br />    Shape,<br />    Border<br />}</td>
+      <td><strong><a href="/docs/classes/classQskAspect/#enum-primitive">Primitive</a></strong> {<br />    NoPrimitive = 0,<br />    Alignment,<br />    Style,<br />    GraphicRole,<br />    FontRole,<br />    TextColor,<br />    StyleColor,<br />    LinkColor,<br />    StrutSize,<br />    Size,<br />    Position,<br />    Margin,<br />    Padding,<br />    Spacing,<br />    Shadow,<br />    Shape,<br />    Border<br />}<br />Represents a specific element or attribute.</td>
     </tr>
     <tr>
       <td>enum quint8</td>
-      <td><strong><a href="/docs/classes/classQskAspect/#enum-placement">Placement</a></strong> {<br />    NoPlacement = 0,<br />    Vertical = Qt::Vertical,<br />    Horizontal = Qt::Horizontal,<br />    Top = 1,<br />    Left = 2,<br />    Right = 3,<br />    Bottom = 4<br />}</td>
+      <td><strong><a href="/docs/classes/classQskAspect/#enum-placement">Placement</a></strong> {<br />    NoPlacement = 0,<br />    Vertical = Qt::Vertical,<br />    Horizontal = Qt::Horizontal,<br />    Top = 1,<br />    Left = 2,<br />    Right = 3,<br />    Bottom = 4<br />}<br />Represents an orientation or relative position.</td>
     </tr>
     <tr>
       <td>enum quint16</td>
-      <td><strong><a href="/docs/classes/classQskAspect/#enum-subcontrol">Subcontrol</a></strong> {<br />    Control = 0,<br />    LastSubcontrol = ( 1 « 12 ) - 1<br />}</td>
+      <td><strong><a href="/docs/classes/classQskAspect/#enum-subcontrol">Subcontrol</a></strong> {<br />    Control = 0,<br />    LastSubcontrol = ( 1 « 12 ) - 1<br />}<br />For use within the rendering or lay-outing of a specific <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a>.</td>
     </tr>
     <tr>
       <td>enum quint16</td>
@@ -2384,9 +2384,9 @@
 
 <p>Lookup key for a QskSkinHintTable.</p>
 
-<p>Used by the themeing system to determine how a given aspect of a control is drawn. While an aspect is simply a 64-bit unsigned integer, it is composed of smaller enum bitfields which can be ORed together to describe a more specific part of the user interface.</p>
+<p><a href="/docs/classes/classQskAspect/">QskAspect</a> is used by the themeing system to determine how a given aspect of a control is drawn. While an aspect is simply a 64-bit unsigned integer, it is composed of smaller enum bitfields which can be ORed together to describe a more specific part of the user interface.</p>
 
-<p>For example, the border colors of a QskPushButton while pressed is defined by combining the State (QskAbstractButton::Pressed) with the Subcontrol (QskPushButton::Panel), the Primitive (Border), and the Type (Color) as so:</p>
+<p>For example, the border colors of a QskPushButton while pressed is defined by combining the State (QskAbstractButton::Pressed) with the Subcontrol (QskPushButton::Panel), the Primitive (<a href="/docs/classes/classQskAspect/#enumvalue-border">QskAspect::Border</a>), and the Type (<a href="/docs/classes/classQskAspect/#enumvalue-color">QskAspect::Color</a>) as so:</p>
 
 <table>
   <tbody>
@@ -2426,7 +2426,7 @@
       </tbody>
     </table>
 
-    <p>Flags are all sort of attributes that are no metrics or colors - f.e an alignment. A reasonable subset of possible flags is offered as QskAspect::FlagPrimitive</p>
+    <p>Flags are all sort of attributes that are no metrics or colors - f.e an alignment.</p>
 
     <table>
       <thead>
@@ -2443,7 +2443,7 @@
       </tbody>
     </table>
 
-    <p>Metrics are related to geometries in most cases corresponding to pixel distances. Examples are the margin/padding. A reasonable subset of possible metrics is offered as QskAspect::MetricPrimitive.</p>
+    <p>Metrics are related to geometries in most cases corresponding to pixel distances. Examples are margin/padding(s).</p>
 
     <table>
       <thead>
@@ -2466,7 +2466,7 @@
 
     <p>The type categorizes the aspect to be a metric, color or “something else”.</p>
 
-    <p>Often primitives are related to a specific category. F.e QskAspect::Alignment will probably always be a <a href="/docs/classes/classQskAspect/#enumvalue-flag">QskAspect::Flag</a>, while <a href="/docs/classes/classQskAspect/#enumvalue-border">QskAspect::Border</a> will usually be combined with <a href="/docs/classes/classQskAspect/#enumvalue-color">QskAspect::Color</a> and <a href="/docs/classes/classQskAspect/#enumvalue-metric">QskAspect::Metric</a>.</p>
+    <p>Often primitives are related to a specific category. F.e <a href="/docs/classes/classQskAspect/#enumvalue-alignment">QskAspect::Alignment</a> will probably always be a <a href="/docs/classes/classQskAspect/#enumvalue-flag">QskAspect::Flag</a>, while <a href="/docs/classes/classQskAspect/#enumvalue-border">QskAspect::Border</a> will usually be combined with <a href="/docs/classes/classQskAspect/#enumvalue-color">QskAspect::Color</a> and <a href="/docs/classes/classQskAspect/#enumvalue-metric">QskAspect::Metric</a>.</p>
 
     <p>Smooth transitions can be set up depending on these categories. F.e when changing from daylight to darkness color schemem only values of <a href="/docs/classes/classQskAspect/#enumvalue-color">QskAspect::Color</a> aspects need to be considered. But when changing the Look&amp;Feel of the application all type of aspects need to be considered.</p>
 
@@ -2496,6 +2496,8 @@
       </tbody>
     </table>
 
+    <p>No specific primitive</p>
+
     <table>
       <thead>
         <tr>
@@ -2511,20 +2513,9 @@
       </tbody>
     </table>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Enumerator</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Direction</strong></td>
-          <td> </td>
-        </tr>
-      </tbody>
-    </table>
+    <p>Usually used in combination with <a href="/docs/classes/classQskAspect/#enumvalue-flag">QskAspect::Flag</a></p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskSkinnable/#function-alignmenthint">QskSkinnable::alignmentHint()</a>, QskSkinHintTableEditor::alignment()</p>
 
     <table>
       <thead>
@@ -2541,20 +2532,7 @@
       </tbody>
     </table>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Enumerator</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Decoration</strong></td>
-          <td> </td>
-        </tr>
-      </tbody>
-    </table>
+    <p>Usually used in combination with <a href="/docs/classes/classQskAspect/#enumvalue-flag">QskAspect::Flag</a></p>
 
     <table>
       <thead>
@@ -2571,6 +2549,11 @@
       </tbody>
     </table>
 
+    <p>A graphic role is an id that can be used to retrieve a specific
+color filter for a graphic.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskSkinnable/#function-graphicrolehint">QskSkinnable::graphicRoleHint()</a>, QskSkinHintTableEditor::graphicRole(), QskSkin::graphicFilter(), <a href="/docs/classes/classQskSkinnable/#function-effectivegraphicfilter">QskSkinnable::effectiveGraphicFilter()</a></p>
+
     <table>
       <thead>
         <tr>
@@ -2586,7 +2569,10 @@
       </tbody>
     </table>
 
-    <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-setprimitive">setPrimitive()</a>, <a href="/docs/classes/classQskAspect/#function-clearprimitive">clearPrimitive()</a>, <a href="/docs/classes/classQskAspect/#function-primitive">primitive()</a></p>
+    <p>A font role is an id that can be used to retrieve a specific
+font from the font table.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskSkinnable/#function-fontrolehint">QskSkinnable::fontRoleHint()</a>, QskSkinHintTableEditor::fontRole() QskSkin::font(), <a href="/docs/classes/classQskSkinnable/#function-effectivefont">QskSkinnable::effectiveFont()</a></p>
 
     <table>
       <thead>
@@ -2603,6 +2589,10 @@
       </tbody>
     </table>
 
+    <p>A color for regular text</p>
+
+    <p><strong>See also</strong>: QskTextColors(), <a href="/docs/classes/classQskAspect/#enumvalue-stylecolor">QskAspect::StyleColor</a>, <a href="/docs/classes/classQskAspect/#enumvalue-linkcolor">QskAspect::LinkColor</a></p>
+
     <table>
       <thead>
         <tr>
@@ -2617,6 +2607,10 @@
         </tr>
       </tbody>
     </table>
+
+    <p>This color is used as the outline color for outlined text, and as the shadow color for raised or sunken text.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#enumvalue-textcolor">QskAspect::TextColor</a>, <a href="/docs/classes/classQskAspect/#enumvalue-linkcolor">QskAspect::LinkColor</a></p>
 
     <table>
       <thead>
@@ -2633,7 +2627,9 @@
       </tbody>
     </table>
 
-    <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-setprimitive">setPrimitive()</a>, <a href="/docs/classes/classQskAspect/#function-clearprimitive">clearPrimitive()</a>, <a href="/docs/classes/classQskAspect/#function-primitive">primitive()</a></p>
+    <p>The color of links in texts.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#enumvalue-textcolor">QskAspect::TextColor</a>, <a href="/docs/classes/classQskAspect/#enumvalue-stylecolor">QskAspect::StyleColor</a></p>
 
     <table>
       <thead>
@@ -2650,6 +2646,12 @@
       </tbody>
     </table>
 
+    <p>A sensible metric - usually a QSizeF.</p>
+
+    <p>This size is usually used for layout calculations. It might be interpreted as a minimum, maximum or fixed size.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskSkinnable/#function-strutsizehint">QskSkinnable::strutSizeHint()</a>, QskSkinHintTableEditor::strutSize()</p>
+
     <table>
       <thead>
         <tr>
@@ -2664,6 +2666,8 @@
         </tr>
       </tbody>
     </table>
+
+    <p>A placeholder for defining a metric.</p>
 
     <table>
       <thead>
@@ -2680,6 +2684,9 @@
       </tbody>
     </table>
 
+    <p>A metric that is often used for animating controls ( slide in/out )
+or handles.</p>
+
     <table>
       <thead>
         <tr>
@@ -2694,6 +2701,10 @@
         </tr>
       </tbody>
     </table>
+
+    <p>Margins like being described in the CSS Box Model.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskSkinnable/#function-marginhint">QskSkinnable::marginHint()</a>, QskSkinHintTableEditor::margin()</p>
 
     <table>
       <thead>
@@ -2710,6 +2721,10 @@
       </tbody>
     </table>
 
+    <p>Margins like being described in the CSS Box Model.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskSkinnable/#function-paddinghint">QskSkinnable::paddingHint()</a>, QskSkinHintTableEditor::padding()</p>
+
     <table>
       <thead>
         <tr>
@@ -2724,6 +2739,11 @@
         </tr>
       </tbody>
     </table>
+
+    <p>A metric, that is used by layout code for the distance between
+elements.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskSkinnable/#function-spacinghint">QskSkinnable::spacingHint()</a>, QskSkinHintTableEditor::spacing()</p>
 
     <table>
       <thead>
@@ -2740,6 +2760,12 @@
       </tbody>
     </table>
 
+    <p>A primitive to define colors and metrics for shadows.</p>
+
+    <p><strong>See also</strong>: QskShadowMetrics()</p>
+
+    <p>A primitive to define the shape of an element.</p>
+
     <table>
       <thead>
         <tr>
@@ -2754,6 +2780,8 @@
         </tr>
       </tbody>
     </table>
+
+    <p><strong>See also</strong>: QskBoxShapeMetrics, <a href="/docs/classes/classQskSkinnable/#function-boxshapehint">QskSkinnable::boxShapeHint()</a>, QskSkinHintTableEditor::boxShape()</p>
 
     <table>
       <thead>
@@ -2770,7 +2798,17 @@
       </tbody>
     </table>
 
-    <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-setprimitive">setPrimitive()</a>, <a href="/docs/classes/classQskAspect/#function-clearprimitive">clearPrimitive()</a>, <a href="/docs/classes/classQskAspect/#function-primitive">primitive()</a></p>
+    <p>A primitive to define colors and metrics for borders.</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskSkinnable/#function-boxbordermetricshint">QskSkinnable::boxBorderMetricsHint()</a>, <a href="/docs/classes/classQskSkinnable/#function-boxbordercolorshint">QskSkinnable::boxBorderColorsHint()</a> QskSkinHintTableEditor::boxBorderMetrics(), QskSkinHintTableEditor::boxBorderColors()</p>
+
+    <p>Represents a specific element or attribute.</p>
+
+    <p>This enum defines an initial list of primitive elements. A primitive is a common element, such as a border, font role etc.</p>
+
+    <p>The number of primitives can be extended by additional application specific elements by using reservePrimitives()</p>
+
+    <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-setprimitive">setPrimitive()</a>, <a href="/docs/classes/classQskAspect/#function-clearprimitive">clearPrimitive()</a>, <a href="/docs/classes/classQskAspect/#function-primitive">primitive()</a>, reservePrimitives(), primitiveCount()</p>
 
     <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 32.
 <br /><br /></p>
@@ -2902,13 +2940,15 @@
 
     <p>Indicates a bottom position</p>
 
+    <p>Represents an orientation or relative position.</p>
+
     <p>The placement bits can be used to have different definitions for a skinnable depending on its position or orientation. F.e a tab bar looks slightly different depending on its position.</p>
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskSkinnable/#function-effectiveplacement">QskSkinnable::effectivePlacement()</a></p>
 
     <p><strong>Note</strong>: flags indicating an orientation can’t be used together with the flags for the position</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 61.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 59.
 <br /><br /></p>
 
   </div>
@@ -2953,13 +2993,13 @@
 
     <p>Highest number that fits into the reserved bits for the subcontrol</p>
 
-    <p>For use within the rendering or layouting of a specific <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a>.</p>
+    <p>For use within the rendering or lay-outing of a specific <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a>.</p>
 
     <p>While the Default value applies to any control (and can be used as a fallback), specifying a Subcontrol limits the aspect’s scope to that sub-component (or <em>subcontrol</em>) of the control. For example, the Subcontrol type QskPushButton::Panel refers to the background panel of a push button.</p>
 
     <p>Beside the default values below subcontrols are defined and registered using the QSK_SUBCONTROL and QSK_SUBCONTROLS macros.</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 75.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 73.
 <br /><br /></p>
 
   </div>
@@ -3074,7 +3114,7 @@
 
     <p>Applies to a given aspect when the control is in a given state. <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> subclasses (typically <a href="/docs/classes/classQskControl/">QskControl</a> subclasses) can define UI states, as denoted by any OR combination of State flags. For example, a checked QskPushButton has the QskPushButton::Checked state flag set when it is checked.</p>
 
-    <p>The skin hint resolving algorithms is removing the state bits one by one until it finds a match, what gives lower bits a higher priority. This is a rather obscure and error prone approach and needs to be replaced by something more user friendly. But until this has been done the state bits are devided into 3 sections:</p>
+    <p>The skin hint resolving algorithms is removing the state bits one by one until it finds a match, what gives lower bits a higher priority. This is a rather obscure and error prone approach and needs to be replaced by something more user friendly. But until this has been done the state bits are divided into 3 sections:</p>
 
     <ul>
       <li>[ QskAspect::FirstSystemState, QskAspect::FirstUserState [
@@ -3085,7 +3125,7 @@
   Low priority state bits</li>
     </ul>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 83.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 81.
 <br /><br /></p>
 
   </div>
@@ -3102,7 +3142,7 @@
 
     <p>Constructs an aspect with no bits being set.</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 196.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 194.
 <br /><br /></p>
 
   </div>
@@ -3122,7 +3162,7 @@
       <li><strong>subControl</strong> Initial subcontrol</li>
     </ul>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 201.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 199.
 <br /><br /></p>
 
   </div>
@@ -3142,7 +3182,7 @@
       <li><strong>type</strong> Initial type</li>
     </ul>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 206.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 204.
 <br /><br /></p>
 
   </div>
@@ -3162,7 +3202,7 @@
       <li><strong>placement</strong> Initial placement</li>
     </ul>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 211.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 209.
 <br /><br /></p>
 
   </div>
@@ -3221,7 +3261,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-operator">operator!=()</a>, <a href="/docs/classes/classQskAspect/#function-operator">operator&lt;()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 228.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 226.
 <br /><br /></p>
 
   </div>
@@ -3238,7 +3278,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-operator">operator==()</a>, <a href="/docs/classes/classQskAspect/#function-operator">operator&lt;()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 233.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 231.
 <br /><br /></p>
 
   </div>
@@ -3253,7 +3293,7 @@
 
     <p>“Less than” operator</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 238.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 236.
 <br /><br /></p>
 
   </div>
@@ -3268,7 +3308,7 @@
 
     <p>Sets the subcontrol bits</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 243.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 241.
 <br /><br /></p>
 
   </div>
@@ -3283,7 +3323,7 @@
 
     <p>Sets the type bits</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 249.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 247.
 <br /><br /></p>
 
   </div>
@@ -3296,7 +3336,9 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskAspect</span> <span class="k">operator</span><span class="o">|</span><span class="p">(</span> <span class="n">Primitive</span> <span class="n">primitive</span> <span class="p">)</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 255.
+    <p>Sets the primitive bits</p>
+
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 253.
 <br /><br /></p>
 
   </div>
@@ -3311,7 +3353,7 @@
 
     <p>Sets the placement bits</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 261.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 259.
 <br /><br /></p>
 
   </div>
@@ -3331,7 +3373,7 @@
       <li><strong>state</strong> Additional state bits</li>
     </ul>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 267.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 265.
 <br /><br /></p>
 
   </div>
@@ -3346,7 +3388,7 @@
 
     <p><strong>Returns</strong>: A copy of the aspect without the state bits</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 273.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 271.
 <br /><br /></p>
 
   </div>
@@ -3361,7 +3403,7 @@
 
     <p><strong>Returns</strong>: A copy of the aspect without the runtime bits ( state, placement ) bits</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 279.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 277.
 <br /><br /></p>
 
   </div>
@@ -3376,7 +3418,7 @@
 
     <p><strong>Returns</strong>: All bits interpreted as quint64</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 285.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 283.
 <br /><br /></p>
 
   </div>
@@ -3391,7 +3433,7 @@
 
     <p><strong>Returns</strong>: true, when the animator bit is set</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 290.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 288.
 <br /><br /></p>
 
   </div>
@@ -3406,7 +3448,7 @@
 
     <p>Set/Clear the animator bit depending on on</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 295.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 293.
 <br /><br /></p>
 
   </div>
@@ -3423,7 +3465,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-setsubcontrol">setSubControl()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 300.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 298.
 <br /><br /></p>
 
   </div>
@@ -3440,7 +3482,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-subcontrol">subControl()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 305.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 303.
 <br /><br /></p>
 
   </div>
@@ -3457,7 +3499,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-settype">setType()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 310.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 308.
 <br /><br /></p>
 
   </div>
@@ -3474,7 +3516,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-type">type()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 315.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 313.
 <br /><br /></p>
 
   </div>
@@ -3489,7 +3531,7 @@
 
     <p><strong>Returns</strong>: true, if <a href="/docs/classes/classQskAspect/#function-type">type()</a> equals to <a href="/docs/classes/classQskAspect/#enumvalue-metric">QskAspect::Metric</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 320.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 318.
 <br /><br /></p>
 
   </div>
@@ -3504,7 +3546,7 @@
 
     <p><strong>Returns</strong>: true, if <a href="/docs/classes/classQskAspect/#function-type">type()</a> equals to <a href="/docs/classes/classQskAspect/#enumvalue-color">QskAspect::Color</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 325.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 323.
 <br /><br /></p>
 
   </div>
@@ -3519,7 +3561,7 @@
 
     <p><strong>Returns</strong>: true, if <a href="/docs/classes/classQskAspect/#function-type">type()</a> equals to <a href="/docs/classes/classQskAspect/#enumvalue-flag">QskAspect::Flag</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 330.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 328.
 <br /><br /></p>
 
   </div>
@@ -3536,7 +3578,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-setplacement">setPlacement()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 399.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 397.
 <br /><br /></p>
 
   </div>
@@ -3553,7 +3595,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-placement">placement()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 404.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 402.
 <br /><br /></p>
 
   </div>
@@ -3570,7 +3612,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-setstate">setState()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 335.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 333.
 <br /><br /></p>
 
   </div>
@@ -3604,7 +3646,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-addstate">addState()</a>, <a href="/docs/classes/classQskAspect/#function-clearstate">clearState()</a>, <a href="/docs/classes/classQskAspect/#function-hasstate">hasState()</a>, <a href="/docs/classes/classQskAspect/#function-state">state()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 340.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 338.
 <br /><br /></p>
 
   </div>
@@ -3621,7 +3663,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-setstate">setState()</a>, <a href="/docs/classes/classQskAspect/#function-clearstate">clearState()</a>, <a href="/docs/classes/classQskAspect/#function-hasstate">hasState()</a>, <a href="/docs/classes/classQskAspect/#function-state">state()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 345.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 343.
 <br /><br /></p>
 
   </div>
@@ -3636,7 +3678,7 @@
 
     <p><strong>Returns</strong>: true, if any of the state bits is set</p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 350.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 348.
 <br /><br /></p>
 
   </div>
@@ -3653,7 +3695,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-setstate">setState()</a>, <a href="/docs/classes/classQskAspect/#function-addstate">addState()</a>, <a href="/docs/classes/classQskAspect/#function-hasstate">hasState()</a>, <a href="/docs/classes/classQskAspect/#function-state">state()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 355.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 353.
 <br /><br /></p>
 
   </div>
@@ -3670,7 +3712,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-clearstate">clearState()</a><a href="/docs/classes/classQskAspect/#function-setstate">setState()</a>, <a href="/docs/classes/classQskAspect/#function-addstate">addState()</a>, <a href="/docs/classes/classQskAspect/#function-hasstate">hasState()</a>, <a href="/docs/classes/classQskAspect/#function-state">state()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 360.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 358.
 <br /><br /></p>
 
   </div>
@@ -3683,11 +3725,11 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">Primitive</span> <span class="n">primitive</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p><strong>Returns</strong>: Primitve bits</p>
+    <p><strong>Returns</strong>: Primitive bits</p>
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-setprimitive">setPrimitive()</a>, <a href="/docs/classes/classQskAspect/#function-clearprimitive">clearPrimitive()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 365.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 363.
 <br /><br /></p>
 
   </div>
@@ -3704,7 +3746,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-primitive">primitive()</a>, <a href="/docs/classes/classQskAspect/#function-clearprimitive">clearPrimitive()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 370.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 368.
 <br /><br /></p>
 
   </div>
@@ -3721,7 +3763,7 @@
 
     <p><strong>See also</strong>: <a href="/docs/classes/classQskAspect/#function-setprimitive">setPrimitive()</a>, <a href="/docs/classes/classQskAspect/#function-primitive">primitive()</a></p>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 394.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 392.
 <br /><br /></p>
 
   </div>
@@ -3734,7 +3776,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">Primitive</span> <span class="n">flagPrimitive</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 376.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 374.
 <br /><br /></p>
 
   </div>
@@ -3747,7 +3789,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">Primitive</span> <span class="n">colorPrimitive</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 382.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 380.
 <br /><br /></p>
 
   </div>
@@ -3760,7 +3802,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">Primitive</span> <span class="n">metricPrimitive</span><span class="p">()</span> <span class="k">const</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 388.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 386.
 <br /><br /></p>
 
   </div>
@@ -3809,7 +3851,7 @@
 
     <p>This method is called from the QSK_SUBCONTROL macro and is usually never called manually in application code</p>
 
-    <p><strong>Returns</strong>: Unique ( applicatio wide ) identifier</p>
+    <p><strong>Returns</strong>: Unique ( application wide ) identifier</p>
 
     <p>Defined in <a href="../../files/QskAspect_8cpp">QskAspect.cpp</a> in line 80.
 <br /><br /></p>
@@ -3824,7 +3866,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QByteArray</span> <span class="n">subControlName</span><span class="p">(</span> <span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span>
 </code></pre></div>    </div>
 
-    <p><strong>Returns</strong>: Printable string for a specfic subControl</p>
+    <p><strong>Returns</strong>: Printable string for a specific subControl</p>
 
     <p>Defined in <a href="../../files/QskAspect_8cpp">QskAspect.cpp</a> in line 100.
 <br /><br /></p>
@@ -3910,7 +3952,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Bits</span> <span class="n">m_bits</span><span class="p">;</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 189.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 187.
 <br /><br /></p>
 
   </div>
@@ -3923,7 +3965,7 @@
     <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">quint64</span> <span class="n">m_value</span><span class="p">;</span>
 </code></pre></div>    </div>
 
-    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 190.
+    <p>Defined in <a href="../../files/QskAspect_8h">QskAspect.h</a> in line 188.
 <br /><br /></p>
 
   </div>
@@ -3931,7 +3973,7 @@
 
 <hr />
 
-<p>Updated on 30 April 2021 at 15:02:45 CEST</p>
+<p>Updated on 30 April 2021 at 15:11:56 CEST</p>
 
           
           
