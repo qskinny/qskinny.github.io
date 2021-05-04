@@ -2,7 +2,7 @@
 <html lang="en">
     <head>    
 
-        <title>7. Parents and parent items - The QSkinny UI framework</title>
+        <title>10. Writing own controls - The QSkinny UI framework</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="A documentation theme"/>
@@ -100,7 +100,7 @@
       <br /><br />
       <ul id="docs-menu" class="docs-menu">
         <li class="docs-menu-item">
-          <a href=""></a>
+          <a href="/docs/">Classes</a>
         </li>
         
           
@@ -143,23 +143,27 @@
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/06-scalable-graphics/">6. (Scalable) graphics</a>
+        <a href="/docs/tutorials/06-The-theming-engine-in-depth/">6. The theming engine in depth</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/07-scalable-graphics/">7. (Scalable) graphics</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/08-parents-and-parent-items/">8. Parents and parent items</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/09-qskinny-and-qml/">9. Using QSkinny and QML</a>
         </li>
     
         <li class="docs-menu-item current">
-        <a href="/docs/tutorials/07-parents-and-parent-items/">7. Parents and parent items</a>
+        <a href="/docs/tutorials/10-writing-own-controls/">10. Writing own controls</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/08-qskinny-and-qml/">8. Using QSkinny and QML</a>
-        </li>
-    
-        <li class="docs-menu-item">
-        <a href="/docs/tutorials/09-writing-own-controls/">9. Writing own controls</a>
-        </li>
-    
-        <li class="docs-menu-item">
-        <a href="/docs/tutorials/10-scene-graph/">9. Scene graph representations of controls</a>
+        <a href="/docs/tutorials/11-scene-graph/">11. Scene graph representations of controls</a>
         </li>
     
     </ul>
@@ -2099,239 +2103,372 @@
     <article class="post type-docs">
       <div class="post-inside">
         <header class="post-header">
-          <h1 class="post-title line-left">7. Parents and parent items</h1>
+          <h1 class="post-title line-left">10. Writing own controls</h1>
         </header><!-- .post-header -->
         <div class="post-content">
           <div class="sect1">
-<h2 id="parents-and-parent-items">Parents and parent items</h2>
+<h2 id="writing-own-controls">Writing own controls</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Creating an app with QSkinny consists of creating controls, putting them
-into layouts and nesting layouts and controls inside each other. The
-nesting already creates some sort of a hierarchy in the app, see the
-"Nesting layouts" section in the <a href="Layouts.html">layouts page</a>. In
-more general terms, all controls are part of several hierarchies:</p>
+<p>Writing own controls is either done by subclassing or compositing an
+existing displayable control like <code>QskTextLabel</code>, or by writing a
+completely new class including a skinlet, which is typically derived
+directly from <code>QskControl</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="subclassing-existing-controls">Subclassing existing controls</h3>
+<div class="paragraph">
+<p>Let’s say an app is displaying a text label with a specific style at
+several different places, then it makes sense to subclass <code>QskTextLabel</code>
+and set the needed properties like font size etc. in the derived class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>class TextLabel : public QskTextLabel
+{
+
+    Q_OBJECT
+
+public:
+    TextLabel( const QString&amp; text, QQuickItem* parent = nullptr ) : QskTextLabel( text, parent )
+    {
+        setMargins( 15 );
+        setBackgroundColor( Qt::cyan );
+    }
+};</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/subclassing-existing-controls.png" alt="Subclassing existing controls">
+</div>
+<div class="title">Figure 1. A subclassed control with local skin hints</div>
+</div>
+<div class="paragraph">
+<p>Then there is no need to set the margins and background color for every
+instance of the custom text label.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="making-custom-classes-skinnable">Making custom classes skinnable</h3>
+<div class="paragraph">
+<p>To make custom classes like the <code>TextLabel</code> class above skinnable, we
+need to define our own subcontrols and style them in our skin, in
+contrast to setting the values directly in the class. To be able to set
+specific values for our <code>TextLabel</code> class that are different from the
+generic <code>QskTextLabel</code>, we need to define our own subcontrols and
+substitute the generic subcontrols for them in an overriden method
+<code>effectiveSubcontrol()</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>class TextLabel : public QskTextLabel
+{
+    QSK_SUBCONTROLS( Panel )
+
+    TextLabel( const QString&amp; text, QQuickItem* parent = nullptr ) : QskTextLabel( text, parent )
+    {
+    }
+
+    QskAspect::Subcontrol effectiveSubcontrol( QskAspect::Subcontrol subControl ) const override final
+    {
+        if ( subControl == QskTextLabel::Panel )
+            return TextLabel::Panel;
+
+        return subControl;
+    }
+    ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When the skinlet is drawing a <code>TextLabel</code> instance, it queries it for
+its subcontrols through <code>effectiveSubcontrol()</code> in order to style them
+properly. Now that we substitute the <code>QskTextLabel::Panel</code> for our
+<code>TextLabel::Panel</code>, we can style it accordingly in our skin, so we don’t
+need to set the local skin hints in the constructor of <code>TextLabel</code>
+anymore.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>class MySkin : public QskSkin
+{
+
+public:
+    MySkin( QObject* parent = nullptr ) : QskSkin( parent )
+    {
+        setGradient( TextLabel::Panel, Qt::cyan );
+        setMargins( TextLabel::Panel | QskAspect::Padding, 15 );
+    }
+};</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/subclassing-existing-controls.png" alt="Subclassing existing controls">
+</div>
+<div class="title">Figure 2. A subclassed control with skin hints defined in the skin</div>
+</div>
+<div class="paragraph">
+<p>The styling described above has the same effect as in the simpler
+example, but now the <code>TextLabel</code> control can be given a different style
+depending on the skin.</p>
+</div>
+<div class="paragraph">
+<p>In our class we only set a custom skin hint for the panel, but as
+<code>QskTextLabel</code> also has a <code>Text</code> subcontrol, we could of course also
+define our own one for the text.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="compositing-controls">Compositing controls</h3>
+<div class="paragraph">
+<p>Controls can also be composited; e.g. when writing a class with a text
+label on the left and a graphic on the right side, it could look like
+this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>class TextAndGraphic : public QskLinearBox
+{
+
+    Q_OBJECT
+
+public:
+    TextAndGraphic( const QString&amp; text, const QString&amp; graphicName, QQuickItem* parent = nullptr )
+        : QskLinearBox( Qt::Horizontal, parent ),
+          m_textLabel( new QskTextLabel( text, this ) )
+    {
+        addItem( m_textLabel );
+
+        QImage image( QString( ":/images/%1.svg" ).arg( graphicName ) );
+        auto graphic = QskGraphic::fromImage( image );
+
+        m_graphicLabel = new QskGraphicLabel( graphic );
+        m_graphicLabel-&gt;setExplicitSizeHint( Qt::PreferredSize, { 30, 30 } );
+        addItem( m_graphicLabel );
+
+        setAutoLayoutChildren( true );
+        ...
+    }
+
+private:
+    QskTextLabel* m_textLabel;
+    QskGraphicLabel* m_graphicLabel;
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This allows for easy instantiation of the class with a text and a file
+name for the graphic:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>auto* textAndGraphic = new TextAndGraphic( "Text", "cloud" );</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/compositing-controls.png" alt="Compositing controls">
+</div>
+<div class="title">Figure 3. A composited control</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="writing-controls-with-a-skinlet">Writing controls with a skinlet</h3>
+<div class="paragraph">
+<p>QSkinny already comes with controls like text labels, list views,
+buttons etc. When there is a completely new control to be written that
+cannot be subclassed or composited, the skinlet for the class needs to
+be implemented as well.</p>
+</div>
+<div class="sect3">
+<h4 id="writing-the-class">Writing the class</h4>
+<div class="paragraph">
+<p>For demo purposes we create a class called <code>CustomShape</code> which shall
+display an outer circle and an inner circle, with minimal API. There are
+only 2 subcontrols that will be painted in the skinlet later:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>class CustomShape : public QskControl
+{
+    Q_OBJECT
+
+public:
+    QSK_SUBCONTROLS( Panel, InnerShape )
+
+    CustomShape( QQuickItem* parent = nullptr ) : QskControl( parent )
+    {
+    }
+};</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="writing-the-skinlet">Writing the skinlet</h4>
+<div class="paragraph">
+<p>Writing the skinlet is the hard part of the work. We need the following
+things in our skinlet:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The <strong>object tree</strong>. This is a tree of <code>QObject</code> instances which manages
-lifetime: Objects created with a parent will get deleted whenever their
-parent is deleted. For more information, see the Qt documentation on
-<a href="https://doc.qt.io/qt-5/objecttrees.html">Object Trees &amp; Ownership</a>.</p>
-</li>
-<li>
-<p>The <strong>item tree</strong>. This is a tree of items displayed on the screen,
-i.e. <code>QQuickItem</code> instances. Qt will traverse the item tree when
-rendering items on the screen. The positioning of an item depends on its
-parent item, e.g. layouts will position their child items according to
-certain policies. In addition, visual items will inherit properties from
-its parent item like visibility or opacity. The item tree is often
-similar to the object tree, but not necessarily: Instances of
-<code>QQuickItem</code> can have a parent item set, but have another parent, or no
-parent at all. See also the Qt documentation on
-<a href="https://doc.qt.io/qt-5/qtquick-visualcanvas-visualparent.html">Concepts -
-Visual Parent in Qt Quick</a>.</p>
-</li>
-<li>
-<p>The <strong>scene graph</strong>. The scene graph contains a representation of
-graphic primitives like rectangles, textures (i.e. images) and text, to
-allow efficient rendering on the screen with OpenGL or other backends.
-This is described in more details in <a href="scene-graph.html">scene graph
-representations of controls</a>.</p>
+<p>A definition of node roles. They typically correspond to subcontrols
+from the control, so since in our case we have a subcontrol <code>Panel</code> and
+<code>InnerShape</code>, there will be the node roles <code>PanelRole</code> and
+<code>InnerShapeRole</code>. The node roles are often set in the constructor of the
+class.</p>
 </li>
 </ul>
 </div>
-<div class="sect2">
-<h3 id="example">Example</h3>
-<div class="paragraph">
-<p>Let’s look at the "Nesting layouts" example from the
-<a href="Layouts.html">layouts documentation</a>. The UI looks like this:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/nesting-layouts.png" alt="Nested layouts">
-</div>
-<div class="title">Figure 1. UI with nested layouts</div>
-</div>
-<div class="paragraph">
-<p>The code for this UI is below:</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+The constructor of the skinlet needs to be invokable!
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>auto* outerBox = new QskLinearBox( Qt::Vertical );
+<pre class="highlight"><code>class CustomShapeSkinlet : public QskSkinlet
+{
+    Q_GADGET
 
-auto* topBar = new QskLinearBox( Qt::Horizontal, outerBox );
+public:
+    enum NodeRole
+    {
+        PanelRole, InnerShapeRole
+    };
 
-auto* topLabel1 = new QskTextLabel( "top bar label 1", topBar );
-auto* topLabel2 = new QskTextLabel( "top bar label 2", topBar );
-auto* topLabel3 = new QskTextLabel( "top bar label 3", topBar );
+    Q_INVOKABLE CustomShapeSkinlet( QskSkin* skin = nullptr ) : QskSkinlet( skin )
+    {
+        setNodeRoles( { PanelRole, InnerShapeRole } );
+    }</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The enclosing rectangle for each subcontrol. This can be just the
+<code>contentsRect</code>, but we can define it more accurately if we want by
+applying some metrics. If the code below is hard to understand, the
+important thing to take away from it is that different subcontrols can
+have different enclosing rectangles.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>    QRectF subControlRect( const QskSkinnable* skinnable, const QRectF&amp; contentsRect, QskAspect::Subcontrol subControl ) const override
+    {
+        const auto* customShape = static_cast&lt; const CustomShape* &gt;( skinnable );
 
-auto* mainBox = new QskLinearBox( Qt::Horizontal, outerBox );
+        if ( subControl == CustomShape::Panel )
+        {
+            return contentsRect;
+        }
+        else if ( subControl == CustomShape::InnerShape )
+        {
+            const auto margins = customShape-&gt;marginsHint( CustomShape::InnerShape );
+            return contentsRect.marginsRemoved( margins );
+        }
 
-auto* menuBox = new QskLinearBox( Qt::Vertical, mainBox );
+        return QskSkinlet::subControlRect( skinnable, contentsRect, subControl );</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The code to actually draw the nodes. In our case of an outer circle
+and an inner circle, the code for each subcontrol / node role is quite
+similar. The method <code>updateSubNode()</code>, which is reimplemented from
+<code>QQuickItem</code>, is called once for each node role. The code below again
+might not be straight forward to understand, the gist of it is that for
+each node role we draw a circle by creating a <code>BoxNode</code>.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>protected:
+    QSGNode* updateSubNode( const QskSkinnable* skinnable, quint8 nodeRole, QSGNode* node ) const override
+    {
+        const auto* customShape = static_cast&lt; const CustomShape* &gt;( skinnable );
 
-auto* menuLabel1 = new QskTextLabel( "menu 1", menuBox );
-auto* menuLabel2 = new QskTextLabel( "menu 2", menuBox );
-auto* menuLabel3 = new QskTextLabel( "menu 3", menuBox );
+        switch ( nodeRole )
+        {
+            case PanelRole:
+            {
+                auto panelNode = static_cast&lt; QskBoxNode* &gt;( node );
 
-auto* mainText = new QskTextLabel( "here main area", mainBox );
+                ...
+                const auto panelRect = subControlRect( customShape, customShape-&gt;contentsRect(), CustomShape::Panel );
+                const qreal radius = panelRect.width() / 2;
+                panelNode-&gt;setBoxData( panelRect, shapeMetrics, borderMetrics, borderColors, gradient );
 
-QskWindow window;
-window.addItem( outerBox );
-window.show();</code></pre>
+                return panelNode;
+            }
+            case InnerShapeRole:
+            {
+                auto innerNode = static_cast&lt; QskBoxNode* &gt;( node );
+
+                ...
+                const auto innerRect = subControlRect( customShape, customShape-&gt;contentsRect(), CustomShape::InnerShape );
+                const qreal radius = innerRect.width() / 2;
+                innerNode-&gt;setBoxData( innerRect, shapeMetrics, borderMetrics, borderColors, gradient );
+
+                return innerNode;
+            }
+        }
+
+        return QskSkinlet::updateSubNode( skinnable, nodeRole, node );
+    }
+};</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="object-tree">Object tree</h4>
+<h4 id="connecting-class-and-skinlet">Connecting class and skinlet</h4>
 <div class="paragraph">
-<p>In the example above, when we created a new element, we always passed
-the <code>QObject</code> parent as an argument to the constructor, which is good
-practice. We do that for instance in this line:</p>
+<p>In our skin, we need to declare that the skinlet above will be
+responsible of drawing our control via <code>declareSkinlet</code>. Also, we can
+style our control with skin hints:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>auto* topLabel1 = new QskTextLabel( "top bar label 1", topBar );</code></pre>
+<pre class="highlight"><code>class MySkin : public QskSkin
+{
+
+public:
+    MySkin( QObject* parent = nullptr ) : QskSkin( parent )
+    {
+       declareSkinlet&lt; CustomShape, CustomShapeSkinlet &gt;();
+
+       setGradient( CustomShape::Panel, Qt::blue );
+       setMargins( CustomShape::InnerShape, 20 );
+       setGradient( CustomShape::InnerShape, Qt::magenta );
+    }
+};</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This makes sure <code>topBar</code> is a parent of <code>topLabel1</code>. It means that when
-<code>topBar</code> is deleted, it will automatically delete <code>topLabel1</code>, because
-the latter is a child of the <code>topBar</code>.</p>
-</div>
-<div class="paragraph">
-<p>Below is an image of the object tree, i.e. the <code>QObject</code> parent-child
-relationship. The <code>QskWindow</code> is hereby the parent of the
-<code>QQuickRootItem</code>, which itself is the parent of the <code>outer box</code>, and so
-on. For information on how to obtain this tree, see
-<a href="https://doc.qt.io/qt-5/qobject.html#dumpObjectTree">QObject::dumpObjectTree()</a>.</p>
+<p>SkinFactories etc. are again omitted here. Finally we can draw our
+control; the effort might seem excessive, but we wrote the control with
+all capabilities of styling; in addition, the control will react to size
+changes properly. A simpler version with hardcoded values for margins,
+colors etc. can be written with less code.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="../images/object-hierarchy.png" alt="QObject hierarchy">
+<img src="../images/control-with-skinlet.png" alt="Control with skinlet">
 </div>
-<div class="title">Figure 2. QObject tree (and item tree) of the nested layouts UI</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="item-tree">Item tree</h4>
-<div class="paragraph">
-<p>The Item tree for the example above is identical to the object tree. As
-described, we always pass the parent object in the constructor:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>auto* topLabel1 = new QskTextLabel( "top bar label 1", topBar );</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The line above will (in addition to the setting the parent) also ensure
-that <code>topBar</code> will be a <strong>parent item</strong> of <code>topLabel1</code>; this is done by
-the <code>QQuickItem</code> constructor.</p>
-</div>
-<div class="paragraph">
-<p>Even if we had not passed the parent in the constructor, we could still
-add the label to the <code>topBar</code> via an explicit call:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>auto* topLabel1 = new QskTextLabel( "top bar label 1" );
-topBar-&gt;addItem( topLabel1 );</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The call to <code>addItem()</code> above sets the parent item of <code>topLabel1</code> to
-<code>topBar</code> and thus the latter will display it as one of its children. In
-this case it would also set the parent, because the <code>topLabel1</code> does not
-have one yet. In other words, setting a parent item will also set the
-parent <strong>if</strong> the parent is null.</p>
-</div>
-<div class="paragraph">
-<p>So since the <code>topBar</code> is a parent item of <code>topLabel1</code>, it means that
-<code>topLabel1</code> will inherit settings like visibility and opacity from
-<code>topBar</code>. For instance, if we set the the visibility of the <code>topBar</code> to
-false, all its child items will be invisible as well (which in this case
-would be all top bar labels). If we set the opacity to 0.2, all its
-child items will be almost transparent:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>topBar-&gt;setOpacity( 0.2 );</code></pre>
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/nesting-layouts-item-tree-1.png" alt="Changing the item tree">
-</div>
-<div class="title">Figure 3. Changing opacity of an item will affect all its child items</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="difference-in-object-trees-and-item-trees">Difference in object trees and item trees</h4>
-<div class="paragraph">
-<p>As an example for when the object tree and item tree differ, let’s
-decide to add a bottom bar to our UI and move our <code>topLabel1</code> from the
-top bar to the bottom bar. This is easy:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>auto* bottomBar = new QskLinearBox( Qt::Horizontal, outerBox );
-topLabel1-&gt;setParentItem( bottomBar );</code></pre>
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/nesting-layouts-item-tree-2.png" alt="Moving a label to the bottom bar">
-</div>
-<div class="title">Figure 4. Moving a label from the top bar to the bottom bar</div>
-</div>
-<div class="paragraph">
-<p>Now we decide to get rid of our top bar altogether:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>topBar-&gt;deleteLater();</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This will also delete our label from the bottom bar:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/nesting-layouts-item-tree-3.png" alt="Deleting the top bar">
-</div>
-<div class="title">Figure 5. Deleting the top bar will delete all its children</div>
-</div>
-<div class="paragraph">
-<p>The reason why the label from the bottom bar was also deleted is that
-with the call to <code>setParentItem()</code> above we set a new parent item; the
-parent, however, was still <code>topBar</code> (the call to <code>setParentItem()</code> did
-not change the parent, because it was not null). So when the <code>topBar</code>
-was deleted, it deleted all of its children, including the moved label
-<code>topLabel1</code>.</p>
-</div>
-<div class="paragraph">
-<p>After we moved the label to the bottom bar, the object tree was
-different from the item tree, hence we got a surprising result when
-deleting the top bar. It is a good idea to try to keep the trees the
-same, and be aware of the existence of both of them.</p>
-</div>
-<div class="paragraph">
-<p>If we reparent our label to the bottom bar before deleting the top bar,
-we get the desired effect:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>topLabel1-&gt;setParent( bottomBar );
-topLabel1-&gt;setParentItem( bottomBar );
-topBar-&gt;deleteLater();</code></pre>
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/nesting-layouts-item-tree-4.png" alt="Reparenting the item">
-</div>
-<div class="title">Figure 6. Reparenting the label will keep it alive when deleting the top bar</div>
+<div class="title">Figure 4. A class with an own skinlet</div>
 </div>
 </div>
 </div>

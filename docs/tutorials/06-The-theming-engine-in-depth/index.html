@@ -2,7 +2,7 @@
 <html lang="en">
     <head>    
 
-        <title>6. (Scalable) graphics - The QSkinny UI framework</title>
+        <title>6. The theming engine in depth - The QSkinny UI framework</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="A documentation theme"/>
@@ -100,7 +100,7 @@
       <br /><br />
       <ul id="docs-menu" class="docs-menu">
         <li class="docs-menu-item">
-          <a href=""></a>
+          <a href="/docs/">Classes</a>
         </li>
         
           
@@ -143,23 +143,27 @@
         </li>
     
         <li class="docs-menu-item current">
-        <a href="/docs/tutorials/06-scalable-graphics/">6. (Scalable) graphics</a>
+        <a href="/docs/tutorials/06-The-theming-engine-in-depth/">6. The theming engine in depth</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/07-parents-and-parent-items/">7. Parents and parent items</a>
+        <a href="/docs/tutorials/07-scalable-graphics/">7. (Scalable) graphics</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/08-qskinny-and-qml/">8. Using QSkinny and QML</a>
+        <a href="/docs/tutorials/08-parents-and-parent-items/">8. Parents and parent items</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/09-writing-own-controls/">9. Writing own controls</a>
+        <a href="/docs/tutorials/09-qskinny-and-qml/">9. Using QSkinny and QML</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/10-scene-graph/">9. Scene graph representations of controls</a>
+        <a href="/docs/tutorials/10-writing-own-controls/">10. Writing own controls</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/11-scene-graph/">11. Scene graph representations of controls</a>
         </li>
     
     </ul>
@@ -2099,76 +2103,212 @@
     <article class="post type-docs">
       <div class="post-inside">
         <header class="post-header">
-          <h1 class="post-title line-left">6. (Scalable) graphics</h1>
+          <h1 class="post-title line-left">6. The theming engine in depth</h1>
         </header><!-- .post-header -->
         <div class="post-content">
           <div class="sect1">
-<h2 id="scalable-graphics">(Scalable) graphics</h2>
+<h2 id="defining-skin-hints">Defining skin hints</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>QSkinny offers support for scalable graphics, i.e. rendering SVGs that
-adapt to a specific size. This means that when a graphic is embedded in
-a layout, it can change its size when the layout is growing or
-shrinking, while still maintaining a correct aspect ratio.</p>
-</div>
-<div class="paragraph">
-<p>Imagine the following code, which produces the image depicted below:</p>
+<p>Let&#8217;s say we want to define skin hints for the following control:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>auto horizontalBox = new QskLinearBox( Qt::Horizontal );
-horizontalBox-&gt;setPreferredSize( { 200, 75 } );
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">class Control : public QskControl
+{
+        Q_OBJECT
 
-QImage image1( ":/images/cloud.svg" );
-QskGraphic graphic1 = QskGraphic::fromImage( image1 );
-auto* label1 = new QskGraphicLabel( graphic1, horizontalBox );
-label1-&gt;setSizePolicy( QskSizePolicy::ConstrainedPreferred, QskSizePolicy::Expanding );
+    public:
+        QSK_SUBCONTROLS( Panel, InnerArea )
+        QSK_STATES( Active, Highlighted )
 
-QImage image2( ":/images/train.svg" );
-QskGraphic graphic2 = QskGraphic::fromImage( image2 );
-auto* label2 = new QskGraphicLabel( graphic2, horizontalBox );
-label2-&gt;setSizePolicy( QskSizePolicy::ConstrainedPreferred, QskSizePolicy::Expanding );
-...</code></pre>
+    ...
+};
+
+QSK_SUBCONTROL( Control, Panel )
+QSK_SUBCONTROL( Active, Highlighted )
+
+QSK_STATE( Control, Active, ( QskAspect::FirstUserState &lt;&lt; 1 ) )
+QSK_STATE( Control, Highlighted, ( QskAspect::FirstUserState &lt;&lt; 2 ) )</code></pre>
 </div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/scalable-graphics-1.png" alt="Scalable graphics default">
-</div>
-<div class="title">Figure 1. graphics with preferred size</div>
 </div>
 <div class="paragraph">
-<p>When resizing the window, the graphics will scale according to the size
-available in the layout:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/scalable-graphics-2.png" alt="Scalable graphics bounded by width">
-</div>
-<div class="title">Figure 2. graphics bounded by width</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/scalable-graphics-3.png" alt="Scalable graphics bounded by height">
-</div>
-<div class="title">Figure 3. graphics bounded by height</div>
-</div>
-<div class="paragraph">
-<p>Since we set the horizontal size policy of the graphics to
-<code>ConstrainedPreferred</code>, the scaling is done through QskGraphic’s
-<code>widthForHeight()</code> methods to maintain the correct aspect ratio. If we
-had set the vertical policy to <code>ConstrainedPreferred</code> and the horizontal
-one to e.g. <code>Expanding</code>, the layout would have queried the
-<code>heightForWidth()</code> method instead.</p>
-</div>
-<div class="paragraph">
-<p>Of course non-scalable graphics like PNGs and JPGs are also supported:</p>
+<p>As described in previous chapters, skin hints for that class can be defined the
+following way:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>QImage image( "background.jpg" );
-QskGraphic graphic = QskGraphic::fromImage( image );
-...</code></pre>
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">Skin::Skin( QObject* parent ) : QskSkin( parent )
+{
+    QskSkinHintTableEditor ed( &amp;hintTable() );
+
+    ed.setGradient( Control::Panel, Qt::red );
+    ed.setGradient( Control::Panel | Control::Active, Qt::green );
+    ed.setGradient( Control::Panel | Control::Active | QskControl::Hovered, Qt::blue );
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This means that the color of <code>Control</code> 's panel (probably a background color)
+will be red by default; if the control is in the <code>Active</code> state, it will be
+green. When in addition entering the <code>Hovered</code> state, i.e. the user hovers with
+the mouse over the element, it will be blue.</p>
+</div>
+<div class="paragraph">
+<p>In general, which skin hint is used for drawing a graphical element always
+depends on the skinlet and should be documented for the user. However,
+the theming engine itself has its logic how skin hints are resolved.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="types-of-skin-hints">Types of skin hints</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are two types of skin hints: local and global ones. They are checked in
+the following order:</p>
+</div>
+<div class="paragraph">
+<p><strong>1. local skin hints</strong></p>
+</div>
+<div class="paragraph">
+<p>Local skin hints are set on the control itself via <code>setMarginHint()</code>,
+<code>setGradientHint()</code> and other functions.
+If a skin hint is found in the local table, it takes precedence over the ones
+defined in the global skin.
+In general, it is preferrable to set the skin hints in
+the skin itself; occasionally it can be easier to set the skin hint locally,
+though.</p>
+</div>
+<div class="paragraph">
+<p><strong>2. global skin hints</strong></p>
+</div>
+<div class="paragraph">
+<p>Global skin hints are set on the skin rather than on the control, usually on an
+application-wide subclass of <code>QskSkin</code>, as described in the example above for
+<code>Control</code>.</p>
+</div>
+<div class="paragraph">
+<p>The following image shows the lookup logic; for an explanation how the skin
+hints are resolved see the chapter <a href="#resolving-skin-hints">Resolving skin hints</a>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/skin-hint-lookup.jpg" alt="skin hint lookup">
+</div>
+<div class="title">Figure 1. skin hint lookup logic</div>
+</div>
+<div class="paragraph">
+<p>The functionality for looking up skin hints is defined in
+<a href="../../files/QskSkinnable_8cpp">QskSkinnable::storedHint()</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="resolving-skin-hints">Resolving skin hints</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When queried for a skin hint, QSkinny first needs to determine which skin
+hint to resolve, by checking the follwing:</p>
+</div>
+<div class="paragraph">
+<p><strong>1. Which aspect is being queried?</strong></p>
+</div>
+<div class="paragraph">
+<p>This is the easy part, and is queried by the skinlet of a class, which in turn
+is queried by Qt to draw itself. The aspect can be a subcontrol from QSkinny
+(e.g. <code>QskTextLabel::Text</code>), or a user-defined subcontrol, like <code>Control::Panel</code>
+in our example above; in addition there can be any combination of enum values
+from the <code>QskAspect</code> class. For instance, the skinlet of our <code>Control</code> class
+could query for <code>Control::Panel | QskAspect::Margin</code> or
+<code>Control::InnerArea | QskAspect::TextColor | QskAspect::Top</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>2. Which state is the control in?</strong></p>
+</div>
+<div class="paragraph">
+<p>Skin hints can differ depending on the state, see above example: Without any
+state set the panel of the control should be drawn in red, but when it is in
+the <code>Active</code> state, it should be drawn in green; if in addition the control is
+in the <code>Hovered</code> state, the control should be blue.</p>
+</div>
+<div class="paragraph">
+<p>So when drawing a subcontrol, QSkinny will automatically
+lookup the skin hint for that subcontrol in the current state.</p>
+</div>
+<div class="paragraph">
+<p>E.g. when looking up a skin hint of <code>Control::Panel</code>, which happens to be in
+the <code>Control::Active</code> state, QSkinny looks up the skin hint for
+<code>Control::Panel | Control::Active</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="exact-matches">Exact matches</h3>
+<div class="paragraph">
+<p>If the subcontrol <code>Panel</code> in the state <code>Active</code> is defined in the skin hint
+table, which in our example it is, we have found the right skin hint
+(<code>Qt::green</code>) and will return that to the skinlet for drawing.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="non-exact-matches">Non exact matches</h3>
+<div class="paragraph">
+<p>The interesting case is when there is no exact match for the skin hint:
+Let&#8217;s say we want to look up the panel skin hint for when the control is in the
+<code>Highlighted</code> state, i.e. we are looking up the hint for
+<code>Control::Panel | Control::Highlighted</code>. Since there is no definition for it in
+the skin, we have to make a guess which skin hint to use: In that case we remove
+the state and look up the hint for <code>Control::Panel</code>, which is defined as red.</p>
+</div>
+<div class="paragraph">
+<p><strong>1. removing states</strong></p>
+</div>
+<div class="paragraph">
+<p>In general, we look for the right skin hint by removing the "most significant"
+state until we find a skin hint that matches. If the control had both states
+<code>Active</code> and <code>Highlighted</code> set, the skin hint to look up would have been
+<code>Control::Panel | Control::Active | Control::Highlighted</code>.</p>
+</div>
+<div class="paragraph">
+<p>Since the skin does not have a definition for it, we would have checked for
+<code>Control::Panel | Control::Active</code> next. So why did we not choose to look up
+<code>Control::Panel | Control::Highlighted</code> instead? The reason for this is that
+the states are defined in the following way:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>QSK_STATE( Control, Active, ( QskAspect::FirstUserState &lt;&lt; 1 ) )
+QSK_STATE( Control, Highlighted, ( QskAspect::FirstUserState &lt;&lt; 2 ) )</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The most significant state here is the <code>Highlighted</code> one, as it is defined by
+the more significant bit. This means that it will be removed first when
+searching for the right skin hint.</p>
+</div>
+<div class="paragraph">
+<p><strong>2. removing placement values</strong></p>
+</div>
+<div class="paragraph">
+<p>If there is no match for the current skin hint with all states removed, the next
+thing to check is whether there is a placement defined: E.g. if there is no skin
+hint defined for neither <code>Control::Panel | QskAspect::Top | Control::Active</code> nor
+<code>Control::Active | QskAspect::Top</code>, QSkinny will remove the placement bit
+<code>QskAspect::Top</code> and try to look up <code>Control::Active</code>, which in our result is
+defined in the skin.</p>
+</div>
+<div class="paragraph">
+<p>The whole skin hint resolving logic is defined in the picture below; it is
+checked for both local skin hints (if present) and global skin hints.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/skin-hint-resolving.jpg" alt="skin hint resolving">
+</div>
+<div class="title">Figure 2. skin hint resolving logic</div>
+</div>
+<div class="paragraph">
+<p>The functionality for this is defined in the function
+<a href="../../files/QskSkinHintTable_8cpp">qskResolvedHint()</a>.</p>
 </div>
 </div>
 </div>

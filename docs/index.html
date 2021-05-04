@@ -2,10 +2,10 @@
 <html lang="en">
     <head>    
 
-        <title>9. Scene graph representations of controls - The QSkinny UI framework</title>
+        <title>Classes - The QSkinny UI framework</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="A documentation theme"/>
+        <meta name="description" content="In this section you'll find the QSkinny tutorials."/>
         <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i%26display=swap" rel="stylesheet"> 
         <link rel="stylesheet" href="/assets/css/main.css">
         <link rel="stylesheet" href="/assets/css/syntax.css">
@@ -99,8 +99,8 @@
       </select>
       <br /><br />
       <ul id="docs-menu" class="docs-menu">
-        <li class="docs-menu-item">
-          <a href=""></a>
+        <li class="docs-menu-item current">
+          <a href="/docs/">Classes</a>
         </li>
         
           
@@ -110,7 +110,7 @@
           
           
           
-          <li class="docs-menu-item has-children active">
+          <li class="docs-menu-item has-children">
             <a href="/docs/tutorials/">Tutorials</a>
             
             
@@ -143,23 +143,27 @@
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/06-scalable-graphics/">6. (Scalable) graphics</a>
+        <a href="/docs/tutorials/06-The-theming-engine-in-depth/">6. The theming engine in depth</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/07-parents-and-parent-items/">7. Parents and parent items</a>
+        <a href="/docs/tutorials/07-scalable-graphics/">7. (Scalable) graphics</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/08-qskinny-and-qml/">8. Using QSkinny and QML</a>
+        <a href="/docs/tutorials/08-parents-and-parent-items/">8. Parents and parent items</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/09-writing-own-controls/">9. Writing own controls</a>
+        <a href="/docs/tutorials/09-qskinny-and-qml/">9. Using QSkinny and QML</a>
         </li>
     
-        <li class="docs-menu-item current">
-        <a href="/docs/tutorials/10-scene-graph/">9. Scene graph representations of controls</a>
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/10-writing-own-controls/">10. Writing own controls</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/11-scene-graph/">11. Scene graph representations of controls</a>
         </li>
     
     </ul>
@@ -2099,103 +2103,13 @@
     <article class="post type-docs">
       <div class="post-inside">
         <header class="post-header">
-          <h1 class="post-title line-left">9. Scene graph representations of controls</h1>
+          <h1 class="post-title line-left">Classes</h1>
         </header><!-- .post-header -->
         <div class="post-content">
-          <div class="sect1">
-<h2 id="qskinny-scene-graph-representations-of-controls">QSkinny - Scene graph representations of controls</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Each control that is displayed on the screen consists of one or more
-scene graph nodes. Those nodes can be either basic shapes like
-rectangles, or they can contain other information like positioning (used
-with transform nodes), opacity or clipping.</p>
-</div>
-<div class="paragraph">
-<p>The source code below shows a minimal example displaying a button:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>auto* button = new QskPushButton( "button" );
+          
 
-QskWindow window;
-window.addItem( button );
-window.show();</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>For this example, the scene graph will contain the following nodes:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/skins-sg-1.png" alt="Scene graph nodes for a button">
-</div>
-<div class="title">Figure 1. Scene graph representation of a button</div>
-</div>
-<div class="paragraph">
-<p>The top two nodes (root and Quick root item) are created for every
-QtQuick application. The button itself consists of 5 nodes in our case:
-One root note (<code>button node</code>), one node just to group its children (just
-labeled <code>node</code>), one geometry node for drawing the background (<code>panel
-node</code>), one transform node for setting the position of the text and
-another geometry node for displaying the text (<code>text node</code>).</p>
-</div>
-<div class="paragraph">
-<p>For an explanation of the different scene graph node types, see the Qt
-documentation of
-<a href="https://doc.qt.io/qt-5/qsgnode.html#NodeType-enum">QSGNode::NodeType</a>.</p>
-</div>
-<div class="paragraph">
-<p>The example above is the simplest form of a button, in practice there
-might be more nodes per control, for instance an opacity node or a clip
-node.</p>
-</div>
-<div class="paragraph">
-<p>Now we add more elements to the UI by putting the button inside a layout
-(<code>QskBox</code>):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>auto* box = new QskBox;
-auto* button = new QskPushButton( "button", box );
-
-QskWindow window;
-window.addItem( box );
-window.show();</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Then the scene graph has the following structure:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/skins-sg-2.png" alt="Scene graph nodes for a button in a box">
-</div>
-<div class="title">Figure 2. Scene graph representation of a button inside a box</div>
-</div>
-<div class="paragraph">
-<p>Here we can see that since the box is a parent of the button, the <code>box
-node</code> is also a parent of the <code>button node</code> in the scene graph. Also, the
-box has two child nodes: The button, which is the same as in the earlier
-example, and a node for the panel of the box, in case the panel itself has a
-background color.</p>
-</div>
-<div class="paragraph">
-<p>In a more complicated UI with multiple elements and more advanced
-layouts, the number of scene graph nodes can be quite high. This is why
-QSkinny tries to create as little nodes as possible and reuse as many as
-it can.</p>
-</div>
-</div>
-</div>
           
           
-          
-            
-            
-            
-            
-            
           
         </div><!-- .post-content -->
       </div><!-- .post-inside -->
