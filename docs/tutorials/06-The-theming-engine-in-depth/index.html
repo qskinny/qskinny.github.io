@@ -2313,6 +2313,65 @@ checked for both local skin hints (if present) and global skin hints.</p>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="comparison-to-other-theming-engines">Comparison to other theming engines</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="scss">(S)CSS</h3>
+<div class="paragraph">
+<p>When coming from a Web background, the typical choice of description language
+for UI elements is either CSS or SCSS; the latter giving a bit more flexibility
+to reuse components.</p>
+</div>
+<div class="paragraph">
+<p>Here is the class definition from above again:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>    ed.setGradient( Control::Panel, Qt::red );
+    ed.setGradient( Control::Panel | Control::Active, Qt::green );
+    ed.setGradient( Control::Panel | Control::Active | QskControl::Hovered, Qt::blue );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now there is no 1-to-1 mapping between the concepts of QSkinny and CSS; but for
+the sake of this article these definitions could be written in SCSS like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>.panel {
+    background-color: red;
+    &amp;--active {
+        @extend .panel;
+        background-color: green;
+        &amp;:hover {
+            background-color: blue;
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In plain CSS it would look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>.panel, .panel--active {
+    background-color: red;
+}
+
+.panel--active {
+  background-color: green;
+}
+
+.panel--active:hover {
+    background-color: blue;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
           
           
           
