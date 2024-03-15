@@ -143,27 +143,27 @@
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/06-The-theming-engine-in-depth/">6. The theming engine in depth</a>
+        <a href="/docs/tutorials/06-scalable-graphics/">6. (Scalable) graphics</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/07-scalable-graphics/">7. (Scalable) graphics</a>
+        <a href="/docs/tutorials/07-parents-and-parent-items/">7. Parents and parent items</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/08-parents-and-parent-items/">8. Parents and parent items</a>
+        <a href="/docs/tutorials/08-qskinny-and-qml/">8. Using QSkinny and QML</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/09-qskinny-and-qml/">9. Using QSkinny and QML</a>
+        <a href="/docs/tutorials/09-writing-own-controls/">9. Writing own controls</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/10-writing-own-controls/">10. Writing own controls</a>
+        <a href="/docs/tutorials/10-scene-graph/">9. Scene graph representations of controls</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/11-scene-graph/">11. Scene graph representations of controls</a>
+        <a href="/docs/tutorials/11-How-to-build-for-Wasm/">10. Building QSkinny for WebAssembly (Wasm)</a>
         </li>
     
     </ul>
@@ -2172,23 +2172,44 @@
 <div class="sect2">
 <h3 id="building-the-qskinny-repository">Building the QSkinny repository</h3>
 <div class="paragraph">
-<p>In this chapter we will write a simple QSkinny application on Linux from scratch.
-As a prerequisite, a recent Qt version (&gt;= 5.6) should be available and the directory of
-its <code>qmake</code> binary in the current <code>$PATH</code>. On debian bullseye we need to install
-these packages <code>build-essential qt-qmake qtbase5-dev qtbase5-private-dev
-qtdeclarative5-dev qtdeclarative5-private-dev libqt5svg5-dev</code>.</p>
+<p>In this chapter we will write a simple QSkinny application on Linux from scratch in C++ with Qt6.
+As a prerequisite, a supported Qt6 version should be available.</p>
+</div>
+<div class="paragraph">
+<p>On debian bullseye we need to install these packages
+<code>build-essential cmake qtbase6-dev qtbase6-private-dev qtdeclarative6-dev qtdeclarative6-private-dev libqt6svg-dev qt6-shadertools</code>.</p>
+</div>
+<div class="paragraph">
+<p>Optional packages for the virtual keyboard are <code>libhunspell-dev libimepinyin-dev</code></p>
 </div>
 <div class="paragraph">
 <p>Then we can build and install QSkinny to <code>/opt/qskinny</code> with the following commands:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">cd /home/user/dev/
-git clone https://github.com/uwerat/qskinny.git
-cd qskinny
-PREFIX=/opt/qskinny qmake -r
-make
-sudo make install</code></pre>
+<pre class="highlight"><code class="language-shell" data-lang="shell">$ git clone https://github.com/uwerat/qskinny.git # clone
+$ cd qskinny
+$ mkdir build &amp;&amp; cd build
+$ cmake ..
+$ cmake --build .
+$ sudo cmake --install . --prefix "/opt/qskinny"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Considering that you want to use a specific Qt version that is installed below "/path/to/qt"
+you have 2 options:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">$ cmake .. -DCMAKE_PREFIX_PATH=/path/to/qt</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-shell" data-lang="shell">$ /path/to/qt/bin/qt-cmake ..</code></pre>
 </div>
 </div>
 </div>
@@ -2216,25 +2237,33 @@ int main( int argc, char* argv[] )
 </div>
 <div class="paragraph">
 <p>For now this will just create an empty window (the <code>QskWindow</code>) without any controls.
-Next, we need to create a <code>myapp.pro</code> file in our <code>myapp</code> directory.</p>
+Next, we need to create a <code>CMakeLists.txt</code> file in our <code>myapp</code> directory.</p>
 </div>
 <div class="listingblock">
-<div class="title">myapp.pro</div>
+<div class="title">CMakeLists.txt</div>
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">TEMPLATE = app
-TARGET = myapp
+<pre class="highlight"><code class="language-cmake" data-lang="cmake">cmake_minimum_required(VERSION 3.27)
 
-QT *= quick
+project(myapp
+    VERSION 1.0.0
+    LANGUAGES CXX)
 
-QSK_ROOT=/opt/qskinny
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-INCLUDEPATH += $${QSK_ROOT}/include
-LIBS += -L$${QSK_ROOT}/lib -lqskinny
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
-QMAKE_RPATHDIR *= $${QSK_ROOT}/lib
+find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(QSkinny REQUIRED)
 
-SOURCES += \
-    main.cpp</code></pre>
+add_executable(myapp
+    src/main.cpp)
+
+target_link_libraries(myapp PRIVATE
+    Qt6::Quick
+    Qsk::QSkinny)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2242,18 +2271,18 @@ SOURCES += \
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">cd myapp
-qmake
-make</code></pre>
+<pre class="highlight"><code class="language-shell" data-lang="shell">$ cd myapp
+$ mkdir build &amp;&amp; cd build
+$ cmake ../ &amp;&amp; make</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>When running myapp it needs to find the skin plugins. Setting QT_PLUGIN_PATH is one
-option ( see <a href="https://doc.qt.io/qt-5/deployment-plugins.html" class="bare">https://doc.qt.io/qt-5/deployment-plugins.html</a> ):</p>
+option ( see <a href="https://doc.qt.io/qt/deployment-plugins.html" class="bare">https://doc.qt.io/qt/deployment-plugins.html</a> ):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">QT_PLUGIN_PATH=/opt/qskinny/plugins ./myapp</code></pre>
+<pre class="highlight"><code class="language-shell" data-lang="shell">$ QT_PLUGIN_PATH=/opt/qskinny/plugins ./myapp</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2263,12 +2292,14 @@ option ( see <a href="https://doc.qt.io/qt-5/deployment-plugins.html" class="bar
 <div class="sect2">
 <h3 id="adding-ui-controls">Adding UI controls</h3>
 <div class="paragraph">
-<p>Now that we have our app running, we can add some UI controls to it by extending the <code>main.cpp</code> file we created earlier. We will add some additional include directives, and then create a horizontal layout containing two push buttons. The layout with the two buttons will be shown in the window. Below is the complete updated source file:</p>
+<p>Now that we have our app running, we can add some UI controls to it by extending the <code>main.cpp</code> file we created earlier.
+We will add some additional include directives, and then create a horizontal layout containing two push buttons.
+The layout with the two buttons will be shown in the window. Below is the complete updated source file:</p>
 </div>
 <div class="listingblock">
 <div class="title">main.cpp</div>
 <div class="content">
-<pre class="highlight"><code>#include &lt;QskWindow.h&gt;
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">#include &lt;QskWindow.h&gt;
 #include &lt;QskLinearBox.h&gt;
 #include &lt;QskPushButton.h&gt;
 
@@ -2278,9 +2309,17 @@ int main( int argc, char* argv[] )
 {
     QGuiApplication app( argc, argv );
 
-    auto* horizontalBox = new QskLinearBox( Qt::Horizontal );
-    auto* button1 = new QskPushButton( "button 1", horizontalBox );
-    auto* button2 = new QskPushButton( "button 2", horizontalBox );
+    auto box = new QskLinearBox( Qt::Horizontal );
+
+    /*
+        some design systems work with transparencies ( f.e Fluent2 )
+        and we need to have a control providing a solid base color
+        as bottom layer.
+     */
+    box-&gt;setPanel( true );
+
+    (void) new QskPushButton( "Button 1", box );
+    (void) new QskPushButton( "Button 2", box );
 
     QskWindow window;
     window.addItem( horizontalBox );

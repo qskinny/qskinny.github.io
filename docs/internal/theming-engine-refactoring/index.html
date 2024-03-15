@@ -143,27 +143,27 @@
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/06-The-theming-engine-in-depth/">6. The theming engine in depth</a>
+        <a href="/docs/tutorials/06-scalable-graphics/">6. (Scalable) graphics</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/07-scalable-graphics/">7. (Scalable) graphics</a>
+        <a href="/docs/tutorials/07-parents-and-parent-items/">7. Parents and parent items</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/08-parents-and-parent-items/">8. Parents and parent items</a>
+        <a href="/docs/tutorials/08-qskinny-and-qml/">8. Using QSkinny and QML</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/09-qskinny-and-qml/">9. Using QSkinny and QML</a>
+        <a href="/docs/tutorials/09-writing-own-controls/">9. Writing own controls</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/10-writing-own-controls/">10. Writing own controls</a>
+        <a href="/docs/tutorials/10-scene-graph/">9. Scene graph representations of controls</a>
         </li>
     
         <li class="docs-menu-item">
-        <a href="/docs/tutorials/11-scene-graph/">11. Scene graph representations of controls</a>
+        <a href="/docs/tutorials/11-How-to-build-for-Wasm/">10. Building QSkinny for WebAssembly (Wasm)</a>
         </li>
     
     </ul>
@@ -2212,7 +2212,7 @@ possible.</p>
 <li>
 <p>There is no support for themes (e.g. night vs. day theme) on a QSkinny level;
 as of now that logic needs to be defined by the user, including switching
-between the themes and other logic.</p>
+themes etc.</p>
 </li>
 </ul>
 </div>
@@ -2363,11 +2363,6 @@ controls because of the global palette. Overriding and defining new color names
 should be possible per class (e.g. for all push buttons) and for single
 instances.</p>
 </div>
-<div class="paragraph">
-<p>We might even want to make it possible to let the user override the style for a
-whole subtree of UI elements, i.e. inheriting style information; this is what
-Flutter allows with its <code>ThemeData</code> class.</p>
-</div>
 </div>
 <div class="sect2">
 <h3 id="theming-for-user-defined-controls">theming for user-defined controls</h3>
@@ -2378,9 +2373,6 @@ Palettes and other hints should be defined the same way for controls that are
 part of QSkinny and for user-defined ones. The same way user-defined skinlets
 should be able to access palettes defined in QSkinny.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="architecture-of-the-new-design">Architecture of the new design</h3>
 <div class="paragraph">
 <p>Below are architectural images of the proposed design:</p>
 </div>
@@ -2403,8 +2395,7 @@ palette.</p>
 <div class="title">Figure 2. Palette lookup logic</div>
 </div>
 <div class="paragraph">
-<p>When it comes to mapping subcontrols to color roles, we could try to skip them
-altogether and use palette color roles in the skin:</p>
+<p>A sample implementation of a skin reusing palette colors could look like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2416,39 +2407,9 @@ backgroundColor = Qt::white;
 updateBoxNode( palette-&gt;primaryColor );
 updateTextNode( palette-&gt;backgroundColor );
 
-[tab button skinlet]
-updateBoxNode( palette-&gt;primaryColor );
-updatetextNode( palette-&gt;backgroundColor );</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>However, in this case we would need a common global palette which works for all
-styles, e.g. a <code>background</code> attribute which works with both a Material and a
-UWP style.</p>
-</div>
-<div class="paragraph">
-<p>Another less radical option would be to map subcontrols to global colors in the
-skin. This is more or less how the examples work already; it would be a bit more
-work for the QSkinny controls, but user defined skinlets could just directly
-access the global palette if the colors were defined.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>[global palette]
-primaryColor = Qt::magenta;
-backgroundColor = Qt::white;
-
-[push button skinlet (unchanged)]
-updateBoxNode( QskPushButton::Panel );
-updateTextNode( QskPushButton::Text );
-
-[tab button skinlet (unchanged)]
-updateBoxNode( QskTabButton::Panel );
-updateTextNode( QskTabButton::Text );
-
-[skin]
-map( QskPushButton::Panel, palette-&gt;primaryColor );
-map( QskTabButton::Panel, palette-&gt;backgroundColor );</code></pre>
+[checkbox skinlet]
+updateBoxNode( Checked, palette-&gt;primaryColor );
+updateBoxNode( Unchecked, palette-&gt;backgroundColor );</code></pre>
 </div>
 </div>
 </div>
