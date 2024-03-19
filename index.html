@@ -235,14 +235,9 @@
   
   
   
-<section id="text-img" class="block block-text outer">
+<section id="wasm" class="block block-text outer">
   <div class="inner">
     <div class="grid grid-middle grid-center">
-      
-      
-      <div class="grid-item block-image">
-        <img src="/images/iot-dashboard.png" alt="Demo" />
-      </div>
       
       <div class="grid-item block-body">
         
@@ -252,23 +247,79 @@
         </div>
         
         
+
         
         <div class="block-content">
-          <p>The IOT dashboard example is part of the QSkinny repository and shows a modern UI composed of advanced elements. You are welcome to use it as a starting point for your own project.</p>
+          <p>The IOT dashboard example is part of the QSkinny repository and shows a modern UI composed of advanced elements. You are welcome to use it as a starting point for your own project. Try the demo right here in the browser, compiled with Qt for WebAssembly.</p>
 
         </div>
-        
-        
-        
         <div class="block-buttons">
-          
+
           
 
-<a class="button" href="https://github.com/uwerat/qskinny/tree/master/examples/iot-dashboard" target="_blank" rel="noopener">Check out the example on Github</a>
+<a class="button" href="javascript:init()" >Start the browser demo</a>
 
 
         </div>
+        <div style="width: 1000px; margin-left: -200px">
+          <figure style="overflow:visible;" id="qtspinner">
+            <img src="images/iotdashboard-wasm.png" style="width: 1000px; height: 600px">
+            </img>
+            <div id="qtstatus"></div>
+            <noscript>JavaScript is disabled. Please enable JavaScript to use this application.</noscript>
+          </figure>
+          <div id="qt-wasm-screen">
+          </div>
+        </div>
+        <script type="text/javascript">
+            async function init()
+            {
+                const spinner = document.querySelector('#qtspinner');
+                const screen = document.querySelector('#qt-wasm-screen');
+                const status = document.querySelector('#qtstatus');
+
+                const showUi = (ui) => {
+                    [spinner, screen].forEach(element => element.style.display = 'none');
+                    if (screen === ui)
+                    {
+                        screen.style.position = 'default';
+                        screen.style.width = '1000px';
+                        screen.style.height = '600px';
+                    }
+                    ui.style.display = 'block';
+                }
+
+                try {
+                    showUi(spinner);
+                    status.innerHTML = 'Loading...';
+
+                    const instance = await qtLoad({
+                        qt: {
+                            onLoaded: () => showUi(screen),
+                            onExit: exitData =>
+                            {
+                                status.innerHTML = 'Application exit';
+                                status.innerHTML +=
+                                    exitData.code !== undefined ? ` with code ` : '';
+                                status.innerHTML +=
+                                    exitData.text !== undefined ? ` ()` : '';
+                                showUi(spinner);
+                            },
+                            entryFunction: window.createQtAppInstance,
+                            containerElements: [screen],
+
+                        }
+                    });
+                } catch (e) {
+                    console.error(e);
+                    console.error(e.stack);
+                }
+            }
+        </script>
+        <script src="iotdashboard.js"></script>
+        <script type="text/javascript" src="qtloader.js"></script>
         
+
       </div>
     </div>
   </div>
