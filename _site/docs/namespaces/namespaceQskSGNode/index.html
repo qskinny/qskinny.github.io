@@ -1,0 +1,194 @@
+<h1 id="qsksgnode">QskSGNode</h1>
+
+<h2 id="types">Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum quint8</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/#enum-role">Role</a></strong> { FirstReservedRole = 0xff - 10, DebugRole = 0xff - 2, BackgroundRole, NoRole}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QSGNode::Flags</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/#function-noderoleflags">nodeRoleFlags</a></strong>(quint8 role)</td>
+    </tr>
+    <tr>
+      <td>quint8</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/#function-noderole">nodeRole</a></strong>(QSGNode::Flags flags)</td>
+    </tr>
+    <tr>
+      <td>quint8</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/#function-noderole">nodeRole</a></strong>(const QSGNode * node)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/#function-setnoderole">setNodeRole</a></strong>(QSGNode * node, quint8 role)</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/#function-findchildnode">findChildNode</a></strong>(QSGNode * parent, quint8 role)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/#function-replacechildnode">replaceChildNode</a></strong>(const QVector&lt; quint8 &gt; &amp; roles, quint8 role, QSGNode * parentNode, QSGNode * oldNode, QSGNode * newNode)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/#function-removeallchildnodesafter">removeAllChildNodesAfter</a></strong>(QSGNode * parent, QSGNode * child)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/#function-removeallchildnodesfrom">removeAllChildNodesFrom</a></strong>(QSGNode * parent, QSGNode * child)</td>
+    </tr>
+    <tr>
+      <td>template &lt;typename Node &gt; <br />Node *</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/#function-createnode">createNode</a></strong>(quint8 role)</td>
+    </tr>
+    <tr>
+      <td>template &lt;typename Node &gt; <br />Node *</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/#function-appendchildnode">appendChildNode</a></strong>(QSGNode * parent, quint8 role)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="types-documentation">Types Documentation</h2>
+
+<h3 id="enum-role">enum Role</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>FirstReservedRole</td>
+      <td>0xff - 10</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>DebugRole</td>
+      <td>0xff - 2</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>BackgroundRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>NoRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-noderoleflags">function nodeRoleFlags</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">Flags</span> <span class="n">nodeRoleFlags</span><span class="p">(</span>
+    <span class="n">quint8</span> <span class="n">role</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-noderole">function nodeRole</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">(</span>
+    <span class="n">QSGNode</span><span class="o">::</span><span class="n">Flags</span> <span class="n">flags</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-noderole-1">function nodeRole</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-setnoderole">function setNodeRole</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">setNodeRole</span><span class="p">(</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="n">quint8</span> <span class="n">role</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-findchildnode">function findChildNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSGNode</span> <span class="o">*</span> <span class="n">findChildNode</span><span class="p">(</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parent</span><span class="p">,</span>
+    <span class="n">quint8</span> <span class="n">role</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-replacechildnode">function replaceChildNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">replaceChildNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">quint8</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">roles</span><span class="p">,</span>
+    <span class="n">quint8</span> <span class="n">role</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parentNode</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">oldNode</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">newNode</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-removeallchildnodesafter">function removeAllChildNodesAfter</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">removeAllChildNodesAfter</span><span class="p">(</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parent</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">child</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-removeallchildnodesfrom">function removeAllChildNodesFrom</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">removeAllChildNodesFrom</span><span class="p">(</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parent</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">child</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-createnode">function createNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Node</span> <span class="p">&gt;</span>
+<span class="kr">inline</span> <span class="n">Node</span> <span class="o">*</span> <span class="n">createNode</span><span class="p">(</span>
+    <span class="n">quint8</span> <span class="n">role</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-appendchildnode">function appendChildNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Node</span> <span class="p">&gt;</span>
+<span class="kr">inline</span> <span class="n">Node</span> <span class="o">*</span> <span class="n">appendChildNode</span><span class="p">(</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parent</span><span class="p">,</span>
+    <span class="n">quint8</span> <span class="n">role</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

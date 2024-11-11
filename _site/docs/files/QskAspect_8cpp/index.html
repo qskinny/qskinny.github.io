@@ -1,0 +1,560 @@
+<h1 id="commonqskaspectcpp">common/QskAspect.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QByteArray</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-qskenumstring">qskEnumString</a></strong>(const char * name, int value)</td>
+    </tr>
+    <tr>
+      <td>QByteArray</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-qskstatekey">qskStateKey</a></strong>(const QMetaObject * metaObject, quint16 state)</td>
+    </tr>
+    <tr>
+      <td>QByteArray</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-qskstatestostring">qskStatesToString</a></strong>(const QMetaObject * metaObject, QskAspect::States states)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-qskdebugenum">qskDebugEnum</a></strong>(QDebug debug, const char * name, int value)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, <a href="/docs/classes/classQskAspect/#enum-type">QskAspect::Type</a> type)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, <a href="/docs/classes/classQskAspect/#enum-primitive">QskAspect::Primitive</a> primitive)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, <a href="/docs/classes/classQskAspect/#enum-placement">QskAspect::Placement</a> placement)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, QskAspect::States states)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-qskdebugstates">qskDebugStates</a></strong>(QDebug debug, const QMetaObject * metaObject, QskAspect::States states)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#function-qskdebugaspect">qskDebugAspect</a></strong>(QDebug debug, const QMetaObject * metaObject, <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="attributes">Attributes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>quint8</td>
+      <td><strong><a href="/docs/files/QskAspect_8cpp/#variable-qskprimitivecount">qskPrimitiveCount</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskenumstring">function qskEnumString</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QByteArray</span> <span class="n">qskEnumString</span><span class="p">(</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">name</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">value</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskstatekey">function qskStateKey</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QByteArray</span> <span class="n">qskStateKey</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span> <span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span>
+    <span class="n">quint16</span> <span class="n">state</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskstatestostring">function qskStatesToString</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QByteArray</span> <span class="n">qskStatesToString</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span> <span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskdebugenum">function qskDebugEnum</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QDebug</span> <span class="n">qskDebugEnum</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">name</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">value</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Type</span> <span class="n">type</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-1">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Primitive</span> <span class="n">primitive</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-2">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-3">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="n">placement</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-4">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-5">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskdebugstates">function qskDebugStates</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">qskDebugStates</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span> <span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskdebugaspect">function qskDebugAspect</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">qskDebugAspect</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span> <span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="attributes-documentation">Attributes Documentation</h2>
+
+<h3 id="variable-qskprimitivecount">variable qskPrimitiveCount</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">quint8</span> <span class="n">qskPrimitiveCount</span> <span class="o">=</span> <span class="n">QMetaEnum</span><span class="o">::</span><span class="n">fromType</span><span class="o">&lt;</span> <span class="p">[</span><span class="n">QskAspect</span><span class="o">::</span><span class="n">Primitive</span><span class="p">](</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">classes</span><span class="o">/</span><span class="n">classQskAspect</span><span class="o">/</span><span class="err">#</span><span class="k">enum</span><span class="o">-</span><span class="n">primitive</span><span class="p">)</span> <span class="o">&gt;</span><span class="p">().</span><span class="n">keyCount</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskAspect.h"
+</span>
+<span class="cp">#include &lt;qalgorithms.h&gt;
+#include &lt;qdebug.h&gt;
+#include &lt;qmetaobject.h&gt;
+#include &lt;qvector.h&gt;
+</span>
+<span class="cp">#include &lt;bitset&gt;
+#include &lt;string&gt;
+#include &lt;unordered_map&gt;
+</span>
+<span class="k">static_assert</span><span class="p">(</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="p">)</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">quint64</span> <span class="p">),</span>
+    <span class="s">"QskAspect::Aspect has to match quint64"</span> <span class="p">);</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+    <span class="k">struct</span> <span class="nc">StateInfo</span>
+    <span class="p">{</span>
+        <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">state</span><span class="p">;</span>
+        <span class="n">QByteArray</span> <span class="n">name</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">struct</span> <span class="nc">AspectRegistry</span>
+    <span class="p">{</span>
+        <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QByteArray</span> <span class="o">&gt;</span> <span class="n">subControlNames</span><span class="p">;</span>
+        <span class="n">unordered_map</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span><span class="p">,</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">subControlTable</span><span class="p">;</span>
+        <span class="n">unordered_map</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span><span class="p">,</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">StateInfo</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">stateTable</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">quint8</span> <span class="n">qskPrimitiveCount</span> <span class="o">=</span> <span class="n">QMetaEnum</span><span class="o">::</span><span class="n">fromType</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Primitive</span> <span class="o">&gt;</span><span class="p">().</span><span class="n">keyCount</span><span class="p">();</span>
+
+<span class="n">quint8</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">primitiveCount</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskPrimitiveCount</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">reservePrimitives</span><span class="p">(</span> <span class="n">quint8</span> <span class="n">count</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// applications might need to increase the count to add additional primitives</span>
+
+    <span class="k">constexpr</span> <span class="n">quint8</span> <span class="n">maxCount</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="c1">// we have 5 bits for the primitives</span>
+
+    <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">count</span> <span class="o">&lt;=</span> <span class="n">maxCount</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">maxCount</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskAspect: having more than"</span>
+            <span class="o">&lt;&lt;</span> <span class="n">maxCount</span> <span class="o">&lt;&lt;</span> <span class="s">"primitives is not supported."</span><span class="p">;</span>
+
+        <span class="n">count</span> <span class="o">=</span> <span class="n">maxCount</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">qskPrimitiveCount</span> <span class="p">)</span>
+        <span class="n">qskPrimitiveCount</span> <span class="o">=</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Q_GLOBAL_STATIC</span><span class="p">(</span> <span class="n">AspectRegistry</span><span class="p">,</span> <span class="n">qskAspectRegistry</span> <span class="p">)</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">registerState</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span> <span class="n">State</span> <span class="n">state</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">StateInfo</span> <span class="n">info</span><span class="p">;</span>
+    <span class="n">info</span><span class="p">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span><span class="p">;</span>
+    <span class="n">info</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">stateTable</span> <span class="o">=</span> <span class="n">qskAspectRegistry</span><span class="o">-&gt;</span><span class="n">stateTable</span><span class="p">;</span>
+    <span class="n">stateTable</span><span class="p">[</span> <span class="n">metaObject</span> <span class="p">]</span> <span class="o">+=</span> <span class="n">info</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">state</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">nextSubcontrol</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">qskAspectRegistry</span><span class="o">-&gt;</span><span class="n">subControlNames</span><span class="p">;</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">hashTable</span> <span class="o">=</span> <span class="n">qskAspectRegistry</span><span class="o">-&gt;</span><span class="n">subControlTable</span><span class="p">;</span>
+
+    <span class="n">Q_ASSERT_X</span><span class="p">(</span> <span class="n">names</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">LastSubcontrol</span><span class="p">,</span> <span class="s">"QskAspect"</span><span class="p">,</span>
+        <span class="s">"There are no free subcontrol aspects; please modify your"</span>
+        <span class="s">" application to declare fewer aspects, or increase the mask size of"</span>
+        <span class="s">" QskAspect::Subcontrol in QskAspect.h."</span> <span class="p">);</span>
+
+    <span class="n">names</span> <span class="o">+=</span> <span class="n">name</span><span class="p">;</span>
+
+    <span class="c1">// 0 is QskAspect::Control, so we have to start with 1</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">subControl</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Subcontrol</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">names</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">hashTable</span><span class="p">[</span> <span class="n">metaObject</span> <span class="p">]</span> <span class="o">+=</span> <span class="n">subControl</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">subControl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QByteArray</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">subControlName</span><span class="p">(</span> <span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">qskAspectRegistry</span><span class="o">-&gt;</span><span class="n">subControlNames</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">subControl</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="n">names</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">names</span><span class="p">[</span> <span class="n">index</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">];</span>
+
+    <span class="k">return</span> <span class="n">QByteArray</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QByteArray</span> <span class="o">&gt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">subControlNames</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">names</span> <span class="o">=</span> <span class="n">qskAspectRegistry</span><span class="o">-&gt;</span><span class="n">subControlNames</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">metaObject</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">names</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">subControls</span> <span class="o">=</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">subControls</span><span class="p">(</span> <span class="n">metaObject</span> <span class="p">);</span>
+
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QByteArray</span> <span class="o">&gt;</span> <span class="n">subControlNames</span><span class="p">;</span>
+    <span class="n">subControlNames</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span> <span class="n">subControls</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">subControl</span> <span class="o">:</span> <span class="n">subControls</span> <span class="p">)</span>
+        <span class="n">subControlNames</span> <span class="o">+=</span> <span class="n">names</span><span class="p">[</span> <span class="n">subControl</span> <span class="p">];</span>
+
+    <span class="k">return</span> <span class="n">subControlNames</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="o">&gt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">subControls</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">metaObject</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">hashTable</span> <span class="o">=</span> <span class="n">qskAspectRegistry</span><span class="o">-&gt;</span><span class="n">subControlTable</span><span class="p">;</span>
+
+        <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">hashTable</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">metaObject</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">hashTable</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">Subcontrol</span> <span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="k">static</span> <span class="n">QByteArray</span> <span class="nf">qskEnumString</span><span class="p">(</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">&amp;</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">staticMetaObject</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">QMetaEnum</span> <span class="n">metaEnum</span> <span class="o">=</span> <span class="n">mo</span><span class="p">.</span><span class="n">enumerator</span><span class="p">(</span> <span class="n">mo</span><span class="p">.</span><span class="n">indexOfEnumerator</span><span class="p">(</span> <span class="n">name</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">key</span> <span class="o">=</span> <span class="n">metaEnum</span><span class="p">.</span><span class="n">valueToKey</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">key</span> <span class="o">?</span> <span class="n">QByteArray</span><span class="p">(</span> <span class="n">key</span> <span class="p">)</span> <span class="o">:</span> <span class="n">QString</span><span class="o">::</span><span class="n">number</span><span class="p">(</span> <span class="n">value</span> <span class="p">).</span><span class="n">toLatin1</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">QByteArray</span> <span class="nf">qskStateKey</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span> <span class="n">quint16</span> <span class="n">state</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">stateTable</span> <span class="o">=</span> <span class="n">qskAspectRegistry</span><span class="o">-&gt;</span><span class="n">stateTable</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">metaObject</span><span class="p">;</span> <span class="n">mo</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo</span><span class="o">-&gt;</span><span class="n">superClass</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">stateTable</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">mo</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">stateTable</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">info</span> <span class="o">:</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">info</span><span class="p">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">state</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">info</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QByteArray</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">QByteArray</span> <span class="nf">qskStatesToString</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">states</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"NoState"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">metaObject</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">bitset</span><span class="o">&lt;</span> <span class="mi">16</span> <span class="o">&gt;</span> <span class="n">stateBits</span><span class="p">(</span> <span class="n">states</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="n">stateBits</span><span class="p">.</span><span class="n">to_string</span><span class="p">().</span><span class="n">c_str</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">// not the fastest implementation, but as it is for debugging only</span>
+
+    <span class="n">QByteArray</span> <span class="n">stateString</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">first</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">quint16</span> <span class="n">mask</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">i</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">states</span> <span class="o">&amp;</span> <span class="n">mask</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">first</span> <span class="p">)</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="k">else</span>
+                <span class="n">stateString</span> <span class="o">+=</span> <span class="s">", "</span><span class="p">;</span>
+
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">key</span> <span class="o">=</span> <span class="n">qskStateKey</span><span class="p">(</span> <span class="n">metaObject</span><span class="p">,</span> <span class="n">mask</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">key</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">bitset</span><span class="o">&lt;</span> <span class="mi">16</span> <span class="o">&gt;</span> <span class="n">stateBits</span><span class="p">(</span> <span class="n">states</span> <span class="p">);</span>
+                <span class="n">stateString</span> <span class="o">+=</span> <span class="n">stateBits</span><span class="p">.</span><span class="n">to_string</span><span class="p">().</span><span class="n">c_str</span><span class="p">();</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">stateString</span> <span class="o">+=</span> <span class="n">key</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">stateString</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QDebug</span> <span class="nf">qskDebugEnum</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qt_QMetaEnum_debugOperator</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
+        <span class="o">&amp;</span><span class="n">QskAspect</span><span class="o">::</span><span class="n">staticMetaObject</span><span class="p">,</span> <span class="n">name</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Type</span> <span class="n">type</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskDebugEnum</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="s">"Type"</span><span class="p">,</span> <span class="n">type</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Primitive</span> <span class="n">primitive</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskDebugEnum</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="s">"Primitive"</span><span class="p">,</span> <span class="n">primitive</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"QskAspect::Subcontrol"</span> <span class="o">&lt;&lt;</span> <span class="sc">'('</span><span class="p">;</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">subControlName</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">')'</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="n">placement</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskDebugEnum</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="s">"Placement"</span><span class="p">,</span> <span class="n">placement</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskDebugStates</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">,</span> <span class="n">states</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskDebugAspect</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">,</span> <span class="n">aspect</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">qskDebugStates</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+
+    <span class="n">debug</span><span class="p">.</span><span class="n">resetFormat</span><span class="p">();</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">noquote</span><span class="p">();</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"QskAspect::States( "</span> <span class="o">&lt;&lt;</span> <span class="n">qskStatesToString</span><span class="p">(</span> <span class="n">metaObject</span><span class="p">,</span> <span class="n">states</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">" )"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">qskDebugAspect</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+
+    <span class="n">debug</span><span class="p">.</span><span class="n">resetFormat</span><span class="p">();</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">noquote</span><span class="p">();</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"QskAspect( "</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">subControlName</span> <span class="o">=</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">subControlName</span><span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">subControl</span><span class="p">()</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControlName</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="n">QByteArrayLiteral</span><span class="p">(</span> <span class="s">"NoSubcontrol"</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="n">subControlName</span><span class="p">;</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">qskEnumString</span><span class="p">(</span> <span class="s">"Type"</span><span class="p">,</span> <span class="n">aspect</span><span class="p">.</span><span class="n">type</span><span class="p">()</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">isAnimator</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"(A)"</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">type</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Color</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">colorPrimitive</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">qskEnumString</span><span class="p">(</span> <span class="s">"ColorPrimitive"</span><span class="p">,</span> <span class="n">aspect</span><span class="p">.</span><span class="n">colorPrimitive</span><span class="p">()</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Metric</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">metricPrimitive</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">qskEnumString</span><span class="p">(</span> <span class="s">"MetricPrimitive"</span><span class="p">,</span> <span class="n">aspect</span><span class="p">.</span><span class="n">metricPrimitive</span><span class="p">()</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">flagPrimitive</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">qskEnumString</span><span class="p">(</span> <span class="s">"FlagPrimitive"</span><span class="p">,</span> <span class="n">aspect</span><span class="p">.</span><span class="n">flagPrimitive</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">placement</span><span class="p">()</span> <span class="o">!=</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">NoPlacement</span> <span class="p">)</span>
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">qskEnumString</span><span class="p">(</span> <span class="s">"Placement"</span><span class="p">,</span> <span class="n">aspect</span><span class="p">.</span><span class="n">placement</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">hasStates</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">qskStatesToString</span><span class="p">(</span> <span class="n">metaObject</span><span class="p">,</span> <span class="n">aspect</span><span class="p">.</span><span class="n">states</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">" )"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">toPrintable</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QString</span> <span class="n">tmp</span><span class="p">;</span>
+
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">tmp</span> <span class="p">);</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+
+    <span class="c1">// we should find a better impementation</span>
+    <span class="k">static</span> <span class="n">QByteArray</span> <span class="n">bytes</span><span class="p">[</span> <span class="mi">10</span> <span class="p">];</span>
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">counter</span> <span class="o">=</span> <span class="p">(</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span>
+
+    <span class="n">bytes</span><span class="p">[</span> <span class="n">counter</span> <span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">.</span><span class="n">toUtf8</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">bytes</span><span class="p">[</span> <span class="n">counter</span> <span class="p">].</span><span class="n">constData</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">topState</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_bits</span><span class="p">.</span><span class="n">states</span> <span class="o">==</span> <span class="n">NoState</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">NoState</span><span class="p">;</span>
+
+    <span class="cm">/*
+        Before Qt 5.8 qCountLeadingZeroBits does not use
+        _BitScanReverse - we can live with this.
+     */</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">n</span> <span class="o">=</span> <span class="n">qCountLeadingZeroBits</span><span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">quint16</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_bits</span><span class="p">.</span><span class="n">states</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="o">&gt;</span><span class="p">(</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span> <span class="mi">15</span> <span class="o">-</span> <span class="n">n</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskAspect.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

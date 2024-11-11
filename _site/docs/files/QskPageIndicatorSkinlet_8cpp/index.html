@@ -1,0 +1,249 @@
+<h1 id="controlsqskpageindicatorskinletcpp">controls/QskPageIndicatorSkinlet.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskPageIndicatorSkinlet.h"
+#include "QskPageIndicator.h"
+</span>
+<span class="cp">#include "QskBoxNode.h"
+#include "QskSGNode.h"
+</span>
+<span class="n">QskPageIndicatorSkinlet</span><span class="o">::</span><span class="n">QskPageIndicatorSkinlet</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskSkinlet</span><span class="p">(</span> <span class="n">skin</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setNodeRoles</span><span class="p">(</span> <span class="p">{</span> <span class="n">PanelRole</span><span class="p">,</span> <span class="n">BulletsRole</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskPageIndicatorSkinlet</span><span class="o">::~</span><span class="n">QskPageIndicatorSkinlet</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskPageIndicatorSkinlet</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskPageIndicator</span><span class="o">::</span><span class="n">Panel</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">contentsRect</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskPageIndicatorSkinlet</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">indicator</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskPageIndicator</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">nodeRole</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">PanelRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">updateBoxNode</span><span class="p">(</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">QskPageIndicator</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">case</span> <span class="n">BulletsRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">updateBulletsNode</span><span class="p">(</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskPageIndicatorSkinlet</span><span class="o">::</span><span class="n">bulletRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskPageIndicator</span><span class="o">*</span> <span class="n">indicator</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">QskPageIndicator</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">szNormal</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">strutSizeHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Bullet</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">szHighlighted</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">strutSizeHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Highlighted</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">wNormal</span> <span class="o">=</span> <span class="n">szNormal</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">wHighlighted</span> <span class="o">=</span> <span class="n">szHighlighted</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">hNormal</span> <span class="o">=</span> <span class="n">szNormal</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">hHighlighted</span> <span class="o">=</span> <span class="n">szHighlighted</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">currentIndex</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">currentIndex</span><span class="p">();</span>
+
+    <span class="c1">// scale bullet size if we are in between a transition:</span>
+    <span class="n">qreal</span> <span class="n">indexDiff</span> <span class="o">=</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">currentIndex</span> <span class="o">-</span> <span class="n">index</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">indexDiff</span> <span class="o">&gt;</span> <span class="p">(</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">indexDiff</span> <span class="o">=</span> <span class="p">(</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">()</span> <span class="o">-</span> <span class="n">currentIndex</span> <span class="p">);</span> <span class="c1">// wrapping</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">w0</span> <span class="o">=</span> <span class="p">(</span> <span class="n">indexDiff</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">?</span>
+        <span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">indexDiff</span> <span class="p">)</span> <span class="o">*</span> <span class="n">wHighlighted</span> <span class="o">+</span> <span class="n">indexDiff</span> <span class="o">*</span> <span class="n">wNormal</span> <span class="o">:</span> <span class="n">wNormal</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">h0</span> <span class="o">=</span> <span class="p">(</span> <span class="n">indexDiff</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">?</span>
+        <span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">indexDiff</span> <span class="p">)</span> <span class="o">*</span> <span class="n">hHighlighted</span> <span class="o">+</span> <span class="n">indexDiff</span> <span class="o">*</span> <span class="n">hNormal</span> <span class="o">:</span> <span class="n">hNormal</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">spacing</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">spacingHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">horizontal</span> <span class="o">=</span> <span class="p">(</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">);</span>
+
+    <span class="n">qreal</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">horizontal</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="p">(</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">wNormal</span> <span class="o">+</span> <span class="n">spacing</span> <span class="p">)</span> <span class="o">+</span> <span class="n">wHighlighted</span><span class="p">;</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="p">(</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">hNormal</span> <span class="o">+</span> <span class="n">spacing</span> <span class="p">)</span> <span class="o">+</span> <span class="n">hHighlighted</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">QRectF</span> <span class="n">r</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">);</span>
+    <span class="n">r</span><span class="p">.</span><span class="n">moveCenter</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">center</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">qreal</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">;</span>
+
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="n">currentIndex</span> <span class="p">)</span> <span class="o">?</span> <span class="n">wHighlighted</span> <span class="o">:</span> <span class="n">wNormal</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="n">currentIndex</span> <span class="p">)</span> <span class="o">?</span> <span class="n">hHighlighted</span> <span class="o">:</span> <span class="n">hNormal</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">indexDiff</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">currentIndex</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// scrolling from or to this bullet:</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">wNormal</span> <span class="o">+</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">wHighlighted</span> <span class="o">-</span> <span class="n">wNormal</span> <span class="p">)</span> <span class="o">*</span> <span class="n">indexDiff</span><span class="p">;</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">hNormal</span> <span class="o">+</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">hHighlighted</span> <span class="o">-</span> <span class="n">hNormal</span> <span class="p">)</span> <span class="o">*</span> <span class="n">indexDiff</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">currentIndex</span> <span class="o">&gt;</span> <span class="p">(</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+            <span class="n">index</span> <span class="o">&gt;</span> <span class="p">(</span> <span class="n">currentIndex</span> <span class="o">-</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// wrapping case:</span>
+            <span class="n">qreal</span> <span class="n">wrappingDiff</span> <span class="o">=</span> <span class="n">indexDiff</span><span class="p">;</span>
+            <span class="k">while</span> <span class="p">(</span> <span class="n">wrappingDiff</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="p">)</span>
+                <span class="n">wrappingDiff</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">wNormal</span> <span class="o">+</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">wHighlighted</span> <span class="o">-</span> <span class="n">wNormal</span> <span class="p">)</span> <span class="o">*</span> <span class="n">wrappingDiff</span><span class="p">;</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">hNormal</span> <span class="o">+</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">hHighlighted</span> <span class="o">-</span> <span class="n">hNormal</span> <span class="p">)</span> <span class="o">*</span> <span class="n">wrappingDiff</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">w</span><span class="p">;</span>
+            <span class="n">y2</span> <span class="o">=</span> <span class="n">h</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">x</span> <span class="o">=</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">+</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">spacing</span> <span class="o">+</span> <span class="p">(</span> <span class="n">index</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">wNormal</span> <span class="o">+</span> <span class="n">spacing</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">y</span> <span class="o">=</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">+</span> <span class="n">y2</span> <span class="o">+</span> <span class="n">spacing</span> <span class="o">+</span> <span class="p">(</span> <span class="n">index</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">hNormal</span> <span class="o">+</span> <span class="n">spacing</span> <span class="p">);</span>
+
+    <span class="n">qreal</span> <span class="n">adjust</span> <span class="o">=</span> <span class="p">(</span> <span class="n">currentIndex</span> <span class="o">==</span> <span class="n">index</span> <span class="p">)</span>
+        <span class="o">?</span> <span class="p">(</span> <span class="n">wNormal</span> <span class="o">-</span> <span class="n">wHighlighted</span> <span class="p">)</span> <span class="o">:</span> <span class="p">(</span> <span class="n">wHighlighted</span> <span class="o">-</span> <span class="n">wNormal</span> <span class="p">);</span>
+    <span class="n">adjust</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">qMax</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">adjust</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">indexDiff</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="n">adjust</span> <span class="o">*=</span> <span class="n">indexDiff</span><span class="p">;</span>
+
+    <span class="n">QRectF</span> <span class="n">bulletRect</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">w0</span><span class="p">,</span> <span class="n">h0</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">horizontal</span> <span class="p">)</span>
+        <span class="n">bulletRect</span><span class="p">.</span><span class="n">moveTo</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">+</span> <span class="n">adjust</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">bulletRect</span><span class="p">.</span><span class="n">moveTo</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">+</span> <span class="n">adjust</span><span class="p">,</span> <span class="n">y</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">bulletRect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskPageIndicatorSkinlet</span><span class="o">::</span><span class="n">updateBulletsNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskPageIndicator</span><span class="o">*</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">node</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSGNode</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">subControlContentsRect</span><span class="p">(</span> <span class="n">QskPageIndicator</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+
+    <span class="c1">// index of the highlighted bullet</span>
+    <span class="kt">int</span> <span class="n">currentBullet</span> <span class="o">=</span> <span class="n">qRound</span><span class="p">(</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">currentIndex</span><span class="p">()</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">currentBullet</span> <span class="o">&gt;=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">currentBullet</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">bulletNode</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">();</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">QskPageIndicator</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="n">bulletNode</span> <span class="o">=</span> <span class="n">bulletNode</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">bulletNode</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">bulletNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskBoxNode</span><span class="p">();</span>
+
+        <span class="n">updateBoxNode</span><span class="p">(</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">bulletNode</span><span class="p">,</span> <span class="n">bulletRect</span><span class="p">(</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">i</span> <span class="p">),</span>
+            <span class="p">(</span> <span class="n">i</span> <span class="o">==</span> <span class="n">currentBullet</span> <span class="p">)</span> <span class="o">?</span> <span class="n">Q</span><span class="o">::</span><span class="n">Highlighted</span> <span class="o">:</span> <span class="n">Q</span><span class="o">::</span><span class="n">Bullet</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">bulletNode</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">!=</span> <span class="n">node</span> <span class="p">)</span>
+            <span class="n">node</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">bulletNode</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// if count has decreased we need to remove superfluous nodes</span>
+    <span class="n">QskSGNode</span><span class="o">::</span><span class="n">removeAllChildNodesAfter</span><span class="p">(</span> <span class="n">node</span><span class="p">,</span> <span class="n">bulletNode</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskPageIndicatorSkinlet</span><span class="o">::</span><span class="n">sizeHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">QskPageIndicator</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">indicator</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskPageIndicator</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">bulletSize</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">strutSizeHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Bullet</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">maxSize</span> <span class="o">=</span> <span class="n">bulletSize</span><span class="p">.</span><span class="n">expandedTo</span><span class="p">(</span>
+        <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">strutSizeHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Highlighted</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">spacing</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">spacingHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">();</span>
+
+    <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">w</span> <span class="o">+=</span> <span class="n">maxSize</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="p">)</span>
+                <span class="n">w</span> <span class="o">+=</span> <span class="p">(</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">bulletSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">+</span> <span class="n">spacing</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">h</span> <span class="o">=</span> <span class="n">maxSize</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">h</span> <span class="o">+=</span> <span class="n">maxSize</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="p">)</span>
+                <span class="n">h</span> <span class="o">+=</span> <span class="p">(</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="n">bulletSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">+</span> <span class="n">spacing</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">w</span> <span class="o">=</span> <span class="n">maxSize</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">outerBoxSize</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Panel</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">hint</span><span class="p">.</span><span class="n">expandedTo</span><span class="p">(</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">strutSizeHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Panel</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskPageIndicatorSkinlet.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

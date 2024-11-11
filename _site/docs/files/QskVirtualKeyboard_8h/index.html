@@ -1,0 +1,84 @@
+<h1 id="inputpanelqskvirtualkeyboardh">inputpanel/QskVirtualKeyboard.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/">QskVirtualKeyboard</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_VIRTUAL_KEYBOARD_H
+#define QSK_VIRTUAL_KEYBOARD_H
+</span>
+<span class="cp">#include "QskBox.h"
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskVirtualKeyboard</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskBox</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskBox</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QSK_SUBCONTROLS</span><span class="p">(</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">ButtonPanel</span><span class="p">,</span> <span class="n">ButtonText</span> <span class="p">)</span>
+
+    <span class="k">enum</span> <span class="n">Mode</span>
+    <span class="p">{</span>
+        <span class="n">CurrentMode</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">LowercaseMode</span><span class="p">,</span>
+        <span class="n">UppercaseMode</span><span class="p">,</span>
+        <span class="n">SpecialCharacterMode</span><span class="p">,</span>
+        <span class="n">ModeCount</span>
+    <span class="p">};</span>
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">Mode</span> <span class="p">)</span>
+
+    <span class="n">QskVirtualKeyboard</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskVirtualKeyboard</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setMode</span><span class="p">(</span> <span class="n">Mode</span> <span class="p">);</span>
+    <span class="n">Mode</span> <span class="n">mode</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">updateLocale</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="n">hasKey</span><span class="p">(</span> <span class="kt">int</span> <span class="n">keyCode</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">modeChanged</span><span class="p">(</span> <span class="n">Mode</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">keySelected</span><span class="p">(</span> <span class="kt">int</span> <span class="n">keyCode</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">void</span> <span class="n">updateLayout</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+    <span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">substitutedSubcontrol</span><span class="p">(</span>
+        <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">buttonPressed</span><span class="p">();</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

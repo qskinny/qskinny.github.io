@@ -1,0 +1,689 @@
+<h1 id="controlsqskscrollareacpp">controls/QskScrollArea.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskScrollArea_8cpp/#function-qskneedsscrollbars">qskNeedsScrollBars</a></strong>(qreal available, qreal required, Qt::ScrollBarPolicy policy)</td>
+    </tr>
+    <tr>
+      <td>QSizeF</td>
+      <td><strong><a href="/docs/files/QskScrollArea_8cpp/#function-qskpanelinnersize">qskPanelInnerSize</a></strong>(const QskScrollView * scrollView)</td>
+    </tr>
+    <tr>
+      <td>QSizeF</td>
+      <td><strong><a href="/docs/files/QskScrollArea_8cpp/#function-qskscrolleditemsize">qskScrolledItemSize</a></strong>(const QskScrollView * scrollView, const QQuickItem * item, const QSizeF &amp; boundingSize)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskneedsscrollbars">function qskNeedsScrollBars</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskNeedsScrollBars</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">available</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">required</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarPolicy</span> <span class="n">policy</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskpanelinnersize">function qskPanelInnerSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">qskPanelInnerSize</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskScrollView</span> <span class="o">*</span> <span class="n">scrollView</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskscrolleditemsize">function qskScrolledItemSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">qskScrolledItemSize</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskScrollView</span> <span class="o">*</span> <span class="n">scrollView</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">boundingSize</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskScrollArea.h"
+#include "QskEvent.h"
+#include "QskQuick.h"
+#include "QskScrollViewSkinlet.h"
+#include "QskBoxBorderMetrics.h"
+#include "QskSGNode.h"
+</span>
+
+<span class="cp">#include &lt;private/qquickclipnode_p.h&gt;
+#include &lt;private/qquickitem_p.h&gt;
+#include &lt;private/qquickitemchangelistener_p.h&gt;
+#include &lt;private/qquickwindow_p.h&gt;
+</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskNeedsScrollBars</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">available</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">required</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarPolicy</span> <span class="n">policy</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">policy</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAsNeeded</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">required</span> <span class="o">&gt;</span> <span class="n">available</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">policy</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAlwaysOn</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QSizeF</span> <span class="nf">qskPanelInnerSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskScrollView</span><span class="o">*</span> <span class="n">scrollView</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">size</span> <span class="o">=</span> <span class="n">scrollView</span><span class="o">-&gt;</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">Panel</span> <span class="p">).</span><span class="n">size</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">borderMetrics</span> <span class="o">=</span> <span class="n">scrollView</span><span class="o">-&gt;</span><span class="n">boxBorderMetricsHint</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">Viewport</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">bw</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">borderMetrics</span><span class="p">.</span><span class="n">widthAt</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopEdge</span> <span class="p">);</span>
+
+    <span class="n">size</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">-</span> <span class="n">bw</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">size</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="n">bw</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">size</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QSizeF</span> <span class="nf">qskScrolledItemSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskScrollView</span><span class="o">*</span> <span class="n">scrollView</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">boundingSize</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">QskScrollView</span><span class="p">;</span>
+
+    <span class="n">QSizeF</span> <span class="n">outerSize</span> <span class="o">=</span> <span class="n">boundingSize</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">spacing</span> <span class="o">=</span> <span class="n">scrollView</span><span class="o">-&gt;</span><span class="n">spacingHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">sbV</span> <span class="o">=</span> <span class="n">scrollView</span><span class="o">-&gt;</span><span class="n">metric</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">VerticalScrollBar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">sbH</span> <span class="o">=</span> <span class="n">scrollView</span><span class="o">-&gt;</span><span class="n">metric</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">HorizontalScrollBar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">policyH</span> <span class="o">=</span> <span class="n">scrollView</span><span class="o">-&gt;</span><span class="n">horizontalScrollBarPolicy</span><span class="p">();</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">policyV</span> <span class="o">=</span> <span class="n">scrollView</span><span class="o">-&gt;</span><span class="n">verticalScrollBarPolicy</span><span class="p">();</span>
+
+    <span class="k">auto</span> <span class="n">itemSize</span> <span class="o">=</span> <span class="n">qskConstrainedItemSize</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">outerSize</span> <span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="n">needScrollBarV</span> <span class="o">=</span> <span class="n">qskNeedsScrollBars</span><span class="p">(</span> <span class="n">outerSize</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">itemSize</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">policyV</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">needScrollBarH</span> <span class="o">=</span> <span class="n">qskNeedsScrollBars</span><span class="p">(</span> <span class="n">outerSize</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">itemSize</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">policyH</span> <span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="n">hasScrollBarV</span> <span class="o">=</span> <span class="n">needScrollBarV</span><span class="p">;</span>
+
+    <span class="c1">// Vertical/Horizonal scroll bars might depend on each other</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">needScrollBarV</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">outerSize</span><span class="p">.</span><span class="n">rwidth</span><span class="p">()</span> <span class="o">-=</span> <span class="n">sbV</span> <span class="o">+</span> <span class="n">spacing</span><span class="p">;</span>
+        <span class="n">itemSize</span> <span class="o">=</span> <span class="n">qskConstrainedItemSize</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">outerSize</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">needScrollBarH</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">needScrollBarH</span> <span class="o">=</span> <span class="n">qskNeedsScrollBars</span><span class="p">(</span>
+                <span class="n">outerSize</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">itemSize</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">policyH</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">needScrollBarH</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">outerSize</span><span class="p">.</span><span class="n">rheight</span><span class="p">()</span> <span class="o">-=</span> <span class="n">sbH</span> <span class="o">+</span> <span class="n">spacing</span><span class="p">;</span>
+        <span class="n">itemSize</span> <span class="o">=</span> <span class="n">qskConstrainedItemSize</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">outerSize</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">hasScrollBarV</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">needScrollBarV</span> <span class="o">=</span> <span class="n">qskNeedsScrollBars</span><span class="p">(</span>
+                <span class="n">outerSize</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">itemSize</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">policyV</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">needScrollBarV</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">outerSize</span><span class="p">.</span><span class="n">rwidth</span><span class="p">()</span> <span class="o">-=</span> <span class="n">sbV</span> <span class="o">+</span> <span class="n">spacing</span><span class="p">;</span>
+        <span class="n">itemSize</span> <span class="o">=</span> <span class="n">qskConstrainedItemSize</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">outerSize</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">itemSize</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">ViewportClipNode</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QQuickDefaultClipNode</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">ViewportClipNode</span><span class="p">()</span>
+            <span class="o">:</span> <span class="n">QQuickDefaultClipNode</span><span class="p">(</span> <span class="n">QRectF</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setGeometry</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+            <span class="c1">// clip nodes have no material, so this flag</span>
+            <span class="c1">// is available to indicate our replaced clip node</span>
+
+            <span class="n">setFlag</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">OwnsMaterial</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">copyFrom</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSGClipNode</span><span class="o">*</span> <span class="n">other</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">other</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">isRectangular</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">clipRect</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">setIsRectangular</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+                    <span class="n">setClipRect</span><span class="p">(</span> <span class="n">QRectF</span><span class="p">()</span> <span class="p">);</span>
+                    <span class="n">setGeometry</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+                    <span class="n">markDirty</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">DirtyGeometry</span> <span class="p">);</span>
+                <span class="p">}</span>
+
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="kt">bool</span> <span class="n">isDirty</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">clipRect</span><span class="p">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">-&gt;</span><span class="n">clipRect</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">setClipRect</span><span class="p">(</span> <span class="n">other</span><span class="o">-&gt;</span><span class="n">clipRect</span><span class="p">()</span> <span class="p">);</span>
+                <span class="n">isDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">other</span><span class="o">-&gt;</span><span class="n">isRectangular</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isRectangular</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">setIsRectangular</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+                    <span class="n">setGeometry</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+                    <span class="n">isDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">isRectangular</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">setIsRectangular</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+                    <span class="n">isDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">geometry</span><span class="p">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">-&gt;</span><span class="n">geometry</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// both nodes share the same geometry</span>
+                    <span class="n">setGeometry</span><span class="p">(</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QSGGeometry</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">other</span><span class="o">-&gt;</span><span class="n">geometry</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+                    <span class="n">isDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">isDirty</span> <span class="p">)</span>
+                <span class="n">markDirty</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">DirtyGeometry</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">update</span><span class="p">()</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                The Qt-Quick framework is limited to setting clipNodes from
+                the bounding rectangle. As we need a different clipping
+                we turn any updates of the clip done by QQuickWindow
+                into nops.
+             */</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="cm">/*
+        When doing scene graph composition it is easy to insert a clip node
+        somewhere below the paint node to have all items on the viewport being clipped.
+        This is how it is done f.e. for the list boxes.
+
+        But when having QQuickItems on the viewport we run into a fundamental limitation
+        of the Qt/Quick design: node subtrees for the children have to be in parallel to
+        the paint node.
+
+        We work around this problem, by inserting an extra item between the scroll area
+        and the scrollable item. This item replaces its default clip node by its own node,
+        that references the geometry of the viewport clip node.
+     */</span>
+
+    <span class="k">class</span> <span class="nc">ClipItem</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskControl</span><span class="p">,</span> <span class="k">public</span> <span class="n">QQuickItemChangeListener</span>
+    <span class="p">{</span>
+        <span class="c1">// when inheriting from QskControl we participate in node cleanups</span>
+        <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskControl</span><span class="p">;</span>
+
+      <span class="nl">public:</span>
+        <span class="n">ClipItem</span><span class="p">(</span> <span class="n">QskScrollArea</span><span class="o">*</span> <span class="p">);</span>
+        <span class="k">virtual</span> <span class="o">~</span><span class="n">ClipItem</span><span class="p">();</span>
+
+        <span class="kt">void</span> <span class="n">enableGeometryListener</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
+
+        <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">scrolledItem</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">children</span> <span class="o">=</span> <span class="n">childItems</span><span class="p">();</span>
+            <span class="k">return</span> <span class="n">children</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">?</span> <span class="nb">nullptr</span> <span class="o">:</span> <span class="n">children</span><span class="p">.</span><span class="n">first</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kt">bool</span> <span class="n">contains</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">pos</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">clipRect</span><span class="p">().</span><span class="n">contains</span><span class="p">(</span> <span class="n">pos</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">QRectF</span> <span class="n">clipRect</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">scrollArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">Viewport</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setItemSizeChangedEnabled</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_isSizeChangedEnabled</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">QRectF</span> <span class="n">focusIndicatorClipRect</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span> <span class="n">scrollArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">hasItemFocusClipping</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">focusIndicatorClipRect</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">QRectF</span><span class="p">();</span>
+        <span class="p">}</span>
+
+      <span class="nl">protected:</span>
+        <span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+        <span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span> <span class="n">ItemChange</span><span class="p">,</span> <span class="k">const</span> <span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 8, 0 )
+</span>        <span class="kt">void</span> <span class="n">itemGeometryChanged</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span>
+            <span class="n">QQuickGeometryChange</span> <span class="n">change</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">change</span><span class="p">.</span><span class="n">sizeChange</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">scrolledItemGeometryChange</span><span class="p">();</span>
+        <span class="p">}</span>
+
+<span class="cp">#else
+</span>        <span class="kt">void</span> <span class="n">itemGeometryChanged</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span>
+            <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">newRect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">oldRect</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">oldRect</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="n">newRect</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">scrolledItemGeometryChange</span><span class="p">();</span>
+        <span class="p">}</span>
+<span class="cp">#endif
+</span>
+        <span class="kt">void</span> <span class="n">updateNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+      <span class="nl">private:</span>
+        <span class="kr">inline</span> <span class="n">QskScrollArea</span><span class="o">*</span> <span class="n">scrollArea</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskScrollArea</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">parentItem</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="k">const</span> <span class="n">QskScrollArea</span><span class="o">*</span> <span class="n">scrollArea</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskScrollArea</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">parentItem</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">scrolledItemGeometryChange</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_isSizeChangedEnabled</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">area</span> <span class="o">=</span> <span class="n">scrollArea</span><span class="p">();</span>
+
+                <span class="n">area</span><span class="o">-&gt;</span><span class="n">polish</span><span class="p">();</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">area</span><span class="o">-&gt;</span><span class="n">isItemResizable</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// in this mode the size hint depends on it</span>
+                    <span class="n">area</span><span class="o">-&gt;</span><span class="n">resetImplicitSize</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">const</span> <span class="n">QSGClipNode</span><span class="o">*</span> <span class="n">viewPortClipNode</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+        <span class="kt">bool</span> <span class="n">m_isSizeChangedEnabled</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="n">ClipItem</span><span class="o">::</span><span class="n">ClipItem</span><span class="p">(</span> <span class="n">QskScrollArea</span><span class="o">*</span> <span class="n">scrollArea</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">scrollArea</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">setObjectName</span><span class="p">(</span> <span class="n">QStringLiteral</span><span class="p">(</span> <span class="s">"QskScrollAreaClipItem"</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="n">setClip</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">ClipItem</span><span class="o">::~</span><span class="n">ClipItem</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">enableGeometryListener</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">ClipItem</span><span class="o">::</span><span class="n">updateNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span><span class="o">*</span> <span class="n">d</span> <span class="o">=</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">scrollArea</span><span class="p">()</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">dirtyAttributes</span> <span class="o">&amp;</span>
+            <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">ContentUpdateMask</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                The update order depends on who calls update first and we
+                have to handle being called before a new clip node has
+                been created by the scrollview.
+                But better invalidate the unguarded clip geometry until then ...
+             */</span>
+            <span class="k">auto</span> <span class="n">clipNode</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">clipNode</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">clipNode</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">clipNode</span><span class="o">-&gt;</span><span class="n">isRectangular</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">clipNode</span><span class="o">-&gt;</span><span class="n">setIsRectangular</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+                <span class="n">clipNode</span><span class="o">-&gt;</span><span class="n">setGeometry</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="c1">// in the next cycle we will find a valid clip</span>
+            <span class="n">update</span><span class="p">();</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">auto</span> <span class="n">clipNode</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">clipNode</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">clipNode</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span> <span class="n">clipNode</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">OwnsMaterial</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Replace the clip node being inserted from QQuickWindow</span>
+
+            <span class="k">auto</span> <span class="n">parentNode</span> <span class="o">=</span> <span class="n">clipNode</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">();</span>
+
+            <span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ViewportClipNode</span><span class="p">();</span>
+            <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">node</span> <span class="p">);</span>
+            <span class="n">clipNode</span><span class="o">-&gt;</span><span class="n">reparentChildNodesTo</span><span class="p">(</span> <span class="n">node</span> <span class="p">);</span>
+
+            <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">removeChildNode</span><span class="p">(</span> <span class="n">clipNode</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">clipNode</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">OwnedByParent</span> <span class="p">)</span>
+                <span class="k">delete</span> <span class="n">clipNode</span><span class="p">;</span>
+
+            <span class="n">d</span><span class="o">-&gt;</span><span class="n">extra</span><span class="o">-&gt;</span><span class="n">clipNode</span> <span class="o">=</span> <span class="n">clipNode</span> <span class="o">=</span> <span class="n">node</span><span class="p">;</span>
+            <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">clipNode</span> <span class="o">==</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">clipNode</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">clipNode</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                Update the clip node with the geometry of the clip node
+                of the viewport of the scrollview.
+             */</span>
+            <span class="k">auto</span> <span class="n">viewClipNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">ViewportClipNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">clipNode</span> <span class="p">);</span>
+            <span class="n">viewClipNode</span><span class="o">-&gt;</span><span class="n">copyFrom</span><span class="p">(</span> <span class="n">viewPortClipNode</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">QSGClipNode</span><span class="o">*</span> <span class="n">ClipItem</span><span class="o">::</span><span class="n">viewPortClipNode</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">qskPaintNode</span><span class="p">(</span> <span class="n">scrollArea</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">node</span> <span class="p">)</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">QskSGNode</span><span class="o">::</span><span class="n">findChildNode</span><span class="p">(</span> <span class="n">node</span><span class="p">,</span> <span class="n">QskScrollViewSkinlet</span><span class="o">::</span><span class="n">ContentsRootRole</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">node</span> <span class="o">&amp;&amp;</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">ClipNodeType</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGClipNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">node</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">ClipItem</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span>
+        <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChange</span> <span class="n">change</span><span class="p">,</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="n">value</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">change</span> <span class="o">==</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChildAddedChange</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">enableGeometryListener</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">change</span> <span class="o">==</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChildRemovedChange</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">enableGeometryListener</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">Inherited</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span> <span class="n">change</span><span class="p">,</span> <span class="n">value</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">ClipItem</span><span class="o">::</span><span class="n">enableGeometryListener</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">scrolledItem</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// we might also be interested in ImplicitWidth/ImplicitHeight</span>
+            <span class="k">const</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">ChangeTypes</span> <span class="n">types</span> <span class="o">=</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">Geometry</span><span class="p">;</span>
+
+            <span class="n">QQuickItemPrivate</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+                <span class="n">p</span><span class="o">-&gt;</span><span class="n">addItemChangeListener</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">types</span> <span class="p">);</span>
+            <span class="k">else</span>
+                <span class="n">p</span><span class="o">-&gt;</span><span class="n">removeItemChangeListener</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">types</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">ClipItem</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">eventType</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">eventType</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LayoutRequest</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">scrollArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">isItemResizable</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">scrollArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">polish</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">eventType</span> <span class="o">==</span> <span class="n">QskEvent</span><span class="o">::</span><span class="n">GeometryChange</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">geometryEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskGeometryChangeEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">geometryEvent</span><span class="o">-&gt;</span><span class="n">isResized</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// we need to restore the clip node</span>
+                <span class="n">update</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskScrollArea</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">isItemResizable</span><span class="p">(</span> <span class="nb">true</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">isItemFocusClipping</span><span class="p">(</span> <span class="nb">true</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">enableAutoTranslation</span><span class="p">(</span> <span class="n">QskScrollArea</span><span class="o">*</span> <span class="n">scrollArea</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">scrollArea</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskScrollView</span><span class="o">::</span><span class="n">scrollPosChanged</span><span class="p">,</span>
+                <span class="n">scrollArea</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskScrollArea</span><span class="o">::</span><span class="n">translateItem</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">QObject</span><span class="o">::</span><span class="n">disconnect</span><span class="p">(</span> <span class="n">scrollArea</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskScrollView</span><span class="o">::</span><span class="n">scrollPosChanged</span><span class="p">,</span>
+                <span class="n">scrollArea</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskScrollArea</span><span class="o">::</span><span class="n">translateItem</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">ClipItem</span><span class="o">*</span> <span class="n">clipItem</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isItemResizable</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isItemFocusClipping</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+<span class="n">QskScrollArea</span><span class="o">::</span><span class="n">QskScrollArea</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parentItem</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parentItem</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setPolishOnResize</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">clipItem</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ClipItem</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">enableAutoTranslation</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Ignored</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Ignored</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskScrollArea</span><span class="o">::~</span><span class="n">QskScrollArea</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">delete</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">clipItem</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScrollArea</span><span class="o">::</span><span class="n">updateLayout</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">updateLayout</span><span class="p">();</span>
+
+    <span class="c1">// the clipItem always has the same geometry as the scroll area</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">clipItem</span><span class="o">-&gt;</span><span class="n">setSize</span><span class="p">(</span> <span class="n">size</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">adjustItem</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskScrollArea</span><span class="o">::</span><span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span>  <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">contentItem</span> <span class="o">=</span> <span class="n">scrolledItem</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">QSizeF</span> <span class="n">hint</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isItemResizable</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">hint</span> <span class="o">=</span> <span class="n">qskSizeConstraint</span><span class="p">(</span> <span class="n">contentItem</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">hint</span> <span class="o">=</span> <span class="n">qskItemSize</span><span class="p">(</span> <span class="n">contentItem</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">verticalScrollBarPolicy</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAlwaysOff</span> <span class="p">)</span>
+                <span class="n">hint</span><span class="p">.</span><span class="n">rwidth</span><span class="p">()</span> <span class="o">+=</span> <span class="n">metric</span><span class="p">(</span> <span class="n">VerticalScrollBar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">horizontalScrollBarPolicy</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAlwaysOff</span> <span class="p">)</span>
+                <span class="n">hint</span><span class="p">.</span><span class="n">rheight</span><span class="p">()</span> <span class="o">+=</span> <span class="n">metric</span><span class="p">(</span> <span class="n">HorizontalScrollBar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">);</span>
+
+            <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">which</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScrollArea</span><span class="o">::</span><span class="n">adjustItem</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">clipItem</span><span class="o">-&gt;</span><span class="n">scrolledItem</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">setScrollableSize</span><span class="p">(</span> <span class="n">QSizeF</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">setScrollPos</span><span class="p">(</span> <span class="n">QPointF</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isItemResizable</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QSizeF</span> <span class="n">itemSize</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">viewSize</span> <span class="o">=</span> <span class="n">qskPanelInnerSize</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">viewSize</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// we have to anticipate the scrollbars</span>
+            <span class="n">itemSize</span> <span class="o">=</span> <span class="n">qskScrolledItemSize</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">viewSize</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">itemSize</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">itemSize</span> <span class="o">=</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">);</span>
+
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">clipItem</span><span class="o">-&gt;</span><span class="n">setItemSizeChangedEnabled</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="n">item</span><span class="o">-&gt;</span><span class="n">setSize</span><span class="p">(</span> <span class="n">itemSize</span> <span class="p">);</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">clipItem</span><span class="o">-&gt;</span><span class="n">setItemSizeChangedEnabled</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">enableAutoTranslation</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="n">setScrollableSize</span><span class="p">(</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">(),</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">setScrollPos</span><span class="p">(</span> <span class="n">scrollPos</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">enableAutoTranslation</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="n">translateItem</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScrollArea</span><span class="o">::</span><span class="n">setItemResizable</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isItemResizable</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isItemResizable</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">itemResizableChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isItemResizable</span> <span class="p">)</span>
+            <span class="n">polish</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskScrollArea</span><span class="o">::</span><span class="n">isItemResizable</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isItemResizable</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScrollArea</span><span class="o">::</span><span class="n">setItemFocusClipping</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isItemFocusClipping</span> <span class="o">!=</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isItemFocusClipping</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">focusIndicatorRectChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskScrollArea</span><span class="o">::</span><span class="n">hasItemFocusClipping</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isItemFocusClipping</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScrollArea</span><span class="o">::</span><span class="n">setScrolledItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">oldItem</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">clipItem</span><span class="o">-&gt;</span><span class="n">scrolledItem</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="n">oldItem</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">oldItem</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">oldItem</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span>
+            <span class="k">delete</span> <span class="n">oldItem</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">oldItem</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">item</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">clipItem</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">item</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">clipItem</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">polish</span><span class="p">();</span>
+    <span class="n">Q_EMIT</span> <span class="n">scrolledItemChanged</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskScrollArea</span><span class="o">::</span><span class="n">scrolledItem</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">clipItem</span><span class="o">-&gt;</span><span class="n">scrolledItem</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScrollArea</span><span class="o">::</span><span class="n">translateItem</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">clipItem</span><span class="o">-&gt;</span><span class="n">scrolledItem</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">QPointF</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">viewContentsRect</span><span class="p">().</span><span class="n">topLeft</span><span class="p">()</span> <span class="o">-</span> <span class="n">scrollPos</span><span class="p">();</span>
+        <span class="n">item</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span> <span class="n">pos</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskScrollArea.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

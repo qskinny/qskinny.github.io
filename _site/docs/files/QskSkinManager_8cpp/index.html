@@ -1,0 +1,580 @@
+<h1 id="controlsqskskinmanagercpp">controls/QskSkinManager.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QStringList</td>
+      <td><strong><a href="/docs/files/QskSkinManager_8cpp/#function-qsksplitpath">qskSplitPath</a></strong>(const QString &amp; s)</td>
+    </tr>
+    <tr>
+      <td>QStringList</td>
+      <td><strong><a href="/docs/files/QskSkinManager_8cpp/#function-qskpathlist">qskPathList</a></strong>(const char * envName)</td>
+    </tr>
+    <tr>
+      <td>QString</td>
+      <td><strong><a href="/docs/files/QskSkinManager_8cpp/#function-qskresolvedpath">qskResolvedPath</a></strong>(const QString &amp; path)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qsksplitpath">function qskSplitPath</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QStringList</span> <span class="n">qskSplitPath</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">s</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskpathlist">function qskPathList</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QStringList</span> <span class="n">qskPathList</span><span class="p">(</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">envName</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskresolvedpath">function qskResolvedPath</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QString</span> <span class="n">qskResolvedPath</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">path</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSkinManager.h"
+#include "QskSkinFactory.h"
+</span>
+<span class="cp">#include &lt;qdir.h&gt;
+#include &lt;qglobalstatic.h&gt;
+#include &lt;qjsonarray.h&gt;
+#include &lt;qjsonobject.h&gt;
+#include &lt;qmap.h&gt;
+#include &lt;qpluginloader.h&gt;
+#include &lt;qpointer.h&gt;
+#include &lt;qset.h&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QStringList</span> <span class="nf">qskSplitPath</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">s</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">separator</span> <span class="o">=</span> <span class="n">QDir</span><span class="o">::</span><span class="n">listSeparator</span><span class="p">();</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 15, 0 )
+</span>    <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">split</span><span class="p">(</span> <span class="n">separator</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SkipEmptyParts</span> <span class="p">);</span>
+<span class="cp">#else
+</span>    <span class="k">return</span> <span class="n">s</span><span class="p">.</span><span class="n">split</span><span class="p">(</span> <span class="n">separator</span><span class="p">,</span> <span class="n">QString</span><span class="o">::</span><span class="n">SkipEmptyParts</span> <span class="p">);</span>
+<span class="cp">#endif
+</span><span class="p">}</span>
+
+<span class="cm">/*
+    We could use QFactoryLoader, but as it is again a "private" class
+    and does a couple of hardcoded things we don't need ( like always resolving
+    from the application library path ) we prefer having our own code.
+ */</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">SkinManager</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskSkinManager</span>
+    <span class="p">{</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="n">Q_GLOBAL_STATIC</span><span class="p">(</span> <span class="n">SkinManager</span><span class="p">,</span> <span class="n">qskGlobalSkinManager</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="n">QStringList</span> <span class="nf">qskPathList</span><span class="p">(</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">envName</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">env</span> <span class="o">=</span> <span class="n">qgetenv</span><span class="p">(</span> <span class="n">envName</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">env</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QStringList</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">qskSplitPath</span><span class="p">(</span> <span class="n">QFile</span><span class="o">::</span><span class="n">decodeName</span><span class="p">(</span> <span class="n">env</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QString</span> <span class="nf">qskResolvedPath</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">path</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QDir</span><span class="p">(</span> <span class="n">path</span> <span class="p">).</span><span class="n">canonicalPath</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">FactoryLoader</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QPluginLoader</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">FactoryLoader</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">QPluginLoader</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kt">bool</span> <span class="n">setPlugin</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">fileName</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">QPluginLoader</span><span class="o">::</span><span class="n">setFileName</span><span class="p">(</span> <span class="n">fileName</span> <span class="p">);</span>
+
+            <span class="cm">/*
+                FactoryId and names of the skins can be found in the metadata
+                without having to load the plugin itself
+             */</span>
+
+            <span class="k">const</span> <span class="n">QLatin1String</span> <span class="n">TokenInterfaceId</span><span class="p">(</span> <span class="s">"IID"</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="n">QLatin1String</span> <span class="n">TokenData</span><span class="p">(</span> <span class="s">"MetaData"</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="n">QLatin1String</span> <span class="n">TokenFactoryId</span><span class="p">(</span> <span class="s">"FactoryId"</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="n">QLatin1String</span> <span class="n">TokenSkins</span><span class="p">(</span> <span class="s">"Skins"</span> <span class="p">);</span>
+
+            <span class="k">const</span> <span class="n">QLatin1String</span> <span class="n">InterfaceId</span><span class="p">(</span> <span class="n">QskSkinFactoryIID</span> <span class="p">);</span>
+
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">pluginData</span> <span class="o">=</span> <span class="n">metaData</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">pluginData</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">TokenInterfaceId</span> <span class="p">)</span> <span class="o">==</span> <span class="n">InterfaceId</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">factoryData</span> <span class="o">=</span> <span class="n">pluginData</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">TokenData</span> <span class="p">).</span><span class="n">toObject</span><span class="p">();</span>
+
+                <span class="n">m_factoryId</span> <span class="o">=</span> <span class="n">factoryData</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">TokenFactoryId</span> <span class="p">).</span><span class="n">toString</span><span class="p">().</span><span class="n">toLower</span><span class="p">();</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">m_factoryId</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// Creating a dummy factory id</span>
+                    <span class="k">static</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                    <span class="n">m_factoryId</span> <span class="o">=</span> <span class="n">QStringLiteral</span><span class="p">(</span> <span class="s">"skin_factory_"</span> <span class="p">)</span> <span class="o">+</span> <span class="n">QString</span><span class="o">::</span><span class="n">number</span><span class="p">(</span> <span class="n">i</span><span class="o">++</span> <span class="p">);</span>
+                <span class="p">}</span>
+
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">skinNames</span> <span class="o">=</span> <span class="n">factoryData</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">TokenSkins</span> <span class="p">).</span><span class="n">toArray</span><span class="p">();</span>
+
+                <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">name</span> <span class="o">:</span> <span class="n">skinNames</span> <span class="p">)</span>
+                    <span class="n">m_skinNames</span> <span class="o">+=</span> <span class="n">name</span><span class="p">.</span><span class="n">toString</span><span class="p">().</span><span class="n">toLower</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="o">!</span><span class="n">m_skinNames</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">QString</span> <span class="n">factoryId</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_factoryId</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">QskSkinFactory</span><span class="o">*</span> <span class="n">factory</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">factory</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="n">QskSkinFactory</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QPluginLoader</span><span class="o">::</span><span class="n">instance</span><span class="p">()</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">factory</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">factory</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+                <span class="n">factory</span><span class="o">-&gt;</span><span class="n">setObjectName</span><span class="p">(</span> <span class="n">m_factoryId</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">factory</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">QStringList</span> <span class="n">skinNames</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_skinNames</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="kt">void</span> <span class="n">setFileName</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+        <span class="n">QObject</span><span class="o">*</span> <span class="n">instance</span><span class="p">()</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+
+        <span class="n">QString</span> <span class="n">m_factoryId</span><span class="p">;</span>
+        <span class="n">QStringList</span> <span class="n">m_skinNames</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">FactoryMap</span>
+    <span class="p">{</span>
+      <span class="nl">private:</span>
+        <span class="k">class</span> <span class="nc">Data</span>
+        <span class="p">{</span>
+          <span class="nl">public:</span>
+            <span class="n">Data</span><span class="p">()</span>
+                <span class="o">:</span> <span class="n">loader</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="p">{</span>
+            <span class="p">}</span>
+
+            <span class="o">~</span><span class="n">Data</span><span class="p">()</span>
+            <span class="p">{</span>
+                <span class="n">reset</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">factory</span> <span class="o">&amp;&amp;</span> <span class="n">factory</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+                    <span class="k">delete</span> <span class="n">factory</span><span class="p">;</span>
+
+                <span class="n">factory</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+                <span class="k">delete</span> <span class="n">loader</span><span class="p">;</span>
+                <span class="n">loader</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">FactoryLoader</span><span class="o">*</span> <span class="n">loader</span><span class="p">;</span>
+            <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskSkinFactory</span> <span class="o">&gt;</span> <span class="n">factory</span><span class="p">;</span>
+        <span class="p">};</span>
+
+      <span class="nl">public:</span>
+        <span class="n">FactoryMap</span><span class="p">()</span>
+            <span class="o">:</span> <span class="n">m_isValid</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">m_skinNames</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+            <span class="n">m_skinMap</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+            <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">QskSkinFactory</span><span class="o">*</span> <span class="n">factory</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">skinName</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_isValid</span> <span class="p">)</span>
+                <span class="n">rebuild</span><span class="p">();</span>
+
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_skinMap</span><span class="p">.</span><span class="n">constFind</span><span class="p">(</span> <span class="n">skinName</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_skinMap</span><span class="p">.</span><span class="n">constEnd</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">it2</span> <span class="o">=</span> <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">it2</span> <span class="o">!=</span> <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">it2</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">factory</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">data</span><span class="p">.</span><span class="n">loader</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+                        <span class="n">data</span><span class="p">.</span><span class="n">factory</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">loader</span><span class="o">-&gt;</span><span class="n">factory</span><span class="p">();</span>
+
+                    <span class="k">return</span> <span class="n">data</span><span class="p">.</span><span class="n">factory</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">QStringList</span> <span class="n">skinNames</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_isValid</span> <span class="p">)</span>
+                <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">FactoryMap</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">rebuild</span><span class="p">();</span>
+
+            <span class="k">return</span> <span class="n">m_skinMap</span><span class="p">.</span><span class="n">keys</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">QStringList</span> <span class="n">skinNames</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">factoryId</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">constFind</span><span class="p">(</span> <span class="n">factoryId</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">constEnd</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">factory</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">data</span><span class="p">.</span><span class="n">factory</span><span class="o">-&gt;</span><span class="n">skinNames</span><span class="p">();</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">loader</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">data</span><span class="p">.</span><span class="n">loader</span><span class="o">-&gt;</span><span class="n">skinNames</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">QStringList</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">insertFactory</span><span class="p">(</span> <span class="n">FactoryLoader</span><span class="o">*</span> <span class="n">loader</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span><span class="o">&amp;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">m_factoryMap</span><span class="p">[</span> <span class="n">loader</span><span class="o">-&gt;</span><span class="n">factoryId</span><span class="p">()</span> <span class="p">];</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">loader</span> <span class="o">!=</span> <span class="n">loader</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">data</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+                <span class="n">data</span><span class="p">.</span><span class="n">loader</span> <span class="o">=</span> <span class="n">loader</span><span class="p">;</span>
+
+                <span class="n">m_skinMap</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+                <span class="n">m_isValid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">insertFactory</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">factoryId</span><span class="p">,</span> <span class="n">QskSkinFactory</span><span class="o">*</span> <span class="n">factory</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span><span class="o">&amp;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">m_factoryMap</span><span class="p">[</span> <span class="n">factoryId</span> <span class="p">];</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">factory</span> <span class="o">!=</span> <span class="n">factory</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">data</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+                <span class="n">data</span><span class="p">.</span><span class="n">factory</span> <span class="o">=</span> <span class="n">factory</span><span class="p">;</span>
+
+                <span class="n">m_skinMap</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+                <span class="n">m_skinNames</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+                <span class="n">m_isValid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">removeFactory</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">factoryId</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">factoryId</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">==</span> <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+                <span class="k">return</span><span class="p">;</span>
+
+            <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span> <span class="n">it</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_isValid</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_skinMap</span><span class="p">.</span><span class="n">constBegin</span><span class="p">();</span>
+                    <span class="n">it</span> <span class="o">!=</span> <span class="n">m_skinMap</span><span class="p">.</span><span class="n">constEnd</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span><span class="p">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">factoryId</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">m_isValid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_isValid</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">m_skinNames</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+                    <span class="n">m_skinMap</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">hasFactory</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">factoryId</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">factoryId</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="kt">void</span> <span class="n">rebuild</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">m_skinMap</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+            <span class="c1">// first we try all factories, that have been added manually</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">loader</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">data</span><span class="p">.</span><span class="n">factory</span> <span class="p">)</span>
+                    <span class="n">rebuild</span><span class="p">(</span> <span class="n">it</span><span class="p">.</span><span class="n">key</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">factory</span><span class="o">-&gt;</span><span class="n">skinNames</span><span class="p">()</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="c1">// all factories from plugins are following</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_factoryMap</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">loader</span> <span class="p">)</span>
+                    <span class="n">rebuild</span><span class="p">(</span> <span class="n">it</span><span class="p">.</span><span class="n">key</span><span class="p">(),</span> <span class="n">data</span><span class="p">.</span><span class="n">loader</span><span class="o">-&gt;</span><span class="n">skinNames</span><span class="p">()</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="n">m_skinNames</span> <span class="o">=</span> <span class="n">m_skinMap</span><span class="p">.</span><span class="n">keys</span><span class="p">();</span>
+            <span class="n">m_isValid</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">rebuild</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">factoryId</span><span class="p">,</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="n">skinNames</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">name</span> <span class="o">:</span> <span class="n">skinNames</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_skinMap</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">name</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="n">m_skinMap</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">name</span><span class="p">,</span> <span class="n">factoryId</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">QMap</span><span class="o">&lt;</span> <span class="n">QString</span><span class="p">,</span> <span class="n">Data</span> <span class="o">&gt;</span> <span class="n">m_factoryMap</span><span class="p">;</span> <span class="c1">// factoryId -&gt; data</span>
+        <span class="n">QMap</span><span class="o">&lt;</span> <span class="n">QString</span><span class="p">,</span> <span class="n">QString</span> <span class="o">&gt;</span> <span class="n">m_skinMap</span><span class="p">;</span> <span class="c1">// skinName -&gt; factoryId</span>
+        <span class="n">QStringList</span> <span class="n">m_skinNames</span><span class="p">;</span>
+
+        <span class="kt">bool</span> <span class="n">m_isValid</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskSkinManager</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">pluginsRegistered</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">ensurePlugins</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">pluginsRegistered</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">path</span> <span class="o">:</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="n">pluginPaths</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="n">registerPlugins</span><span class="p">(</span> <span class="n">path</span> <span class="o">+</span> <span class="n">QStringLiteral</span><span class="p">(</span> <span class="s">"/skins"</span> <span class="p">)</span> <span class="p">);</span>
+
+            <span class="n">pluginsRegistered</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">registerPlugins</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">path</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            We only detect plugins, but don't load them before being needed.
+            Static plugins are not supported as QskSkinmanager::registerFactory
+            offers a better solution for this use case.
+         */</span>
+
+        <span class="n">QDir</span> <span class="n">dir</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+
+        <span class="n">FactoryLoader</span><span class="o">*</span> <span class="n">loader</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">dirEntries</span> <span class="o">=</span> <span class="n">dir</span><span class="p">.</span><span class="n">entryList</span><span class="p">(</span> <span class="n">QDir</span><span class="o">::</span><span class="n">Files</span> <span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">fileName</span> <span class="o">:</span> <span class="n">dirEntries</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">loader</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+                <span class="n">loader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FactoryLoader</span><span class="p">();</span>
+
+            <span class="kt">bool</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">loader</span><span class="o">-&gt;</span><span class="n">setPlugin</span><span class="p">(</span> <span class="n">dir</span><span class="p">.</span><span class="n">absoluteFilePath</span><span class="p">(</span> <span class="n">fileName</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">ok</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">factoryMap</span><span class="p">.</span><span class="n">hasFactory</span><span class="p">(</span> <span class="n">loader</span><span class="o">-&gt;</span><span class="n">factoryId</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">factoryMap</span><span class="p">.</span><span class="n">insertFactory</span><span class="p">(</span> <span class="n">loader</span> <span class="p">);</span>
+                <span class="n">loader</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">delete</span> <span class="n">loader</span><span class="p">;</span>
+    <span class="p">}</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QStringList</span> <span class="n">pluginPaths</span><span class="p">;</span>
+    <span class="n">FactoryMap</span> <span class="n">factoryMap</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">pluginsRegistered</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskSkinManager</span><span class="o">*</span> <span class="n">QskSkinManager</span><span class="o">::</span><span class="n">instance</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskGlobalSkinManager</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinManager</span><span class="o">::</span><span class="n">QskSkinManager</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setPluginPaths</span><span class="p">(</span> <span class="n">qskPathList</span><span class="p">(</span> <span class="s">"QSK_PLUGIN_PATH"</span> <span class="p">)</span> <span class="o">+</span>
+        <span class="n">qskPathList</span><span class="p">(</span> <span class="s">"QT_PLUGIN_PATH"</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinManager</span><span class="o">::~</span><span class="n">QskSkinManager</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinManager</span><span class="o">::</span><span class="n">addPluginPath</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">path</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">pluginPath</span> <span class="o">=</span> <span class="n">qskResolvedPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">pluginPath</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">pluginPath</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">pluginPath</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pluginPaths</span> <span class="o">+=</span> <span class="n">pluginPath</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pluginsRegistered</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">registerPlugins</span><span class="p">(</span> <span class="n">pluginPath</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinManager</span><span class="o">::</span><span class="n">removePluginPath</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">path</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">pluginPath</span> <span class="o">=</span> <span class="n">qskResolvedPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pluginPaths</span><span class="p">.</span><span class="n">removeOne</span><span class="p">(</span> <span class="n">pluginPath</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pluginsRegistered</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factoryMap</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pluginsRegistered</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinManager</span><span class="o">::</span><span class="n">setPluginPaths</span><span class="p">(</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="n">paths</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pluginPaths</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+    <span class="n">QSet</span><span class="o">&lt;</span> <span class="n">QString</span> <span class="o">&gt;</span> <span class="n">pathSet</span><span class="p">;</span> <span class="c1">// checking for duplicates</span>
+    <span class="n">QStringList</span> <span class="n">pluginPaths</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">path</span> <span class="o">:</span> <span class="n">paths</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">pluginPath</span> <span class="o">=</span> <span class="n">qskResolvedPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">pluginPath</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">pathSet</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">pluginPath</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">pathSet</span> <span class="o">+=</span> <span class="n">pluginPath</span><span class="p">;</span>
+            <span class="n">pluginPaths</span> <span class="o">+=</span> <span class="n">pluginPath</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">pluginPaths</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pluginPaths</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pluginPaths</span> <span class="o">=</span> <span class="n">pluginPaths</span><span class="p">;</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factoryMap</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pluginsRegistered</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QStringList</span> <span class="n">QskSkinManager</span><span class="o">::</span><span class="n">pluginPaths</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pluginPaths</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinManager</span><span class="o">::</span><span class="n">registerFactory</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">factoryId</span><span class="p">,</span> <span class="n">QskSkinFactory</span><span class="o">*</span> <span class="n">factory</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">factoryId</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">||</span> <span class="n">factory</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="cm">/*
+        Manually registered factories always come first, and we don't need
+        to check the plugins here.
+     */</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factoryMap</span><span class="p">.</span><span class="n">insertFactory</span><span class="p">(</span> <span class="n">factoryId</span><span class="p">.</span><span class="n">toLower</span><span class="p">(),</span> <span class="n">factory</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinManager</span><span class="o">::</span><span class="n">unregisterFactory</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">factoryId</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">factoryId</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="cm">/*
+        As this call might be about a factory from a plugin, we need
+        to know about them here.
+     */</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">ensurePlugins</span><span class="p">();</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factoryMap</span><span class="p">.</span><span class="n">removeFactory</span><span class="p">(</span> <span class="n">factoryId</span><span class="p">.</span><span class="n">toLower</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QStringList</span> <span class="n">QskSkinManager</span><span class="o">::</span><span class="n">skinNames</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">ensurePlugins</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factoryMap</span><span class="p">.</span><span class="n">skinNames</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskSkin</span><span class="o">*</span> <span class="n">QskSkinManager</span><span class="o">::</span><span class="n">createSkin</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">skinName</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">ensurePlugins</span><span class="p">();</span>
+
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">map</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factoryMap</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">name</span> <span class="o">=</span> <span class="n">skinName</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">factory</span> <span class="o">=</span> <span class="n">map</span><span class="p">.</span><span class="n">factory</span><span class="p">(</span> <span class="n">name</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">factory</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            Once the Fusion skin has been implemented it will be used
+            as fallback. For the moment we implement
+            another stupid fallback. TODO ...
+         */</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">names</span> <span class="o">=</span> <span class="n">map</span><span class="p">.</span><span class="n">skinNames</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">names</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">names</span><span class="p">.</span><span class="n">last</span><span class="p">();</span>
+            <span class="n">factory</span> <span class="o">=</span> <span class="n">map</span><span class="p">.</span><span class="n">factory</span><span class="p">(</span> <span class="n">name</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">factory</span> <span class="o">?</span> <span class="n">factory</span><span class="o">-&gt;</span><span class="n">createSkin</span><span class="p">(</span> <span class="n">name</span> <span class="p">)</span> <span class="o">:</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskSkinManager.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

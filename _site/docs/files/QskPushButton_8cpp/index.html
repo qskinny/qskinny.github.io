@@ -1,0 +1,304 @@
+<h1 id="controlsqskpushbuttoncpp">controls/QskPushButton.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskPushButton.h"
+#include "QskAspect.h"
+#include "QskBoxShapeMetrics.h"
+#include "QskGraphic.h"
+#include "QskGraphicProvider.h"
+#include "QskSetup.h"
+#include "QskSkin.h"
+#include "QskSkinlet.h"
+#include "QskTextOptions.h"
+</span>
+<span class="cp">#include &lt;qfontmetrics.h&gt;
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="p">,</span> <span class="n">Panel</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="p">,</span> <span class="n">Text</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="p">,</span> <span class="n">Graphic</span> <span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">QskPushButton</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">txt</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">text</span><span class="p">(</span> <span class="n">txt</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">isCheckable</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">isGraphicSourceDirty</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">textOptions</span><span class="p">.</span><span class="n">setElideMode</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ElideMiddle</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">ensureGraphic</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">button</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">isGraphicSourceDirty</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">graphicSource</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">graphic</span> <span class="o">=</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">loadGraphic</span><span class="p">(</span> <span class="n">graphicSource</span> <span class="p">);</span>
+
+            <span class="n">isGraphicSourceDirty</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">QString</span> <span class="n">text</span><span class="p">;</span>
+    <span class="n">QskTextOptions</span> <span class="n">textOptions</span><span class="p">;</span>
+
+    <span class="n">QUrl</span> <span class="n">graphicSource</span><span class="p">;</span>
+    <span class="n">QskGraphic</span> <span class="n">graphic</span><span class="p">;</span>
+
+    <span class="n">QSizeF</span> <span class="n">graphicSourceSize</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isCheckable</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isGraphicSourceDirty</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskPushButton</span><span class="o">::</span><span class="n">QskPushButton</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskPushButton</span><span class="p">(</span> <span class="n">QString</span><span class="p">(),</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskPushButton</span><span class="o">::</span><span class="n">QskPushButton</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">(</span> <span class="n">text</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskPushButton</span><span class="o">::~</span><span class="n">QskPushButton</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">setCheckable</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isCheckable</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isCheckable</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">checkableChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">isCheckable</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isCheckable</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">setShape</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setBoxShapeHint</span><span class="p">(</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">shape</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">shapeChanged</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">resetShape</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetBoxShapeHint</span><span class="p">(</span> <span class="n">Panel</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">shapeChanged</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxShapeMetrics</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">shape</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">boxShapeHint</span><span class="p">(</span> <span class="n">Panel</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">setFlat</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">!=</span> <span class="n">isFlat</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">Flat</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+        <span class="n">Q_EMIT</span> <span class="n">flatChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">isFlat</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">hasSkinState</span><span class="p">(</span> <span class="n">Flat</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">setText</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">text</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">text</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">;</span>
+
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">textChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">text</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">setTextOptions</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">options</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span> <span class="o">=</span> <span class="n">options</span><span class="p">;</span>
+
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">textOptionsChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskTextOptions</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">textOptions</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QFont</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">font</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveFont</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">resetGraphicSourceSize</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setGraphicSourceSize</span><span class="p">(</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">setGraphicSourceSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">newSize</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">newSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">newSize</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="o">-</span><span class="mf">1.0</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">newSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">newSize</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="o">-</span><span class="mf">1.0</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">size</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphicSourceSize</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphicSourceSize</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">polish</span><span class="p">();</span>
+        <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">graphicSourceSizeChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">graphicSourceSize</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphicSourceSize</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">setGraphicSource</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphicSource</span> <span class="o">==</span> <span class="n">url</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphicSource</span> <span class="o">=</span> <span class="n">url</span><span class="p">;</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isGraphicSourceDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">polish</span><span class="p">();</span>
+    <span class="n">update</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">graphicSourceChanged</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">setGraphicSource</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">source</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setGraphicSource</span><span class="p">(</span> <span class="n">QUrl</span><span class="p">(</span> <span class="n">source</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QUrl</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">graphicSource</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphicSource</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">setGraphic</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">graphic</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">graphic</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphicSource</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphicSource</span> <span class="o">=</span> <span class="n">QString</span><span class="p">();</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isGraphicSourceDirty</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+            <span class="n">Q_EMIT</span> <span class="n">graphicSourceChanged</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">graphicChanged</span><span class="p">();</span>
+
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">polish</span><span class="p">();</span>
+        <span class="n">update</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphic</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">graphic</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">ensureGraphic</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">hasGraphic</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="p">(</span> <span class="n">graphic</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">graphicSource</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">updateResources</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">ensureGraphic</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">layoutRectForSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">subControlContentsRect</span><span class="p">(</span> <span class="n">size</span><span class="p">,</span> <span class="n">Panel</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">changeEvent</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">StyleChange</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphicSource</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+                <span class="n">qskSetup</span><span class="o">-&gt;</span><span class="n">skin</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">hasGraphicProvider</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// we might need to reload from a different skin</span>
+                <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isGraphicSourceDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LocaleChange</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// maybe QLocale::textDirection() has changed</span>
+                <span class="n">update</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">changeEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphic</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">loadGraphic</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">loadGraphic</span><span class="p">(</span> <span class="n">url</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskPushButton.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

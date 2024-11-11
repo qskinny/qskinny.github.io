@@ -1,0 +1,86 @@
+<h1 id="controlsqskflickanimatorh">controls/QskFlickAnimator.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskFlickAnimator/">QskFlickAnimator</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_FLICK_ANIMATOR_H
+#define QSK_FLICK_ANIMATOR_H 1
+</span>
+<span class="cp">#include "QskAnimator.h"
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskFlickAnimator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskAnimator</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskFlickAnimator</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">QskFlickAnimator</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setAngle</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">degrees</span> <span class="p">);</span>
+    <span class="n">qreal</span> <span class="n">angle</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setVelocity</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="n">qreal</span> <span class="n">velocity</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">animatedVelocity</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">flick</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">accelerate</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">void</span> <span class="n">setup</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">advance</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">done</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">translate</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">dx</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">dy</span> <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">qreal</span> <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">2</span> <span class="p">];</span>
+
+    <span class="n">qreal</span> <span class="n">m_degrees</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">m_cos</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">m_sin</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">m_elapsed</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="n">qreal</span> <span class="n">QskFlickAnimator</span><span class="o">::</span><span class="n">angle</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_degrees</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">qreal</span> <span class="n">QskFlickAnimator</span><span class="o">::</span><span class="n">velocity</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">0</span> <span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">qreal</span> <span class="n">QskFlickAnimator</span><span class="o">::</span><span class="n">animatedVelocity</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">1</span> <span class="p">];</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

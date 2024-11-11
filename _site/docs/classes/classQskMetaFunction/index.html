@@ -1,0 +1,298 @@
+<h1 id="qskmetafunction">QskMetaFunction</h1>
+
+<h2 id="public-types">Public Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#enum-type">Type</a></strong> { Invalid = -1, MemberFunction, StaticFunction, Functor}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-qskmetafunction">QskMetaFunction</a></strong>()</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-qskmetafunction">QskMetaFunction</a></strong>(const QskMetaFunction &amp; other)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-qskmetafunction">QskMetaFunction</a></strong>(QskMetaFunction &amp;&amp; other)</td>
+    </tr>
+    <tr>
+      <td>template &lt;typename T ,QskMetaFunctionTraits::IsMemberFunction&lt; T &gt; *  =nullptr&gt; <br /></td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-qskmetafunction">QskMetaFunction</a></strong>(T function)</td>
+    </tr>
+    <tr>
+      <td>template &lt;typename T ,QskMetaFunctionTraits::IsMemberFunction&lt; T &gt; *  =nullptr&gt; <br /></td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-qskmetafunction">QskMetaFunction</a></strong>(T function)</td>
+    </tr>
+    <tr>
+      <td>template &lt;typename T ,QskMetaFunctionTraits::IsMemberFunction&lt; T &gt; *  =nullptr&gt; <br /></td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-qskmetafunction">QskMetaFunction</a></strong>(T function)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-~qskmetafunction">~QskMetaFunction</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>QskMetaFunction &amp;</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-operator=">operator=</a></strong>(const QskMetaFunction &amp; other)</td>
+    </tr>
+    <tr>
+      <td>QskMetaFunction &amp;</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-operator=">operator=</a></strong>(QskMetaFunction &amp;&amp; other)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-operator==">operator==</a></strong>(const QskMetaFunction &amp; other) const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-operator!=">operator!=</a></strong>(const QskMetaFunction &amp; other) const</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-operator-bool">operator bool</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-returntype">returnType</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>size_t</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-parametercount">parameterCount</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>const int *</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-parametertypes">parameterTypes</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-invoke">invoke</a></strong>(QObject * object, void * args[], Qt::ConnectionType connectionType =Qt::AutoConnection)</td>
+    </tr>
+    <tr>
+      <td>Type</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-functiontype">functionType</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-isnull">isNull</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>FunctionCall *</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-functioncall">functionCall</a></strong>() const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/#function-qskmetafunction">QskMetaFunction</a></strong>(FunctionCall * functionCall)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+
+<h3 id="enum-type">enum Type</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Invalid</td>
+      <td>-1</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>MemberFunction</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>StaticFunction</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Functor</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskmetafunction">function QskMetaFunction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskMetaFunction</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmetafunction-1">function QskMetaFunction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskMetaFunction</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskMetaFunction</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmetafunction-2">function QskMetaFunction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskMetaFunction</span><span class="p">(</span>
+    <span class="n">QskMetaFunction</span> <span class="o">&amp;&amp;</span> <span class="n">other</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmetafunction-3">function QskMetaFunction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">,</span>
+<span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsMemberFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span> <span class="o">*</span>  <span class="o">=</span><span class="nb">nullptr</span><span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="n">QskMetaFunction</span><span class="p">(</span>
+    <span class="n">T</span> <span class="n">function</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmetafunction-4">function QskMetaFunction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">,</span>
+<span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsMemberFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span> <span class="o">*</span>  <span class="o">=</span><span class="nb">nullptr</span><span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="n">QskMetaFunction</span><span class="p">(</span>
+    <span class="n">T</span> <span class="n">function</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmetafunction-5">function QskMetaFunction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">,</span>
+<span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsMemberFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span> <span class="o">*</span>  <span class="o">=</span><span class="nb">nullptr</span><span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="n">QskMetaFunction</span><span class="p">(</span>
+    <span class="n">T</span> <span class="n">function</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmetafunction-6">function ~QskMetaFunction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskMetaFunction</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator=</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskMetaFunction</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskMetaFunction</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-1">function operator=</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskMetaFunction</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span>
+    <span class="n">QskMetaFunction</span> <span class="o">&amp;&amp;</span> <span class="n">other</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-2">function operator==</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskMetaFunction</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-3">function operator!=</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskMetaFunction</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-bool">function operator bool</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">explicit</span> <span class="k">operator</span> <span class="kt">bool</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-returntype">function returnType</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">returnType</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-parametercount">function parameterCount</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">size_t</span> <span class="n">parameterCount</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-parametertypes">function parameterTypes</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">const</span> <span class="kt">int</span> <span class="o">*</span> <span class="n">parameterTypes</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-invoke">function invoke</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">invoke</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="kt">void</span> <span class="o">*</span> <span class="n">args</span><span class="p">[],</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-functiontype">function functionType</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Type</span> <span class="n">functionType</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-isnull">function isNull</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">bool</span> <span class="n">isNull</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-functioncall">function functionCall</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">FunctionCall</span> <span class="o">*</span> <span class="n">functionCall</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-qskmetafunction-7">function QskMetaFunction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskMetaFunction</span><span class="p">(</span>
+    <span class="n">FunctionCall</span> <span class="o">*</span> <span class="n">functionCall</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:28 CEST</p>

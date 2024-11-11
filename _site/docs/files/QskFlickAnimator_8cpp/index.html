@@ -1,0 +1,170 @@
+<h1 id="controlsqskflickanimatorcpp">controls/QskFlickAnimator.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/files/QskFlickAnimator_8cpp/#function-qskaligned">qskAligned</a></strong>(qreal value)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskaligned">function qskAligned</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">qskAligned</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskFlickAnimator.h"
+#include &lt;qmath.h&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="nf">qskAligned</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">value</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="mf">1.0</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskFlickAnimator</span><span class="o">::</span><span class="n">QskFlickAnimator</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_velocity</span><span class="p">{</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">}</span>
+    <span class="p">,</span> <span class="n">m_degrees</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_cos</span><span class="p">(</span> <span class="mf">1.0</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_sin</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_elapsed</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setDuration</span><span class="p">(</span> <span class="mi">1000</span> <span class="p">);</span>
+    <span class="n">setEasingCurve</span><span class="p">(</span> <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">OutCubic</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskFlickAnimator</span><span class="o">::~</span><span class="n">QskFlickAnimator</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskFlickAnimator</span><span class="o">::</span><span class="n">flick</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">velocity</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="o">||</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">velocity</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">velocity</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="n">stop</span><span class="p">();</span>
+
+    <span class="n">setAngle</span><span class="p">(</span> <span class="n">degrees</span> <span class="p">);</span>
+
+    <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="n">velocity</span><span class="p">;</span>
+    <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">start</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskFlickAnimator</span><span class="o">::</span><span class="n">accelerate</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isRunning</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">qDegreesToRadians</span><span class="p">(</span> <span class="n">degrees</span> <span class="o">-</span> <span class="n">m_degrees</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">delta</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// the same as below, but faster to calculate: exp2( 2.0 * cos( 0.0 )</span>
+            <span class="n">velocity</span> <span class="o">+=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">1</span> <span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">cos</span> <span class="o">=</span> <span class="n">qFastCos</span><span class="p">(</span> <span class="n">delta</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">cos</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// boosting the current velocity</span>
+                <span class="n">velocity</span> <span class="o">+=</span> <span class="n">exp2</span><span class="p">(</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">cos</span> <span class="p">)</span> <span class="o">*</span> <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">1</span> <span class="p">];</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="c1">// slowing down</span>
+                <span class="n">velocity</span> <span class="o">=</span> <span class="n">velocity</span> <span class="o">*</span> <span class="n">exp2</span><span class="p">(</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">cos</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">flick</span><span class="p">(</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">velocity</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskFlickAnimator</span><span class="o">::</span><span class="n">done</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="n">m_elapsed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskFlickAnimator</span><span class="o">::</span><span class="n">setAngle</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">degrees</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">degrees</span> <span class="o">!=</span> <span class="n">m_degrees</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_degrees</span> <span class="o">=</span> <span class="n">degrees</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">radians</span> <span class="o">=</span> <span class="n">qDegreesToRadians</span><span class="p">(</span> <span class="n">degrees</span> <span class="p">);</span>
+
+        <span class="n">m_cos</span> <span class="o">=</span> <span class="n">qskAligned</span><span class="p">(</span> <span class="n">qFastCos</span><span class="p">(</span> <span class="n">radians</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="n">m_sin</span> <span class="o">=</span> <span class="n">qskAligned</span><span class="p">(</span> <span class="n">qFastSin</span><span class="p">(</span> <span class="n">radians</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskFlickAnimator</span><span class="o">::</span><span class="n">setVelocity</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="n">velocity</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskFlickAnimator</span><span class="o">::</span><span class="n">setup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">m_elapsed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">=</span> <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">0</span> <span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskFlickAnimator</span><span class="o">::</span><span class="n">advance</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">oldVelocity</span> <span class="o">=</span> <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">1</span> <span class="p">];</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">oldElapsed</span> <span class="o">=</span> <span class="n">m_elapsed</span><span class="p">;</span>
+
+    <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">=</span> <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">*</span> <span class="p">(</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">value</span> <span class="p">);</span>
+    <span class="n">m_elapsed</span> <span class="o">=</span> <span class="n">elapsed</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">duration</span> <span class="o">=</span> <span class="p">(</span> <span class="n">m_elapsed</span> <span class="o">-</span> <span class="n">oldElapsed</span> <span class="p">)</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">;</span> <span class="c1">// in seconds</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">duration</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span> <span class="n">m_velocity</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">+</span> <span class="n">oldVelocity</span> <span class="p">);</span> <span class="c1">// average</span>
+
+        <span class="cm">/*
+            Using the average velocity is not accurate, when having a non linear
+            curve, but the error can be ignored
+         */</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">duration</span> <span class="o">*</span> <span class="n">velocity</span><span class="p">;</span>
+        <span class="n">translate</span><span class="p">(</span> <span class="n">m_cos</span> <span class="o">*</span> <span class="n">distance</span><span class="p">,</span> <span class="n">m_sin</span> <span class="o">*</span> <span class="n">distance</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

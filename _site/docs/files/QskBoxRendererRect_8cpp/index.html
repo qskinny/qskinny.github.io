@@ -1,0 +1,698 @@
+<h1 id="nodesqskboxrendererrectcpp">nodes/QskBoxRendererRect.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskBoxRendererRect_8cpp/#function-qskcreatefillordered">qskCreateFillOrdered</a></strong>(const QskBoxRenderer::Quad &amp; rect, const QskGradient &amp; gradient, ColoredLine * line)</td>
+    </tr>
+    <tr>
+      <td>template &lt;class ColorMap ,class Line &gt; <br />void</td>
+      <td><strong><a href="/docs/files/QskBoxRendererRect_8cpp/#function-qskcreatefillrandom">qskCreateFillRandom</a></strong>(QskGradient::Orientation orientation, const QskBoxRenderer::Quad &amp; r, const ColorMap &amp; map, Line * line)</td>
+    </tr>
+    <tr>
+      <td>template &lt;class Line &gt; <br />void</td>
+      <td><strong><a href="/docs/files/QskBoxRendererRect_8cpp/#function-qskcreateborder">qskCreateBorder</a></strong>(const QskBoxRenderer::Quad &amp; out, const QskBoxRenderer::Quad &amp; in, QRgb rgb, Line * line)</td>
+    </tr>
+    <tr>
+      <td>template &lt;class Line &gt; <br />void</td>
+      <td><strong><a href="/docs/files/QskBoxRendererRect_8cpp/#function-qskcreateborder">qskCreateBorder</a></strong>(const QskBoxRenderer::Quad &amp; out, const QskBoxRenderer::Quad &amp; in, Color color, Line * line)</td>
+    </tr>
+    <tr>
+      <td>template &lt;class Line &gt; <br />void</td>
+      <td><strong><a href="/docs/files/QskBoxRendererRect_8cpp/#function-qskcreateborder">qskCreateBorder</a></strong>(const QskBoxRenderer::Quad &amp; out, const QskBoxRenderer::Quad &amp; in, const QskBoxBorderColors &amp; colors, Line * line)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskcreatefillordered">function qskCreateFillOrdered</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskCreateFillOrdered</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGradient</span> <span class="o">&amp;</span> <span class="n">gradient</span><span class="p">,</span>
+    <span class="n">ColoredLine</span> <span class="o">*</span> <span class="n">line</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskcreatefillrandom">function qskCreateFillRandom</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">ColorMap</span> <span class="p">,</span>
+<span class="k">class</span> <span class="nc">Line</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskCreateFillRandom</span><span class="p">(</span>
+    <span class="n">QskGradient</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span> <span class="o">&amp;</span> <span class="n">r</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">ColorMap</span> <span class="o">&amp;</span> <span class="n">map</span><span class="p">,</span>
+    <span class="n">Line</span> <span class="o">*</span> <span class="n">line</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskcreateborder">function qskCreateBorder</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Line</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskCreateBorder</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span> <span class="o">&amp;</span> <span class="n">out</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span> <span class="o">&amp;</span> <span class="n">in</span><span class="p">,</span>
+    <span class="n">QRgb</span> <span class="n">rgb</span><span class="p">,</span>
+    <span class="n">Line</span> <span class="o">*</span> <span class="n">line</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskcreateborder-1">function qskCreateBorder</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Line</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskCreateBorder</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span> <span class="o">&amp;</span> <span class="n">out</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span> <span class="o">&amp;</span> <span class="n">in</span><span class="p">,</span>
+    <span class="n">Color</span> <span class="n">color</span><span class="p">,</span>
+    <span class="n">Line</span> <span class="o">*</span> <span class="n">line</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskcreateborder-2">function qskCreateBorder</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Line</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskCreateBorder</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span> <span class="o">&amp;</span> <span class="n">out</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span> <span class="o">&amp;</span> <span class="n">in</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderColors</span> <span class="o">&amp;</span> <span class="n">colors</span><span class="p">,</span>
+    <span class="n">Line</span> <span class="o">*</span> <span class="n">line</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskBoxBorderColors.h"
+#include "QskBoxBorderMetrics.h"
+#include "QskBoxRenderer.h"
+#include "QskBoxRendererColorMap.h"
+#include "QskFunctions.h"
+#include "QskGradient.h"
+#include "QskVertex.h"
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">QskVertex</span><span class="p">;</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">VRectIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">VRectIterator</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_rect</span><span class="p">(</span> <span class="n">rect</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_value</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">top</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ColorIterator</span> <span class="p">&gt;</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setGradientLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">ColorIterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">line</span><span class="o">-&gt;</span><span class="n">setHLine</span><span class="p">(</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">(),</span> <span class="n">it</span><span class="p">.</span><span class="n">color</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ColorIterator</span> <span class="p">&gt;</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setContourLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">ColorIterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">line</span><span class="o">-&gt;</span><span class="n">setHLine</span><span class="p">(</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">m_value</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="n">m_value</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_value</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">advance</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_value</span> <span class="o">==</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">top</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">m_value</span> <span class="o">=</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">;</span>
+                <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">m_rect</span><span class="p">;</span>
+        <span class="n">qreal</span> <span class="n">m_value</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">HRectIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">HRectIterator</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_rect</span><span class="p">(</span> <span class="n">rect</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_value</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ColorIterator</span> <span class="p">&gt;</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setGradientLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">ColorIterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">line</span><span class="o">-&gt;</span><span class="n">setVLine</span><span class="p">(</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">(),</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">color</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ColorIterator</span> <span class="p">&gt;</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setContourLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">ColorIterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">line</span><span class="o">-&gt;</span><span class="n">setVLine</span><span class="p">(</span> <span class="n">m_value</span><span class="p">,</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="n">m_value</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_value</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">advance</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_value</span> <span class="o">==</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">left</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">m_value</span> <span class="o">=</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">right</span><span class="p">;</span>
+                <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">m_rect</span><span class="p">;</span>
+        <span class="n">qreal</span> <span class="n">m_value</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">DSquareIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">DSquareIterator</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_rect</span><span class="p">(</span> <span class="n">rect</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_step</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span> <span class="o">==</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ColorIterator</span> <span class="p">&gt;</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setGradientLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">ColorIterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">v</span> <span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">v</span> <span class="o">==</span> <span class="mf">0.5</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// this line is also a contour line, so we can skip it</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mf">0.5</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">dt</span> <span class="o">=</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">v</span><span class="p">;</span>
+
+                <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">dt</span><span class="p">,</span>
+                    <span class="n">m_rect</span><span class="p">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">dt</span><span class="p">,</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">color</span><span class="p">()</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">dt</span> <span class="o">=</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">width</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span> <span class="n">v</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="p">);</span>
+                <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">dt</span><span class="p">,</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span>
+                    <span class="n">m_rect</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">dt</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">color</span><span class="p">()</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ColorIterator</span> <span class="p">&gt;</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setContourLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">ColorIterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">color</span> <span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="n">value</span><span class="p">()</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">m_rect</span><span class="p">;</span>
+
+            <span class="k">switch</span> <span class="p">(</span> <span class="n">m_step</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_step</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">advance</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="o">++</span><span class="n">m_step</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">m_rect</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">m_step</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">DRectIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">DRectIterator</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_rect</span><span class="p">(</span> <span class="n">rect</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_step</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+
+            <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">w</span> <span class="o">!=</span> <span class="n">h</span> <span class="p">);</span>
+
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">w2</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">w</span><span class="p">;</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">h2</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="n">h</span><span class="p">;</span>
+
+            <span class="n">m_fx</span> <span class="o">=</span> <span class="p">(</span> <span class="n">w2</span> <span class="o">+</span> <span class="n">h2</span> <span class="p">)</span> <span class="o">/</span> <span class="n">w</span><span class="p">;</span>
+            <span class="n">m_fy</span> <span class="o">=</span> <span class="p">(</span> <span class="n">w2</span> <span class="o">+</span> <span class="n">h2</span> <span class="p">)</span> <span class="o">/</span> <span class="n">h</span><span class="p">;</span>
+
+            <span class="n">m_lx</span> <span class="o">=</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">top</span> <span class="o">-</span> <span class="n">h2</span> <span class="o">/</span> <span class="n">w</span><span class="p">;</span>
+            <span class="n">m_ly</span> <span class="o">=</span> <span class="n">m_rect</span><span class="p">.</span><span class="n">left</span> <span class="o">-</span> <span class="n">w2</span> <span class="o">/</span> <span class="n">h</span><span class="p">;</span>
+
+            <span class="n">m_valueTR</span> <span class="o">=</span> <span class="n">w2</span> <span class="o">/</span> <span class="p">(</span> <span class="n">w2</span> <span class="o">+</span> <span class="n">h2</span> <span class="p">);</span>
+            <span class="n">m_valueBL</span> <span class="o">=</span> <span class="n">h2</span> <span class="o">/</span> <span class="p">(</span> <span class="n">w2</span> <span class="o">+</span> <span class="n">h2</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ColorIterator</span> <span class="p">&gt;</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setGradientLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">ColorIterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">v</span> <span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">color</span> <span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">color</span><span class="p">();</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">m_rect</span><span class="p">;</span>
+
+            <span class="k">switch</span> <span class="p">(</span> <span class="n">m_step</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="k">const</span> <span class="n">qreal</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="n">m_fx</span><span class="p">;</span>
+                    <span class="k">const</span> <span class="n">qreal</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="n">m_fy</span><span class="p">;</span>
+
+                    <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">dy</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">width</span> <span class="o">&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">height</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="n">m_fx</span><span class="p">;</span>
+                        <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">m_lx</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span>
+                    <span class="p">{</span>
+                        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="n">m_fy</span><span class="p">;</span>
+                        <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">dy</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">m_ly</span> <span class="o">+</span> <span class="n">dy</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="k">const</span> <span class="n">qreal</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="n">m_fx</span><span class="p">;</span>
+                    <span class="k">const</span> <span class="n">qreal</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="n">m_fy</span><span class="p">;</span>
+
+                    <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">m_lx</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">m_ly</span> <span class="o">+</span> <span class="n">dy</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ColorIterator</span> <span class="p">&gt;</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setContourLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">ColorIterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">m_rect</span><span class="p">;</span>
+
+            <span class="k">switch</span> <span class="p">(</span> <span class="n">m_step</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span>
+                        <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">width</span> <span class="o">&gt;=</span> <span class="n">r</span><span class="p">.</span><span class="n">height</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">m_valueBL</span> <span class="o">*</span> <span class="n">m_fx</span><span class="p">;</span>
+
+                        <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span>
+                            <span class="n">r</span><span class="p">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="n">m_valueBL</span> <span class="p">)</span> <span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span>
+                    <span class="p">{</span>
+                        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">m_valueTR</span> <span class="o">*</span> <span class="n">m_fy</span><span class="p">;</span>
+
+                        <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">dy</span><span class="p">,</span>
+                            <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="n">m_valueTR</span> <span class="p">)</span> <span class="p">);</span>
+                    <span class="p">}</span>
+
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">width</span> <span class="o">&gt;=</span> <span class="n">r</span><span class="p">.</span><span class="n">height</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">m_valueTR</span> <span class="o">*</span> <span class="n">m_fx</span><span class="p">;</span>
+
+                        <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span>
+                            <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="n">m_valueTR</span> <span class="p">)</span> <span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span>
+                    <span class="p">{</span>
+                        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">m_valueBL</span> <span class="o">*</span> <span class="n">m_fy</span><span class="p">;</span>
+
+                        <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span>
+                            <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">dy</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="n">m_valueBL</span> <span class="p">)</span> <span class="p">);</span>
+                    <span class="p">}</span>
+
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span>
+                        <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">it</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="mf">1.0</span> <span class="p">)</span> <span class="p">);</span>
+
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nl">default:</span>
+                <span class="p">{</span>
+                    <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">switch</span> <span class="p">(</span> <span class="n">m_step</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+
+                <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span> <span class="n">m_valueBL</span><span class="p">,</span> <span class="n">m_valueTR</span> <span class="p">);</span>
+
+                <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">(</span> <span class="n">m_valueBL</span><span class="p">,</span> <span class="n">m_valueTR</span> <span class="p">);</span>
+
+                <span class="nl">default:</span>
+                    <span class="k">return</span> <span class="mf">1.0</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">advance</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="o">++</span><span class="n">m_step</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">m_rect</span><span class="p">;</span>
+
+        <span class="n">qreal</span> <span class="n">m_fx</span><span class="p">,</span> <span class="n">m_fy</span><span class="p">;</span>
+        <span class="n">qreal</span> <span class="n">m_lx</span><span class="p">,</span> <span class="n">m_ly</span><span class="p">;</span>
+        <span class="n">qreal</span> <span class="n">m_valueTR</span><span class="p">,</span> <span class="n">m_valueBL</span><span class="p">;</span>
+
+        <span class="kt">int</span> <span class="n">m_step</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskCreateFillOrdered</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">gradient</span><span class="p">.</span><span class="n">orientation</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">HRectIterator</span> <span class="n">it</span><span class="p">(</span> <span class="n">rect</span> <span class="p">);</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">QskVertex</span><span class="o">::</span><span class="n">fillOrdered</span><span class="p">(</span> <span class="n">it</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">Vertical</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">VRectIterator</span> <span class="n">it</span><span class="p">(</span> <span class="n">rect</span> <span class="p">);</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">QskVertex</span><span class="o">::</span><span class="n">fillOrdered</span><span class="p">(</span> <span class="n">it</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">Diagonal</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span> <span class="o">==</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">DSquareIterator</span> <span class="n">it</span><span class="p">(</span> <span class="n">rect</span> <span class="p">);</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">QskVertex</span><span class="o">::</span><span class="n">fillOrdered</span><span class="p">(</span> <span class="n">it</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">DRectIterator</span> <span class="n">it</span><span class="p">(</span> <span class="n">rect</span> <span class="p">);</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">QskVertex</span><span class="o">::</span><span class="n">fillOrdered</span><span class="p">(</span> <span class="n">it</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ColorMap</span><span class="p">,</span> <span class="k">class</span> <span class="nc">Line</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskCreateFillRandom</span><span class="p">(</span>
+    <span class="n">QskGradient</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">r</span><span class="p">,</span> <span class="k">const</span> <span class="n">ColorMap</span><span class="o">&amp;</span> <span class="n">map</span><span class="p">,</span> <span class="n">Line</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">map</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">map</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="mf">1.0</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">map</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">map</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="mf">1.0</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">Line</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskCreateBorder</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">out</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">in</span><span class="p">,</span> <span class="n">QRgb</span> <span class="n">rgb</span><span class="p">,</span> <span class="n">Line</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskCreateBorder</span><span class="p">(</span> <span class="n">out</span><span class="p">,</span> <span class="n">in</span><span class="p">,</span> <span class="n">Color</span><span class="p">(</span> <span class="n">rgb</span> <span class="p">),</span> <span class="n">line</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">Line</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskCreateBorder</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">out</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">in</span><span class="p">,</span> <span class="n">Color</span> <span class="n">color</span><span class="p">,</span> <span class="n">Line</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">l</span> <span class="o">=</span> <span class="n">line</span><span class="p">;</span>
+
+    <span class="p">(</span> <span class="n">l</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+    <span class="p">(</span> <span class="n">l</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+    <span class="p">(</span> <span class="n">l</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+    <span class="p">(</span> <span class="n">l</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+
+    <span class="o">*</span><span class="n">l</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span> <span class="mi">0</span> <span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">Line</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskCreateBorder</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">out</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">in</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">colors</span><span class="p">,</span> <span class="n">Line</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">Color</span> <span class="n">colorLeft</span> <span class="o">=</span> <span class="n">colors</span><span class="p">.</span><span class="n">rgb</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Left</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">Color</span> <span class="n">colorRight</span> <span class="o">=</span> <span class="n">colors</span><span class="p">.</span><span class="n">rgb</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Right</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">Color</span> <span class="n">colorTop</span> <span class="o">=</span> <span class="n">colors</span><span class="p">.</span><span class="n">rgb</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Top</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">Color</span> <span class="n">colorBottom</span> <span class="o">=</span> <span class="n">colors</span><span class="p">.</span><span class="n">rgb</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Bottom</span> <span class="p">);</span>
+
+    <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">colorBottom</span> <span class="p">);</span>
+    <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">colorBottom</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">colorLeft</span> <span class="o">!=</span> <span class="n">colorBottom</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">colorLeft</span> <span class="p">);</span>
+
+    <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">colorLeft</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">colorTop</span> <span class="o">!=</span> <span class="n">colorLeft</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">left</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">colorTop</span> <span class="p">);</span>
+
+    <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">colorTop</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">colorRight</span> <span class="o">!=</span> <span class="n">colorTop</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">top</span><span class="p">,</span> <span class="n">colorRight</span> <span class="p">);</span>
+
+    <span class="p">(</span> <span class="n">line</span><span class="o">++</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">in</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">right</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">bottom</span><span class="p">,</span> <span class="n">colorRight</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">renderRectBorder</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">border</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="n">geometry</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">shape</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">Quad</span> <span class="n">out</span> <span class="o">=</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">Quad</span> <span class="n">in</span> <span class="o">=</span> <span class="n">qskValidOrEmptyInnerRect</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">border</span><span class="p">.</span><span class="n">widths</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">out</span> <span class="o">==</span> <span class="n">in</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">allocateLines</span><span class="o">&lt;</span> <span class="n">Line</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">geometry</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">line</span> <span class="o">=</span> <span class="n">allocateLines</span><span class="o">&lt;</span> <span class="n">Line</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">geometry</span><span class="p">,</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">);</span>
+    <span class="n">qskCreateBorder</span><span class="p">(</span> <span class="n">out</span><span class="p">,</span> <span class="n">in</span><span class="p">,</span> <span class="n">Color</span><span class="p">(),</span> <span class="n">line</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">renderRectFill</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">border</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="n">geometry</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">shape</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">Quad</span> <span class="n">in</span> <span class="o">=</span> <span class="n">qskValidOrEmptyInnerRect</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">border</span><span class="p">.</span><span class="n">widths</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">allocateLines</span><span class="o">&lt;</span> <span class="n">Line</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">geometry</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">line</span> <span class="o">=</span> <span class="n">allocateLines</span><span class="o">&lt;</span> <span class="n">Line</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">geometry</span><span class="p">,</span> <span class="mi">2</span> <span class="p">);</span>
+
+    <span class="n">qskCreateFillRandom</span><span class="p">(</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">Vertical</span><span class="p">,</span>
+        <span class="n">in</span><span class="p">,</span> <span class="n">ColorMapSolid</span><span class="p">(</span> <span class="n">Color</span><span class="p">()</span> <span class="p">),</span> <span class="n">line</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">renderRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">border</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">borderColors</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="n">geometry</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">shape</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">Quad</span> <span class="n">out</span> <span class="o">=</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">Quad</span> <span class="n">in</span> <span class="o">=</span> <span class="n">qskValidOrEmptyInnerRect</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">border</span><span class="p">.</span><span class="n">widths</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">fillLineCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">in</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">fillLineCount</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">.</span><span class="n">stops</span><span class="p">().</span><span class="n">count</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">gradient</span><span class="p">.</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">Diagonal</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">in</span><span class="p">.</span><span class="n">width</span> <span class="o">==</span> <span class="n">in</span><span class="p">.</span><span class="n">height</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">gradient</span><span class="p">.</span><span class="n">hasStopAt</span><span class="p">(</span> <span class="mf">0.5</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="n">fillLineCount</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="c1">// we might need extra lines for the corners</span>
+                <span class="n">fillLineCount</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">borderLineCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">in</span> <span class="o">!=</span> <span class="n">out</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">bc</span> <span class="o">=</span> <span class="n">borderColors</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">bc</span><span class="p">.</span><span class="n">isVisible</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// We can build a rectangular border from the 4 diagonal</span>
+            <span class="c1">// lines at the corners, but need an additional line</span>
+            <span class="c1">// for closing the border.</span>
+
+            <span class="n">borderLineCount</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">bc</span><span class="p">.</span><span class="n">isMonochrome</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// we might need extra lines to separate colors</span>
+                <span class="c1">// at the non closing corners</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">bc</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Left</span> <span class="p">)</span> <span class="o">!=</span> <span class="n">bc</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Bottom</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="n">borderLineCount</span><span class="o">++</span><span class="p">;</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">bc</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Top</span> <span class="p">)</span> <span class="o">!=</span> <span class="n">bc</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Left</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="n">borderLineCount</span><span class="o">++</span><span class="p">;</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">bc</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Right</span> <span class="p">)</span> <span class="o">!=</span> <span class="n">bc</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Top</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="n">borderLineCount</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">auto</span> <span class="n">line</span> <span class="o">=</span> <span class="n">allocateLines</span><span class="o">&lt;</span> <span class="n">ColoredLine</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">borderLineCount</span> <span class="o">+</span> <span class="n">fillLineCount</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">fillLineCount</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">gd</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">gd</span><span class="p">.</span><span class="n">isMonochrome</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">ColorMapSolid</span> <span class="n">colorMap</span><span class="p">(</span> <span class="n">gd</span><span class="p">.</span><span class="n">startColor</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">qskCreateFillRandom</span><span class="p">(</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">Vertical</span><span class="p">,</span> <span class="n">in</span><span class="p">,</span> <span class="n">colorMap</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="kt">bool</span> <span class="n">fillRandom</span> <span class="o">=</span> <span class="n">gd</span><span class="p">.</span><span class="n">stops</span><span class="p">().</span><span class="n">count</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">fillRandom</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="cm">/*
+                    Not necessarily a requirement for being ordered,
+                    but we didn't implement a random fill algo for
+                    diagonal gradients yet.
+                 */</span>
+                <span class="n">fillRandom</span> <span class="o">=</span> <span class="n">gd</span><span class="p">.</span><span class="n">orientation</span><span class="p">()</span> <span class="o">!=</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">Diagonal</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">fillRandom</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">ColorMapGradient</span> <span class="n">colorMap</span><span class="p">(</span> <span class="n">gd</span><span class="p">.</span><span class="n">startColor</span><span class="p">(),</span> <span class="n">gd</span><span class="p">.</span><span class="n">endColor</span><span class="p">()</span> <span class="p">);</span>
+                <span class="n">qskCreateFillRandom</span><span class="p">(</span> <span class="n">gd</span><span class="p">.</span><span class="n">orientation</span><span class="p">(),</span> <span class="n">in</span><span class="p">,</span> <span class="n">colorMap</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">qskCreateFillOrdered</span><span class="p">(</span> <span class="n">in</span><span class="p">,</span> <span class="n">gd</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">borderLineCount</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">bc</span> <span class="o">=</span> <span class="n">borderColors</span><span class="p">;</span>
+        <span class="k">auto</span> <span class="n">fillLines</span> <span class="o">=</span> <span class="n">line</span> <span class="o">+</span> <span class="n">fillLineCount</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">bc</span><span class="p">.</span><span class="n">isMonochrome</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">qskCreateBorder</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">in</span><span class="p">,</span> <span class="n">bc</span><span class="p">.</span><span class="n">rgb</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Left</span> <span class="p">),</span> <span class="n">fillLines</span> <span class="p">);</span>
+        <span class="k">else</span>
+            <span class="n">qskCreateBorder</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">in</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">fillLines</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">renderRectFill</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Quad</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">QskVertex</span><span class="o">::</span><span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskCreateFillOrdered</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

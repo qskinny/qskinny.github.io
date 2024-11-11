@@ -1,0 +1,178 @@
+<h1 id="commonqskboxbordermetricscpp">common/QskBoxBorderMetrics.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskBoxBorderMetrics_8cpp/#function-qskregisterboxbordermetrics">qskRegisterBoxBorderMetrics</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/files/QskBoxBorderMetrics_8cpp/#function-qskabsoluted">qskAbsoluted</a></strong>(qreal length, qreal percentage)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskBoxBorderMetrics_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskBoxBorderMetrics &amp; metrics)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskregisterboxbordermetrics">function qskRegisterBoxBorderMetrics</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskRegisterBoxBorderMetrics</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskabsoluted">function qskAbsoluted</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">qskAbsoluted</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">length</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">percentage</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span> <span class="o">&amp;</span> <span class="n">metrics</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskBoxBorderMetrics.h"
+</span>
+<span class="cp">#include &lt;qhashfunctions.h&gt;
+#include &lt;qvariant.h&gt;
+</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskRegisterBoxBorderMetrics</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">qRegisterMetaType</span><span class="o">&lt;</span> <span class="n">QskBoxBorderMetrics</span> <span class="o">&gt;</span><span class="p">();</span>
+
+    <span class="n">QMetaType</span><span class="o">::</span><span class="n">registerConverter</span><span class="o">&lt;</span> <span class="n">QskMargins</span><span class="p">,</span> <span class="n">QskBoxBorderMetrics</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="p">[](</span> <span class="k">const</span> <span class="n">QskMargins</span><span class="o">&amp;</span> <span class="n">margins</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">QskBoxBorderMetrics</span><span class="p">(</span> <span class="n">margins</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+    <span class="n">QMetaType</span><span class="o">::</span><span class="n">registerConverter</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskBoxBorderMetrics</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="p">[](</span> <span class="kt">int</span> <span class="n">width</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">QskBoxBorderMetrics</span><span class="p">(</span> <span class="n">width</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+    <span class="n">QMetaType</span><span class="o">::</span><span class="n">registerConverter</span><span class="o">&lt;</span> <span class="n">qreal</span><span class="p">,</span> <span class="n">QskBoxBorderMetrics</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="p">[](</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">QskBoxBorderMetrics</span><span class="p">(</span> <span class="n">width</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Q_CONSTRUCTOR_FUNCTION</span><span class="p">(</span> <span class="n">qskRegisterBoxBorderMetrics</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="nf">qskAbsoluted</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">length</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">percentage</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// 100% means -&gt; 0.5 of length</span>
+    <span class="n">percentage</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">percentage</span><span class="p">,</span> <span class="mf">100.0</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">percentage</span> <span class="o">/</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxBorderMetrics</span><span class="o">::</span><span class="n">setSizeMode</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeMode</span> <span class="n">sizeMode</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_sizeMode</span> <span class="o">=</span> <span class="n">sizeMode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxBorderMetrics</span><span class="o">::</span><span class="n">setWidths</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMargins</span><span class="o">&amp;</span> <span class="n">widths</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_widths</span><span class="p">.</span><span class="n">setLeft</span><span class="p">(</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">widths</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">m_widths</span><span class="p">.</span><span class="n">setTop</span><span class="p">(</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">widths</span><span class="p">.</span><span class="n">top</span><span class="p">(),</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">m_widths</span><span class="p">.</span><span class="n">setRight</span><span class="p">(</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">widths</span><span class="p">.</span><span class="n">right</span><span class="p">(),</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">m_widths</span><span class="p">.</span><span class="n">setBottom</span><span class="p">(</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">widths</span><span class="p">.</span><span class="n">bottom</span><span class="p">(),</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxBorderMetrics</span><span class="o">::</span><span class="n">setWidthAt</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Edges</span> <span class="n">edges</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_widths</span><span class="p">.</span><span class="n">setMarginsAt</span><span class="p">(</span> <span class="n">edges</span><span class="p">,</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">width</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxBorderMetrics</span> <span class="n">QskBoxBorderMetrics</span><span class="o">::</span><span class="n">toAbsolute</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_sizeMode</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RelativeSize</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+
+    <span class="n">QskBoxBorderMetrics</span> <span class="n">absoluted</span> <span class="o">=</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">w</span> <span class="o">=</span> <span class="n">absoluted</span><span class="p">.</span><span class="n">m_widths</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">QskMargins</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">w</span><span class="p">.</span><span class="n">setLeft</span><span class="p">(</span> <span class="n">qskAbsoluted</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">w</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="n">w</span><span class="p">.</span><span class="n">setTop</span><span class="p">(</span> <span class="n">qskAbsoluted</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">w</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="n">w</span><span class="p">.</span><span class="n">setRight</span><span class="p">(</span> <span class="n">qskAbsoluted</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">w</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="n">w</span><span class="p">.</span><span class="n">setBottom</span><span class="p">(</span> <span class="n">qskAbsoluted</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">w</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">absoluted</span><span class="p">.</span><span class="n">m_sizeMode</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AbsoluteSize</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">absoluted</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxBorderMetrics</span> <span class="n">QskBoxBorderMetrics</span><span class="o">::</span><span class="n">interpolated</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="o">*</span><span class="k">this</span> <span class="o">==</span> <span class="n">to</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">m_sizeMode</span> <span class="o">!=</span> <span class="n">to</span><span class="p">.</span><span class="n">m_sizeMode</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">to</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">widths</span> <span class="o">=</span> <span class="n">m_widths</span><span class="p">.</span><span class="n">interpolated</span><span class="p">(</span> <span class="n">to</span><span class="p">.</span><span class="n">m_widths</span><span class="p">,</span> <span class="n">ratio</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">QskBoxBorderMetrics</span><span class="p">(</span> <span class="n">widths</span><span class="p">,</span> <span class="n">m_sizeMode</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskBoxBorderMetrics</span><span class="o">::</span><span class="n">interpolate</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">from</span><span class="p">.</span><span class="n">interpolated</span><span class="p">(</span> <span class="n">to</span><span class="p">,</span> <span class="n">progress</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">uint</span> <span class="n">QskBoxBorderMetrics</span><span class="o">::</span><span class="n">hash</span><span class="p">(</span> <span class="n">uint</span> <span class="n">seed</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">uint</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">qHashBits</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_widths</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">m_widths</span> <span class="p">),</span> <span class="n">seed</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">m_sizeMode</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">qHashBits</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">mode</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">mode</span> <span class="p">),</span> <span class="n">hash</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="cp">#include &lt;qdebug.h&gt;
+</span>
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">metrics</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"BoxBorder"</span> <span class="o">&lt;&lt;</span> <span class="sc">'('</span><span class="p">;</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="n">metrics</span><span class="p">.</span><span class="n">sizeMode</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">','</span> <span class="o">&lt;&lt;</span> <span class="n">metrics</span><span class="p">.</span><span class="n">widths</span><span class="p">();</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">')'</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="cp">#include "moc_QskBoxBorderMetrics.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

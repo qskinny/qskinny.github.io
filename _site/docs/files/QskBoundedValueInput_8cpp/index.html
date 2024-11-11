@@ -1,0 +1,83 @@
+<h1 id="controlsqskboundedvalueinputcpp">controls/QskBoundedValueInput.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskBoundedValueInput.h"
+#include "QskFunctions.h"
+</span>
+<span class="n">QskBoundedValueInput</span><span class="o">::</span><span class="n">QskBoundedValueInput</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskBoundedInput</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskBoundedValueInput</span><span class="o">::~</span><span class="n">QskBoundedValueInput</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoundedValueInput</span><span class="o">::</span><span class="n">alignInput</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">value</span> <span class="o">=</span> <span class="n">alignedValue</span><span class="p">(</span> <span class="n">m_value</span> <span class="p">);</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">fixupValue</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+
+    <span class="n">setValueInternal</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskBoundedValueInput</span><span class="o">::</span><span class="n">fixupValue</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoundedValueInput</span><span class="o">::</span><span class="n">setValueAsRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">);</span>
+    <span class="n">setValue</span><span class="p">(</span> <span class="n">minimum</span><span class="p">()</span> <span class="o">+</span> <span class="n">ratio</span> <span class="o">*</span> <span class="n">boundaryLength</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskBoundedValueInput</span><span class="o">::</span><span class="n">valueAsRatio</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">valueAsRatio</span><span class="p">(</span> <span class="n">m_value</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoundedValueInput</span><span class="o">::</span><span class="n">setValue</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isComponentComplete</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">alignedValue</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">fixupValue</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">setValueInternal</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskBoundedValueInput</span><span class="o">::</span><span class="n">value</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoundedValueInput</span><span class="o">::</span><span class="n">increment</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">offset</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setValue</span><span class="p">(</span> <span class="n">m_value</span> <span class="o">+</span> <span class="n">offset</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoundedValueInput</span><span class="o">::</span><span class="n">setValueInternal</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">m_value</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_value</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">valueChanged</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+
+        <span class="n">update</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskBoundedValueInput.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

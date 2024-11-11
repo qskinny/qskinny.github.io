@@ -1,0 +1,330 @@
+<h1 id="commonqskboxbordercolorscpp">common/QskBoxBorderColors.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskBoxBorderColors_8cpp/#function-qskregisterboxbordercolors">qskRegisterBoxBorderColors</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskBoxBorderColors_8cpp/#function-qskisvisble">qskIsVisble</a></strong>(const QColor &amp; c)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskBoxBorderColors_8cpp/#function-qsksetcolors">qskSetColors</a></strong>(const QColor &amp; c, QColor * colors)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskBoxBorderColors_8cpp/#function-qsksetcolors">qskSetColors</a></strong>(const QColor &amp; left, const QColor &amp; top, const QColor &amp; right, const QColor &amp; bottom, QColor * colors)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskBoxBorderColors_8cpp/#function-qskdebugcolor">qskDebugColor</a></strong>(QDebug debug, const QColor &amp; c)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskBoxBorderColors_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskBoxBorderColors &amp; colors)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskregisterboxbordercolors">function qskRegisterBoxBorderColors</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskRegisterBoxBorderColors</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskisvisble">function qskIsVisble</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskIsVisble</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">c</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksetcolors">function qskSetColors</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskSetColors</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">c</span><span class="p">,</span>
+    <span class="n">QColor</span> <span class="o">*</span> <span class="n">colors</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksetcolors-1">function qskSetColors</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskSetColors</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">left</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">top</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">right</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">bottom</span><span class="p">,</span>
+    <span class="n">QColor</span> <span class="o">*</span> <span class="n">colors</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskdebugcolor">function qskDebugColor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskDebugColor</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">c</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderColors</span> <span class="o">&amp;</span> <span class="n">colors</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskBoxBorderColors.h"
+#include "QskRgbValue.h"
+</span>
+<span class="cp">#include &lt;qhashfunctions.h&gt;
+#include &lt;qvariant.h&gt;
+</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskRegisterBoxBorderColors</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">qRegisterMetaType</span><span class="o">&lt;</span> <span class="n">QskBoxBorderColors</span> <span class="o">&gt;</span><span class="p">();</span>
+
+    <span class="n">QMetaType</span><span class="o">::</span><span class="n">registerConverter</span><span class="o">&lt;</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QskBoxBorderColors</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="p">[](</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">QskBoxBorderColors</span><span class="p">(</span> <span class="n">color</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Q_CONSTRUCTOR_FUNCTION</span><span class="p">(</span> <span class="n">qskRegisterBoxBorderColors</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskIsVisble</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">c</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">c</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">c</span><span class="p">.</span><span class="n">alpha</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskSetColors</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">c</span><span class="p">,</span> <span class="n">QColor</span><span class="o">*</span> <span class="n">colors</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">colors</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span> <span class="mi">2</span> <span class="p">]</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span> <span class="mi">3</span> <span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">toRgb</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskSetColors</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">left</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">top</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">right</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">QColor</span><span class="o">*</span> <span class="n">colors</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Left</span> <span class="p">]</span> <span class="o">=</span> <span class="n">left</span><span class="p">.</span><span class="n">toRgb</span><span class="p">();</span>
+    <span class="n">colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Top</span> <span class="p">]</span> <span class="o">=</span> <span class="n">top</span><span class="p">.</span><span class="n">toRgb</span><span class="p">();</span>
+    <span class="n">colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Right</span> <span class="p">]</span> <span class="o">=</span> <span class="n">right</span><span class="p">.</span><span class="n">toRgb</span><span class="p">();</span>
+    <span class="n">colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Bottom</span> <span class="p">]</span> <span class="o">=</span> <span class="n">bottom</span><span class="p">.</span><span class="n">toRgb</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">QskBoxBorderColors</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">QskBoxBorderColors</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">left</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">top</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">right</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">bottom</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskSetColors</span><span class="p">(</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">m_colors</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">QskBoxBorderColors</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskSetColors</span><span class="p">(</span> <span class="n">color</span><span class="p">,</span> <span class="n">m_colors</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxBorderColors</span><span class="o">::~</span><span class="n">QskBoxBorderColors</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="k">operator</span><span class="o">==</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_colors</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_colors</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">2</span> <span class="p">]</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_colors</span><span class="p">[</span> <span class="mi">2</span> <span class="p">]</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">3</span> <span class="p">]</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_colors</span><span class="p">[</span> <span class="mi">3</span> <span class="p">]</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">setAlpha</span><span class="p">(</span> <span class="kt">int</span> <span class="n">alpha</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="n">i</span> <span class="p">].</span><span class="n">isValid</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">m_colors</span><span class="p">[</span> <span class="n">i</span> <span class="p">].</span><span class="n">alpha</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">m_colors</span><span class="p">[</span> <span class="n">i</span> <span class="p">].</span><span class="n">setAlpha</span><span class="p">(</span> <span class="n">alpha</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">setColors</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskSetColors</span><span class="p">(</span> <span class="n">color</span><span class="p">,</span> <span class="n">m_colors</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">setColors</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">left</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">top</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">right</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">bottom</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskSetColors</span><span class="p">(</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">m_colors</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">setColor</span><span class="p">(</span>
+    <span class="n">Qsk</span><span class="o">::</span><span class="n">Position</span> <span class="n">position</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_colors</span><span class="p">[</span> <span class="n">position</span> <span class="p">]</span> <span class="o">=</span> <span class="n">color</span><span class="p">.</span><span class="n">toRgb</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">setColorsAt</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Edges</span> <span class="n">edges</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="n">c</span> <span class="o">=</span> <span class="n">color</span><span class="p">.</span><span class="n">toRgb</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopEdge</span> <span class="p">)</span>
+        <span class="n">m_colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Top</span> <span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LeftEdge</span> <span class="p">)</span>
+        <span class="n">m_colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Left</span> <span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RightEdge</span> <span class="p">)</span>
+        <span class="n">m_colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Right</span> <span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomEdge</span> <span class="p">)</span>
+        <span class="n">m_colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Bottom</span> <span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QColor</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">colorAt</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Edge</span> <span class="n">edge</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">edge</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopEdge</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">m_colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Top</span> <span class="p">];</span>
+
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LeftEdge</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">m_colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Left</span> <span class="p">];</span>
+
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RightEdge</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">m_colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Right</span> <span class="p">];</span>
+
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomEdge</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">m_colors</span><span class="p">[</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Bottom</span> <span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QColor</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">isVisible</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsVisble</span><span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsVisble</span><span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsVisble</span><span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">2</span> <span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsVisble</span><span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">3</span> <span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">isMonochrome</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">!=</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">2</span> <span class="p">]</span> <span class="o">!=</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">3</span> <span class="p">]</span> <span class="o">!=</span> <span class="n">m_colors</span><span class="p">[</span> <span class="mi">2</span> <span class="p">]</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxBorderColors</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">interpolated</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QskBoxBorderColors</span> <span class="n">colors</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">colors</span><span class="p">.</span><span class="n">m_colors</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">=</span> <span class="n">QskRgb</span><span class="o">::</span><span class="n">interpolated</span><span class="p">(</span>
+            <span class="n">m_colors</span><span class="p">[</span> <span class="n">i</span> <span class="p">],</span> <span class="n">to</span><span class="p">.</span><span class="n">m_colors</span><span class="p">[</span> <span class="n">i</span> <span class="p">],</span> <span class="n">ratio</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">colors</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">interpolate</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">from</span><span class="p">.</span><span class="n">interpolated</span><span class="p">(</span> <span class="n">to</span><span class="p">,</span> <span class="n">ratio</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">uint</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">hash</span><span class="p">(</span> <span class="n">uint</span> <span class="n">seed</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QRgb</span> <span class="n">rgb</span><span class="p">[]</span> <span class="o">=</span>
+    <span class="p">{</span>
+        <span class="n">m_colors</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">rgba</span><span class="p">(),</span>
+        <span class="n">m_colors</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">rgba</span><span class="p">(),</span>
+        <span class="n">m_colors</span><span class="p">[</span> <span class="mi">2</span> <span class="p">].</span><span class="n">rgba</span><span class="p">(),</span>
+        <span class="n">m_colors</span><span class="p">[</span> <span class="mi">3</span> <span class="p">].</span><span class="n">rgba</span><span class="p">(),</span>
+    <span class="p">};</span>
+
+    <span class="k">return</span> <span class="n">qHashBits</span><span class="p">(</span> <span class="n">rgb</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">rgb</span> <span class="p">),</span> <span class="n">seed</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="cp">#include &lt;qdebug.h&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskDebugColor</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">c</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">'('</span>
+        <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">red</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">','</span>
+        <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">green</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">','</span>
+        <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">blue</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">','</span>
+        <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">alpha</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">')'</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">colors</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"BoxBorderColors"</span> <span class="o">&lt;&lt;</span> <span class="sc">'('</span><span class="p">;</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">" L"</span><span class="p">;</span>
+    <span class="n">qskDebugColor</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="n">colors</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Left</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">", T"</span><span class="p">;</span>
+    <span class="n">qskDebugColor</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="n">colors</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Top</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">", R"</span><span class="p">;</span>
+    <span class="n">qskDebugColor</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="n">colors</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Right</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">", B"</span><span class="p">;</span>
+    <span class="n">qskDebugColor</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="n">colors</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Bottom</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">" )"</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

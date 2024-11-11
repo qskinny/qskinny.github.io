@@ -1,0 +1,93 @@
+<h1 id="controlsqskswitchbuttoncpp">controls/QskSwitchButton.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "QskSwitchButton.h"
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSwitchButton</span><span class="p">,</span> <span class="n">Handle</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSwitchButton</span><span class="p">,</span> <span class="n">Groove</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSwitchButton</span><span class="p">,</span> <span class="n">Ripple</span> <span class="p">)</span>
+
+<span class="k">struct</span> <span class="nc">QskSwitchButton</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+    <span class="n">PrivateData</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">orientation</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">inverted</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskSwitchButton</span><span class="o">::</span><span class="n">QskSwitchButton</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskSwitchButton</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskSwitchButton</span><span class="o">::</span><span class="n">QskSwitchButton</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskAbstractButton</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSwitchButton</span><span class="o">::~</span><span class="n">QskSwitchButton</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSwitchButton</span><span class="o">::</span><span class="n">isCheckable</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">QskSwitchButton</span><span class="o">::</span><span class="n">orientation</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSwitchButton</span><span class="o">::</span><span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="o">!=</span> <span class="n">orientation</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">orientation</span><span class="p">;</span>
+
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">orientationChanged</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSwitchButton</span><span class="o">::</span><span class="n">isInverted</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inverted</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSwitchButton</span><span class="o">::</span><span class="n">setInverted</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inverted</span> <span class="o">!=</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inverted</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+
+        <span class="n">resetImplicitSize</span><span class="p">();</span> <span class="c1">// in case the size hints depend on it</span>
+        <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">invertedChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="n">QskSwitchButton</span><span class="o">::</span><span class="n">effectivePlacement</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="cm">/*
+        So you can define different hints depending on the orientation,
+        but what about the layoutDirection ???
+     */</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskSwitchButton.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

@@ -1,0 +1,134 @@
+<h1 id="layoutsqsklayoutengine2dh">layouts/QskLayoutEngine2D.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/">QskLayoutEngine2D</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_LAYOUT_ENGINE_2D_H
+#define QSK_LAYOUT_ENGINE_2D_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include "QskLayoutChain.h"
+#include "QskSizePolicy.h"
+</span>
+<span class="cp">#include &lt;qnamespace.h&gt;
+#include &lt;memory&gt;
+</span>
+<span class="k">class</span> <span class="nc">QQuickItem</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskLayoutHint</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QskLayoutEngine2D</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskLayoutEngine2D</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">QskLayoutEngine2D</span><span class="p">();</span>
+
+    <span class="k">virtual</span> <span class="kt">int</span> <span class="n">count</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">itemAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">indexOf</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">rowCount</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">columnCount</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">setVisualDirection</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LayoutDirection</span> <span class="p">);</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">LayoutDirection</span> <span class="n">visualDirection</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">setDefaultAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="p">);</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">defaultAlignment</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">setExtraSpacingAt</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Edges</span> <span class="n">edges</span> <span class="p">);</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Edges</span> <span class="n">extraSpacingAt</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">setSpacing</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="p">);</span>
+    <span class="n">qreal</span> <span class="n">spacing</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">defaultSpacing</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">invalidate</span><span class="p">();</span>
+
+    <span class="n">qreal</span> <span class="n">widthForHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">heightForWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QSizeF</span> <span class="n">sizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setGeometries</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+
+    <span class="kt">void</span> <span class="n">layoutItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRect</span><span class="o">&amp;</span> <span class="n">grid</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QskLayoutHint</span> <span class="n">layoutHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span>
+        <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">enum</span>
+    <span class="p">{</span>
+        <span class="n">ElementCache</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">LayoutCache</span>  <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+    <span class="p">};</span>
+
+    <span class="kt">void</span> <span class="n">invalidate</span><span class="p">(</span> <span class="kt">int</span> <span class="n">what</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">requiresAdjustment</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">Q_DISABLE_COPY</span><span class="p">(</span> <span class="n">QskLayoutEngine2D</span> <span class="p">)</span>
+
+    <span class="kt">void</span> <span class="n">updateSegments</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">layoutItems</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">int</span> <span class="n">effectiveCount</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">invalidateElementCache</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">ConstraintType</span> <span class="n">constraintType</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segments</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segments</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QskLayoutChain</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">invalidate</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">invalidate</span><span class="p">(</span> <span class="n">ElementCache</span> <span class="o">|</span> <span class="n">LayoutCache</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">int</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">rowCount</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveCount</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">int</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">columnCount</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveCount</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

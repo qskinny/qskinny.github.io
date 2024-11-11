@@ -1,0 +1,723 @@
+<h1 id="controlsqskskintransitioncpp">controls/QskSkinTransition.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QVector&lt; AnimatorCandidate &gt;</td>
+      <td><strong><a href="/docs/files/QskSkinTransition_8cpp/#function-qskanimatorcandidates">qskAnimatorCandidates</a></strong>(QskSkinTransition::Type mask, const QskSkinHintTable &amp; oldTable, const std::unordered_map&lt; int, QskColorFilter &gt; &amp; oldFilters, const QskSkinHintTable &amp; newTable, const std::unordered_map&lt; int, QskColorFilter &gt; &amp; newFilters)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskanimatorcandidates">function qskAnimatorCandidates</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">AnimatorCandidate</span> <span class="o">&gt;</span> <span class="n">qskAnimatorCandidates</span><span class="p">(</span>
+    <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">Type</span> <span class="n">mask</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskSkinHintTable</span> <span class="o">&amp;</span> <span class="n">oldTable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskColorFilter</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">oldFilters</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskSkinHintTable</span> <span class="o">&amp;</span> <span class="n">newTable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskColorFilter</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">newFilters</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "QskSkinTransition.h"
+#include "QskColorFilter.h"
+#include "QskControl.h"
+#include "QskWindow.h"
+#include "QskHintAnimator.h"
+#include "QskSkin.h"
+#include "QskSkinHintTable.h"
+</span>
+<span class="cp">#include &lt;qglobalstatic.h&gt;
+#include &lt;qguiapplication.h&gt;
+#include &lt;qobject.h&gt;
+#include &lt;qvector.h&gt;
+</span>
+<span class="cp">#include &lt;unordered_map&gt;
+#include &lt;vector&gt;
+</span>
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">UpdateInfo</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="k">enum</span> <span class="n">UpdateMode</span>
+        <span class="p">{</span>
+            <span class="n">Polish</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">Update</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="p">};</span>
+
+        <span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">compare</span><span class="p">(</span> <span class="k">const</span> <span class="n">UpdateInfo</span><span class="o">&amp;</span> <span class="n">i1</span><span class="p">,</span> <span class="k">const</span> <span class="n">UpdateInfo</span><span class="o">&amp;</span> <span class="n">i2</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">i1</span><span class="p">.</span><span class="n">control</span><span class="p">.</span><span class="n">data</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">i2</span><span class="p">.</span><span class="n">control</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskControl</span> <span class="o">&gt;</span> <span class="n">control</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">updateModes</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">AnimatorCandidate</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">AnimatorCandidate</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+        <span class="kr">inline</span> <span class="n">AnimatorCandidate</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QVariant</span> <span class="n">from</span><span class="p">,</span> <span class="n">QVariant</span> <span class="n">to</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">aspect</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">from</span><span class="p">(</span> <span class="n">from</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">to</span><span class="p">(</span> <span class="n">to</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">;</span>
+        <span class="n">QVariant</span> <span class="n">from</span><span class="p">;</span>
+        <span class="n">QVariant</span> <span class="n">to</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">AnimatorCandidate</span> <span class="o">&gt;</span> <span class="n">qskAnimatorCandidates</span><span class="p">(</span>
+    <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">Type</span> <span class="n">mask</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskSkinHintTable</span><span class="o">&amp;</span> <span class="n">oldTable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskColorFilter</span> <span class="o">&gt;&amp;</span> <span class="n">oldFilters</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskSkinHintTable</span><span class="o">&amp;</span> <span class="n">newTable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskColorFilter</span> <span class="o">&gt;&amp;</span> <span class="n">newFilters</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// building a list of candidates for animations by comparing</span>
+    <span class="c1">// the old/new set of skin hints</span>
+
+    <span class="k">const</span> <span class="n">QskColorFilter</span> <span class="n">noFilter</span><span class="p">;</span>
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">AnimatorCandidate</span> <span class="o">&gt;</span> <span class="n">candidates</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">oldTable</span><span class="p">.</span><span class="n">hasHints</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">candidates</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">newTable</span><span class="p">.</span><span class="n">hints</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">aspect</span> <span class="o">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">isAnimator</span><span class="p">()</span> <span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">type</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">.</span><span class="n">type</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">type</span> <span class="o">==</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Flag</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">switch</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">flagPrimitive</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">case</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">GraphicRole</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">Color</span> <span class="p">)</span> <span class="p">)</span>
+                        <span class="k">continue</span><span class="p">;</span>
+
+                    <span class="kt">int</span> <span class="n">role1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+                    <span class="k">const</span> <span class="k">auto</span> <span class="n">value</span> <span class="o">=</span> <span class="n">oldTable</span><span class="p">.</span><span class="n">resolvedHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">value</span> <span class="p">)</span>
+                        <span class="n">role1</span> <span class="o">=</span> <span class="n">value</span><span class="o">-&gt;</span><span class="n">toInt</span><span class="p">();</span>
+
+                    <span class="k">const</span> <span class="kt">int</span> <span class="n">role2</span> <span class="o">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">toInt</span><span class="p">();</span>
+
+                    <span class="cm">/*
+                        When the role is the same we already have the animators
+                        for the graphic filter table running
+                     */</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">role1</span> <span class="o">!=</span> <span class="n">role2</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">const</span> <span class="k">auto</span> <span class="n">it1</span> <span class="o">=</span> <span class="n">oldFilters</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">role1</span> <span class="p">);</span>
+                        <span class="k">const</span> <span class="k">auto</span> <span class="n">it2</span> <span class="o">=</span> <span class="n">newFilters</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">role2</span> <span class="p">);</span>
+
+                        <span class="k">if</span> <span class="p">(</span> <span class="n">it1</span> <span class="o">!=</span> <span class="n">oldFilters</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="o">||</span> <span class="n">it2</span> <span class="o">!=</span> <span class="n">newFilters</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">f1</span> <span class="o">=</span> <span class="p">(</span> <span class="n">it1</span> <span class="o">!=</span> <span class="n">oldFilters</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span> <span class="o">?</span> <span class="n">it1</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">:</span> <span class="n">noFilter</span><span class="p">;</span>
+                            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">f2</span> <span class="o">=</span> <span class="p">(</span> <span class="n">it2</span> <span class="o">!=</span> <span class="n">newFilters</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span> <span class="o">?</span> <span class="n">it2</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">:</span> <span class="n">noFilter</span><span class="p">;</span>
+
+                            <span class="k">if</span> <span class="p">(</span> <span class="n">f1</span> <span class="o">!=</span> <span class="n">f2</span> <span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">candidates</span> <span class="o">+=</span> <span class="n">AnimatorCandidate</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span>
+                                    <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">f1</span> <span class="p">),</span> <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">f2</span> <span class="p">)</span> <span class="p">);</span>
+                            <span class="p">}</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">FontRole</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">Metric</span> <span class="p">)</span> <span class="p">)</span>
+                        <span class="k">continue</span><span class="p">;</span>
+
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nl">default:</span>
+                    <span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="p">(</span> <span class="n">type</span> <span class="o">==</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Color</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">Color</span> <span class="p">)</span> <span class="p">)</span> <span class="o">||</span>
+                <span class="p">(</span> <span class="p">(</span> <span class="n">type</span> <span class="o">==</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Metric</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">Metric</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">value</span> <span class="o">=</span> <span class="n">oldTable</span><span class="p">.</span><span class="n">resolvedHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">value</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">aspect</span><span class="p">.</span><span class="n">subControl</span><span class="p">()</span> <span class="o">!=</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Control</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">;</span>
+                    <span class="n">a</span><span class="p">.</span><span class="n">setSubControl</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Control</span> <span class="p">);</span>
+                    <span class="n">a</span><span class="p">.</span><span class="n">clearStates</span><span class="p">();</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">oldTable</span><span class="p">.</span><span class="n">resolvedHint</span><span class="p">(</span> <span class="n">a</span> <span class="p">);</span>
+                <span class="p">}</span>
+
+                <span class="cm">/*
+                    We are missing transitions, when a hint in newTable
+                    gets resolved from QskControl. TODO ...
+                 */</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">value</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="n">value</span> <span class="o">!=</span> <span class="n">entry</span><span class="p">.</span><span class="n">second</span> <span class="p">)</span>
+                    <span class="n">candidates</span> <span class="o">+=</span> <span class="n">AnimatorCandidate</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="o">*</span><span class="n">value</span><span class="p">,</span> <span class="n">entry</span><span class="p">.</span><span class="n">second</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">candidates</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">AnimatorGroup</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">AnimatorGroup</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_window</span><span class="p">(</span> <span class="n">window</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_window</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">start</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">it</span> <span class="o">:</span> <span class="n">m_hintAnimatorMap</span> <span class="p">)</span>
+                <span class="n">it</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">start</span><span class="p">();</span>
+
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">it</span> <span class="o">:</span> <span class="n">m_graphicFilterAnimatorMap</span> <span class="p">)</span>
+                <span class="n">it</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">start</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kt">bool</span> <span class="n">isRunning</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_hintAnimatorMap</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">animator</span> <span class="o">=</span> <span class="n">m_hintAnimatorMap</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">animator</span><span class="p">.</span><span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_graphicFilterAnimatorMap</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">animator</span> <span class="o">=</span> <span class="n">m_graphicFilterAnimatorMap</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">animator</span><span class="p">.</span><span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">QVariant</span> <span class="n">animatedHint</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_hintAnimatorMap</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_hintAnimatorMap</span><span class="p">.</span><span class="n">cend</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">animator</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">animator</span><span class="p">.</span><span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">animator</span><span class="p">.</span><span class="n">currentValue</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">QVariant</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">QVariant</span> <span class="n">animatedGraphicFilter</span><span class="p">(</span> <span class="kt">int</span> <span class="n">graphicRole</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_graphicFilterAnimatorMap</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">graphicRole</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_graphicFilterAnimatorMap</span><span class="p">.</span><span class="n">cend</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">animator</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">animator</span><span class="p">.</span><span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">animator</span><span class="p">.</span><span class="n">currentValue</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">QVariant</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">addGraphicFilterAnimators</span><span class="p">(</span>
+            <span class="k">const</span> <span class="n">QskAnimationHint</span><span class="o">&amp;</span> <span class="n">animatorHint</span><span class="p">,</span>
+            <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskColorFilter</span> <span class="o">&gt;&amp;</span> <span class="n">oldFilters</span><span class="p">,</span>
+            <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskColorFilter</span> <span class="o">&gt;&amp;</span> <span class="n">newFilters</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">QskColorFilter</span> <span class="n">noFilter</span><span class="p">;</span>
+
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">it2</span> <span class="o">=</span> <span class="n">newFilters</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it2</span> <span class="o">!=</span> <span class="n">newFilters</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it2</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">it1</span> <span class="o">=</span> <span class="n">oldFilters</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">it2</span><span class="o">-&gt;</span><span class="n">first</span> <span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">it1</span> <span class="o">==</span> <span class="n">oldFilters</span><span class="p">.</span><span class="n">cend</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="n">it1</span> <span class="o">=</span> <span class="n">oldFilters</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">f1</span> <span class="o">=</span> <span class="p">(</span> <span class="n">it1</span> <span class="o">!=</span> <span class="n">oldFilters</span><span class="p">.</span><span class="n">cend</span><span class="p">()</span> <span class="p">)</span> <span class="o">?</span> <span class="n">it1</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">:</span> <span class="n">noFilter</span><span class="p">;</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">f2</span> <span class="o">=</span> <span class="n">it2</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">f1</span> <span class="o">!=</span> <span class="n">f2</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">QskVariantAnimator</span> <span class="n">animator</span><span class="p">;</span>
+                    <span class="n">animator</span><span class="p">.</span><span class="n">setWindow</span><span class="p">(</span> <span class="n">m_window</span> <span class="p">);</span>
+                    <span class="n">animator</span><span class="p">.</span><span class="n">setDuration</span><span class="p">(</span> <span class="n">animatorHint</span><span class="p">.</span><span class="n">duration</span> <span class="p">);</span>
+                    <span class="n">animator</span><span class="p">.</span><span class="n">setEasingCurve</span><span class="p">(</span> <span class="n">animatorHint</span><span class="p">.</span><span class="n">type</span> <span class="p">);</span>
+                    <span class="n">animator</span><span class="p">.</span><span class="n">setStartValue</span><span class="p">(</span> <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">f1</span> <span class="p">)</span> <span class="p">);</span>
+                    <span class="n">animator</span><span class="p">.</span><span class="n">setEndValue</span><span class="p">(</span> <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">f2</span> <span class="p">)</span> <span class="p">);</span>
+
+                    <span class="n">m_graphicFilterAnimatorMap</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span> <span class="n">it2</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">,</span> <span class="n">animator</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">addAnimators</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskAnimationHint</span><span class="o">&amp;</span> <span class="n">animatorHint</span><span class="p">,</span>
+            <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">AnimatorCandidate</span> <span class="o">&gt;&amp;</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">isVisible</span><span class="p">()</span> <span class="p">)</span>
+                <span class="k">return</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">qskControlCast</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">isInitiallyPainted</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">skin</span> <span class="o">==</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">effectiveSkin</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">addControlAnimators</span><span class="p">(</span> <span class="n">control</span><span class="p">,</span> <span class="n">animatorHint</span><span class="p">,</span> <span class="n">candidates</span> <span class="p">);</span>
+<span class="cp">#if 1
+</span>                    <span class="cm">/*
+                        As it is hard to identify which controls depend on the animated
+                        graphic filters we schedule an initial update and let the
+                        controls do the rest: see QskSkinnable::effectiveGraphicFilter
+                     */</span>
+                    <span class="n">control</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+<span class="cp">#endif
+</span>                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">children</span> <span class="o">=</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">childItems</span><span class="p">();</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">child</span> <span class="o">:</span> <span class="n">children</span> <span class="p">)</span>
+                <span class="n">addAnimators</span><span class="p">(</span> <span class="n">child</span><span class="p">,</span> <span class="n">animatorHint</span><span class="p">,</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">skin</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">update</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">info</span> <span class="o">:</span> <span class="n">m_updateInfos</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">info</span><span class="p">.</span><span class="n">control</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">info</span><span class="p">.</span><span class="n">updateModes</span> <span class="o">&amp;</span> <span class="n">UpdateInfo</span><span class="o">::</span><span class="n">Polish</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">control</span><span class="o">-&gt;</span><span class="n">resetImplicitSize</span><span class="p">();</span>
+                        <span class="n">control</span><span class="o">-&gt;</span><span class="n">polish</span><span class="p">();</span>
+                    <span class="p">}</span>
+
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">info</span><span class="p">.</span><span class="n">updateModes</span> <span class="o">&amp;</span> <span class="n">UpdateInfo</span><span class="o">::</span><span class="n">Update</span> <span class="p">)</span>
+                        <span class="n">control</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+
+        <span class="kt">void</span> <span class="n">addControlAnimators</span><span class="p">(</span> <span class="n">QskControl</span><span class="o">*</span> <span class="n">control</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskAnimationHint</span><span class="o">&amp;</span> <span class="n">animatorHint</span><span class="p">,</span>
+            <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">AnimatorCandidate</span> <span class="o">&gt;&amp;</span> <span class="n">candidates</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">subControls</span> <span class="o">=</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">subControls</span><span class="p">();</span>
+
+            <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">candidate</span> <span class="o">:</span> <span class="n">candidates</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">candidate</span><span class="p">.</span><span class="n">aspect</span><span class="p">.</span><span class="n">isMetric</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemHasContents</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="c1">// while metrics might have an effect on layouts, we</span>
+                        <span class="c1">// can safely ignore others for controls without content</span>
+                        <span class="k">continue</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">subControl</span> <span class="o">=</span> <span class="n">candidate</span><span class="p">.</span><span class="n">aspect</span><span class="p">.</span><span class="n">subControl</span><span class="p">();</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">!=</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">effectiveSubcontrol</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// The control uses subcontrol redirection, so we can assume it</span>
+                    <span class="c1">// is not interested in this subcontrol.</span>
+                    <span class="k">continue</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">!=</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Control</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">subControls</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="c1">// the control is not interested in the aspect</span>
+                        <span class="k">continue</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">control</span><span class="o">-&gt;</span><span class="n">autoFillBackground</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="c1">// no need to animate the background unless we show it</span>
+                        <span class="k">continue</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+
+                <span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">candidate</span><span class="p">.</span><span class="n">aspect</span><span class="p">;</span>
+                <span class="n">a</span><span class="p">.</span><span class="n">setStates</span><span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">skinStates</span><span class="p">()</span> <span class="p">);</span>
+
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">requestState</span> <span class="o">=</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">hintStatus</span><span class="p">(</span> <span class="n">a</span> <span class="p">);</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">requestState</span><span class="p">.</span><span class="n">source</span> <span class="o">!=</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">Skin</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// The control does not resolve the aspect from the skin.</span>
+                    <span class="k">continue</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">candidate</span><span class="p">.</span><span class="n">aspect</span> <span class="o">!=</span> <span class="n">requestState</span><span class="p">.</span><span class="n">aspect</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// the aspect was resolved to something else</span>
+                    <span class="k">continue</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="n">addAnimator</span><span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">(),</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">animatorHint</span> <span class="p">);</span>
+                <span class="n">storeUpdateInfo</span><span class="p">(</span> <span class="n">control</span><span class="p">,</span> <span class="n">candidate</span><span class="p">.</span><span class="n">aspect</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">addAnimator</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span>
+            <span class="k">const</span> <span class="n">AnimatorCandidate</span><span class="o">&amp;</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">QskAnimationHint</span> <span class="n">animationHint</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_hintAnimatorMap</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">candidate</span><span class="p">.</span><span class="n">aspect</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_hintAnimatorMap</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+                <span class="k">return</span><span class="p">;</span> <span class="c1">// already there</span>
+
+            <span class="n">it</span> <span class="o">=</span> <span class="n">m_hintAnimatorMap</span><span class="p">.</span><span class="n">emplace</span><span class="p">(</span> <span class="n">candidate</span><span class="p">.</span><span class="n">aspect</span><span class="p">,</span> <span class="n">QskHintAnimator</span><span class="p">()</span> <span class="p">).</span><span class="n">first</span><span class="p">;</span>
+            <span class="k">auto</span><span class="o">&amp;</span> <span class="n">animator</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+
+            <span class="n">animator</span><span class="p">.</span><span class="n">setAspect</span><span class="p">(</span> <span class="n">candidate</span><span class="p">.</span><span class="n">aspect</span> <span class="p">);</span>
+            <span class="n">animator</span><span class="p">.</span><span class="n">setStartValue</span><span class="p">(</span> <span class="n">candidate</span><span class="p">.</span><span class="n">from</span> <span class="p">);</span>
+            <span class="n">animator</span><span class="p">.</span><span class="n">setEndValue</span><span class="p">(</span> <span class="n">candidate</span><span class="p">.</span><span class="n">to</span> <span class="p">);</span>
+
+            <span class="n">animator</span><span class="p">.</span><span class="n">setDuration</span><span class="p">(</span> <span class="n">animationHint</span><span class="p">.</span><span class="n">duration</span> <span class="p">);</span>
+            <span class="n">animator</span><span class="p">.</span><span class="n">setEasingCurve</span><span class="p">(</span> <span class="n">animationHint</span><span class="p">.</span><span class="n">type</span> <span class="p">);</span>
+            <span class="n">animator</span><span class="p">.</span><span class="n">setUpdateFlags</span><span class="p">(</span> <span class="n">animationHint</span><span class="p">.</span><span class="n">updateFlags</span> <span class="p">);</span>
+
+            <span class="n">animator</span><span class="p">.</span><span class="n">setControl</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+            <span class="n">animator</span><span class="p">.</span><span class="n">setWindow</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">storeUpdateInfo</span><span class="p">(</span> <span class="n">QskControl</span><span class="o">*</span> <span class="n">control</span><span class="p">,</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">UpdateInfo</span> <span class="n">info</span><span class="p">;</span>
+            <span class="n">info</span><span class="p">.</span><span class="n">control</span> <span class="o">=</span> <span class="n">control</span><span class="p">;</span>
+
+            <span class="n">info</span><span class="p">.</span><span class="n">updateModes</span> <span class="o">=</span> <span class="n">UpdateInfo</span><span class="o">::</span><span class="n">Update</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">isMetric</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">info</span><span class="p">.</span><span class="n">updateModes</span> <span class="o">|=</span> <span class="n">UpdateInfo</span><span class="o">::</span><span class="n">Polish</span><span class="p">;</span>
+
+            <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">lower_bound</span><span class="p">(</span>
+                <span class="n">m_updateInfos</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">m_updateInfos</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">info</span><span class="p">,</span> <span class="n">UpdateInfo</span><span class="o">::</span><span class="n">compare</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_updateInfos</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">control</span> <span class="o">==</span> <span class="n">info</span><span class="p">.</span><span class="n">control</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="n">it</span><span class="o">-&gt;</span><span class="n">updateModes</span> <span class="o">|=</span> <span class="n">info</span><span class="p">.</span><span class="n">updateModes</span><span class="p">;</span>
+            <span class="k">else</span>
+                <span class="n">m_updateInfos</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">it</span><span class="p">,</span> <span class="n">info</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">m_window</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="p">,</span> <span class="n">QskHintAnimator</span> <span class="o">&gt;</span> <span class="n">m_hintAnimatorMap</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskVariantAnimator</span> <span class="o">&gt;</span> <span class="n">m_graphicFilterAnimatorMap</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span> <span class="n">UpdateInfo</span> <span class="o">&gt;</span> <span class="n">m_updateInfos</span><span class="p">;</span> <span class="c1">// vector: for fast iteration</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">AnimatorGroups</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+    <span class="p">{</span>
+        <span class="n">Q_OBJECT</span>
+
+      <span class="nl">public:</span>
+        <span class="o">~</span><span class="n">AnimatorGroups</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">reset</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">AnimatorGroup</span><span class="o">*</span> <span class="n">animatorGroup</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_animatorGroups</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">window</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">group</span> <span class="o">:</span> <span class="n">m_animatorGroups</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">group</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">==</span> <span class="n">window</span> <span class="p">)</span>
+                        <span class="k">return</span> <span class="n">group</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">add</span><span class="p">(</span> <span class="n">AnimatorGroup</span><span class="o">*</span> <span class="n">group</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_animatorGroups</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">group</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">start</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">m_connections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">addAdvanceHandler</span><span class="p">(</span>
+                <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">notify</span><span class="p">(</span><span class="n">QQuickWindow</span><span class="o">*</span><span class="p">)),</span> <span class="n">Qt</span><span class="o">::</span><span class="n">UniqueConnection</span> <span class="p">);</span>
+
+            <span class="n">m_connections</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">addCleanupHandler</span><span class="p">(</span>
+                <span class="k">this</span><span class="p">,</span> <span class="n">SLOT</span><span class="p">(</span><span class="n">cleanup</span><span class="p">(</span><span class="n">QQuickWindow</span><span class="o">*</span><span class="p">)),</span> <span class="n">Qt</span><span class="o">::</span><span class="n">UniqueConnection</span> <span class="p">);</span>
+
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">group</span> <span class="o">:</span> <span class="n">m_animatorGroups</span> <span class="p">)</span>
+                <span class="n">group</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">qDeleteAll</span><span class="p">(</span> <span class="n">m_animatorGroups</span> <span class="p">);</span>
+            <span class="n">m_animatorGroups</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+            <span class="n">disconnect</span><span class="p">(</span> <span class="n">m_connections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">);</span>
+            <span class="n">disconnect</span><span class="p">(</span> <span class="n">m_connections</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">isRunning</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="o">!</span><span class="n">m_animatorGroups</span><span class="p">.</span><span class="n">empty</span><span class="p">();</span>
+        <span class="p">}</span>
+
+      <span class="k">private</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+        <span class="kt">void</span> <span class="n">notify</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">group</span> <span class="o">:</span> <span class="n">m_animatorGroups</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">group</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">==</span> <span class="n">window</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">group</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+                    <span class="k">return</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">cleanup</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_animatorGroups</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+                <span class="n">it</span> <span class="o">!=</span> <span class="n">m_animatorGroups</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">group</span> <span class="o">=</span> <span class="o">*</span><span class="n">it</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">group</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">==</span> <span class="n">window</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">group</span><span class="o">-&gt;</span><span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="c1">// The notification might be for other animators</span>
+
+                        <span class="n">m_animatorGroups</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span> <span class="n">it</span> <span class="p">);</span>
+                        <span class="k">delete</span> <span class="n">group</span><span class="p">;</span>
+                    <span class="p">}</span>
+
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_animatorGroups</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">reset</span><span class="p">();</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="cm">/*
+            It should be possible to find an implementation, that interpolates
+            a skin hint only once for all windows. But as our animtors are driven by
+            QQuickWindow::afterAnimating the code will have to be somehow tricky.
+            But as skin transitions are no operations, that happen often, we can accept
+            the overhaed of the current implementation and do the finetuning later.
+         */</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span> <span class="n">AnimatorGroup</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">m_animatorGroups</span><span class="p">;</span>
+        <span class="n">QMetaObject</span><span class="o">::</span><span class="n">Connection</span> <span class="n">m_connections</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="n">Q_GLOBAL_STATIC</span><span class="p">(</span> <span class="n">AnimatorGroups</span><span class="p">,</span> <span class="n">qskSkinAnimator</span> <span class="p">)</span>
+
+<span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">QskSkinTransition</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_mask</span><span class="p">(</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">AllTypes</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_skins</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinTransition</span><span class="o">::~</span><span class="n">QskSkinTransition</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">setMask</span><span class="p">(</span> <span class="n">Type</span> <span class="n">type</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_mask</span> <span class="o">=</span> <span class="n">type</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">Type</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">mask</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_mask</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">setSourceSkin</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_skins</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="n">skin</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskSkin</span><span class="o">*</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">sourceSkin</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">0</span> <span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">setTargetSkin</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_skins</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">=</span> <span class="n">skin</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskSkin</span><span class="o">*</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">targetSkin</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">1</span> <span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">setAnimation</span><span class="p">(</span> <span class="n">QskAnimationHint</span> <span class="n">animationHint</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_animationHint</span> <span class="o">=</span> <span class="n">animationHint</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskAnimationHint</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">animation</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_animationHint</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">updateSkin</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span><span class="p">,</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// nop</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">process</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// do nothing</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">qskSkinAnimator</span><span class="o">-&gt;</span><span class="n">reset</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">m_animationHint</span><span class="p">.</span><span class="n">duration</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">m_mask</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// no animations, we can apply the changes</span>
+        <span class="n">updateSkin</span><span class="p">(</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">0</span> <span class="p">],</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">AnimatorCandidate</span> <span class="o">&gt;</span> <span class="n">candidates</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">oldFilters</span> <span class="o">=</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span><span class="o">-&gt;</span><span class="n">graphicFilters</span><span class="p">();</span>
+
+    <span class="p">{</span>
+        <span class="c1">// copy out all hints before updating the skin</span>
+        <span class="c1">// - would be good to have Copy on Write here</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">oldTable</span> <span class="o">=</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">();</span>
+
+        <span class="c1">// apply the changes</span>
+        <span class="n">updateSkin</span><span class="p">(</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">0</span> <span class="p">],</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="p">);</span>
+
+        <span class="n">candidates</span> <span class="o">=</span> <span class="n">qskAnimatorCandidates</span><span class="p">(</span> <span class="n">m_mask</span><span class="p">,</span> <span class="n">oldTable</span><span class="p">,</span> <span class="n">oldFilters</span><span class="p">,</span>
+            <span class="n">m_skins</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">(),</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span><span class="o">-&gt;</span><span class="n">graphicFilters</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">candidates</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">doGraphicFilter</span> <span class="o">=</span> <span class="n">m_mask</span> <span class="o">&amp;</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">Color</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">windows</span> <span class="o">=</span> <span class="n">qGuiApp</span><span class="o">-&gt;</span><span class="n">topLevelWindows</span><span class="p">();</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">window</span> <span class="o">:</span> <span class="n">windows</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">quickWindow</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">window</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">quickWindow</span><span class="o">-&gt;</span><span class="n">isVisible</span><span class="p">()</span> <span class="o">||</span>
+                    <span class="p">(</span> <span class="n">qskEffectiveSkin</span><span class="p">(</span> <span class="n">quickWindow</span> <span class="p">)</span> <span class="o">!=</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">continue</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="k">auto</span> <span class="n">group</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AnimatorGroup</span><span class="p">(</span> <span class="n">quickWindow</span> <span class="p">);</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">doGraphicFilter</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">group</span><span class="o">-&gt;</span><span class="n">addGraphicFilterAnimators</span><span class="p">(</span>
+                        <span class="n">m_animationHint</span><span class="p">,</span> <span class="n">oldFilters</span><span class="p">,</span>
+                        <span class="n">m_skins</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span><span class="o">-&gt;</span><span class="n">graphicFilters</span><span class="p">()</span> <span class="p">);</span>
+
+                    <span class="n">doGraphicFilter</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="cm">/*
+                   finally we schedule the animators the hard way by running
+                   over the the item trees.
+                 */</span>
+
+                <span class="n">group</span><span class="o">-&gt;</span><span class="n">addAnimators</span><span class="p">(</span> <span class="n">quickWindow</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="p">(),</span>
+                    <span class="n">m_animationHint</span><span class="p">,</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">1</span> <span class="p">]</span> <span class="p">);</span>
+
+                <span class="n">qskSkinAnimator</span><span class="o">-&gt;</span><span class="n">add</span><span class="p">(</span> <span class="n">group</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">qskSkinAnimator</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">isRunning</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskSkinAnimator</span><span class="p">.</span><span class="n">exists</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">qskSkinAnimator</span><span class="o">-&gt;</span><span class="n">isRunning</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">animatedHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskSkinAnimator</span><span class="p">.</span><span class="n">exists</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">group</span> <span class="o">=</span> <span class="n">qskSkinAnimator</span><span class="o">-&gt;</span><span class="n">animatorGroup</span><span class="p">(</span> <span class="n">window</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">group</span><span class="o">-&gt;</span><span class="n">animatedHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QVariant</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">animatedGraphicFilter</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span> <span class="kt">int</span> <span class="n">graphicRole</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskSkinAnimator</span><span class="p">.</span><span class="n">exists</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">group</span> <span class="o">=</span> <span class="n">qskSkinAnimator</span><span class="o">-&gt;</span><span class="n">animatorGroup</span><span class="p">(</span> <span class="n">window</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">group</span><span class="o">-&gt;</span><span class="n">animatedGraphicFilter</span><span class="p">(</span> <span class="n">graphicRole</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QVariant</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#include "QskSkinTransition.moc"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

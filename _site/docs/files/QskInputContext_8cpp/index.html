@@ -1,0 +1,584 @@
+<h1 id="inputpanelqskinputcontextcpp">inputpanel/QskInputContext.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskInputContext_8cpp/#function-qsksendtoplatformcontext">qskSendToPlatformContext</a></strong>(QEvent::Type type)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskInputContext_8cpp/#function-qskinputcontexthook">qskInputContextHook</a></strong>()</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="attributes">Attributes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QPointer&lt; QskInputContext &gt;</td>
+      <td><strong><a href="/docs/files/QskInputContext_8cpp/#variable-qskinputcontext">qskInputContext</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qsksendtoplatformcontext">function qskSendToPlatformContext</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskSendToPlatformContext</span><span class="p">(</span>
+    <span class="n">QEvent</span><span class="o">::</span><span class="n">Type</span> <span class="n">type</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinputcontexthook">function qskInputContextHook</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskInputContextHook</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="attributes-documentation">Attributes Documentation</h2>
+
+<h3 id="variable-qskinputcontext">variable qskInputContext</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskInputContext</span> <span class="o">&gt;</span> <span class="n">qskInputContext</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskInputContext.h"
+#include "QskInputPanel.h"
+#include "QskInputPanelBox.h"
+</span>
+<span class="cp">#include "QskDialog.h"
+#include "QskLinearBox.h"
+#include "QskPopup.h"
+#include "QskQuick.h"
+#include "QskWindow.h"
+</span>
+<span class="cp">#include &lt;qguiapplication.h&gt;
+#include &lt;qmap.h&gt;
+#include &lt;qpointer.h&gt;
+</span>
+
+<span class="cp">#include &lt;private/qguiapplication_p.h&gt;
+</span>
+
+<span class="cp">#include &lt;qpa/qplatforminputcontext.h&gt;
+#include &lt;qpa/qplatformintegration.h&gt;
+</span>
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">Panel</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskInputPanel</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">Panel</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">QskInputPanel</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setAutoLayoutChildren</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+            <span class="n">setLayoutAlignmentHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignCenter</span> <span class="p">);</span>
+
+            <span class="n">m_box</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskInputPanelBox</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="n">m_box</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanelBox</span><span class="o">::</span><span class="n">keySelected</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">keySelected</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="n">m_box</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanelBox</span><span class="o">::</span><span class="n">predictiveTextSelected</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">predictiveTextSelected</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">attachItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="n">m_box</span><span class="o">-&gt;</span><span class="n">attachInputItem</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">inputProxy</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_box</span><span class="o">-&gt;</span><span class="n">inputProxy</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">setPrompt</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">prompt</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="n">m_box</span><span class="o">-&gt;</span><span class="n">setInputPrompt</span><span class="p">(</span> <span class="n">prompt</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">setPredictionEnabled</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="n">m_box</span><span class="o">-&gt;</span><span class="n">setPanelHint</span><span class="p">(</span> <span class="n">QskInputPanelBox</span><span class="o">::</span><span class="n">Prediction</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">setPrediction</span><span class="p">(</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="n">prediction</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="n">m_box</span><span class="o">-&gt;</span><span class="n">setPrediction</span><span class="p">(</span> <span class="n">prediction</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="n">QskInputPanelBox</span><span class="o">*</span> <span class="n">m_box</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">Channel</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="c1">// item receiving the input</span>
+        <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QQuickItem</span> <span class="o">&gt;</span> <span class="n">item</span><span class="p">;</span>
+
+        <span class="c1">// panel for inserting the input</span>
+        <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskInputPanel</span> <span class="o">&gt;</span> <span class="n">panel</span><span class="p">;</span>
+
+        <span class="c1">// popup or window embedding the panel</span>
+        <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskPopup</span> <span class="o">&gt;</span> <span class="n">popup</span><span class="p">;</span>
+        <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskWindow</span> <span class="o">&gt;</span> <span class="n">window</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">ChannelTable</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">Channel</span><span class="o">*</span> <span class="n">currentChannel</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">object</span> <span class="o">=</span> <span class="n">QGuiApplication</span><span class="o">::</span><span class="n">focusObject</span><span class="p">();</span>
+            <span class="k">return</span> <span class="n">channel</span><span class="p">(</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">object</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">window</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_map</span><span class="p">.</span><span class="n">constFind</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_map</span><span class="p">.</span><span class="n">constEnd</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">Channel</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskInputPanel</span><span class="o">*</span> <span class="n">panel</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">panel</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">QMap</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span><span class="p">,</span> <span class="n">Channel</span> <span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">it</span><span class="p">;</span>
+
+                <span class="k">for</span><span class="p">(</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_map</span><span class="p">.</span><span class="n">constBegin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_map</span><span class="p">.</span><span class="n">constEnd</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span><span class="p">(</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">().</span><span class="n">panel</span> <span class="o">==</span> <span class="n">panel</span> <span class="p">)</span>
+                        <span class="k">return</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">Channel</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// item-&gt;window() might already been gone</span>
+                <span class="n">QMap</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span><span class="p">,</span> <span class="n">Channel</span> <span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">it</span><span class="p">;</span>
+
+                <span class="k">for</span><span class="p">(</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_map</span><span class="p">.</span><span class="n">constBegin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_map</span><span class="p">.</span><span class="n">constEnd</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span><span class="p">(</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">().</span><span class="n">item</span> <span class="o">==</span> <span class="n">item</span> <span class="p">)</span>
+                        <span class="k">return</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">Channel</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Channel</span><span class="o">*</span> <span class="n">ancestorChannel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_map</span><span class="p">.</span><span class="n">constBegin</span><span class="p">();</span>
+                <span class="n">it</span> <span class="o">!=</span> <span class="n">m_map</span><span class="p">.</span><span class="n">constEnd</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">panel</span> <span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">().</span><span class="n">panel</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="n">panel</span> <span class="p">)</span> <span class="o">||</span> <span class="n">qskIsAncestorOf</span><span class="p">(</span> <span class="n">panel</span><span class="p">,</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">return</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">Channel</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Channel</span><span class="o">*</span> <span class="n">insert</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="o">&amp;</span><span class="n">m_map</span><span class="p">[</span> <span class="n">window</span> <span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">remove</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_map</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="n">QMap</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span><span class="p">,</span> <span class="n">Channel</span> <span class="o">&gt;</span> <span class="n">m_map</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskInputContext</span> <span class="o">&gt;</span> <span class="n">qskInputContext</span><span class="p">;</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskSendToPlatformContext</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">Type</span> <span class="n">type</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">platformInputContext</span> <span class="o">=</span>
+        <span class="n">QGuiApplicationPrivate</span><span class="o">::</span><span class="n">platformIntegration</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">inputContext</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">platformInputContext</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">type</span> <span class="p">);</span>
+        <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">platformInputContext</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskInputContextHook</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">qAddPostRoutine</span><span class="p">(</span> <span class="p">[]</span> <span class="p">{</span> <span class="k">delete</span> <span class="n">qskInputContext</span><span class="p">;</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Q_COREAPP_STARTUP_FUNCTION</span><span class="p">(</span> <span class="n">qskInputContextHook</span> <span class="p">)</span>
+
+<span class="kt">void</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">setInstance</span><span class="p">(</span> <span class="n">QskInputContext</span><span class="o">*</span> <span class="n">inputContext</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">inputContext</span> <span class="o">!=</span> <span class="n">qskInputContext</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">oldContext</span> <span class="o">=</span> <span class="n">qskInputContext</span><span class="p">;</span>
+        <span class="n">qskInputContext</span> <span class="o">=</span> <span class="n">inputContext</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">oldContext</span> <span class="o">&amp;&amp;</span> <span class="n">oldContext</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="k">delete</span> <span class="n">oldContext</span><span class="p">;</span>
+
+        <span class="n">qskSendToPlatformContext</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">PlatformPanel</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskInputContext</span><span class="o">*</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">instance</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskInputContext</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskInputContext</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="kr">inline</span> <span class="n">QskInputPanel</span><span class="o">*</span> <span class="n">createPanel</span><span class="p">(</span> <span class="n">QskInputContext</span><span class="o">*</span> <span class="n">context</span> <span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="n">QskInputPanel</span><span class="o">*</span> <span class="n">panel</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">factory</span> <span class="p">)</span>
+            <span class="n">panel</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">factory</span><span class="o">-&gt;</span><span class="n">createPanel</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">panel</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">panel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Panel</span><span class="p">();</span>
+
+        <span class="n">connect</span><span class="p">(</span> <span class="n">panel</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">visibleChanged</span><span class="p">,</span>
+            <span class="n">context</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputContext</span><span class="o">::</span><span class="n">activeChanged</span> <span class="p">);</span>
+
+        <span class="n">connect</span><span class="p">(</span> <span class="n">panel</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">localeChanged</span><span class="p">,</span>
+            <span class="n">context</span><span class="p">,</span> <span class="p">[]</span> <span class="p">{</span> <span class="n">qskSendToPlatformContext</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LocaleChange</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+        <span class="n">connect</span><span class="p">(</span> <span class="n">panel</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">inputItemDestroyed</span><span class="p">,</span>
+            <span class="n">context</span><span class="p">,</span> <span class="p">[</span> <span class="n">context</span><span class="p">,</span> <span class="n">panel</span> <span class="p">]</span> <span class="p">{</span> <span class="n">context</span><span class="o">-&gt;</span><span class="n">hideChannel</span><span class="p">(</span> <span class="n">panel</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">panel</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskPopup</span><span class="o">*</span> <span class="n">createPopup</span><span class="p">(</span> <span class="n">QskInputPanel</span><span class="o">*</span> <span class="n">panel</span> <span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">popup</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskPopup</span><span class="p">();</span>
+
+        <span class="n">popup</span><span class="o">-&gt;</span><span class="n">setAutoLayoutChildren</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="n">popup</span><span class="o">-&gt;</span><span class="n">setTransparentForPositioner</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="n">popup</span><span class="o">-&gt;</span><span class="n">setMargins</span><span class="p">(</span> <span class="mi">5</span> <span class="p">);</span>
+        <span class="n">popup</span><span class="o">-&gt;</span><span class="n">setModal</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+        <span class="n">panel</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="n">popup</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">panel</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">panel</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="n">popup</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">popup</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskWindow</span><span class="o">*</span> <span class="n">createWindow</span><span class="p">(</span> <span class="n">QskInputPanel</span><span class="o">*</span> <span class="n">panel</span> <span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">window</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskWindow</span><span class="p">();</span>
+
+        <span class="n">window</span><span class="o">-&gt;</span><span class="n">setFlags</span><span class="p">(</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Dialog</span> <span class="p">);</span>
+        <span class="c1">// window-&gt;setModality( Qt::ApplicationModal );</span>
+        <span class="n">window</span><span class="o">-&gt;</span><span class="n">setAutoLayoutChildren</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="c">#if 0
+        window-&gt;setFlags( Qt::Tool | Qt::WindowDoesNotAcceptFocus );
+#endif
+</span>
+        <span class="n">panel</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">window</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">closeChannel</span><span class="p">(</span> <span class="n">Channel</span><span class="o">*</span> <span class="n">channel</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">channel</span><span class="o">-&gt;</span><span class="n">popup</span> <span class="p">)</span>
+            <span class="n">channel</span><span class="o">-&gt;</span><span class="n">popup</span><span class="o">-&gt;</span><span class="n">close</span><span class="p">();</span> <span class="c1">// deleteOnClose is set</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">channel</span><span class="o">-&gt;</span><span class="n">window</span> <span class="p">)</span>
+            <span class="n">channel</span><span class="o">-&gt;</span><span class="n">window</span><span class="o">-&gt;</span><span class="n">close</span><span class="p">();</span> <span class="c1">// deleteOnClose is set</span>
+    <span class="p">}</span>
+
+    <span class="n">ChannelTable</span> <span class="n">channels</span><span class="p">;</span>
+    <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskInputContextFactory</span> <span class="o">&gt;</span> <span class="n">factory</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskInputContext</span><span class="o">::</span><span class="n">QskInputContext</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setObjectName</span><span class="p">(</span> <span class="s">"InputContext"</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskInputContext</span><span class="o">::~</span><span class="n">QskInputContext</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">setFactory</span><span class="p">(</span> <span class="n">QskInputContextFactory</span><span class="o">*</span> <span class="n">factory</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factory</span> <span class="o">==</span> <span class="n">factory</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factory</span> <span class="o">&amp;&amp;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factory</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span>
+        <span class="k">delete</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factory</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factory</span> <span class="o">=</span> <span class="n">factory</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">factory</span> <span class="o">&amp;&amp;</span> <span class="n">factory</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">factory</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskInputContextFactory</span><span class="o">*</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">factory</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factory</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskTextPredictor</span><span class="o">*</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">textPredictor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="n">locale</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factory</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">factory</span><span class="o">-&gt;</span><span class="n">createPredictor</span><span class="p">(</span> <span class="n">locale</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">update</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQueries</span> <span class="n">queries</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// those are coming from QQuickWindow based on focus changes</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QGuiApplication</span><span class="o">::</span><span class="n">focusObject</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">auto</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">channels</span><span class="p">.</span><span class="n">channel</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">channel</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">queries</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImEnabled</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QInputMethodQueryEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImEnabled</span> <span class="p">);</span>
+        <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">channel</span><span class="o">-&gt;</span><span class="n">item</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">event</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImEnabled</span> <span class="p">).</span><span class="n">toBool</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">hidePanel</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">channel</span><span class="o">-&gt;</span><span class="n">panel</span><span class="o">-&gt;</span><span class="n">updateInputPanel</span><span class="p">(</span> <span class="n">queries</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">panelRect</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="cm">/*
+        As we can have more than panel at the same time we
+        better don't return any geometry
+     */</span>
+
+    <span class="k">return</span> <span class="n">QRectF</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">showPanel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">channels</span><span class="p">.</span><span class="n">ancestorChannel</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// We are inside of an existing panel</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">channels</span><span class="p">.</span><span class="n">channel</span><span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">channel</span><span class="o">-&gt;</span><span class="n">item</span> <span class="o">==</span> <span class="n">item</span> <span class="p">)</span>
+            <span class="k">return</span><span class="p">;</span>
+
+        <span class="n">hidePanel</span><span class="p">(</span> <span class="n">channel</span><span class="o">-&gt;</span><span class="n">item</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">auto</span> <span class="n">panel</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">createPanel</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+    <span class="k">auto</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">channels</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">channel</span><span class="o">-&gt;</span><span class="n">item</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+    <span class="n">channel</span><span class="o">-&gt;</span><span class="n">panel</span> <span class="o">=</span> <span class="n">panel</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">instance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">policy</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">TopLevelWindow</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// The input panel is embedded in a top level window</span>
+
+        <span class="k">auto</span> <span class="n">window</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">createWindow</span><span class="p">(</span> <span class="n">panel</span> <span class="p">);</span>
+
+        <span class="n">QSize</span> <span class="n">size</span> <span class="o">=</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">sizeConstraint</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// no idea, may be something based on the screen size</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">QSize</span><span class="p">(</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">240</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">window</span><span class="o">-&gt;</span><span class="n">resize</span><span class="p">(</span> <span class="n">size</span> <span class="p">);</span>
+        <span class="n">window</span><span class="o">-&gt;</span><span class="n">show</span><span class="p">();</span>
+
+        <span class="n">window</span><span class="o">-&gt;</span><span class="n">setDeleteOnClose</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+        <span class="n">channel</span><span class="o">-&gt;</span><span class="n">window</span> <span class="o">=</span> <span class="n">window</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="c1">// The input panel is embedded in a popup</span>
+
+        <span class="k">auto</span> <span class="n">popup</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">createPopup</span><span class="p">(</span> <span class="n">panel</span> <span class="p">);</span>
+
+        <span class="n">popup</span><span class="o">-&gt;</span><span class="n">setPopupFlag</span><span class="p">(</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">DeleteOnClose</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="n">popup</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">popup</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+        <span class="n">channel</span><span class="o">-&gt;</span><span class="n">popup</span> <span class="o">=</span> <span class="n">popup</span><span class="p">;</span>
+
+        <span class="n">popup</span><span class="o">-&gt;</span><span class="n">open</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="n">panel</span><span class="o">-&gt;</span><span class="n">attachInputItem</span><span class="p">(</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">hidePanel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">channels</span><span class="p">.</span><span class="n">channel</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">closeChannel</span><span class="p">(</span> <span class="n">channel</span> <span class="p">);</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">channels</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">hideChannel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskInputPanel</span><span class="o">*</span> <span class="n">panel</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">channels</span><span class="p">.</span><span class="n">channel</span><span class="p">(</span> <span class="n">panel</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// channel-&gt;item is already dead here</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">closeChannel</span><span class="p">(</span> <span class="n">channel</span> <span class="p">);</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">channels</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span> <span class="n">panel</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">setInputPanelVisible</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// called from inside the controls</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QGuiApplication</span><span class="o">::</span><span class="n">focusObject</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+            <span class="n">showPanel</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+        <span class="k">else</span>
+            <span class="n">hidePanel</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">isInputPanelVisible</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">channels</span><span class="p">.</span><span class="n">currentChannel</span><span class="p">()</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QLocale</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">locale</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">channels</span><span class="p">.</span><span class="n">currentChannel</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">channel</span><span class="o">-&gt;</span><span class="n">panel</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">channel</span><span class="o">-&gt;</span><span class="n">panel</span><span class="o">-&gt;</span><span class="n">locale</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QLocale</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">setFocusObject</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">invokeAction</span><span class="p">(</span>
+    <span class="n">QInputMethod</span><span class="o">::</span><span class="n">Action</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cursorPosition</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// called from qquicktextinput/qquicktextedit</span>
+    <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">cursorPosition</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">commitPrediction</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/*
+        called, when the input item loses the focus.
+        As it it should be possible to navigate inside of the
+        panel what should we do here ?
+     */</span>
+<span class="p">}</span>
+
+<span class="n">QskInputContextFactory</span><span class="o">::</span><span class="n">QskInputContextFactory</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QObject</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskInputContextFactory</span><span class="o">::~</span><span class="n">QskInputContextFactory</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskTextPredictor</span><span class="o">*</span> <span class="n">QskInputContextFactory</span><span class="o">::</span><span class="n">createPredictor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskInputPanel</span><span class="o">*</span> <span class="n">QskInputContextFactory</span><span class="o">::</span><span class="n">createPanel</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">Panel</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskInputContext.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

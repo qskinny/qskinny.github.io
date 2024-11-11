@@ -1,0 +1,260 @@
+<h1 id="controlsqskeventh">controls/QskEvent.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskEvent/">QskEvent</a></strong></td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskGeometryChangeEvent/">QskGeometryChangeEvent</a></strong></td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskWindowChangeEvent/">QskWindowChangeEvent</a></strong></td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskPopupEvent/">QskPopupEvent</a></strong></td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskGestureEvent/">QskGestureEvent</a></strong></td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskAnimatorEvent/">QskAnimatorEvent</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/files/QskEvent_8h/#function-qskfocuschainincrement">qskFocusChainIncrement</a></strong>(const QEvent * event)</td>
+    </tr>
+    <tr>
+      <td>QPointF</td>
+      <td><strong><a href="/docs/files/QskEvent_8h/#function-qskmousesceneposition">qskMouseScenePosition</a></strong>(const QMouseEvent * event)</td>
+    </tr>
+    <tr>
+      <td>QPointF</td>
+      <td><strong><a href="/docs/files/QskEvent_8h/#function-qskmouseposition">qskMousePosition</a></strong>(const QMouseEvent * event)</td>
+    </tr>
+    <tr>
+      <td>QPointF</td>
+      <td><strong><a href="/docs/files/QskEvent_8h/#function-qskwheelposition">qskWheelPosition</a></strong>(const QWheelEvent * event)</td>
+    </tr>
+    <tr>
+      <td>QPointF</td>
+      <td><strong><a href="/docs/files/QskEvent_8h/#function-qskhoverposition">qskHoverPosition</a></strong>(const QHoverEvent * event)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskfocuschainincrement">function qskFocusChainIncrement</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">qskFocusChainIncrement</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QEvent</span> <span class="o">*</span> <span class="n">event</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmousesceneposition">function qskMouseScenePosition</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QPointF</span> <span class="n">qskMouseScenePosition</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMouseEvent</span> <span class="o">*</span> <span class="n">event</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmouseposition">function qskMousePosition</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QPointF</span> <span class="n">qskMousePosition</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMouseEvent</span> <span class="o">*</span> <span class="n">event</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskwheelposition">function qskWheelPosition</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QPointF</span> <span class="n">qskWheelPosition</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QWheelEvent</span> <span class="o">*</span> <span class="n">event</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskhoverposition">function qskHoverPosition</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QPointF</span> <span class="n">qskHoverPosition</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QHoverEvent</span> <span class="o">*</span> <span class="n">event</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_EVENT_H
+#define QSK_EVENT_H
+</span>
+<span class="cp">#include "QskAspect.h"
+</span>
+<span class="cp">#include &lt;qcoreevent.h&gt;
+#include &lt;qrect.h&gt;
+#include &lt;memory&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskGesture</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskPopup</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QQuickWindow</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QQuickItem</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QMouseEvent</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QWheelEvent</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QHoverEvent</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskEvent</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QEvent</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">Type</span>
+    <span class="p">{</span>
+        <span class="n">NoEvent</span> <span class="o">=</span> <span class="mi">53800</span><span class="p">,</span>
+
+        <span class="n">GeometryChange</span><span class="p">,</span>
+        <span class="n">WindowChange</span><span class="p">,</span>
+
+        <span class="cm">/*
+            Popups indicate their existence to the owning window
+            to allow for priority based stacking rules
+         */</span>
+        <span class="n">PopupAdded</span><span class="p">,</span>
+        <span class="n">PopupRemoved</span><span class="p">,</span>
+
+        <span class="n">Gesture</span><span class="p">,</span>
+
+        <span class="n">Animator</span><span class="p">,</span>
+
+        <span class="n">MaxEvent</span> <span class="o">=</span> <span class="n">NoEvent</span> <span class="o">+</span> <span class="mi">50</span>
+    <span class="p">};</span>
+
+    <span class="n">QskEvent</span><span class="p">(</span> <span class="n">QskEvent</span><span class="o">::</span><span class="n">Type</span> <span class="n">type</span> <span class="p">);</span>
+
+<span class="cp">#if QT_VERSION &lt; QT_VERSION_CHECK( 6, 0, 0 )
+</span>    <span class="k">virtual</span> <span class="n">QskEvent</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<span class="cp">#endif
+</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskGeometryChangeEvent</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskEvent</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskGeometryChangeEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">oldRect</span> <span class="p">);</span>
+
+    <span class="kr">inline</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_rect</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kr">inline</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">oldRect</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_oldRect</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">isResized</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isMoved</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QskGeometryChangeEvent</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">m_rect</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">m_oldRect</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskWindowChangeEvent</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskEvent</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskWindowChangeEvent</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">oldWindow</span><span class="p">,</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">);</span>
+
+    <span class="kr">inline</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_window</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kr">inline</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">oldWindow</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_oldWindow</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="n">QskWindowChangeEvent</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QQuickWindow</span><span class="o">*</span> <span class="k">const</span> <span class="n">m_oldWindow</span><span class="p">;</span>
+    <span class="n">QQuickWindow</span><span class="o">*</span> <span class="k">const</span> <span class="n">m_window</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskPopupEvent</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskEvent</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskPopupEvent</span><span class="p">(</span> <span class="n">Type</span><span class="p">,</span> <span class="n">QskPopup</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="kr">inline</span> <span class="n">QskPopup</span><span class="o">*</span> <span class="n">popup</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_popup</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="n">QskPopupEvent</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QskPopup</span><span class="o">*</span> <span class="k">const</span> <span class="n">m_popup</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskGestureEvent</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskEvent</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskGestureEvent</span><span class="p">(</span> <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskGesture</span> <span class="o">&gt;</span> <span class="p">);</span>
+
+    <span class="kr">inline</span> <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskGesture</span> <span class="o">&gt;</span> <span class="n">gesture</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_gesture</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="n">QskGestureEvent</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskGesture</span> <span class="o">&gt;</span> <span class="n">m_gesture</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskAnimatorEvent</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskEvent</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">State</span>
+    <span class="p">{</span>
+        <span class="n">Started</span><span class="p">,</span>
+        <span class="n">Terminated</span>
+    <span class="p">};</span>
+
+    <span class="n">QskAnimatorEvent</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">State</span> <span class="n">state</span> <span class="p">);</span>
+
+    <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_aspect</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kr">inline</span> <span class="n">State</span> <span class="n">state</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_state</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="n">QskAnimatorEvent</span><span class="o">*</span> <span class="n">clone</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">m_aspect</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">State</span> <span class="n">m_state</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QSK_EXPORT</span> <span class="kt">int</span> <span class="nf">qskFocusChainIncrement</span><span class="p">(</span> <span class="k">const</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">);</span>
+
+<span class="c1">// some helper to work around Qt version incompatibilities</span>
+<span class="n">QSK_EXPORT</span> <span class="n">QPointF</span> <span class="nf">qskMouseScenePosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">);</span>
+<span class="n">QSK_EXPORT</span> <span class="n">QPointF</span> <span class="nf">qskMousePosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">);</span>
+<span class="n">QSK_EXPORT</span> <span class="n">QPointF</span> <span class="nf">qskWheelPosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QWheelEvent</span><span class="o">*</span> <span class="p">);</span>
+<span class="n">QSK_EXPORT</span> <span class="n">QPointF</span> <span class="nf">qskHoverPosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QHoverEvent</span><span class="o">*</span> <span class="p">);</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

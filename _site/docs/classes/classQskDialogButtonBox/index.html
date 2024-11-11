@@ -1,0 +1,470 @@
+<h1 id="qskdialogbuttonbox">QskDialogButtonBox</h1>
+
+<p>Inherits from QskBox</p>
+
+<h2 id="public-signals">Public Signals</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#signal-clicked">clicked</a></strong>(QskPushButton * button)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#signal-accepted">accepted</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#signal-rejected">rejected</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#signal-centeredbuttonschanged">centeredButtonsChanged</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#signal-orientationchanged">orientationChanged</a></strong>()</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-qskdialogbuttonbox">QskDialogButtonBox</a></strong>(QQuickItem * parent =nullptr)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-qskdialogbuttonbox">QskDialogButtonBox</a></strong>(Qt::Orientation orientation, QQuickItem * parent =nullptr)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-~qskdialogbuttonbox">~QskDialogButtonBox</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-setorientation">setOrientation</a></strong>(Qt::Orientation orientation)</td>
+    </tr>
+    <tr>
+      <td>Qt::Orientation</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-orientation">orientation</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-setcenteredbuttons">setCenteredButtons</a></strong>(bool center)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-centeredbuttons">centeredButtons</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-addbutton">addButton</a></strong>(QskPushButton * button, QskDialog::ActionRole role)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-removebutton">removeButton</a></strong>(QskPushButton * button)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-clear">clear</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>QVector&lt; QskPushButton * &gt;</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-buttons">buttons</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>QVector&lt; QskPushButton * &gt;</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-buttons">buttons</a></strong>(QskDialog::ActionRole role) const</td>
+    </tr>
+    <tr>
+      <td>QskDialog::ActionRole</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-actionrole">actionRole</a></strong>(const QskPushButton * button) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-addaction">addAction</a></strong>(QskDialog::Action action)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-setactions">setActions</a></strong>(QskDialog::Actions actions)</td>
+    </tr>
+    <tr>
+      <td>QskDialog::Actions</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-actions">actions</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>QskDialog::Action</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-action">action</a></strong>(const QskPushButton * button) const</td>
+    </tr>
+    <tr>
+      <td>QskPushButton *</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-button">button</a></strong>(QskDialog::Action action) const</td>
+    </tr>
+    <tr>
+      <td>QskDialog::Action</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-clickedaction">clickedAction</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-setdefaultbutton">setDefaultButton</a></strong>(QskPushButton * button)</td>
+    </tr>
+    <tr>
+      <td>QskPushButton *</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-defaultbutton">defaultButton</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-isdefaultbuttonkeyevent">isDefaultButtonKeyEvent</a></strong>(const QKeyEvent * event)</td>
+    </tr>
+    <tr>
+      <td>QString</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-buttontext">buttonText</a></strong>(QskDialog::Action action)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-event">event</a></strong>(QEvent * event) override</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-itemchange">itemChange</a></strong>(ItemChange , const ItemChangeData &amp; ) override</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-updatelayout">updateLayout</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>QSizeF</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-layoutsizehint">layoutSizeHint</a></strong>(Qt::SizeHint which, const QSizeF &amp; constraint) const override</td>
+    </tr>
+    <tr>
+      <td>virtual QskPushButton *</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-createbutton">createButton</a></strong>(QskDialog::Action action) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-invalidatelayout">invalidateLayout</a></strong>()</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#function-substitutedsubcontrol">substitutedSubcontrol</a></strong>(<a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl) const override</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-properties">Public Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Qt::Orientation</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#property-orientation">orientation</a></strong></td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#property-centeredbuttons">centeredButtons</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-attributes">Public Attributes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/#variable-panel">Panel</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-signals-documentation">Public Signals Documentation</h2>
+
+<h3 id="signal-clicked">signal clicked</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">clicked</span><span class="p">(</span>
+    <span class="n">QskPushButton</span> <span class="o">*</span> <span class="n">button</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="signal-accepted">signal accepted</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">accepted</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="signal-rejected">signal rejected</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">rejected</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="signal-centeredbuttonschanged">signal centeredButtonsChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">centeredButtonsChanged</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="signal-orientationchanged">signal orientationChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">orientationChanged</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskdialogbuttonbox">function QskDialogButtonBox</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskDialogButtonBox</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskdialogbuttonbox-1">function QskDialogButtonBox</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskDialogButtonBox</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskdialogbuttonbox-2">function ~QskDialogButtonBox</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskDialogButtonBox</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-setorientation">function setOrientation</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setOrientation</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-orientation">function orientation</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setcenteredbuttons">function setCenteredButtons</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setCenteredButtons</span><span class="p">(</span>
+    <span class="kt">bool</span> <span class="n">center</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-centeredbuttons">function centeredButtons</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">centeredButtons</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-addbutton">function addButton</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">addButton</span><span class="p">(</span>
+    <span class="n">QskPushButton</span> <span class="o">*</span> <span class="n">button</span><span class="p">,</span>
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">ActionRole</span> <span class="n">role</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-removebutton">function removeButton</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">removeButton</span><span class="p">(</span>
+    <span class="n">QskPushButton</span> <span class="o">*</span> <span class="n">button</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-clear">function clear</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">clear</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-buttons">function buttons</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QskPushButton</span> <span class="o">*</span> <span class="o">&gt;</span> <span class="n">buttons</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-buttons-1">function buttons</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QskPushButton</span> <span class="o">*</span> <span class="o">&gt;</span> <span class="n">buttons</span><span class="p">(</span>
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">ActionRole</span> <span class="n">role</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-actionrole">function actionRole</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskDialog</span><span class="o">::</span><span class="n">ActionRole</span> <span class="n">actionRole</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskPushButton</span> <span class="o">*</span> <span class="n">button</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-addaction">function addAction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">addAction</span><span class="p">(</span>
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">action</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-setactions">function setActions</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setActions</span><span class="p">(</span>
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="n">actions</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-actions">function actions</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="n">actions</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-action">function action</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">action</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskPushButton</span> <span class="o">*</span> <span class="n">button</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-button">function button</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskPushButton</span> <span class="o">*</span> <span class="n">button</span><span class="p">(</span>
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">action</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-clickedaction">function clickedAction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">clickedAction</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setdefaultbutton">function setDefaultButton</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setDefaultButton</span><span class="p">(</span>
+    <span class="n">QskPushButton</span> <span class="o">*</span> <span class="n">button</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-defaultbutton">function defaultButton</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskPushButton</span> <span class="o">*</span> <span class="n">defaultButton</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-isdefaultbuttonkeyevent">function isDefaultButtonKeyEvent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">bool</span> <span class="n">isDefaultButtonKeyEvent</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QKeyEvent</span> <span class="o">*</span> <span class="n">event</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-buttontext">function buttonText</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QString</span> <span class="n">buttonText</span><span class="p">(</span>
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">action</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-event">function event</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">event</span><span class="p">(</span>
+    <span class="n">QEvent</span> <span class="o">*</span> <span class="n">event</span>
+<span class="p">)</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-itemchange">function itemChange</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span>
+    <span class="n">ItemChange</span> <span class="p">,</span>
+    <span class="k">const</span> <span class="n">ItemChangeData</span> <span class="o">&amp;</span> 
+<span class="p">)</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-updatelayout">function updateLayout</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">updateLayout</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-layoutsizehint">function layoutSizeHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span>
+<span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-createbutton">function createButton</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QskPushButton</span> <span class="o">*</span> <span class="n">createButton</span><span class="p">(</span>
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">action</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-invalidatelayout">function invalidateLayout</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">invalidateLayout</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-substitutedsubcontrol">function substitutedSubcontrol</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">substitutedSubcontrol</span><span class="p">(</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h2 id="public-property-documentation">Public Property Documentation</h2>
+
+<h3 id="property-orientation">property orientation</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="property-centeredbuttons">property centeredButtons</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">centeredButtons</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+
+<h3 id="variable-panel">variable Panel</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">Panel</span><span class="p">;</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

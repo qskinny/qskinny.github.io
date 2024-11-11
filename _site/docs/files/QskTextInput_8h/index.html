@@ -1,0 +1,251 @@
+<h1 id="controlsqsktextinputh">controls/QskTextInput.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskTextInput/">QskTextInput</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_TEXT_INPUT_H
+#define QSK_TEXT_INPUT_H
+</span>
+<span class="cp">#include "QskControl.h"
+</span>
+<span class="k">class</span> <span class="nc">QValidator</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskTextInput</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskControl</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QString</span> <span class="n">text</span> <span class="n">READ</span> <span class="n">text</span> <span class="n">WRITE</span> <span class="n">setText</span> <span class="n">NOTIFY</span> <span class="n">textChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QString</span> <span class="n">description</span> <span class="n">READ</span> <span class="n">description</span>
+        <span class="n">WRITE</span> <span class="n">setDescription</span> <span class="n">NOTIFY</span> <span class="n">descriptionChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">int</span> <span class="n">fontRole</span> <span class="n">READ</span> <span class="n">fontRole</span>
+        <span class="n">WRITE</span> <span class="n">setFontRole</span> <span class="n">RESET</span> <span class="n">resetFontRole</span> <span class="n">NOTIFY</span> <span class="n">fontRoleChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QFont</span> <span class="n">font</span> <span class="n">READ</span> <span class="n">font</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="n">READ</span> <span class="n">alignment</span>
+        <span class="n">WRITE</span> <span class="n">setAlignment</span> <span class="n">NOTIFY</span> <span class="n">alignmentChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">ActivationModes</span> <span class="n">activationModes</span> <span class="n">READ</span> <span class="n">activationModes</span>
+        <span class="n">WRITE</span> <span class="n">setActivationModes</span> <span class="n">NOTIFY</span> <span class="n">activationModesChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">editing</span> <span class="n">READ</span> <span class="n">isEditing</span>
+        <span class="n">WRITE</span> <span class="n">setEditing</span> <span class="n">NOTIFY</span> <span class="n">editingChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">EchoMode</span> <span class="n">echoMode</span> <span class="n">READ</span> <span class="n">echoMode</span>
+        <span class="n">WRITE</span> <span class="n">setEchoMode</span> <span class="n">NOTIFY</span> <span class="n">echoModeChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QString</span> <span class="n">passwordCharacter</span> <span class="n">READ</span> <span class="n">passwordCharacter</span>
+        <span class="n">WRITE</span> <span class="n">setPasswordCharacter</span> <span class="n">RESET</span> <span class="n">resetPasswordCharacter</span>
+        <span class="n">NOTIFY</span> <span class="n">passwordCharacterChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">int</span> <span class="n">passwordMaskDelay</span> <span class="n">READ</span> <span class="n">passwordMaskDelay</span>
+        <span class="n">WRITE</span> <span class="n">setPasswordMaskDelay</span> <span class="n">RESET</span> <span class="n">resetPasswordMaskDelay</span>
+        <span class="n">NOTIFY</span> <span class="n">passwordMaskDelayChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">panel</span> <span class="n">READ</span> <span class="n">hasPanel</span>
+        <span class="n">WRITE</span> <span class="n">setPanel</span> <span class="n">NOTIFY</span> <span class="n">panelChanged</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskControl</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QSK_SUBCONTROLS</span><span class="p">(</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">PanelSelected</span><span class="p">,</span> <span class="n">TextSelected</span> <span class="p">)</span>
+    <span class="n">QSK_STATES</span><span class="p">(</span> <span class="n">ReadOnly</span><span class="p">,</span> <span class="n">Editing</span> <span class="p">)</span>
+
+    <span class="k">enum</span> <span class="n">ActivationMode</span>
+    <span class="p">{</span>
+        <span class="n">NoActivation</span><span class="p">,</span>
+
+        <span class="n">ActivationOnFocus</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">ActivationOnMouse</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">ActivationOnKey</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">,</span>
+
+        <span class="n">ActivationOnInput</span> <span class="o">=</span> <span class="n">ActivationOnMouse</span> <span class="o">|</span> <span class="n">ActivationOnKey</span><span class="p">,</span>
+        <span class="n">ActivationOnAll</span> <span class="o">=</span> <span class="n">ActivationOnFocus</span> <span class="o">|</span> <span class="n">ActivationOnMouse</span> <span class="o">|</span> <span class="n">ActivationOnKey</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">ActivationMode</span> <span class="p">)</span>
+    <span class="n">Q_DECLARE_FLAGS</span><span class="p">(</span> <span class="n">ActivationModes</span><span class="p">,</span> <span class="n">ActivationMode</span> <span class="p">)</span>
+
+    <span class="k">enum</span> <span class="n">EchoMode</span>
+    <span class="p">{</span>
+        <span class="n">Normal</span><span class="p">,</span>
+        <span class="n">NoEcho</span><span class="p">,</span>
+        <span class="n">Password</span><span class="p">,</span>
+        <span class="n">PasswordEchoOnEdit</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">EchoMode</span> <span class="p">)</span>
+
+    <span class="n">QskTextInput</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="n">QskTextInput</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+    <span class="o">~</span><span class="n">QskTextInput</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setupFrom</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="n">QString</span> <span class="n">text</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setDescription</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="n">QString</span> <span class="n">description</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setPanel</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">hasPanel</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setFontRole</span><span class="p">(</span> <span class="kt">int</span> <span class="n">role</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetFontRole</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">fontRole</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetAlignment</span><span class="p">();</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setActivationModes</span><span class="p">(</span> <span class="n">ActivationModes</span> <span class="p">);</span>
+    <span class="n">ActivationModes</span> <span class="n">activationModes</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isEditing</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QFont</span> <span class="n">font</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isReadOnly</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setReadOnly</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">cursorPosition</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setCursorPosition</span><span class="p">(</span> <span class="kt">int</span> <span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">maxLength</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setMaxLength</span><span class="p">(</span> <span class="kt">int</span> <span class="p">);</span>
+
+    <span class="n">QValidator</span><span class="o">*</span> <span class="n">validator</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setValidator</span><span class="p">(</span> <span class="n">QValidator</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="n">QString</span> <span class="n">inputMask</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setInputMask</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="n">EchoMode</span> <span class="n">echoMode</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setEchoMode</span><span class="p">(</span> <span class="n">EchoMode</span> <span class="p">);</span>
+
+    <span class="n">QString</span> <span class="n">passwordCharacter</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setPasswordCharacter</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetPasswordCharacter</span><span class="p">();</span>
+
+    <span class="kt">int</span> <span class="n">passwordMaskDelay</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setPasswordMaskDelay</span><span class="p">(</span> <span class="kt">int</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetPasswordMaskDelay</span><span class="p">();</span>
+
+    <span class="n">QString</span> <span class="n">displayText</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QString</span> <span class="n">preeditText</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 8, 0 )
+</span>    <span class="kt">bool</span> <span class="n">overwriteMode</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setOverwriteMode</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+    <span class="kt">bool</span> <span class="n">hasAcceptableInput</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">fixup</span><span class="p">();</span>
+
+    <span class="n">QVariant</span> <span class="n">inputMethodQuery</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQuery</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+    <span class="n">QVariant</span> <span class="n">inputMethodQuery</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQuery</span><span class="p">,</span> <span class="n">QVariant</span> <span class="n">argument</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">canUndo</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">canRedo</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="n">inputMethodHints</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setInputMethodHints</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">ensureVisible</span><span class="p">(</span> <span class="kt">int</span> <span class="n">position</span> <span class="p">);</span>
+
+  <span class="k">public</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">setText</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setEditing</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">editingChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">activationModesChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">readOnlyChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">panelChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">textChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">displayTextChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 9, 0 )
+</span>    <span class="kt">void</span> <span class="n">textEdited</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+    <span class="kt">void</span> <span class="n">descriptionChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">textOptionsChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">fontRoleChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">alignmentChanged</span><span class="p">();</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 8, 0 )
+</span>    <span class="kt">void</span> <span class="n">overwriteModeChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+    <span class="kt">void</span> <span class="n">maximumLengthChanged</span><span class="p">(</span> <span class="kt">int</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">echoModeChanged</span><span class="p">(</span> <span class="n">EchoMode</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">passwordMaskDelayChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">passwordCharacterChanged</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">validatorChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">inputMaskChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">inputMethodEvent</span><span class="p">(</span> <span class="n">QInputMethodEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">focusInEvent</span><span class="p">(</span> <span class="n">QFocusEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">focusOutEvent</span><span class="p">(</span> <span class="n">QFocusEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">mousePressEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">mouseMoveEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">mouseReleaseEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">mouseDoubleClickEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">keyPressEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">keyReleaseEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">updateLayout</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">updateNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Q_DECLARE_OPERATORS_FOR_FLAGS</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">ActivationModes</span> <span class="p">)</span>
+<span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">ActivationModes</span> <span class="p">)</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

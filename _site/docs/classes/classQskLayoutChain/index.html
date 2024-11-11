@@ -1,0 +1,246 @@
+<h1 id="qsklayoutchain">QskLayoutChain</h1>
+
+<h2 id="public-types">Public Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#enum-fillmode">FillMode</a></strong> { Leading = 1 « 0, Trailing = 1 « 1}</td>
+    </tr>
+    <tr>
+      <td>typedef QVector&lt; Segment &gt;</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#typedef-segments">Segments</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-qsklayoutchain">QskLayoutChain</a></strong>()</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-~qsklayoutchain">~QskLayoutChain</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-invalidate">invalidate</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-reset">reset</a></strong>(int count, qreal constraint)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-expandcell">expandCell</a></strong>(int index, const CellData &amp; newCell)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-expandcells">expandCells</a></strong>(int start, int end, const CellData &amp; multiCell)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-shrinkcell">shrinkCell</a></strong>(int index, const CellData &amp; newCell)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-finish">finish</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>const CellData &amp;</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-cell">cell</a></strong>(int index) const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-setspacing">setSpacing</a></strong>(qreal spacing)</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-spacing">spacing</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-setfillmode">setFillMode</a></strong>(int mode)</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-fillmode">fillMode</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>Segments</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-segments">segments</a></strong>(qreal size) const</td>
+    </tr>
+    <tr>
+      <td>QskLayoutHint</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-boundinghint">boundingHint</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-constraint">constraint</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/#function-count">count</a></strong>() const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+
+<h3 id="enum-fillmode">enum FillMode</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Leading</td>
+      <td>1 « 0</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Trailing</td>
+      <td>1 « 1</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="typedef-segments">typedef Segments</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">Segment</span> <span class="o">&gt;</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segments</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qsklayoutchain">function QskLayoutChain</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskLayoutChain</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qsklayoutchain-1">function ~QskLayoutChain</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskLayoutChain</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-invalidate">function invalidate</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">invalidate</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-reset">function reset</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">reset</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">count</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">constraint</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-expandcell">function expandCell</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">expandCell</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">index</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">CellData</span> <span class="o">&amp;</span> <span class="n">newCell</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-expandcells">function expandCells</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">expandCells</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">start</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">end</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">CellData</span> <span class="o">&amp;</span> <span class="n">multiCell</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-shrinkcell">function shrinkCell</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">shrinkCell</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">index</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">CellData</span> <span class="o">&amp;</span> <span class="n">newCell</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-finish">function finish</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">finish</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-cell">function cell</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">const</span> <span class="n">CellData</span> <span class="o">&amp;</span> <span class="n">cell</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">index</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setspacing">function setSpacing</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">setSpacing</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">spacing</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-spacing">function spacing</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">qreal</span> <span class="n">spacing</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setfillmode">function setFillMode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">setFillMode</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">mode</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-fillmode">function fillMode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">int</span> <span class="n">fillMode</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-segments">function segments</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Segments</span> <span class="n">segments</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">size</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-boundinghint">function boundingHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskLayoutHint</span> <span class="n">boundingHint</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-constraint">function constraint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">qreal</span> <span class="n">constraint</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-count">function count</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">int</span> <span class="n">count</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:28 CEST</p>

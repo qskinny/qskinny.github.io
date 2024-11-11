@@ -1,0 +1,94 @@
+<h1 id="layoutsqskgridlayoutengineh">layouts/QskGridLayoutEngine.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/">QskGridLayoutEngine</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_GRID_LAYOUT_ENGINE_H
+#define QSK_GRID_LAYOUT_ENGINE_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include "QskLayoutEngine2D.h"
+</span>
+<span class="cp">#include &lt;qnamespace.h&gt;
+#include &lt;memory&gt;
+</span>
+<span class="k">class</span> <span class="nc">QQuickItem</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QSizeF</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QRectF</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QskGridLayoutEngine</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskLayoutEngine2D</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskGridLayoutEngine</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">QskGridLayoutEngine</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">count</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">setStretchFactor</span><span class="p">(</span> <span class="kt">int</span> <span class="n">pos</span><span class="p">,</span> <span class="kt">int</span> <span class="n">stretch</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">);</span>
+    <span class="kt">int</span> <span class="n">stretchFactor</span><span class="p">(</span> <span class="kt">int</span> <span class="n">pos</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">setRowSizeHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">);</span>
+    <span class="n">qreal</span> <span class="n">rowSizeHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">setColumnSizeHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">);</span>
+    <span class="n">qreal</span> <span class="n">columnSizeHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">insertItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRect</span><span class="o">&amp;</span> <span class="n">grid</span> <span class="p">);</span>
+    <span class="kt">int</span> <span class="n">insertSpacer</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRect</span><span class="o">&amp;</span> <span class="n">grid</span> <span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="n">removeAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">clear</span><span class="p">();</span>
+
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">itemAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+    <span class="n">QSizeF</span> <span class="n">spacerAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">itemAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">column</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">indexAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">column</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">setGridAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRect</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="n">QRect</span> <span class="n">gridAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QRect</span> <span class="n">effectiveGridAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">transpose</span><span class="p">();</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">layoutItems</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">effectiveCount</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">invalidateElementCache</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segments</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QskLayoutChain</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

@@ -1,0 +1,201 @@
+<h1 id="nodesqsksgnodecpp">nodes/QskSGNode.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskSGNode_8cpp/#function-qskremovechildnode">qskRemoveChildNode</a></strong>(QSGNode * parent, QSGNode * child)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskSGNode_8cpp/#function-qskremoveallchildnodesafter">qskRemoveAllChildNodesAfter</a></strong>(QSGNode * parent, QSGNode * child)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskSGNode_8cpp/#function-qskinsertchildsorted">qskInsertChildSorted</a></strong>(QSGNode * parent, QSGNode * child, const QVector&lt; quint8 &gt; &amp; roles)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskremovechildnode">function qskRemoveChildNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskRemoveChildNode</span><span class="p">(</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parent</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">child</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskremoveallchildnodesafter">function qskRemoveAllChildNodesAfter</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskRemoveAllChildNodesAfter</span><span class="p">(</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parent</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">child</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinsertchildsorted">function qskInsertChildSorted</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskInsertChildSorted</span><span class="p">(</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parent</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">child</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">quint8</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">roles</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSGNode.h"
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskRemoveChildNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">child</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">parent</span><span class="o">-&gt;</span><span class="n">removeChildNode</span><span class="p">(</span> <span class="n">child</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">child</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">OwnedByParent</span> <span class="p">)</span>
+        <span class="k">delete</span> <span class="n">child</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskRemoveAllChildNodesAfter</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">child</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">sibling</span> <span class="o">=</span> <span class="n">parent</span><span class="o">-&gt;</span><span class="n">lastChild</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">sibling</span> <span class="o">==</span> <span class="n">child</span> <span class="p">)</span>
+            <span class="k">return</span><span class="p">;</span>
+
+        <span class="n">qskRemoveChildNode</span><span class="p">(</span> <span class="n">parent</span><span class="p">,</span> <span class="n">sibling</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskInsertChildSorted</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">child</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">quint8</span> <span class="o">&gt;&amp;</span> <span class="n">roles</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">sibling</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">parent</span><span class="o">-&gt;</span><span class="n">childCount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="k">namespace</span> <span class="n">QskSGNode</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">nodePos</span> <span class="o">=</span> <span class="n">roles</span><span class="p">.</span><span class="n">indexOf</span><span class="p">(</span> <span class="n">nodeRole</span><span class="p">(</span> <span class="n">child</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="c1">// in most cases we are appending, so let's start at the end</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">childNode</span> <span class="o">=</span> <span class="n">parent</span><span class="o">-&gt;</span><span class="n">lastChild</span><span class="p">();</span>
+            <span class="n">childNode</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="n">childNode</span> <span class="o">=</span> <span class="n">childNode</span><span class="o">-&gt;</span><span class="n">previousSibling</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">childNodeRole</span> <span class="o">=</span> <span class="n">nodeRole</span><span class="p">(</span> <span class="n">childNode</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">childNodeRole</span> <span class="o">==</span> <span class="n">BackgroundRole</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">sibling</span> <span class="o">=</span> <span class="n">childNode</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="cm">/*
+                   Imperformant implementation, but as the number of roles is
+                   usually &lt; 5 we don't introduce some sort of support for faster lookups
+                 */</span>
+
+                <span class="k">const</span> <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">roles</span><span class="p">.</span><span class="n">indexOf</span><span class="p">(</span> <span class="n">nodeRole</span><span class="p">(</span> <span class="n">childNode</span> <span class="p">)</span> <span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">nodePos</span> <span class="p">)</span>
+                    <span class="n">sibling</span> <span class="o">=</span> <span class="n">childNode</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sibling</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+                <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">sibling</span> <span class="p">)</span>
+        <span class="n">parent</span><span class="o">-&gt;</span><span class="n">insertChildNodeAfter</span><span class="p">(</span> <span class="n">child</span><span class="p">,</span> <span class="n">sibling</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">parent</span><span class="o">-&gt;</span><span class="n">prependChildNode</span><span class="p">(</span> <span class="n">child</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskSGNode</span><span class="o">::</span><span class="n">findChildNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">role</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="n">parent</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">();</span>
+    <span class="k">while</span> <span class="p">(</span> <span class="n">node</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">nodeRole</span><span class="p">(</span> <span class="n">node</span> <span class="p">)</span> <span class="o">==</span> <span class="n">role</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+
+        <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSGNode</span><span class="o">::</span><span class="n">removeAllChildNodesAfter</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">child</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">parent</span> <span class="o">&amp;&amp;</span> <span class="n">child</span> <span class="o">&amp;&amp;</span> <span class="n">child</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="n">parent</span> <span class="p">)</span>
+        <span class="n">qskRemoveAllChildNodesAfter</span><span class="p">(</span> <span class="n">parent</span><span class="p">,</span> <span class="n">child</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSGNode</span><span class="o">::</span><span class="n">removeAllChildNodesFrom</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">child</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">parent</span> <span class="o">&amp;&amp;</span> <span class="n">child</span> <span class="o">&amp;&amp;</span> <span class="n">child</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qskRemoveAllChildNodesAfter</span><span class="p">(</span> <span class="n">parent</span><span class="p">,</span> <span class="n">child</span> <span class="p">);</span>
+        <span class="n">qskRemoveChildNode</span><span class="p">(</span> <span class="n">parent</span><span class="p">,</span> <span class="n">child</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSGNode</span><span class="o">::</span><span class="n">replaceChildNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">quint8</span> <span class="o">&gt;&amp;</span> <span class="n">roles</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">role</span><span class="p">,</span>
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parentNode</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">oldNode</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">newNode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span> <span class="o">&amp;&amp;</span> <span class="n">newNode</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">!=</span> <span class="n">parentNode</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">setNodeRole</span><span class="p">(</span> <span class="n">newNode</span><span class="p">,</span> <span class="n">role</span> <span class="p">);</span>
+
+        <span class="k">switch</span> <span class="p">(</span> <span class="n">role</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">case</span> <span class="n">BackgroundRole</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">prependChildNode</span><span class="p">(</span> <span class="n">newNode</span> <span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="n">DebugRole</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">firstNode</span> <span class="o">=</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">();</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">firstNode</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">nodeRole</span><span class="p">(</span> <span class="n">firstNode</span> <span class="p">)</span> <span class="o">==</span> <span class="n">BackgroundRole</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">insertChildNodeAfter</span><span class="p">(</span> <span class="n">newNode</span><span class="p">,</span> <span class="n">firstNode</span> <span class="p">);</span>
+                <span class="k">else</span>
+                    <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">prependChildNode</span><span class="p">(</span> <span class="n">newNode</span> <span class="p">);</span>
+
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nl">default:</span>
+            <span class="p">{</span>
+                <span class="n">qskInsertChildSorted</span><span class="p">(</span> <span class="n">parentNode</span><span class="p">,</span> <span class="n">newNode</span><span class="p">,</span> <span class="n">roles</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">oldNode</span> <span class="o">&amp;&amp;</span> <span class="n">oldNode</span> <span class="o">!=</span> <span class="n">newNode</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">removeChildNode</span><span class="p">(</span> <span class="n">oldNode</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">oldNode</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">OwnedByParent</span> <span class="p">)</span>
+            <span class="k">delete</span> <span class="n">oldNode</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

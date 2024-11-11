@@ -1,0 +1,115 @@
+<h1 id="commonqskrgbpaletteh">common/QskRgbPalette.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskRgbPalette/">QskRgbPalette</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_RGB_PALETTE_H
+#define QSK_RGB_PALETTE_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include "QskGradient.h"
+</span>
+<span class="cp">#include &lt;qmetaobject.h&gt;
+#include &lt;qcolor.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskRgbPalette</span>
+<span class="p">{</span>
+    <span class="n">Q_GADGET</span>
+
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">Weight</span>
+    <span class="p">{</span>
+        <span class="n">W50</span><span class="p">,</span>
+        <span class="n">W100</span><span class="p">,</span>
+        <span class="n">W200</span><span class="p">,</span>
+        <span class="n">W300</span><span class="p">,</span>
+        <span class="n">W400</span><span class="p">,</span>
+        <span class="n">W500</span><span class="p">,</span>
+        <span class="n">W600</span><span class="p">,</span>
+        <span class="n">W700</span><span class="p">,</span>
+        <span class="n">W800</span><span class="p">,</span>
+        <span class="n">W900</span><span class="p">,</span>
+
+        <span class="n">NumWeights</span>
+    <span class="p">};</span>
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">Weight</span> <span class="p">)</span>
+
+    <span class="k">enum</span> <span class="n">Theme</span>
+    <span class="p">{</span>
+        <span class="n">Red</span><span class="p">,</span>
+        <span class="n">Pink</span><span class="p">,</span>
+        <span class="n">Purple</span><span class="p">,</span>
+        <span class="n">DeepPurple</span><span class="p">,</span>
+        <span class="n">Indigo</span><span class="p">,</span>
+        <span class="n">Blue</span><span class="p">,</span>
+        <span class="n">LightBlue</span><span class="p">,</span>
+        <span class="n">Cyan</span><span class="p">,</span>
+        <span class="n">Teal</span><span class="p">,</span>
+        <span class="n">Green</span><span class="p">,</span>
+        <span class="n">LightGreen</span><span class="p">,</span>
+        <span class="n">Lime</span><span class="p">,</span>
+        <span class="n">Yellow</span><span class="p">,</span>
+        <span class="n">Amber</span><span class="p">,</span>
+        <span class="n">Orange</span><span class="p">,</span>
+        <span class="n">DeepOrange</span><span class="p">,</span>
+        <span class="n">Brown</span><span class="p">,</span>
+        <span class="n">Grey</span><span class="p">,</span>
+        <span class="n">BlueGrey</span><span class="p">,</span>
+
+        <span class="n">NumThemes</span>
+    <span class="p">};</span>
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">Theme</span> <span class="p">)</span>
+
+    <span class="k">static</span> <span class="n">QskRgbPalette</span> <span class="n">palette</span><span class="p">(</span> <span class="n">Theme</span> <span class="p">);</span>
+
+    <span class="kr">inline</span> <span class="n">QRgb</span> <span class="n">rgb</span><span class="p">(</span> <span class="n">Weight</span> <span class="n">weight</span> <span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">weight</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">weight</span> <span class="o">&gt;=</span> <span class="n">NumWeights</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="n">m_rgb</span><span class="p">[</span> <span class="n">weight</span> <span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QColor</span> <span class="n">color</span><span class="p">(</span> <span class="n">Weight</span> <span class="n">weight</span> <span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">QColor</span><span class="o">::</span><span class="n">fromRgba</span><span class="p">(</span> <span class="n">rgb</span><span class="p">(</span> <span class="n">weight</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">QskGradientStops</span> <span class="n">colorStops</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">discrete</span> <span class="o">=</span> <span class="nb">false</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="n">QskGradientStops</span> <span class="n">colorStops</span><span class="p">(</span> <span class="n">Theme</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">discrete</span> <span class="o">=</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="k">static</span> <span class="n">QskGradientStops</span> <span class="n">colorStops</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QRgb</span> <span class="o">&gt;&amp;</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">discrete</span> <span class="o">=</span> <span class="nb">false</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="k">const</span> <span class="n">QRgb</span><span class="o">*</span> <span class="n">m_rgb</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,435 @@
+<h1 id="controlsqskanimatorcpp">controls/QskAnimator.cpp</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskAnimatorDriver/">QskAnimatorDriver</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskAnimator.h"
+</span>
+<span class="cp">#include &lt;qelapsedtimer.h&gt;
+#include &lt;qglobalstatic.h&gt;
+#include &lt;qobject.h&gt;
+#include &lt;qquickwindow.h&gt;
+#include &lt;qvector.h&gt;
+</span>
+<span class="cp">#include &lt;cmath&gt;
+</span>
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+#include &lt;qdebug.h&gt;
+#endif
+</span>
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">Statistics</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">Statistics</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">reset</span><span class="p">();</span>
+        <span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>        <span class="kt">void</span> <span class="n">debugStatistics</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+            <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">'('</span><span class="p">;</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"created: "</span> <span class="o">&lt;&lt;</span> <span class="n">created</span>
+                  <span class="o">&lt;&lt;</span> <span class="s">", destroyed: "</span> <span class="o">&lt;&lt;</span> <span class="n">destroyed</span>
+                  <span class="o">&lt;&lt;</span> <span class="s">", current: "</span> <span class="o">&lt;&lt;</span> <span class="n">current</span>
+                  <span class="o">&lt;&lt;</span> <span class="s">", maximum: "</span> <span class="o">&lt;&lt;</span> <span class="n">maximum</span><span class="p">;</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">')'</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="cp">#endif
+</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">created</span> <span class="o">=</span> <span class="n">destroyed</span> <span class="o">=</span> <span class="n">current</span> <span class="o">=</span> <span class="n">maximum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">increment</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">created</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">current</span><span class="o">++</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">current</span> <span class="o">&gt;</span> <span class="n">maximum</span> <span class="p">)</span>
+                <span class="n">maximum</span> <span class="o">=</span> <span class="n">current</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">decrement</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">destroyed</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">current</span><span class="o">--</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">int</span> <span class="n">created</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">destroyed</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">current</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">maximum</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="cm">/*
+    We need to have at least one QObject to connect to QQuickWindow
+    updates - but then we can advance the animators manually without
+    making them heavy QObjects too.
+ */</span>
+<span class="k">class</span> <span class="nc">QskAnimatorDriver</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QskAnimatorDriver</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">registerAnimator</span><span class="p">(</span> <span class="n">QskAnimator</span><span class="o">*</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">unregisterAnimator</span><span class="p">(</span> <span class="n">QskAnimator</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="n">qint64</span> <span class="n">referenceTime</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">advanced</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">terminated</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">advanceAnimators</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">removeWindow</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">scheduleUpdate</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="n">QElapsedTimer</span> <span class="n">m_referenceTime</span><span class="p">;</span>
+
+    <span class="c1">// a sorted vector, good for iterating and good enough for look ups</span>
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QskAnimator</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">m_animators</span><span class="p">;</span>
+
+    <span class="cm">/*
+       Having a more than a very few windows with running animators is
+       very unlikely and using a hash table instead of a vector probably
+       creates more overhead than being good for something.
+     */</span>
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">m_windows</span><span class="p">;</span>
+    <span class="k">mutable</span> <span class="kt">int</span> <span class="n">m_index</span><span class="p">;</span> <span class="c1">// current value, when iterating</span>
+<span class="p">};</span>
+
+<span class="n">QskAnimatorDriver</span><span class="o">::</span><span class="n">QskAnimatorDriver</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_index</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_referenceTime</span><span class="p">.</span><span class="n">start</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">qint64</span> <span class="n">QskAnimatorDriver</span><span class="o">::</span><span class="n">referenceTime</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_referenceTime</span><span class="p">.</span><span class="n">elapsed</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimatorDriver</span><span class="o">::</span><span class="n">registerAnimator</span><span class="p">(</span> <span class="n">QskAnimator</span><span class="o">*</span> <span class="n">animator</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">animator</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="c1">// do we want to be thread safe ???</span>
+
+    <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">lower_bound</span><span class="p">(</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">animator</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="n">it</span> <span class="o">==</span> <span class="n">animator</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_index</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">-</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">m_index</span> <span class="p">)</span>
+            <span class="n">m_index</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">m_animators</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">it</span><span class="p">,</span> <span class="n">animator</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">window</span> <span class="o">=</span> <span class="n">animator</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_windows</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">window</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_windows</span> <span class="o">+=</span> <span class="n">window</span><span class="p">;</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickWindow</span><span class="o">::</span><span class="n">afterAnimating</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="p">[</span> <span class="k">this</span><span class="p">,</span> <span class="n">window</span> <span class="p">]()</span> <span class="p">{</span> <span class="n">advanceAnimators</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickWindow</span><span class="o">::</span><span class="n">frameSwapped</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="p">[</span> <span class="k">this</span><span class="p">,</span> <span class="n">window</span> <span class="p">]()</span> <span class="p">{</span> <span class="n">scheduleUpdate</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QWindow</span><span class="o">::</span><span class="n">visibleChanged</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="p">[</span> <span class="k">this</span><span class="p">,</span> <span class="n">window</span> <span class="p">](</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">on</span> <span class="p">)</span> <span class="n">removeWindow</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QObject</span><span class="o">::</span><span class="n">destroyed</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="p">[</span> <span class="k">this</span><span class="p">,</span> <span class="n">window</span> <span class="p">](</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">)</span> <span class="p">{</span> <span class="n">removeWindow</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+            <span class="n">window</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimatorDriver</span><span class="o">::</span><span class="n">scheduleUpdate</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_windows</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">window</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">window</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimatorDriver</span><span class="o">::</span><span class="n">removeWindow</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">window</span><span class="o">-&gt;</span><span class="n">disconnect</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="n">m_windows</span><span class="p">.</span><span class="n">removeOne</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="o">*</span><span class="n">it</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">==</span> <span class="n">window</span> <span class="p">)</span>
+            <span class="n">it</span> <span class="o">=</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span> <span class="n">it</span> <span class="p">);</span>
+        <span class="k">else</span>
+            <span class="o">++</span><span class="n">it</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimatorDriver</span><span class="o">::</span><span class="n">unregisterAnimator</span><span class="p">(</span> <span class="n">QskAnimator</span><span class="o">*</span> <span class="n">animator</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">find</span><span class="p">(</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">animator</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">-</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">m_index</span> <span class="p">)</span>
+            <span class="n">m_index</span><span class="o">--</span><span class="p">;</span>
+
+        <span class="n">m_animators</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span> <span class="n">it</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimatorDriver</span><span class="o">::</span><span class="n">advanceAnimators</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">hasAnimators</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">hasTerminations</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="n">m_index</span> <span class="o">=</span> <span class="n">m_animators</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">m_index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">m_index</span><span class="o">--</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Advancing animators might create/remove animators, what is handled by</span>
+        <span class="c1">// adjusting m_index in register/unregister</span>
+
+        <span class="k">auto</span> <span class="n">animator</span> <span class="o">=</span> <span class="n">m_animators</span><span class="p">[</span> <span class="n">m_index</span> <span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">animator</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">==</span> <span class="n">window</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">hasAnimators</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">animator</span><span class="o">-&gt;</span><span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">animator</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">animator</span><span class="o">-&gt;</span><span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="n">hasTerminations</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">m_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">hasAnimators</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">window</span><span class="o">-&gt;</span><span class="n">disconnect</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+        <span class="n">m_windows</span><span class="p">.</span><span class="n">removeOne</span><span class="p">(</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">window</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">advanced</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hasTerminations</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">terminated</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Q_GLOBAL_STATIC</span><span class="p">(</span> <span class="n">QskAnimatorDriver</span><span class="p">,</span> <span class="n">qskAnimatorDriver</span> <span class="p">)</span>
+<span class="n">Q_GLOBAL_STATIC</span><span class="p">(</span> <span class="n">Statistics</span><span class="p">,</span> <span class="n">qskStatistics</span> <span class="p">)</span>
+
+<span class="n">QskAnimator</span><span class="o">::</span><span class="n">QskAnimator</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_window</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_duration</span><span class="p">(</span> <span class="mi">200</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_startTime</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskStatistics</span> <span class="p">)</span>
+        <span class="n">qskStatistics</span><span class="o">-&gt;</span><span class="n">increment</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskAnimator</span><span class="o">::~</span><span class="n">QskAnimator</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskAnimatorDriver</span> <span class="p">)</span>
+        <span class="n">qskAnimatorDriver</span><span class="o">-&gt;</span><span class="n">unregisterAnimator</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskStatistics</span> <span class="p">)</span>
+        <span class="n">qskStatistics</span><span class="o">-&gt;</span><span class="n">decrement</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">window</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_window</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">setWindow</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">window</span> <span class="o">!=</span> <span class="n">m_window</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">stop</span><span class="p">();</span>
+        <span class="n">m_window</span> <span class="o">=</span> <span class="n">window</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">setAutoRepeat</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_autoRepeat</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">setDuration</span><span class="p">(</span> <span class="kt">int</span> <span class="n">ms</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_duration</span> <span class="o">=</span> <span class="n">ms</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">setEasingCurve</span><span class="p">(</span> <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">Type</span> <span class="n">type</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">type</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">type</span> <span class="o">&lt;</span> <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">Custom</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// initialize a static curve table once and then reuse</span>
+        <span class="c1">// it, instead of recreating a new curve each time.</span>
+
+        <span class="k">static</span> <span class="n">QEasingCurve</span> <span class="n">curveTable</span><span class="p">[</span> <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">Custom</span> <span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">curveTable</span><span class="p">[</span> <span class="n">type</span> <span class="p">].</span><span class="n">type</span><span class="p">()</span> <span class="o">!=</span> <span class="n">type</span> <span class="p">)</span>
+            <span class="n">curveTable</span><span class="p">[</span> <span class="n">type</span> <span class="p">].</span><span class="n">setType</span><span class="p">(</span> <span class="n">type</span> <span class="p">);</span>
+
+        <span class="n">m_easingCurve</span> <span class="o">=</span> <span class="n">curveTable</span><span class="p">[</span> <span class="n">type</span> <span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">m_easingCurve</span><span class="p">.</span><span class="n">setType</span><span class="p">(</span> <span class="n">type</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">setEasingCurve</span><span class="p">(</span> <span class="k">const</span> <span class="n">QEasingCurve</span><span class="o">&amp;</span> <span class="n">easingCurve</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_easingCurve</span> <span class="o">=</span> <span class="n">easingCurve</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QEasingCurve</span><span class="o">&amp;</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">easingCurve</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_easingCurve</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">qint64</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">elapsed</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">qint64</span> <span class="n">driverTime</span> <span class="o">=</span> <span class="n">qskAnimatorDriver</span><span class="o">-&gt;</span><span class="n">referenceTime</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">driverTime</span> <span class="o">-</span> <span class="n">m_startTime</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">start</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">driver</span> <span class="o">=</span> <span class="n">qskAnimatorDriver</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">driver</span><span class="o">-&gt;</span><span class="n">registerAnimator</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+        <span class="n">m_startTime</span> <span class="o">=</span> <span class="n">driver</span><span class="o">-&gt;</span><span class="n">referenceTime</span><span class="p">();</span>
+
+        <span class="n">setup</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">stop</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">driver</span> <span class="o">=</span> <span class="n">qskAnimatorDriver</span> <span class="p">)</span>
+        <span class="n">driver</span><span class="o">-&gt;</span><span class="n">unregisterAnimator</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+    <span class="n">m_startTime</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">done</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">update</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">qint64</span> <span class="n">driverTime</span> <span class="o">=</span> <span class="n">qskAnimatorDriver</span><span class="o">-&gt;</span><span class="n">referenceTime</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_autoRepeat</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">double</span> <span class="n">progress</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">fmod</span><span class="p">(</span> <span class="n">driverTime</span> <span class="o">-</span> <span class="n">m_startTime</span><span class="p">,</span> <span class="n">m_duration</span> <span class="p">);</span>
+        <span class="n">progress</span> <span class="o">/=</span> <span class="n">m_duration</span><span class="p">;</span>
+
+        <span class="n">advance</span><span class="p">(</span> <span class="n">m_easingCurve</span><span class="p">.</span><span class="n">valueForProgress</span><span class="p">(</span> <span class="n">progress</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="kt">double</span> <span class="n">progress</span> <span class="o">=</span> <span class="p">(</span> <span class="n">driverTime</span> <span class="o">-</span> <span class="n">m_startTime</span> <span class="p">)</span> <span class="o">/</span> <span class="kt">double</span><span class="p">(</span> <span class="n">m_duration</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">progress</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="p">)</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+
+        <span class="n">advance</span><span class="p">(</span> <span class="n">m_easingCurve</span><span class="p">.</span><span class="n">valueForProgress</span><span class="p">(</span> <span class="n">progress</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">progress</span> <span class="o">&gt;=</span> <span class="mf">1.0</span> <span class="p">)</span>
+            <span class="n">stop</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">setup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// nop</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">done</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// nop</span>
+<span class="p">}</span>
+
+<span class="cp">#if 1
+</span><span class="c1">// we should also have functor based callbacks. TODO ...</span>
+<span class="cp">#endif
+</span>
+<span class="n">QMetaObject</span><span class="o">::</span><span class="n">Connection</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">addCleanupHandler</span><span class="p">(</span>
+    <span class="n">QObject</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">method</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">type</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">qskAnimatorDriver</span><span class="p">,</span>
+        <span class="n">SIGNAL</span><span class="p">(</span><span class="n">terminated</span><span class="p">(</span><span class="n">QQuickWindow</span><span class="o">*</span><span class="p">)),</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">type</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QMetaObject</span><span class="o">::</span><span class="n">Connection</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">addAdvanceHandler</span><span class="p">(</span>
+    <span class="n">QObject</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">method</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">type</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">qskAnimatorDriver</span><span class="p">,</span>
+        <span class="n">SIGNAL</span><span class="p">(</span><span class="n">advanced</span><span class="p">(</span><span class="n">QQuickWindow</span><span class="o">*</span><span class="p">)),</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">type</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="kt">void</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">debugStatistics</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskStatistics</span> <span class="p">)</span>
+        <span class="n">qskStatistics</span><span class="o">-&gt;</span><span class="n">debugStatistics</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="cp">#include "QskAnimator.moc"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

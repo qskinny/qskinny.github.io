@@ -1,0 +1,130 @@
+<h1 id="controlsqskstatusindicatorskinletcpp">controls/QskStatusIndicatorSkinlet.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskStatusIndicatorSkinlet.h"
+#include "QskStatusIndicator.h"
+</span>
+<span class="cp">#include "QskAspect.h"
+#include "QskColorFilter.h"
+#include "QskFunctions.h"
+#include "QskGraphic.h"
+</span>
+<span class="n">QskStatusIndicatorSkinlet</span><span class="o">::</span><span class="n">QskStatusIndicatorSkinlet</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">skin</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setNodeRoles</span><span class="p">(</span> <span class="p">{</span> <span class="n">GraphicRole</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskStatusIndicatorSkinlet</span><span class="o">::~</span><span class="n">QskStatusIndicatorSkinlet</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+<span class="n">QRectF</span> <span class="n">QskStatusIndicatorSkinlet</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">label</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskStatusIndicator</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">Graphic</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">graphicRect</span><span class="p">(</span> <span class="n">label</span><span class="p">,</span> <span class="n">contentsRect</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskStatusIndicatorSkinlet</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">indicator</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskStatusIndicator</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">nodeRole</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">GraphicRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">updateGraphicNode</span><span class="p">(</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRect</span> <span class="n">QskStatusIndicatorSkinlet</span><span class="o">::</span><span class="n">graphicRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskStatusIndicator</span><span class="o">*</span> <span class="n">indicator</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// maybe we should have a common base class for</span>
+    <span class="c1">// QskStatusIndicator and QskGraphicLabel</span>
+
+    <span class="c1">// PreserveAspectFit/PreserveAspectCrop</span>
+
+    <span class="k">const</span> <span class="n">QRect</span> <span class="n">graphicRect</span> <span class="o">=</span> <span class="n">contentsRect</span><span class="p">.</span><span class="n">toAlignedRect</span><span class="p">();</span>
+
+    <span class="n">QSizeF</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">(</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">status</span><span class="p">()</span> <span class="p">).</span><span class="n">defaultSize</span><span class="p">();</span>
+    <span class="n">sz</span><span class="p">.</span><span class="n">scale</span><span class="p">(</span> <span class="n">graphicRect</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">Qt</span><span class="o">::</span><span class="n">KeepAspectRatio</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">qskAlignedRect</span><span class="p">(</span> <span class="n">graphicRect</span><span class="p">,</span>
+        <span class="p">(</span> <span class="kt">int</span> <span class="p">)</span> <span class="n">sz</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="p">(</span> <span class="kt">int</span> <span class="p">)</span> <span class="n">sz</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignCenter</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskStatusIndicatorSkinlet</span><span class="o">::</span><span class="n">updateGraphicNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskStatusIndicator</span><span class="o">*</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">subControl</span> <span class="o">=</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">Graphic</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">contentsRect</span><span class="p">(),</span> <span class="n">subControl</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">alignment</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">alignmentHint</span><span class="p">(</span> <span class="n">subControl</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignCenter</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">status</span><span class="p">();</span>
+
+    <span class="n">node</span> <span class="o">=</span> <span class="n">QskSkinlet</span><span class="o">::</span><span class="n">updateGraphicNode</span><span class="p">(</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span>
+        <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">(</span> <span class="n">status</span> <span class="p">),</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">graphicFilter</span><span class="p">(</span> <span class="n">status</span> <span class="p">),</span>
+        <span class="n">rect</span><span class="p">,</span> <span class="n">alignment</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskStatusIndicatorSkinlet</span><span class="o">::</span><span class="n">sizeHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">indicator</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskStatusIndicator</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="n">QSizeF</span> <span class="n">sz</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">status</span> <span class="o">:</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">statusList</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">(</span> <span class="n">status</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">graphic</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">.</span><span class="n">defaultSize</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">hint</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">hint</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">sz</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">*</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="n">sz</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">hint</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">sz</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">*</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">/</span> <span class="n">sz</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="n">sz</span> <span class="o">=</span> <span class="n">sz</span><span class="p">.</span><span class="n">expandedTo</span><span class="p">(</span> <span class="n">hint</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">sz</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskStatusIndicatorSkinlet.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

@@ -1,0 +1,137 @@
+<h1 id="commonqskmarginscpp">common/QskMargins.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskMargins_8cpp/#function-qskregisterconverter">qskRegisterConverter</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/files/QskMargins_8cpp/#function-qskinterpolated">qskInterpolated</a></strong>(qreal from, qreal to, qreal ratio)</td>
+    </tr>
+    <tr>
+      <td>QskMargins</td>
+      <td><strong><a href="/docs/files/QskMargins_8cpp/#function-qskinterpolatemargins">qskInterpolateMargins</a></strong>(const QskMargins &amp; m1, const QskMargins &amp; m2, qreal progress)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskregisterconverter">function qskRegisterConverter</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskRegisterConverter</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinterpolated">function qskInterpolated</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">qskInterpolated</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">from</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">to</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">ratio</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinterpolatemargins">function qskInterpolateMargins</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QskMargins</span> <span class="n">qskInterpolateMargins</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskMargins</span> <span class="o">&amp;</span> <span class="n">m1</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskMargins</span> <span class="o">&amp;</span> <span class="n">m2</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">progress</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "QskMargins.h"
+#include &lt;qvariant.h&gt;
+</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskRegisterConverter</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">QMetaType</span><span class="o">::</span><span class="n">registerConverter</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskMargins</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="p">[](</span> <span class="kt">int</span> <span class="n">value</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">QskMargins</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+    <span class="n">QMetaType</span><span class="o">::</span><span class="n">registerConverter</span><span class="o">&lt;</span> <span class="n">qreal</span><span class="p">,</span> <span class="n">QskMargins</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="p">[](</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">QskMargins</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Q_CONSTRUCTOR_FUNCTION</span><span class="p">(</span> <span class="n">qskRegisterConverter</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="nf">qskInterpolated</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">from</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">from</span> <span class="o">+</span> <span class="p">(</span> <span class="n">to</span> <span class="o">-</span> <span class="n">from</span> <span class="p">)</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QskMargins</span> <span class="nf">qskInterpolateMargins</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskMargins</span><span class="o">&amp;</span> <span class="n">m1</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskMargins</span><span class="o">&amp;</span> <span class="n">m2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">left</span> <span class="o">=</span> <span class="n">qskInterpolated</span><span class="p">(</span> <span class="n">m1</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">m2</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">progress</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">top</span> <span class="o">=</span> <span class="n">qskInterpolated</span><span class="p">(</span> <span class="n">m1</span><span class="p">.</span><span class="n">top</span><span class="p">(),</span> <span class="n">m2</span><span class="p">.</span><span class="n">top</span><span class="p">(),</span> <span class="n">progress</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">right</span> <span class="o">=</span> <span class="n">qskInterpolated</span><span class="p">(</span> <span class="n">m1</span><span class="p">.</span><span class="n">right</span><span class="p">(),</span> <span class="n">m2</span><span class="p">.</span><span class="n">right</span><span class="p">(),</span> <span class="n">progress</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">qskInterpolated</span><span class="p">(</span> <span class="n">m1</span><span class="p">.</span><span class="n">bottom</span><span class="p">(),</span> <span class="n">m2</span><span class="p">.</span><span class="n">bottom</span><span class="p">(),</span> <span class="n">progress</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">QskMargins</span><span class="p">(</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskMargins</span> <span class="n">QskMargins</span><span class="o">::</span><span class="n">interpolated</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskMargins</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskInterpolateMargins</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">progress</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskMargins</span><span class="o">::</span><span class="n">interpolate</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskMargins</span><span class="o">&amp;</span> <span class="n">m1</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskMargins</span><span class="o">&amp;</span> <span class="n">m2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">qskInterpolateMargins</span><span class="p">(</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">progress</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskMargins</span><span class="o">::</span><span class="n">setMarginsAt</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Edges</span> <span class="n">edges</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LeftEdge</span> <span class="p">)</span>
+        <span class="n">setLeft</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopEdge</span> <span class="p">)</span>
+        <span class="n">setTop</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RightEdge</span> <span class="p">)</span>
+        <span class="n">setRight</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomEdge</span> <span class="p">)</span>
+        <span class="n">setBottom</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskMargins</span><span class="o">::</span><span class="n">marginAt</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Edge</span> <span class="n">edge</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">edge</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LeftEdge</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">left</span><span class="p">();</span>
+
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopEdge</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">top</span><span class="p">();</span>
+
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RightEdge</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">right</span><span class="p">();</span>
+
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomEdge</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">bottom</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskMargins.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

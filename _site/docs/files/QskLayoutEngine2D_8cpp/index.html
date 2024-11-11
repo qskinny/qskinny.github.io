@@ -1,0 +1,733 @@
+<h1 id="layoutsqsklayoutengine2dcpp">layouts/QskLayoutEngine2D.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QSizeF</td>
+      <td><strong><a href="/docs/files/QskLayoutEngine2D_8cpp/#function-qskitemconstraint">qskItemConstraint</a></strong>(const QQuickItem * item, const QSizeF &amp; constraint)</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/files/QskLayoutEngine2D_8cpp/#function-qsklayoutconstraint">qskLayoutConstraint</a></strong>(const QQuickItem * item, Qt::Orientation orientation, qreal constraint)</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/files/QskLayoutEngine2D_8cpp/#function-qskeffectiveconstraint">qskEffectiveConstraint</a></strong>(const QQuickItem * item, Qt::SizeHint which, Qt::Orientation orientation)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskitemconstraint">function qskItemConstraint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSizeF</span> <span class="n">qskItemConstraint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsklayoutconstraint">function qskLayoutConstraint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">qskLayoutConstraint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">constraint</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskeffectiveconstraint">function qskEffectiveConstraint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">qskEffectiveConstraint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskLayoutEngine2D.h"
+#include "QskLayoutChain.h"
+#include "QskLayoutHint.h"
+#include "QskControl.h"
+#include "QskQuick.h"
+</span>
+<span class="cp">#include &lt;qguiapplication.h&gt;
+</span>
+<span class="k">static</span> <span class="n">QSizeF</span> <span class="nf">qskItemConstraint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QSizeF</span> <span class="n">hint</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">sizePolicy</span> <span class="o">=</span> <span class="n">qskSizePolicy</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">constraintType</span> <span class="o">=</span> <span class="n">sizePolicy</span><span class="p">.</span><span class="n">constraintType</span><span class="p">();</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">which</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">constraintType</span> <span class="o">!=</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Unconstrained</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">quint32</span> <span class="n">growFlags</span> <span class="o">=</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">GrowFlag</span> <span class="o">|</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">ExpandFlag</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="c1">// &amp;&amp; constrainedType == HeightForWidth ??</span>
+        <span class="p">{</span>
+            <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">sizePolicy</span><span class="p">.</span><span class="n">policy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="n">growFlags</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">maxW</span> <span class="o">=</span> <span class="n">qskEffectiveSizeHint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span> <span class="p">).</span><span class="n">width</span><span class="p">();</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">maxW</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+                    <span class="n">w</span> <span class="o">=</span> <span class="n">qMin</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">maxW</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="n">hint</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">w</span> <span class="p">);</span>
+            <span class="n">hint</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">qskHeightForWidth</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">w</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="c1">// &amp;&amp; constrainedType == WidthForHeight ??</span>
+        <span class="p">{</span>
+            <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">sizePolicy</span><span class="p">.</span><span class="n">policy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="n">growFlags</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">maxH</span> <span class="o">=</span> <span class="n">qskEffectiveSizeHint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span> <span class="p">).</span><span class="n">height</span><span class="p">();</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">maxH</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+                    <span class="n">h</span> <span class="o">=</span> <span class="n">qMin</span><span class="p">(</span> <span class="n">h</span><span class="p">,</span> <span class="n">maxH</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="n">hint</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">qskWidthForHeight</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">h</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">hint</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">h</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">hint</span> <span class="o">=</span> <span class="n">qskEffectiveSizeHint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">constraintType</span> <span class="o">==</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">WidthForHeight</span> <span class="p">)</span>
+                <span class="n">hint</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">qskWidthForHeight</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">hint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="k">else</span>
+                <span class="n">hint</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">qskHeightForWidth</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">hint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">hint</span> <span class="o">=</span> <span class="n">qskEffectiveSizeHint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">hint</span> <span class="o">=</span> <span class="n">hint</span><span class="p">.</span><span class="n">expandedTo</span><span class="p">(</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="nf">qskLayoutConstraint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">constraint</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">qskItemConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">)</span> <span class="p">).</span><span class="n">width</span><span class="p">();</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">qskItemConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">constraint</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="p">)</span> <span class="p">).</span><span class="n">height</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="nf">qskEffectiveConstraint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qreal</span> <span class="n">value</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">qskEffectiveSizeHint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span> <span class="p">).</span><span class="n">width</span><span class="p">();</span>
+    <span class="k">else</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">qskEffectiveSizeHint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span> <span class="p">).</span><span class="n">height</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="p">(</span> <span class="n">which</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MaximumSize</span> <span class="p">)</span> <span class="o">?</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">unlimited</span> <span class="o">:</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">LayoutData</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+
+        <span class="n">QRectF</span> <span class="n">geometryAt</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRect</span><span class="o">&amp;</span> <span class="n">grid</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">columns</span><span class="p">[</span> <span class="n">grid</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="p">].</span><span class="n">start</span><span class="p">;</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">columns</span><span class="p">[</span> <span class="n">grid</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="p">].</span><span class="n">end</span><span class="p">();</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span> <span class="n">grid</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="p">].</span><span class="n">start</span><span class="p">;</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span> <span class="n">grid</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">].</span><span class="n">end</span><span class="p">();</span>
+
+            <span class="k">return</span> <span class="n">QRectF</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="n">x1</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">Qt</span><span class="o">::</span><span class="n">LayoutDirection</span> <span class="n">direction</span><span class="p">;</span>
+
+        <span class="n">QRectF</span> <span class="n">rect</span><span class="p">;</span>
+        <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segments</span> <span class="n">rows</span><span class="p">;</span>
+        <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segments</span> <span class="n">columns</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskLayoutEngine2D</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">defaultAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignLeft</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignVCenter</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">extraSpacingAt</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">visualDirection</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LeftToRight</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">constraintType</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">blockInvalidate</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskLayoutChain</span><span class="o">&amp;</span> <span class="n">layoutChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span> <span class="o">?</span> <span class="n">columnChain</span> <span class="o">:</span> <span class="n">rowChain</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">effectiveAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">align</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">defaultAlignment</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignVertical_Mask</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">alignment</span> <span class="o">|=</span> <span class="p">(</span> <span class="n">align</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignVertical_Mask</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignHorizontal_Mask</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">alignment</span> <span class="o">|=</span> <span class="p">(</span> <span class="n">align</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignHorizontal_Mask</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">alignment</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">QskLayoutChain</span> <span class="n">columnChain</span><span class="p">;</span>
+    <span class="n">QskLayoutChain</span> <span class="n">rowChain</span><span class="p">;</span>
+
+    <span class="n">QSizeF</span> <span class="n">layoutSize</span><span class="p">;</span>
+
+    <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segments</span> <span class="n">rows</span><span class="p">;</span>
+    <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segments</span> <span class="n">columns</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">LayoutData</span><span class="o">*</span> <span class="n">layoutData</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">defaultAlignment</span> <span class="o">:</span> <span class="mi">8</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">extraSpacingAt</span> <span class="o">:</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">visualDirection</span> <span class="o">:</span> <span class="mi">4</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">constraintType</span> <span class="o">:</span> <span class="mi">3</span><span class="p">;</span>
+
+    <span class="cm">/*
+        Some weired controls do lazy updates inside of their sizeHint calculation
+        that lead to LayoutRequest events. While being in the process of
+        updating the tables we can't - and don't need to - handle invalidations
+        because of them.
+     */</span>
+    <span class="kt">bool</span> <span class="n">blockInvalidate</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">QskLayoutEngine2D</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="n">PrivateData</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnChain</span><span class="p">.</span><span class="n">setSpacing</span><span class="p">(</span> <span class="n">defaultSpacing</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">rowChain</span><span class="p">.</span><span class="n">setSpacing</span><span class="p">(</span> <span class="n">defaultSpacing</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskLayoutEngine2D</span><span class="o">::~</span><span class="n">QskLayoutEngine2D</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">setVisualDirection</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LayoutDirection</span> <span class="n">direction</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">visualDirection</span> <span class="o">!=</span> <span class="n">direction</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">visualDirection</span> <span class="o">=</span> <span class="n">direction</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">LayoutDirection</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">visualDirection</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LayoutDirection</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">visualDirection</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">setDefaultAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">defaultAlignment</span><span class="p">()</span> <span class="o">!=</span> <span class="n">alignment</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">defaultAlignment</span> <span class="o">=</span> <span class="n">alignment</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">defaultAlignment</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">defaultAlignment</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">defaultSpacing</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="mf">5.0</span><span class="p">;</span> <span class="c1">// should be from the skin</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">setSpacing</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">spacing</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">spacing</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isModified</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">o</span> <span class="o">:</span> <span class="p">{</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">}</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">orientations</span> <span class="o">&amp;</span> <span class="n">o</span> <span class="p">)</span>
+            <span class="n">isModified</span> <span class="o">|=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutChain</span><span class="p">(</span> <span class="n">o</span> <span class="p">).</span><span class="n">setSpacing</span><span class="p">(</span> <span class="n">spacing</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isModified</span> <span class="p">)</span>
+        <span class="n">invalidate</span><span class="p">(</span> <span class="n">LayoutCache</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">isModified</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">spacing</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutChain</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">).</span><span class="n">spacing</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">setExtraSpacingAt</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Edges</span> <span class="n">edges</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">==</span> <span class="n">extraSpacingAt</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">extraSpacingAt</span> <span class="o">=</span> <span class="n">edges</span><span class="p">;</span>
+
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">fillMode</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LeftEdge</span> <span class="p">)</span>
+            <span class="n">fillMode</span> <span class="o">|=</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Leading</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RightEdge</span> <span class="p">)</span>
+            <span class="n">fillMode</span> <span class="o">|=</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Trailing</span><span class="p">;</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnChain</span><span class="p">.</span><span class="n">setFillMode</span><span class="p">(</span> <span class="n">fillMode</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">fillMode</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopEdge</span> <span class="p">)</span>
+            <span class="n">fillMode</span> <span class="o">|=</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Leading</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">edges</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomEdge</span> <span class="p">)</span>
+            <span class="n">fillMode</span> <span class="o">|=</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Trailing</span><span class="p">;</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">rowChain</span><span class="p">.</span><span class="n">setFillMode</span><span class="p">(</span> <span class="n">fillMode</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutSize</span> <span class="o">=</span> <span class="n">QSize</span><span class="p">();</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columns</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">indexOf</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+           indexOf is often called after inserting an item to
+           set additinal properties. So we search in reverse order
+         */</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">itemAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span> <span class="o">==</span> <span class="n">item</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Edges</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">extraSpacingAt</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Edges</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">extraSpacingAt</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">setGeometries</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">rowCount</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="o">||</span> <span class="n">columnCount</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutSize</span> <span class="o">!=</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutSize</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="n">updateSegments</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*
+        In case we have items that send LayoutRequest events on
+        geometry changes - what doesn't make much sense - we
+        better make a ( implicitely shared ) copy of the rows/columns.
+     */</span>
+    <span class="n">LayoutData</span> <span class="n">data</span><span class="p">;</span>
+    <span class="n">data</span><span class="p">.</span><span class="n">rows</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">;</span>
+    <span class="n">data</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columns</span><span class="p">;</span>
+    <span class="n">data</span><span class="p">.</span><span class="n">rect</span> <span class="o">=</span> <span class="n">rect</span><span class="p">;</span>
+
+    <span class="n">data</span><span class="p">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">visualDirection</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">direction</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LayoutDirectionAuto</span> <span class="p">)</span>
+        <span class="n">data</span><span class="p">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">QGuiApplication</span><span class="o">::</span><span class="n">layoutDirection</span><span class="p">();</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutData</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">data</span><span class="p">;</span>
+    <span class="n">layoutItems</span><span class="p">();</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutData</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">layoutItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRect</span><span class="o">&amp;</span> <span class="n">grid</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">layoutData</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutData</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">layoutData</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">alignment</span> <span class="o">=</span> <span class="n">qskLayoutAlignmentHint</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+    <span class="n">alignment</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">effectiveAlignment</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">);</span>
+
+    <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">layoutData</span><span class="o">-&gt;</span><span class="n">geometryAt</span><span class="p">(</span> <span class="n">grid</span> <span class="p">);</span>
+    <span class="n">rect</span> <span class="o">=</span> <span class="n">qskConstrainedItemRect</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">alignment</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">layoutData</span><span class="o">-&gt;</span><span class="n">direction</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RightToLeft</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">layoutData</span><span class="o">-&gt;</span><span class="n">rect</span><span class="p">;</span>
+        <span class="n">rect</span><span class="p">.</span><span class="n">moveRight</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">-</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">qskSetItemGeometry</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">rect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">widthForHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="n">constraint</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">height</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">sizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">).</span><span class="n">width</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">heightForWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="n">constraint</span><span class="p">(</span> <span class="n">width</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">sizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">).</span><span class="n">height</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">sizeHint</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">constraint</span><span class="p">;</span> <span class="c1">// should never happen</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">effectiveCount</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">);</span>
+
+    <span class="k">auto</span> <span class="n">requestType</span> <span class="o">=</span> <span class="n">constraintType</span><span class="p">();</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">requestType</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">HeightForWidth</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">qWarning</span><span class="p">(</span> <span class="s">"QskLayoutEngine2D: HeightForWidth conflict."</span> <span class="p">);</span>
+                <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="n">requestType</span> <span class="o">=</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Unconstrained</span><span class="p">;</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">WidthForHeight</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">qWarning</span><span class="p">(</span> <span class="s">"QskLayoutEngine2D: WidthForHeight conflict."</span> <span class="p">);</span>
+                <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="n">requestType</span> <span class="o">=</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Unconstrained</span><span class="p">;</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="cm">/*
+                    As none of the items have the Constrained flag the constraint
+                    will have no effect and we ignore it to make use of the cached
+                    results from unconstrained requests
+                 */</span>
+<span class="c">#if 0
+                qWarning( "QskLayoutEngine2D: constraint will be ignored." );
+#endif
+</span>            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">rowChain</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">rowChain</span><span class="p">;</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">columnChain</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnChain</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">blockInvalidate</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">switch</span><span class="p">(</span> <span class="n">requestType</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">HeightForWidth</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">);</span>
+
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">constraints</span> <span class="o">=</span> <span class="n">columnChain</span><span class="p">.</span><span class="n">segments</span><span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span><span class="p">,</span> <span class="n">constraints</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">WidthForHeight</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">);</span>
+
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">constraints</span> <span class="o">=</span> <span class="n">rowChain</span><span class="p">.</span><span class="n">segments</span><span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">constraints</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">);</span>
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">blockInvalidate</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="n">QSizeF</span> <span class="n">hint</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">hint</span><span class="p">.</span><span class="n">rwidth</span><span class="p">()</span> <span class="o">=</span> <span class="n">columnChain</span><span class="p">.</span><span class="n">boundingHint</span><span class="p">().</span><span class="n">size</span><span class="p">(</span> <span class="n">which</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">hint</span><span class="p">.</span><span class="n">rheight</span><span class="p">()</span> <span class="o">=</span> <span class="n">rowChain</span><span class="p">.</span><span class="n">boundingHint</span><span class="p">().</span><span class="n">size</span><span class="p">(</span> <span class="n">which</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskLayoutHint</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">layoutHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QskLayoutHint</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">policy</span> <span class="o">=</span> <span class="n">qskSizePolicy</span><span class="p">(</span> <span class="n">item</span> <span class="p">).</span><span class="n">policy</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">policy</span> <span class="o">&amp;</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">ConstrainedFlag</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">constraint</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">qreal</span> <span class="n">minimum</span><span class="p">,</span> <span class="n">preferred</span><span class="p">,</span> <span class="n">maximum</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">expandFlags</span> <span class="o">=</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">GrowFlag</span> <span class="o">|</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">ExpandFlag</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">policy</span> <span class="o">&amp;</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">ShrinkFlag</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+        <span class="p">(</span> <span class="n">policy</span> <span class="o">&amp;</span> <span class="n">expandFlags</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">policy</span> <span class="o">&amp;</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">IgnoreFlag</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// we don't need to calculate the preferred size</span>
+
+        <span class="n">minimum</span> <span class="o">=</span> <span class="n">qskEffectiveConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MinimumSize</span><span class="p">,</span> <span class="n">orientation</span> <span class="p">);</span>
+        <span class="n">maximum</span> <span class="o">=</span> <span class="n">qskEffectiveConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MaximumSize</span><span class="p">,</span> <span class="n">orientation</span> <span class="p">);</span>
+        <span class="n">preferred</span> <span class="o">=</span> <span class="n">minimum</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">preferred</span> <span class="o">=</span> <span class="n">qskLayoutConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">policy</span> <span class="o">&amp;</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">ShrinkFlag</span> <span class="p">)</span>
+            <span class="n">minimum</span> <span class="o">=</span> <span class="n">qskEffectiveConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MinimumSize</span><span class="p">,</span> <span class="n">orientation</span> <span class="p">);</span>
+        <span class="k">else</span>
+            <span class="n">minimum</span> <span class="o">=</span> <span class="n">preferred</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">policy</span> <span class="o">&amp;</span> <span class="n">expandFlags</span> <span class="p">)</span>
+            <span class="n">maximum</span> <span class="o">=</span> <span class="n">qskEffectiveConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MaximumSize</span><span class="p">,</span> <span class="n">orientation</span> <span class="p">);</span>
+        <span class="k">else</span>
+            <span class="n">maximum</span> <span class="o">=</span> <span class="n">preferred</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">policy</span> <span class="o">&amp;</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">IgnoreFlag</span> <span class="p">)</span>
+            <span class="n">preferred</span> <span class="o">=</span> <span class="n">minimum</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QskLayoutHint</span><span class="p">(</span> <span class="n">minimum</span><span class="p">,</span> <span class="n">preferred</span><span class="p">,</span> <span class="n">maximum</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">setupChain</span><span class="p">(</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segments</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segments</span><span class="o">&amp;</span> <span class="n">constraints</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">count</span> <span class="o">=</span> <span class="n">effectiveCount</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">constraint</span> <span class="o">=</span>
+        <span class="n">constraints</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">?</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">:</span> <span class="n">constraints</span><span class="p">.</span><span class="n">last</span><span class="p">().</span><span class="n">end</span><span class="p">();</span>
+
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">chain</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutChain</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">chain</span><span class="p">.</span><span class="n">constraint</span><span class="p">()</span> <span class="o">==</span> <span class="n">constraint</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">chain</span><span class="p">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="n">count</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span> <span class="c1">// already up to date</span>
+    <span class="p">}</span>
+
+    <span class="n">chain</span><span class="p">.</span><span class="n">reset</span><span class="p">(</span> <span class="n">count</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">);</span>
+    <span class="n">setupChain</span><span class="p">(</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">constraints</span><span class="p">,</span> <span class="n">chain</span> <span class="p">);</span>
+    <span class="n">chain</span><span class="p">.</span><span class="n">finish</span><span class="p">();</span>
+
+<span class="c">#if 0
+    qDebug() &lt;&lt; "==" &lt;&lt; this &lt;&lt; orientation &lt;&lt; chain.count();
+
+    for ( int i = 0; i &lt; chain.count(); i++ )
+        qDebug() &lt;&lt; i &lt;&lt; ":" &lt;&lt; chain.cell( i );
+#endif
+</span><span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">updateSegments</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">rowChain</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">rowChain</span><span class="p">;</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">columnChain</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnChain</span><span class="p">;</span>
+
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">;</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columns</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">blockInvalidate</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">switch</span><span class="p">(</span> <span class="n">constraintType</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">WidthForHeight</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">);</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="n">rowChain</span><span class="p">.</span><span class="n">segments</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">rows</span> <span class="p">);</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="n">columnChain</span><span class="p">.</span><span class="n">segments</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">HeightForWidth</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">);</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="n">columnChain</span><span class="p">.</span><span class="n">segments</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columns</span> <span class="p">);</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="n">rowChain</span><span class="p">.</span><span class="n">segments</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">);</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="n">columnChain</span><span class="p">.</span><span class="n">segments</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">);</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="n">rowChain</span><span class="p">.</span><span class="n">segments</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">blockInvalidate</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">invalidate</span><span class="p">(</span> <span class="kt">int</span> <span class="n">what</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">blockInvalidate</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">what</span> <span class="o">&amp;</span> <span class="n">ElementCache</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">constraintType</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">invalidateElementCache</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">what</span> <span class="o">&amp;</span> <span class="n">LayoutCache</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">rowChain</span><span class="p">.</span><span class="n">invalidate</span><span class="p">();</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnChain</span><span class="p">.</span><span class="n">invalidate</span><span class="p">();</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutSize</span> <span class="o">=</span> <span class="n">QSize</span><span class="p">();</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">rows</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columns</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">ConstraintType</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">constraintType</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">constraintType</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">constraintType</span> <span class="o">=</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Unconstrained</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">type</span> <span class="o">=</span> <span class="n">qskSizePolicy</span><span class="p">(</span> <span class="n">itemAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span> <span class="p">).</span><span class="n">constraintType</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">type</span> <span class="o">!=</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Unconstrained</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">constraintType</span> <span class="o">==</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Unconstrained</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">constraintType</span> <span class="o">=</span> <span class="n">type</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">constraintType</span> <span class="o">!=</span> <span class="n">type</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">qWarning</span><span class="p">(</span> <span class="s">"QskLayoutEngine2D: conflicting constraints"</span><span class="p">);</span>
+                    <span class="n">constraintType</span> <span class="o">=</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Unconstrained</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">constraintType</span> <span class="o">=</span> <span class="n">constraintType</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">ConstraintType</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">constraintType</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskLayoutEngine2D</span><span class="o">::</span><span class="n">requiresAdjustment</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsVisibleToParent</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">qskControlCast</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">constexpr</span> <span class="k">auto</span> <span class="n">mask</span> <span class="o">=</span>
+            <span class="n">QskControl</span><span class="o">::</span><span class="n">RetainSizeWhenHidden</span> <span class="o">|</span> <span class="n">QskControl</span><span class="o">::</span><span class="n">LayoutWhenHidden</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">layoutHints</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">mask</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

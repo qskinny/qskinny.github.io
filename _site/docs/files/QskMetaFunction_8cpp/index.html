@@ -1,0 +1,339 @@
+<h1 id="commonqskmetafunctioncpp">common/QskMetaFunction.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskMetaFunction_8cpp/#function-qskinvokefunctionqueued">qskInvokeFunctionQueued</a></strong>(QObject * object, QskMetaFunction::FunctionCall * functionCall, int argc, int * types, void * argv[], QSemaphore * semaphore =nullptr)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskinvokefunctionqueued">function qskInvokeFunctionQueued</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskInvokeFunctionQueued</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">FunctionCall</span> <span class="o">*</span> <span class="n">functionCall</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="o">*</span> <span class="n">types</span><span class="p">,</span>
+    <span class="kt">void</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[],</span>
+    <span class="n">QSemaphore</span> <span class="o">*</span> <span class="n">semaphore</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskMetaFunction.h"
+</span>
+<span class="cp">#include &lt;qcoreapplication.h&gt;
+#include &lt;qobject.h&gt;
+#include &lt;qsemaphore.h&gt;
+#include &lt;qthread.h&gt;
+</span>
+
+<span class="cp">#include &lt;private/qobject_p.h&gt;
+</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskInvokeFunctionQueued</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">FunctionCall</span><span class="o">*</span> <span class="n">functionCall</span><span class="p">,</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">types</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">argv</span><span class="p">[],</span>
+    <span class="n">QSemaphore</span><span class="o">*</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">constexpr</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">sender</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">signalId</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 14, 0 )
+</span>    <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">types</span> <span class="p">)</span>
+    <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">argc</span> <span class="p">)</span>
+
+    <span class="k">auto</span> <span class="n">event</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QMetaCallEvent</span><span class="p">(</span>
+        <span class="n">functionCall</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">signalId</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">semaphore</span> <span class="p">);</span>
+<span class="cp">#else
+</span>    <span class="k">auto</span> <span class="n">event</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QMetaCallEvent</span><span class="p">(</span>
+        <span class="n">functionCall</span><span class="p">,</span> <span class="n">sender</span><span class="p">,</span> <span class="n">signalId</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">semaphore</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+    <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">postEvent</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">FunctionCall</span> <span class="o">=</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">FunctionCall</span><span class="p">;</span>
+
+    <span class="c1">// to have access to the private section of QSlotObjectBase</span>
+    <span class="k">struct</span> <span class="nc">SlotObject</span>
+    <span class="p">{</span>
+        <span class="n">QAtomicInt</span> <span class="n">ref</span><span class="p">;</span>
+        <span class="n">FunctionCall</span><span class="o">::</span><span class="n">InvokeFunction</span> <span class="n">invoke</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">int</span><span class="o">*</span> <span class="n">parameterTypes</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">static_assert</span><span class="p">(</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">SlotObject</span> <span class="p">)</span> <span class="o">==</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">FunctionCall</span> <span class="p">),</span>
+        <span class="s">"Bad cast: QskMetaFunction does not match"</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">FunctionCall</span><span class="o">::</span><span class="n">typeInfo</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">that</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">FunctionCall</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+
+    <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="n">SlotObject</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">that</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">invoke</span><span class="p">(</span>
+        <span class="n">TypeInfo</span><span class="p">,</span> <span class="n">that</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">,</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="kt">void</span><span class="o">**</span> <span class="o">&gt;</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">value</span> <span class="p">),</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">FunctionCall</span><span class="o">::</span><span class="n">refCount</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">that</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">FunctionCall</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 14, 0 )
+</span>    <span class="k">return</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="n">SlotObject</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">that</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">ref</span><span class="p">.</span><span class="n">loadRelaxed</span><span class="p">();</span>
+<span class="cp">#else
+</span>    <span class="k">return</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="n">SlotObject</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">that</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">ref</span><span class="p">.</span><span class="n">load</span><span class="p">();</span>
+<span class="cp">#endif
+</span><span class="p">}</span>
+
+<span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">QskMetaFunction</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_functionCall</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">QskMetaFunction</span><span class="p">(</span> <span class="n">FunctionCall</span><span class="o">*</span> <span class="n">functionCall</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_functionCall</span><span class="p">(</span> <span class="n">functionCall</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="p">)</span>
+        <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">ref</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">QskMetaFunction</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_functionCall</span><span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="p">)</span>
+        <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">ref</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">QskMetaFunction</span><span class="p">(</span> <span class="n">QskMetaFunction</span><span class="o">&amp;&amp;</span> <span class="n">other</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_functionCall</span><span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaFunction</span><span class="o">::~</span><span class="n">QskMetaFunction</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="p">)</span>
+        <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">destroyIfLastRef</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span> <span class="n">QskMetaFunction</span><span class="o">&amp;&amp;</span> <span class="n">other</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="o">!=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="p">)</span>
+            <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">destroyIfLastRef</span><span class="p">();</span>
+
+        <span class="n">m_functionCall</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span><span class="p">;</span>
+        <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="o">!=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="p">)</span>
+            <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">destroyIfLastRef</span><span class="p">();</span>
+
+        <span class="n">m_functionCall</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="p">)</span>
+            <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">ref</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="k">operator</span><span class="o">==</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="cm">/*
+        There is no way to compmare functors/members without
+        std::type_info, what we don't want to use as it is
+        another template creating symbols.
+
+        So this implementation can't do much more than finding
+        out if one instance is a copy from another.
+     */</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">typeInfo</span><span class="p">()</span> <span class="o">==</span> <span class="n">StaticFunction</span> <span class="o">&amp;&amp;</span>
+            <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">typeInfo</span><span class="p">()</span> <span class="o">==</span> <span class="n">StaticFunction</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// only static functions can be compared</span>
+            <span class="k">return</span> <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">compare</span><span class="p">(</span>
+                <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="kt">void</span><span class="o">**</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionCall</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">returnType</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">Void</span><span class="p">;</span> <span class="c1">// TODO ...</span>
+<span class="p">}</span>
+
+<span class="kt">size_t</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">parameterCount</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">types</span> <span class="o">=</span> <span class="n">parameterTypes</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span> <span class="n">types</span><span class="p">[</span> <span class="n">count</span> <span class="p">]</span> <span class="o">!=</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">UnknownType</span> <span class="p">)</span>
+            <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">count</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">Type</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">functionType</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">Invalid</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">Type</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">typeInfo</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">invoke</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="kt">void</span><span class="o">*</span> <span class="n">argv</span><span class="p">[],</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="cp">#if 1
+</span>    <span class="cm">/*
+        Since Qt 5.10 we also have QMetaObject::invokeMethod
+        with functor based callbacks. TODO ...
+     */</span>
+<span class="cp">#endif
+</span>
+    <span class="c1">// code is not thread safe - TODO ...</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionCall</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QObject</span> <span class="o">&gt;</span> <span class="n">receiver</span><span class="p">(</span> <span class="n">object</span> <span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">invokeType</span> <span class="o">=</span> <span class="n">connectionType</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">invokeType</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">invokeType</span> <span class="o">=</span> <span class="p">(</span> <span class="n">receiver</span> <span class="o">&amp;&amp;</span> <span class="n">receiver</span><span class="o">-&gt;</span><span class="kr">thread</span><span class="p">()</span> <span class="o">!=</span> <span class="n">QThread</span><span class="o">::</span><span class="n">currentThread</span><span class="p">()</span> <span class="p">)</span>
+            <span class="o">?</span> <span class="n">Qt</span><span class="o">::</span><span class="n">QueuedConnection</span> <span class="o">:</span> <span class="n">Qt</span><span class="o">::</span><span class="n">DirectConnection</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">invokeType</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">DirectConnection</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">call</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">argv</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BlockingQueuedConnection</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="o">||</span>
+                <span class="p">(</span> <span class="n">receiver</span><span class="o">-&gt;</span><span class="kr">thread</span><span class="p">()</span> <span class="o">==</span> <span class="n">QThread</span><span class="o">::</span><span class="n">currentThread</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// We would end up in a deadlock, better do nothing</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">QSemaphore</span> <span class="n">semaphore</span><span class="p">;</span>
+
+            <span class="n">qskInvokeFunctionQueued</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span>
+                <span class="n">m_functionCall</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">semaphore</span> <span class="p">);</span>
+
+            <span class="n">semaphore</span><span class="p">.</span><span class="n">acquire</span><span class="p">();</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">QueuedConnection</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">argc</span> <span class="o">=</span> <span class="n">parameterCount</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// return value + arguments</span>
+
+            <span class="k">auto</span> <span class="n">types</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">std</span><span class="o">::</span><span class="n">malloc</span><span class="p">(</span> <span class="n">argc</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span> <span class="kt">int</span> <span class="p">)</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="k">auto</span> <span class="n">arguments</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">void</span><span class="o">**</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">std</span><span class="o">::</span><span class="n">malloc</span><span class="p">(</span> <span class="n">argc</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span> <span class="kt">void</span><span class="o">*</span> <span class="p">)</span> <span class="p">)</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">types</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">arguments</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">free</span><span class="p">(</span> <span class="n">types</span> <span class="p">);</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">free</span><span class="p">(</span> <span class="n">arguments</span> <span class="p">);</span>
+
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">types</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">UnknownType</span><span class="p">;</span>
+            <span class="n">arguments</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+            <span class="k">const</span> <span class="kt">int</span><span class="o">*</span> <span class="n">parameterTypes</span> <span class="o">=</span> <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">parameterTypes</span><span class="p">();</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="n">uint</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">argc</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">argv</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">arguments</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+                    <span class="n">receiver</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="n">types</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">=</span> <span class="n">parameterTypes</span><span class="p">[</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">];</span>
+
+                <span class="n">arguments</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">=</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 0, 0 )
+</span>                    <span class="n">QMetaType</span><span class="p">(</span> <span class="n">types</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="p">).</span><span class="n">create</span><span class="p">(</span> <span class="n">argv</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="p">);</span>
+<span class="cp">#else
+</span>                    <span class="n">QMetaType</span><span class="o">::</span><span class="n">create</span><span class="p">(</span> <span class="n">types</span><span class="p">[</span> <span class="n">i</span> <span class="p">],</span> <span class="n">argv</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// object might have died in the meantime</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">free</span><span class="p">(</span> <span class="n">types</span> <span class="p">);</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">free</span><span class="p">(</span> <span class="n">arguments</span> <span class="p">);</span>
+
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">qskInvokeFunctionQueued</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">m_functionCall</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">arguments</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskMetaFunction.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

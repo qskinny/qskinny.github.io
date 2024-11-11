@@ -1,0 +1,110 @@
+<h1 id="nodesqsktextnodecpp">nodes/QskTextNode.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>uint</td>
+      <td><strong><a href="/docs/files/QskTextNode_8cpp/#function-qskhash">qskHash</a></strong>(const QString &amp; text, const QSizeF &amp; size, const QFont &amp; font, const QskTextOptions &amp; options, const QskTextColors &amp; colors, Qt::Alignment alignment, Qsk::TextStyle textStyle)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskhash">function qskHash</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">uint</span> <span class="n">qskHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QFont</span> <span class="o">&amp;</span> <span class="n">font</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span> <span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskTextColors</span> <span class="o">&amp;</span> <span class="n">colors</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">,</span>
+    <span class="n">Qsk</span><span class="o">::</span><span class="n">TextStyle</span> <span class="n">textStyle</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskTextNode.h"
+#include "QskTextColors.h"
+#include "QskTextOptions.h"
+#include "QskTextRenderer.h"
+</span>
+<span class="cp">#include &lt;qfont.h&gt;
+#include &lt;qstring.h&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">uint</span> <span class="nf">qskHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="n">font</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextColors</span><span class="o">&amp;</span> <span class="n">colors</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">TextStyle</span> <span class="n">textStyle</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">uint</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">11000</span><span class="p">;</span>
+
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="n">text</span><span class="p">,</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="n">font</span><span class="p">,</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="n">options</span><span class="p">,</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="n">textStyle</span><span class="p">,</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">colors</span><span class="p">.</span><span class="n">hash</span><span class="p">(</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHashBits</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">size</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">QSizeF</span> <span class="p">),</span> <span class="n">hash</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">hash</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskTextNode</span><span class="o">::</span><span class="n">QskTextNode</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_hash</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskTextNode</span><span class="o">::~</span><span class="n">QskTextNode</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextNode</span><span class="o">::</span><span class="n">setTextData</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="n">font</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextColors</span><span class="o">&amp;</span> <span class="n">colors</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">TextStyle</span> <span class="n">textStyle</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QMatrix4x4</span> <span class="n">matrix</span><span class="p">;</span>
+    <span class="n">matrix</span><span class="p">.</span><span class="n">translate</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">matrix</span> <span class="o">!=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">matrix</span><span class="p">()</span> <span class="p">)</span> <span class="c1">// avoid setting DirtyMatrix accidently</span>
+        <span class="n">setMatrix</span><span class="p">(</span> <span class="n">matrix</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">uint</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">qskHash</span><span class="p">(</span> <span class="n">text</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">font</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">textStyle</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hash</span> <span class="o">!=</span> <span class="n">m_hash</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_hash</span> <span class="o">=</span> <span class="n">hash</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="n">QRectF</span> <span class="n">textRect</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="cm">/*
+            In case of having color changes only we would could
+            go a faster update path: see QskPlainTextRenderer::updateNodeColor.
+            TODO ...
+         */</span>
+        <span class="n">QskTextRenderer</span><span class="o">::</span><span class="n">updateNode</span><span class="p">(</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">textStyle</span><span class="p">,</span>
+            <span class="n">colors</span><span class="p">,</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">textRect</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

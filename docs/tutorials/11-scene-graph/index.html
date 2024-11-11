@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+    <head>    
+
+        <title>11. Scene graph representations of controls - The QSkinny UI framework</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="A documentation theme"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i%26display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" href="/assets/css/main.css">
+        <link rel="stylesheet" href="/assets/css/syntax.css">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        
+    </head>
+    <body>
+        
+        <div id="page" class="site">
+  <header id="masthead" class="site-header outer">
+  <div class="inner">
+    <div class="site-header-inside">
+      <div class="site-branding">
+        
+        
+        <p class="site-title"><a href="/"></a></p>
+        
+      </div><!-- .site-branding -->
+      
+      
+      <nav id="main-navigation" class="site-navigation" aria-label="Main Navigation">
+        <div class="site-nav-inside">
+          <button id="menu-close" class="menu-toggle"><span class="screen-reader-text">Open Menu</span><span class="icon-close" aria-hidden="true"></span></button>
+          <ul class="menu">
+          
+            
+            
+            <li class="menu-item">
+              
+              
+<a class="" href="/">
+  
+  Home
+  
+</a>
+
+              
+            </li>
+          
+            
+            
+            <li class="menu-item">
+              
+              
+<a class="" href="/docs/tutorials/01-What-is-QSkinny/">
+  
+  Tutorials
+  
+</a>
+
+              
+            </li>
+          
+            
+            
+            <li class="menu-item">
+              
+              
+<a class="" href="/docs/api/html/" target="_blank" rel="noopener">
+  
+  API documentation
+  
+</a>
+
+              
+            </li>
+          
+            
+            
+            <li class="menu-item menu-button">
+              
+              
+<a class="button" href="https://github.com/uwerat/qskinny" target="_blank" rel="noopener">
+  
+  GitHub
+  
+</a>
+
+              
+            </li>
+          
+          </ul>
+        </div><!-- .site-nav-inside -->
+      </nav><!-- .site-navigation -->
+      <button id="menu-open" class="menu-toggle"><span class="screen-reader-text">Close Menu</span><span class="icon-menu" aria-hidden="true"></span></button>
+      
+    </div><!-- .site-header-inside -->
+  </div><!-- .inner -->
+</header><!-- .site-header -->
+
+  <main id="content" class="site-content">
+    <div class="inner outer">
+  <div class="docs-content">
+    
+    
+
+
+
+
+<nav id="docs-nav" class="docs-nav" style="z-index: 1000">
+  <div id="docs-nav-inside" class="docs-nav-inside sticky">
+    <button id="docs-nav-toggle" class="docs-nav-toggle">Navigate Docs<span class="icon-angle-right" aria-hidden="true"></span></button>
+    <div class="docs-nav-menu">
+      <select id="search-field">
+      </select>
+      <br /><br />
+      <ul id="docs-menu" class="docs-menu">
+        <li class="docs-menu-item">
+          <a href=""></a>
+        </li>
+        
+          
+          
+          
+          
+          
+          
+          
+          <li class="docs-menu-item has-children active">
+            <a href="/docs/tutorials/">Tutorials</a>
+            
+            
+              <button class="docs-submenu-toggle"><span class="screen-reader-text">Submenu</span><span class="icon-angle-right" aria-hidden="true"></span></button>
+              
+              
+
+
+<div class="docs-submenu-div">
+    <ul class="docs-submenu">
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/01-What-is-QSkinny/">1. What is QSkinny?</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/02-Why-QSkinny/">2. Why QSkinny?</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/03-writing-your-first-application/">3. Writing your first application</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/04-Layouts/">4. Layouts</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/05-Skins/">5. Skins</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/06-The-theming-engine-in-depth/">6. The theming engine in depth</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/07-scalable-graphics/">7. (Scalable) graphics</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/08-parents-and-parent-items/">8. Parents and parent items</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/09-qskinny-and-qml/">9. Using QSkinny and QML</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/10-writing-own-controls/">10. Writing own controls</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/11-How-to-build-for-Wasm/">10. Building QSkinny for WebAssembly (Wasm)</a>
+        </li>
+    
+        <li class="docs-menu-item current">
+        <a href="/docs/tutorials/11-scene-graph/">11. Scene graph representations of controls</a>
+        </li>
+    
+    </ul>
+</div>
+
+            
+          </li>
+        
+      </ul><!-- .docs-menu -->
+    </div><!-- .docs-nav-menu -->
+  </div><!-- .docs-nav-inside -->
+</nav><!-- .docs-nav -->
+
+    <article class="post type-docs">
+      <div class="post-inside">
+        <header class="post-header">
+          <h1 class="post-title line-left">11. Scene graph representations of controls</h1>
+        </header><!-- .post-header -->
+        <div class="post-content">
+          <div class="sect1">
+<h2 id="qskinny-scene-graph-representations-of-controls">QSkinny - Scene graph representations of controls</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each control that is displayed on the screen consists of one or more
+scene graph nodes. Those nodes can be either basic shapes like
+rectangles, or they can contain other information like positioning (used
+with transform nodes), opacity or clipping.</p>
+</div>
+<div class="paragraph">
+<p>The source code below shows a minimal example displaying a button:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>auto* button = new QskPushButton( "button" );
+
+QskWindow window;
+window.addItem( button );
+window.show();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For this example, the scene graph will contain the following nodes:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/skins-sg-1.png" alt="Scene graph nodes for a button">
+</div>
+<div class="title">Figure 1. Scene graph representation of a button</div>
+</div>
+<div class="paragraph">
+<p>The top two nodes (root and Quick root item) are created for every
+QtQuick application. The button itself consists of 5 nodes in our case:
+One root note (<code>button node</code>), one node just to group its children (just
+labeled <code>node</code>), one geometry node for drawing the background (<code>panel
+node</code>), one transform node for setting the position of the text and
+another geometry node for displaying the text (<code>text node</code>).</p>
+</div>
+<div class="paragraph">
+<p>For an explanation of the different scene graph node types, see the Qt
+documentation of
+<a href="https://doc.qt.io/qt-5/qsgnode.html#NodeType-enum">QSGNode::NodeType</a>.</p>
+</div>
+<div class="paragraph">
+<p>The example above is the simplest form of a button, in practice there
+might be more nodes per control, for instance an opacity node or a clip
+node.</p>
+</div>
+<div class="paragraph">
+<p>Now we add more elements to the UI by putting the button inside a layout
+(<code>QskBox</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>auto* box = new QskBox;
+auto* button = new QskPushButton( "button", box );
+
+QskWindow window;
+window.addItem( box );
+window.show();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then the scene graph has the following structure:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/skins-sg-2.png" alt="Scene graph nodes for a button in a box">
+</div>
+<div class="title">Figure 2. Scene graph representation of a button inside a box</div>
+</div>
+<div class="paragraph">
+<p>Here we can see that since the box is a parent of the button, the <code>box
+node</code> is also a parent of the <code>button node</code> in the scene graph. Also, the
+box has two child nodes: The button, which is the same as in the earlier
+example, and a node for the panel of the box, in case the panel itself has a
+background color.</p>
+</div>
+<div class="paragraph">
+<p>In a more complicated UI with multiple elements and more advanced
+layouts, the number of scene graph nodes can be quite high. This is why
+QSkinny tries to create as little nodes as possible and reuse as many as
+it can.</p>
+</div>
+</div>
+</div>
+          
+          
+          
+            
+            
+            
+            
+            
+          
+        </div><!-- .post-content -->
+      </div><!-- .post-inside -->
+    </article><!-- .post -->
+    <nav id="page-nav" class="page-nav">
+      <div id="page-nav-inside" class="page-nav-inside sticky">
+        <h2 class="page-nav-title">Jump to Section</h2>
+        <div id="page-nav-link-container"></div>
+      </div><!-- .page-nav-inside -->
+    </nav><!-- .page-nav -->
+  </div><!-- .docs-content -->
+</div><!-- .inner-->
+
+  </main><!-- .site-content -->
+  <footer id="colophon" class="site-footer outer">
+  <div class="inner">
+    <div class="site-footer-inside">
+      <p class="site-info">
+        
+        
+        <span class="copyright">&copy; The QSkinny project. All rights reserved.</span>
+        
+        
+      </p><!-- .site-info -->
+      
+      
+      <div class="social-links">
+        
+          
+          
+<a class="button button-icon" href="https://github.com/uwerat/qskinny" target="_blank" rel="noopener">
+  
+  <span class="icon fab fa-github" aria-hidden="true"></span><span class="screen-reader-text">GitHub</span>
+  
+</a>
+
+        
+      </div><!-- .social-links -->
+      
+    </div><!-- .site-footer-inside -->
+  </div><!-- .inner -->
+</footer><!-- .site-footer -->
+
+</div><!-- .site -->
+
+        <!-- Scripts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="/assets/js/plugins.js"></script>
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/page-load.js"></script>
+        <script src="/assets/js/qskinny-search.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    </body>
+</html>

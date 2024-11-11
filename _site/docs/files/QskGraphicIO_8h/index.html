@@ -1,0 +1,51 @@
+<h1 id="graphicqskgraphicioh">graphic/QskGraphicIO.h</h1>
+
+<h2 id="namespaces">Namespaces</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong><a href="/docs/namespaces/namespaceQskGraphicIO/">QskGraphicIO</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_GRAPHIC_IO_H
+#define QSK_GRAPHIC_IO_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+</span>
+<span class="k">class</span> <span class="nc">QskGraphic</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QString</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QIODevice</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QByteArray</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="n">QskGraphicIO</span>
+<span class="p">{</span>
+    <span class="n">QSK_EXPORT</span> <span class="n">QskGraphic</span> <span class="n">read</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">fileName</span> <span class="p">);</span>
+    <span class="n">QSK_EXPORT</span> <span class="n">QskGraphic</span> <span class="n">read</span><span class="p">(</span> <span class="k">const</span> <span class="n">QByteArray</span><span class="o">&amp;</span> <span class="n">data</span> <span class="p">);</span>
+    <span class="n">QSK_EXPORT</span> <span class="n">QskGraphic</span> <span class="n">read</span><span class="p">(</span> <span class="n">QIODevice</span><span class="o">*</span> <span class="n">dev</span> <span class="p">);</span>
+
+    <span class="n">QSK_EXPORT</span> <span class="kt">bool</span> <span class="n">write</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">fileName</span> <span class="p">);</span>
+    <span class="n">QSK_EXPORT</span> <span class="kt">bool</span> <span class="n">write</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QByteArray</span><span class="o">&amp;</span> <span class="n">data</span> <span class="p">);</span>
+    <span class="n">QSK_EXPORT</span> <span class="kt">bool</span> <span class="n">write</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QIODevice</span><span class="o">*</span> <span class="n">dev</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

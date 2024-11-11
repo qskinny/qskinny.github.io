@@ -1,0 +1,254 @@
+<h1 id="controlsqsktextlabelcpp">controls/QskTextLabel.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskTextLabel.h"
+#include "QskAspect.h"
+#include "QskTextOptions.h"
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskTextLabel</span><span class="p">,</span> <span class="n">Panel</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskTextLabel</span><span class="p">,</span> <span class="n">Text</span> <span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">QskTextLabel</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">txt</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">text</span><span class="p">(</span> <span class="n">txt</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">hasPanel</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">effectiveTextFormat</span> <span class="o">=</span> <span class="n">textOptions</span><span class="p">.</span><span class="n">format</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">TextFormat</span> <span class="n">effectiveFormat</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">textOptions</span><span class="p">.</span><span class="n">format</span><span class="p">()</span> <span class="o">!=</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">AutoText</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">textOptions</span><span class="p">.</span><span class="n">format</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">effectiveTextFormat</span> <span class="o">==</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">AutoText</span> <span class="p">)</span>
+            <span class="n">effectiveTextFormat</span> <span class="o">=</span> <span class="n">textOptions</span><span class="p">.</span><span class="n">effectiveFormat</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">effectiveTextFormat</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">QString</span> <span class="n">text</span><span class="p">;</span>
+
+    <span class="n">QskTextOptions</span> <span class="n">textOptions</span><span class="p">;</span>
+    <span class="k">mutable</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">TextFormat</span> <span class="n">effectiveTextFormat</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">hasPanel</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskTextLabel</span><span class="o">::</span><span class="n">QskTextLabel</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskTextLabel</span><span class="p">(</span> <span class="n">QString</span><span class="p">(),</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskTextLabel</span><span class="o">::</span><span class="n">QskTextLabel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">(</span> <span class="n">text</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTextLabel</span><span class="o">::~</span><span class="n">QskTextLabel</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">setPanel</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPanel</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPanel</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">update</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">panelChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">hasPanel</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">setText</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">text</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">text</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">;</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">effectiveTextFormat</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">.</span><span class="n">format</span><span class="p">();</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">update</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">textChanged</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">text</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">setTextOptions</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">options</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+<span class="c">#if 0
+    // we are killing user settings of the policy this way ??
+
+    const QskSizePolicy::Policy policy = ( options.wrapMode() == QTextOption::NoWrap )
+        ? QskSizePolicy::Minimum : QskSizePolicy::Preferred;
+
+    setSizePolicy( policy, sizePolicy().verticalPolicy() );
+#endif
+</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">effectiveTextFormat</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="n">format</span><span class="p">();</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span> <span class="o">=</span> <span class="n">options</span><span class="p">;</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">update</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">textOptionsChanged</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTextOptions</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">textOptions</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">setTextFormat</span><span class="p">(</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">TextFormat</span> <span class="n">format</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">options</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">;</span>
+    <span class="n">options</span><span class="p">.</span><span class="n">setFormat</span><span class="p">(</span> <span class="n">format</span> <span class="p">);</span>
+
+    <span class="n">setTextOptions</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTextOptions</span><span class="o">::</span><span class="n">TextFormat</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">textFormat</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">.</span><span class="n">format</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskTextOptions</span><span class="o">::</span><span class="n">TextFormat</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">effectiveTextFormat</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">effectiveFormat</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">setWrapMode</span><span class="p">(</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">WrapMode</span> <span class="n">wrapMode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">options</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">;</span>
+    <span class="n">options</span><span class="p">.</span><span class="n">setWrapMode</span><span class="p">(</span> <span class="n">wrapMode</span> <span class="p">);</span>
+
+    <span class="n">setTextOptions</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+
+<span class="p">}</span>
+
+<span class="n">QskTextOptions</span><span class="o">::</span><span class="n">WrapMode</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">wrapMode</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">.</span><span class="n">wrapMode</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">setElideMode</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="n">elideMode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">options</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">;</span>
+    <span class="n">options</span><span class="p">.</span><span class="n">setElideMode</span><span class="p">(</span> <span class="n">elideMode</span> <span class="p">);</span>
+
+    <span class="n">setTextOptions</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">elideMode</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">.</span><span class="n">elideMode</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">setFontRole</span><span class="p">(</span> <span class="kt">int</span> <span class="n">role</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setFontRoleHint</span><span class="p">(</span> <span class="n">Text</span><span class="p">,</span> <span class="n">role</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">fontRoleChanged</span><span class="p">(</span> <span class="n">role</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">resetFontRole</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetFontRoleHint</span><span class="p">(</span> <span class="n">Text</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">fontRoleChanged</span><span class="p">(</span> <span class="n">fontRoleHint</span><span class="p">(</span> <span class="n">Text</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">fontRole</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">fontRoleHint</span><span class="p">(</span> <span class="n">Text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">setTextColor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setColor</span><span class="p">(</span> <span class="n">Text</span><span class="p">,</span> <span class="n">color</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">textColorChanged</span><span class="p">(</span> <span class="n">color</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">resetTextColor</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetColor</span><span class="p">(</span> <span class="n">Text</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">textColorChanged</span><span class="p">(</span> <span class="n">color</span><span class="p">(</span> <span class="n">Text</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QColor</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">textColor</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">color</span><span class="p">(</span> <span class="n">Text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setAlignmentHint</span><span class="p">(</span> <span class="n">Text</span><span class="p">,</span> <span class="n">alignment</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">alignmentChanged</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">resetAlignment</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetAlignmentHint</span><span class="p">(</span> <span class="n">Text</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">alignmentChanged</span><span class="p">(</span> <span class="n">alignment</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">alignment</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">alignmentHint</span><span class="p">(</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignLeft</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignTop</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QFont</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">font</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveFont</span><span class="p">(</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">Text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">changeEvent</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LocaleChange</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// maybe Qt::LayoutDirection has changed</span>
+                <span class="n">update</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">changeEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskTextLabel.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

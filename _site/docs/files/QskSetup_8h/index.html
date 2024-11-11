@@ -1,0 +1,131 @@
+<h1 id="controlsqsksetuph">controls/QskSetup.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskSetup/">QskSetup</a></strong> <br />Singleton maintaining the global settings of an application using Qsk controls.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="defines">Defines</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskSetup_8h/#define-qsksetup">qskSetup</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="macro-documentation">Macro Documentation</h2>
+
+<h3 id="define-qsksetup">define qskSetup</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define qskSetup QskSetup::instance()
+</span></code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_SETUP_H
+#define QSK_SETUP_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include "QskQuickItem.h"
+</span>
+<span class="cp">#include &lt;qobject.h&gt;
+#include &lt;memory&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskSkin</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QQuickItem</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskGraphicProvider</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QLocale</span><span class="p">;</span>
+
+<span class="cp">#if defined( qskSetup )
+#undef qskSetup
+#endif
+</span>
+<span class="cp">#define qskSetup QskSetup::instance()
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskSetup</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+  <span class="nl">public:</span>
+
+    <span class="k">static</span> <span class="n">QskSetup</span><span class="o">*</span> <span class="n">instance</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">setItemUpdateFlags</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetItemUpdateFlags</span><span class="p">();</span>
+    <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="n">itemUpdateFlags</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setItemUpdateFlag</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlag</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetItemUpdateFlag</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlag</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">testItemUpdateFlag</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlag</span> <span class="p">);</span>
+
+    <span class="n">QskSkin</span><span class="o">*</span> <span class="n">setSkin</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="n">QString</span> <span class="n">skinName</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">addGraphicProvider</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span><span class="p">,</span> <span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="p">);</span>
+    <span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="n">graphicProvider</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="kt">void</span> <span class="n">setup</span><span class="p">();</span>
+    <span class="k">static</span> <span class="kt">void</span> <span class="n">cleanup</span><span class="p">();</span>
+
+    <span class="n">QLocale</span> <span class="n">inheritedLocale</span><span class="p">(</span> <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">inheritLocale</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="k">static</span> <span class="n">QskSetup</span><span class="o">*</span> <span class="n">qmlAttachedProperties</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">);</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">skinChanged</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">itemUpdateFlagsChanged</span><span class="p">();</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QskSetup</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">QskSetup</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">eventFilter</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="n">QskSetup</span><span class="o">*</span> <span class="n">s_instance</span><span class="p">;</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="n">QskSetup</span><span class="o">*</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">instance</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">s_instance</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">s_instance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

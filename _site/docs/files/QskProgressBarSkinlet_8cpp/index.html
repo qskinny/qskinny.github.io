@@ -1,0 +1,225 @@
+<h1 id="controlsqskprogressbarskinletcpp">controls/QskProgressBarSkinlet.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QskIntervalF</td>
+      <td><strong><a href="/docs/files/QskProgressBarSkinlet_8cpp/#function-qskbarinterval">qskBarInterval</a></strong>(const QskProgressBar * bar)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskbarinterval">function qskBarInterval</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="n">qskBarInterval</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskProgressBar</span> <span class="o">*</span> <span class="n">bar</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskProgressBarSkinlet.h"
+#include "QskProgressBar.h"
+#include "QskIntervalF.h"
+#include "QskBoxBorderMetrics.h"
+</span>
+<span class="cp">#include &lt;qeasingcurve.h&gt;
+#include &lt;cmath&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="nf">qskBarInterval</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskProgressBar</span><span class="o">*</span> <span class="n">bar</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qreal</span> <span class="n">pos1</span><span class="p">,</span> <span class="n">pos2</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">isIndeterminate</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">metric</span><span class="p">(</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">Bar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Position</span> <span class="p">);</span>
+
+        <span class="k">static</span> <span class="k">const</span> <span class="n">QEasingCurve</span> <span class="n">curve</span><span class="p">(</span> <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">InOutCubic</span> <span class="p">);</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">off</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">;</span>
+
+        <span class="n">pos1</span> <span class="o">=</span> <span class="n">curve</span><span class="p">.</span><span class="n">valueForProgress</span><span class="p">(</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">off</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="n">pos2</span> <span class="o">=</span> <span class="n">curve</span><span class="p">.</span><span class="n">valueForProgress</span><span class="p">(</span> <span class="n">qMin</span><span class="p">(</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">off</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">pos1</span> <span class="o">=</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">valueAsRatio</span><span class="p">(</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">origin</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">pos2</span> <span class="o">=</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">valueAsRatio</span><span class="p">(</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">layoutMirroring</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">pos1</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">pos1</span><span class="p">;</span>
+            <span class="n">pos2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">pos2</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">pos1</span> <span class="o">&gt;</span> <span class="n">pos2</span> <span class="p">)</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span> <span class="n">pos1</span><span class="p">,</span> <span class="n">pos2</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">QskIntervalF</span><span class="p">(</span> <span class="n">pos1</span><span class="p">,</span> <span class="n">pos2</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskProgressBarSkinlet</span><span class="o">::</span><span class="n">QskProgressBarSkinlet</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskSkinlet</span><span class="p">(</span> <span class="n">skin</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setNodeRoles</span><span class="p">(</span> <span class="p">{</span> <span class="n">GrooveRole</span><span class="p">,</span> <span class="n">BarRole</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskProgressBarSkinlet</span><span class="o">::~</span><span class="n">QskProgressBarSkinlet</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskProgressBarSkinlet</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">bar</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskProgressBar</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">Groove</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">extent</span> <span class="o">=</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">extent</span><span class="p">();</span>
+
+        <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">contentsRect</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">rect</span><span class="p">.</span><span class="n">setY</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="n">extent</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">rect</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">extent</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">rect</span><span class="p">.</span><span class="n">setX</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">-</span> <span class="n">extent</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">rect</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">extent</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">Bar</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">bar</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskProgressBar</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="n">barRect</span><span class="p">(</span> <span class="n">bar</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskProgressBarSkinlet</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">switch</span><span class="p">(</span> <span class="n">nodeRole</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">GrooveRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">updateBoxNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">Groove</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">case</span> <span class="n">BarRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">bar</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskProgressBar</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+            <span class="k">return</span> <span class="n">updateBarNode</span><span class="p">(</span> <span class="n">bar</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskProgressBarSkinlet</span><span class="o">::</span><span class="n">updateBarNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskProgressBar</span><span class="o">*</span> <span class="n">bar</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">subControl</span> <span class="o">=</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">Bar</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">gradient</span> <span class="o">=</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">gradientHint</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">gradient</span><span class="p">.</span><span class="n">isVisible</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="n">gradient</span><span class="p">.</span><span class="n">setOrientation</span><span class="p">(</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">gradient</span><span class="p">.</span><span class="n">isMonochrome</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">intv</span> <span class="o">=</span> <span class="n">qskBarInterval</span><span class="p">(</span> <span class="n">bar</span> <span class="p">);</span>
+        <span class="n">gradient</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">.</span><span class="n">extracted</span><span class="p">(</span> <span class="n">intv</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">(),</span> <span class="n">intv</span><span class="p">.</span><span class="n">upperBound</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="o">||</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">layoutMirroring</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">gradient</span><span class="p">.</span><span class="n">reverse</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">updateBoxNode</span><span class="p">(</span> <span class="n">bar</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskProgressBarSkinlet</span><span class="o">::</span><span class="n">barRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskProgressBar</span><span class="o">*</span> <span class="n">bar</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">subControl</span> <span class="o">=</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">Groove</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">borderMetrics</span> <span class="o">=</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">boxBorderMetricsHint</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+
+    <span class="k">auto</span> <span class="n">m</span> <span class="o">=</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">paddingHint</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+    <span class="n">m</span> <span class="o">+=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">borderMetrics</span><span class="p">.</span><span class="n">toAbsolute</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">).</span><span class="n">widths</span><span class="p">();</span>
+
+    <span class="n">rect</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">marginsRemoved</span><span class="p">(</span> <span class="n">m</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">intv</span> <span class="o">=</span> <span class="n">qskBarInterval</span><span class="p">(</span> <span class="n">bar</span> <span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">w</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+
+        <span class="n">rect</span><span class="p">.</span><span class="n">setRight</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">+</span> <span class="n">intv</span><span class="p">.</span><span class="n">upperBound</span><span class="p">()</span> <span class="o">*</span> <span class="n">w</span> <span class="p">);</span>
+        <span class="n">rect</span><span class="p">.</span><span class="n">setLeft</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">+</span> <span class="n">intv</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">()</span> <span class="o">*</span> <span class="n">w</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">h</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+        <span class="n">rect</span><span class="p">.</span><span class="n">setTop</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="n">h</span> <span class="o">*</span> <span class="n">intv</span><span class="p">.</span><span class="n">upperBound</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">rect</span><span class="p">.</span><span class="n">setBottom</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="n">h</span> <span class="o">*</span> <span class="n">intv</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">rect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskProgressBarSkinlet</span><span class="o">::</span><span class="n">sizeHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">bar</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskProgressBar</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">extent</span> <span class="o">=</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">extent</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">bar</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">extent</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">extent</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskProgressBarSkinlet.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

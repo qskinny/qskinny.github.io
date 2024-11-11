@@ -1,0 +1,148 @@
+<h1 id="commonqskglobalh">common/QskGlobal.h</h1>
+
+<h2 id="defines">Defines</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskGlobal_8h/#define-qsk_version">QSK_VERSION</a></strong></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskGlobal_8h/#define-qsk_version_str">QSK_VERSION_STR</a></strong></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskGlobal_8h/#define-qsk_qt_private_begin">QSK_QT_PRIVATE_BEGIN</a></strong></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskGlobal_8h/#define-qsk_qt_private_end">QSK_QT_PRIVATE_END</a></strong></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskGlobal_8h/#define-qskasconst">qskAsConst</a></strong></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskGlobal_8h/#define-qsk_fallthrough">QSK_FALLTHROUGH</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="macro-documentation">Macro Documentation</h2>
+
+<h3 id="define-qsk_version">define QSK_VERSION</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define QSK_VERSION 0x000001
+</span></code></pre></div></div>
+
+<h3 id="define-qsk_version_str">define QSK_VERSION_STR</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define QSK_VERSION_STR "0.0.1"
+</span></code></pre></div></div>
+
+<h3 id="define-qsk_qt_private_begin">define QSK_QT_PRIVATE_BEGIN</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define QSK_QT_PRIVATE_BEGIN     QT_WARNING_PUSH \
+    QT_WARNING_DISABLE_GCC("-Wpragmas") \
+    QT_WARNING_DISABLE_GCC("-Wpedantic") \
+    QT_WARNING_DISABLE_GCC("-Wsuggest-override") \
+    QT_WARNING_DISABLE_GCC("-Wsuggest-final-types") \
+    QT_WARNING_DISABLE_GCC("-Wsuggest-final-methods")
+</span></code></pre></div></div>
+
+<h3 id="define-qsk_qt_private_end">define QSK_QT_PRIVATE_END</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define QSK_QT_PRIVATE_END     QT_WARNING_POP
+</span></code></pre></div></div>
+
+<h3 id="define-qskasconst">define qskAsConst</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define qskAsConst qAsConst
+</span></code></pre></div></div>
+
+<h3 id="define-qsk_fallthrough">define QSK_FALLTHROUGH</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define QSK_FALLTHROUGH 
+</span></code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_GLOBAL_H
+#define QSK_GLOBAL_H
+</span>
+<span class="cp">#include &lt;qcompilerdetection.h&gt;
+#include &lt;qglobal.h&gt;
+</span>
+<span class="c1">// QSK_VERSION is (major &lt;&lt; 16) + (minor &lt;&lt; 8) + patch.</span>
+
+<span class="cp">#define QSK_VERSION       0x000001
+#define QSK_VERSION_STR   "0.0.1"
+</span>
+<span class="cp">#ifdef QSK_DLL
+</span>
+<span class="cp">#if defined( QSK_MAKEDLL )     // create a DLL library
+#define QSK_EXPORT Q_DECL_EXPORT
+#else                        // use a DLL library
+#define QSK_EXPORT Q_DECL_IMPORT
+#endif
+</span>
+<span class="cp">#endif // QSK_DLL
+</span>
+<span class="cp">#ifndef QSK_EXPORT
+#define QSK_EXPORT
+#endif
+</span>
+<span class="cp">#define QSK_QT_PRIVATE_BEGIN \
+    QT_WARNING_PUSH \
+    QT_WARNING_DISABLE_GCC("-Wpragmas") \
+    QT_WARNING_DISABLE_GCC("-Wpedantic") \
+    QT_WARNING_DISABLE_GCC("-Wsuggest-override") \
+    QT_WARNING_DISABLE_GCC("-Wsuggest-final-types") \
+    QT_WARNING_DISABLE_GCC("-Wsuggest-final-methods")
+</span>
+<span class="cp">#define QSK_QT_PRIVATE_END \
+    QT_WARNING_POP
+</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 7, 0 )
+</span>
+<span class="cp">#define qskAsConst qAsConst
+</span>
+<span class="cp">#else
+</span>
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">struct</span> <span class="nc">QskAddConst</span> <span class="p">{</span> <span class="k">typedef</span> <span class="k">const</span> <span class="n">T</span> <span class="n">Type</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">constexpr</span> <span class="k">typename</span> <span class="n">QskAddConst</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">Type</span><span class="o">&amp;</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">t</span> <span class="p">)</span> <span class="k">noexcept</span> <span class="p">{</span> <span class="k">return</span> <span class="n">t</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="kt">void</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;&amp;</span> <span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+
+<span class="cp">#endif
+</span>
+<span class="cp">#ifdef Q_FALLTHROUGH
+#define QSK_FALLTHROUGH Q_FALLTHROUGH
+#else
+#define QSK_FALLTHROUGH
+#endif
+</span>
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

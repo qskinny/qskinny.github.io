@@ -1,0 +1,277 @@
+<h1 id="dialogsqskdialogwindowcpp">dialogs/QskDialogWindow.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskDialogWindow.h"
+#include "QskDialogButtonBox.h"
+#include "QskLinearBox.h"
+#include "QskPushButton.h"
+#include "QskQuick.h"
+</span>
+<span class="cp">#include &lt;qeventloop.h&gt;
+#include &lt;qpointer.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskDialogWindow</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">result</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Rejected</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">inDone</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">NoAction</span><span class="p">;</span>
+
+    <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QQuickItem</span> <span class="o">&gt;</span> <span class="n">dialogContentItem</span><span class="p">;</span>
+    <span class="n">QskDialogButtonBox</span><span class="o">*</span> <span class="n">buttonBox</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="n">QskLinearBox</span><span class="o">*</span> <span class="n">layoutBox</span><span class="p">;</span>
+
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="n">result</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">inDone</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// flag blocking recursive done calls</span>
+<span class="p">};</span>
+
+<span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">QskDialogWindow</span><span class="p">(</span> <span class="n">QWindow</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setFlags</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Dialog</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">WindowTitleHint</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">WindowCloseButtonHint</span> <span class="o">|</span>
+        <span class="n">Qt</span><span class="o">::</span><span class="n">WindowSystemMenuHint</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">WindowContextHelpButtonHint</span> <span class="p">);</span>
+
+    <span class="c1">// doing the layout manually instead ???</span>
+    <span class="n">setAutoLayoutChildren</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutBox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskLinearBox</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span><span class="p">,</span> <span class="n">contentItem</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutBox</span><span class="o">-&gt;</span><span class="n">setMargins</span><span class="p">(</span> <span class="mi">5</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskDialogWindow</span><span class="o">::~</span><span class="n">QskDialogWindow</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">setDialogActions</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="n">actions</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">actions</span> <span class="o">==</span> <span class="n">actions</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">actions</span> <span class="o">=</span> <span class="n">actions</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">actions</span> <span class="o">==</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">NoAction</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">;</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">=</span> <span class="n">createButtonBox</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutBox</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">);</span>
+
+                <span class="n">connect</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogButtonBox</span><span class="o">::</span><span class="n">accepted</span><span class="p">,</span>
+                    <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">accept</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">UniqueConnection</span> <span class="p">);</span>
+
+                <span class="n">connect</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogButtonBox</span><span class="o">::</span><span class="n">rejected</span><span class="p">,</span>
+                    <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">reject</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">UniqueConnection</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setActions</span><span class="p">(</span> <span class="n">actions</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">dialogActions</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">actions</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">NoAction</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">setDialogContentItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">dialogContentItem</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">dialogContentItem</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutBox</span><span class="o">-&gt;</span><span class="n">removeAt</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">dialogContentItem</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutBox</span> <span class="p">)</span>
+            <span class="k">delete</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">dialogContentItem</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">dialogContentItem</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">layoutBox</span><span class="o">-&gt;</span><span class="n">insertItem</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="n">item</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">dialogContentItem</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">dialogContentItem</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">setDefaultButton</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">button</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">qskIsAncestorOf</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">,</span> <span class="n">button</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+<span class="cp">#if defined( QT_DEBUG )
+</span>        <span class="n">qWarning</span><span class="p">(</span> <span class="s">"Only buttons of the QskDialogButtonBox can be the default button."</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setDefaultButton</span><span class="p">(</span> <span class="n">button</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskPushButton</span><span class="o">*</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">defaultButton</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">defaultButton</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">setDefaultDialogAction</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">action</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">button</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+        <span class="n">button</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">button</span><span class="p">(</span> <span class="n">action</span> <span class="p">);</span>
+
+    <span class="n">setDefaultButton</span><span class="p">(</span> <span class="n">button</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskDialogButtonBox</span><span class="o">*</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">buttonBox</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QskDialogButtonBox</span><span class="o">*</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">buttonBox</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">clickedAction</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">clickedAction</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">NoAction</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">setResult</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="n">result</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">result</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">exec</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">deleteOnClose</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">deleteOnClose</span><span class="p">();</span>
+    <span class="n">setDeleteOnClose</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="n">show</span><span class="p">();</span>
+
+    <span class="n">QEventLoop</span> <span class="n">eventLoop</span><span class="p">;</span>
+
+    <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">finished</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">eventLoop</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QEventLoop</span><span class="o">::</span><span class="n">quit</span> <span class="p">);</span>
+    <span class="p">(</span> <span class="kt">void</span> <span class="p">)</span> <span class="n">eventLoop</span><span class="p">.</span><span class="n">exec</span><span class="p">(</span> <span class="n">QEventLoop</span><span class="o">::</span><span class="n">DialogExec</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="n">result</span> <span class="o">=</span>
+        <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">result</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">deleteOnClose</span> <span class="p">)</span>
+        <span class="k">delete</span> <span class="k">this</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">done</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="n">result</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">;</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">finished</span><span class="p">(</span> <span class="n">result</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">result</span> <span class="o">==</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Accepted</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">accepted</span><span class="p">();</span>
+    <span class="k">else</span>
+        <span class="n">Q_EMIT</span> <span class="n">rejected</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QObject</span> <span class="o">&gt;</span> <span class="n">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inDone</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="n">close</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">that</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// we might be deleted during close</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inDone</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">accept</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">done</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Accepted</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">reject</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">done</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Rejected</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">Close</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inDone</span> <span class="p">)</span>
+            <span class="n">done</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Rejected</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">keyPressEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">&amp;&amp;</span>
+        <span class="n">QskDialogButtonBox</span><span class="o">::</span><span class="n">isDefaultButtonKeyEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">defaultButton</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">button</span> <span class="o">&amp;&amp;</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">isEnabled</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">button</span><span class="o">-&gt;</span><span class="n">click</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">matches</span><span class="p">(</span> <span class="n">QKeySequence</span><span class="o">::</span><span class="n">Cancel</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// using shortcuts instead ???</span>
+
+        <span class="n">reject</span><span class="p">();</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">keyPressEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskDialogButtonBox</span><span class="o">*</span> <span class="n">QskDialogWindow</span><span class="o">::</span><span class="n">createButtonBox</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">QskDialogButtonBox</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskDialogWindow.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

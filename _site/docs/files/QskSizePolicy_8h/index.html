@@ -1,0 +1,241 @@
+<h1 id="commonqsksizepolicyh">common/QskSizePolicy.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskSizePolicy/">QskSizePolicy</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskSizePolicy_8h/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskSizePolicy &amp; policy)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskSizePolicy_8h/#function-q_declare_typeinfo">Q_DECLARE_TYPEINFO</a></strong>(QskSizePolicy , Q_MOVABLE_TYPE )</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskSizePolicy</span> <span class="o">&amp;</span> <span class="n">policy</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-q_declare_typeinfo">function Q_DECLARE_TYPEINFO</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span>
+    <span class="n">QskSizePolicy</span> <span class="p">,</span>
+    <span class="n">Q_MOVABLE_TYPE</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_SIZE_POLICY_H
+#define QSK_SIZE_POLICY_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include &lt;qnamespace.h&gt;
+#include &lt;qmetatype.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskSizePolicy</span>
+<span class="p">{</span>
+    <span class="n">Q_GADGET</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">Policy</span> <span class="n">horizontalPolicy</span>
+        <span class="n">READ</span> <span class="n">horizontalPolicy</span> <span class="n">WRITE</span> <span class="n">setHorizontalPolicy</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">Policy</span> <span class="n">verticalPolicy</span>
+        <span class="n">READ</span> <span class="n">verticalPolicy</span> <span class="n">WRITE</span> <span class="n">setVerticalPolicy</span> <span class="p">)</span>
+
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">Flag</span>
+    <span class="p">{</span>
+        <span class="n">GrowFlag</span>        <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">ExpandFlag</span>      <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">ShrinkFlag</span>      <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">IgnoreFlag</span>      <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">ConstrainedFlag</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span>
+    <span class="p">};</span>
+
+    <span class="k">enum</span> <span class="n">Policy</span>
+    <span class="p">{</span>
+        <span class="n">Fixed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+
+        <span class="n">Minimum</span>          <span class="o">=</span> <span class="n">GrowFlag</span><span class="p">,</span>
+        <span class="n">Maximum</span>          <span class="o">=</span> <span class="n">ShrinkFlag</span><span class="p">,</span>
+        <span class="n">Preferred</span>        <span class="o">=</span> <span class="n">GrowFlag</span> <span class="o">|</span> <span class="n">ShrinkFlag</span><span class="p">,</span>
+        <span class="n">MinimumExpanding</span> <span class="o">=</span> <span class="n">GrowFlag</span> <span class="o">|</span> <span class="n">ExpandFlag</span><span class="p">,</span>
+        <span class="n">Expanding</span>        <span class="o">=</span> <span class="n">GrowFlag</span> <span class="o">|</span> <span class="n">ShrinkFlag</span> <span class="o">|</span> <span class="n">ExpandFlag</span><span class="p">,</span>
+
+        <span class="n">Ignored</span>          <span class="o">=</span> <span class="n">ShrinkFlag</span> <span class="o">|</span> <span class="n">GrowFlag</span> <span class="o">|</span> <span class="n">IgnoreFlag</span><span class="p">,</span>
+
+        <span class="n">Constrained</span>                 <span class="o">=</span> <span class="n">ConstrainedFlag</span><span class="p">,</span>
+
+        <span class="n">ConstrainedMinimum</span>          <span class="o">=</span> <span class="n">ConstrainedFlag</span> <span class="o">|</span> <span class="n">Minimum</span><span class="p">,</span>
+        <span class="n">ConstrainedMaximum</span>          <span class="o">=</span> <span class="n">ConstrainedFlag</span> <span class="o">|</span> <span class="n">Maximum</span><span class="p">,</span>
+        <span class="n">ConstrainedPreferred</span>        <span class="o">=</span> <span class="n">ConstrainedFlag</span> <span class="o">|</span> <span class="n">Preferred</span><span class="p">,</span>
+        <span class="n">ConstrainedMinimumExpanding</span> <span class="o">=</span> <span class="n">ConstrainedFlag</span> <span class="o">|</span> <span class="n">MinimumExpanding</span><span class="p">,</span>
+        <span class="n">ConstrainedExpanding</span>        <span class="o">=</span> <span class="n">ConstrainedFlag</span> <span class="o">|</span> <span class="n">Expanding</span>
+    <span class="p">};</span>
+
+    <span class="k">enum</span> <span class="n">ConstraintType</span>
+    <span class="p">{</span>
+        <span class="n">Unconstrained</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+
+        <span class="n">WidthForHeight</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">HeightForWidth</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">Flag</span> <span class="p">)</span>
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">Policy</span> <span class="p">)</span>
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">ConstraintType</span> <span class="p">)</span>
+
+    <span class="k">constexpr</span> <span class="n">QskSizePolicy</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="n">QskSizePolicy</span><span class="p">(</span> <span class="n">Policy</span> <span class="n">horizontalPolicy</span><span class="p">,</span> <span class="n">Policy</span> <span class="n">verticalPolicy</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSizePolicy</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSizePolicy</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setHorizontalPolicy</span><span class="p">(</span> <span class="n">Policy</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="n">Policy</span> <span class="n">horizontalPolicy</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setVerticalPolicy</span><span class="p">(</span> <span class="n">Policy</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="n">Policy</span> <span class="n">verticalPolicy</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span><span class="p">,</span> <span class="n">Policy</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="n">Policy</span> <span class="n">policy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="n">ConstraintType</span> <span class="n">constraintType</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">isConstrained</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">effectiveSizeHintType</span><span class="p">(</span>
+        <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="n">QskSizePolicy</span> <span class="n">transposed</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">transpose</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">m_horizontalPolicy</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">m_verticalPolicy</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">QskSizePolicy</span><span class="p">()</span> <span class="k">noexcept</span>
+    <span class="o">:</span> <span class="n">m_horizontalPolicy</span><span class="p">(</span> <span class="n">Ignored</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_verticalPolicy</span><span class="p">(</span> <span class="n">Ignored</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">QskSizePolicy</span><span class="p">(</span>
+        <span class="n">Policy</span> <span class="n">horizontalPolicy</span><span class="p">,</span> <span class="n">Policy</span> <span class="n">verticalPolicy</span> <span class="p">)</span> <span class="k">noexcept</span>
+    <span class="o">:</span> <span class="n">m_horizontalPolicy</span><span class="p">(</span> <span class="n">horizontalPolicy</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_verticalPolicy</span><span class="p">(</span> <span class="n">verticalPolicy</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="k">operator</span><span class="o">==</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSizePolicy</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_horizontalPolicy</span> <span class="o">==</span> <span class="n">m_horizontalPolicy</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_verticalPolicy</span> <span class="o">==</span> <span class="n">m_verticalPolicy</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="k">operator</span><span class="o">!=</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSizePolicy</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span> <span class="o">==</span> <span class="n">other</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">setHorizontalPolicy</span><span class="p">(</span> <span class="n">Policy</span> <span class="n">policy</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_horizontalPolicy</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">policy</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">horizontalPolicy</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Policy</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_horizontalPolicy</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">setVerticalPolicy</span><span class="p">(</span> <span class="n">Policy</span> <span class="n">policy</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_verticalPolicy</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">policy</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">verticalPolicy</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Policy</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_verticalPolicy</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">policy</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Policy</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span> <span class="o">?</span> <span class="n">m_horizontalPolicy</span> <span class="o">:</span> <span class="n">m_verticalPolicy</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">setPolicy</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">Policy</span> <span class="n">policy</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="n">m_horizontalPolicy</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">policy</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">m_verticalPolicy</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">policy</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">isConstrained</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="n">policy</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="n">ConstrainedFlag</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskSizePolicy</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">transposed</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QskSizePolicy</span><span class="p">(</span> <span class="n">verticalPolicy</span><span class="p">(),</span> <span class="n">horizontalPolicy</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span><span class="k">class</span> <span class="nc">QDebug</span><span class="p">;</span>
+<span class="n">QSK_EXPORT</span> <span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskSizePolicy</span><span class="o">&amp;</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+<span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="p">,</span> <span class="n">Q_MOVABLE_TYPE</span> <span class="p">);</span>
+<span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskSizePolicy</span> <span class="p">)</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,216 @@
+<h1 id="controlsqskinputgrabbercpp">controls/QskInputGrabber.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskInputGrabber.h"
+#include "QskWindow.h"
+#include "QskEvent.h"
+</span>
+<span class="cp">#include &lt;qpointer.h&gt;
+</span>
+
+<span class="cp">#include &lt;private/qquickitem_p.h&gt;
+#include &lt;private/qquickitemchangelistener_p.h&gt;
+</span>
+
+<span class="k">class</span> <span class="nc">QskInputGrabber</span><span class="o">::</span><span class="n">PrivateData</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QQuickItemChangeListener</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">(</span> <span class="n">QskInputGrabber</span><span class="o">*</span> <span class="n">grabber</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">m_grabber</span><span class="p">(</span> <span class="n">grabber</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QRectF</span> <span class="n">grabberRect</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">itemBelow</span> <span class="o">&amp;&amp;</span> <span class="n">itemAbove</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">itemBelow</span><span class="o">-&gt;</span><span class="n">mapToItem</span><span class="p">(</span> <span class="n">itemAbove</span><span class="p">,</span> <span class="n">QPointF</span><span class="p">()</span> <span class="p">);</span>
+            <span class="k">return</span> <span class="n">QRectF</span><span class="p">(</span> <span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">itemBelow</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">(),</span> <span class="n">itemBelow</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">QRectF</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">enableListener</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+        <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">ChangeTypes</span> <span class="n">types</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">addItemChangeListener</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">types</span> <span class="p">);</span>
+            <span class="k">else</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">removeItemChangeListener</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">types</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setup</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">newItemBelow</span> <span class="o">=</span> <span class="n">item</span> <span class="o">?</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">parentItem</span><span class="p">()</span> <span class="o">:</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">newItemAbove</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">newItemBelow</span> <span class="o">!=</span> <span class="n">itemBelow</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">changeTypes</span> <span class="o">=</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">Geometry</span><span class="p">;</span>
+
+            <span class="n">enableListener</span><span class="p">(</span> <span class="n">itemBelow</span><span class="p">,</span> <span class="n">changeTypes</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+            <span class="n">enableListener</span><span class="p">(</span> <span class="n">newItemBelow</span><span class="p">,</span> <span class="n">changeTypes</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+
+            <span class="n">itemBelow</span> <span class="o">=</span> <span class="n">newItemBelow</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">newItemAbove</span> <span class="o">!=</span> <span class="n">itemAbove</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">changeTypes</span> <span class="o">=</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">Geometry</span> <span class="o">|</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">Parent</span><span class="p">;</span>
+
+            <span class="n">enableListener</span><span class="p">(</span> <span class="n">itemAbove</span><span class="p">,</span> <span class="n">changeTypes</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+            <span class="n">enableListener</span><span class="p">(</span> <span class="n">newItemAbove</span><span class="p">,</span> <span class="n">changeTypes</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+
+            <span class="n">itemAbove</span> <span class="o">=</span> <span class="n">newItemAbove</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+  <span class="nl">private:</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 8, 0 )
+</span>    <span class="kt">void</span> <span class="n">itemGeometryChanged</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+        <span class="n">QQuickGeometryChange</span> <span class="n">change</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span>
+    <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">doUpdate</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="n">itemAbove</span> <span class="p">)</span>
+            <span class="n">doUpdate</span> <span class="o">=</span> <span class="n">change</span><span class="p">.</span><span class="n">positionChange</span><span class="p">();</span>
+        <span class="k">else</span>
+            <span class="n">doUpdate</span> <span class="o">=</span> <span class="n">change</span><span class="p">.</span><span class="n">sizeChange</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">doUpdate</span> <span class="p">)</span>
+            <span class="n">m_grabber</span><span class="o">-&gt;</span><span class="n">updateGeometry</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="cp">#else
+</span>    <span class="kt">void</span> <span class="n">itemGeometryChanged</span><span class="p">(</span>
+        <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">newRect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">oldRect</span> <span class="p">)</span> <span class="k">override</span>
+    <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">doUpdate</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="n">itemAbove</span> <span class="p">)</span>
+            <span class="n">doUpdate</span> <span class="o">=</span> <span class="n">newRect</span><span class="p">.</span><span class="n">topLeft</span><span class="p">()</span> <span class="o">!=</span> <span class="n">oldRect</span><span class="p">.</span><span class="n">topLeft</span><span class="p">();</span>
+        <span class="k">else</span>
+            <span class="n">doUpdate</span> <span class="o">=</span> <span class="n">newRect</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">!=</span> <span class="n">oldRect</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">doUpdate</span> <span class="p">)</span>
+            <span class="n">m_grabber</span><span class="o">-&gt;</span><span class="n">updateGeometry</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="cp">#endif
+</span>
+    <span class="kt">void</span> <span class="n">itemParentChanged</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parentItem</span> <span class="p">)</span> <span class="k">override</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="n">m_grabber</span> <span class="o">&amp;&amp;</span> <span class="n">parentItem</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setup</span><span class="p">(</span> <span class="n">parentItem</span> <span class="p">);</span>
+            <span class="n">m_grabber</span><span class="o">-&gt;</span><span class="n">updateGeometry</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">QskInputGrabber</span><span class="o">*</span> <span class="n">m_grabber</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QQuickItem</span> <span class="o">&gt;</span> <span class="n">itemAbove</span><span class="p">;</span>
+    <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QQuickItem</span> <span class="o">&gt;</span> <span class="n">itemBelow</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskInputGrabber</span><span class="o">::</span><span class="n">QskInputGrabber</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setAcceptedMouseButtons</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AllButtons</span> <span class="p">);</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 10, 0 )
+</span>    <span class="n">setAcceptTouchEvents</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>    <span class="n">setAcceptHoverEvents</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="n">setTransparentForPositioner</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="n">setFlag</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemHasContents</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">setup</span><span class="p">(</span> <span class="n">parent</span> <span class="p">);</span>
+    <span class="n">updateGeometry</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskInputGrabber</span><span class="o">::~</span><span class="n">QskInputGrabber</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">setup</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskInputGrabber</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">doBlock</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseMove</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonRelease</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">mouseEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+            <span class="n">doBlock</span> <span class="o">=</span> <span class="n">isBlocking</span><span class="p">(</span> <span class="n">qskMousePosition</span><span class="p">(</span> <span class="n">mouseEvent</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">Wheel</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">wheelEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QWheelEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+            <span class="n">doBlock</span> <span class="o">=</span> <span class="n">isBlocking</span><span class="p">(</span> <span class="n">qskWheelPosition</span><span class="p">(</span> <span class="n">wheelEvent</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">HoverEnter</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">HoverLeave</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">ev</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QHoverEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+            <span class="n">doBlock</span> <span class="o">=</span> <span class="n">isBlocking</span><span class="p">(</span> <span class="n">qskHoverPosition</span><span class="p">(</span> <span class="n">ev</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">doBlock</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">event</span><span class="o">-&gt;</span><span class="n">accept</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">w</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="n">QskWindow</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">window</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">w</span><span class="o">-&gt;</span><span class="n">setEventAcceptance</span><span class="p">(</span> <span class="n">QskWindow</span><span class="o">::</span><span class="n">EventPropagationStopped</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskInputGrabber</span><span class="o">::</span><span class="n">isBlocking</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">pos</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">parentItem</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="o">!</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">contains</span><span class="p">(</span> <span class="n">position</span><span class="p">()</span> <span class="o">+</span> <span class="n">pos</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskInputGrabber</span><span class="o">::</span><span class="n">grabberRect</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">grabberRect</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputGrabber</span><span class="o">::</span><span class="n">updateGeometry</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">grabberRect</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">rect</span> <span class="o">!=</span> <span class="n">geometry</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">setGeometry</span><span class="p">(</span> <span class="n">rect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskInputGrabber.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

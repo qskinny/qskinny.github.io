@@ -1,0 +1,186 @@
+<h1 id="controlsqskdirtyitemfiltercpp">controls/QskDirtyItemFilter.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskDirtyItemFilter_8cpp/#function-qskisupdateblocked">qskIsUpdateBlocked</a></strong>(const QQuickItem * item)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskDirtyItemFilter_8cpp/#function-qskblockdirty">qskBlockDirty</a></strong>(QQuickItem * item, bool on)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskisupdateblocked">function qskIsUpdateBlocked</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskIsUpdateBlocked</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskblockdirty">function qskBlockDirty</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskBlockDirty</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">on</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskDirtyItemFilter.h"
+#include "QskQuickItem.h"
+</span>
+
+<span class="cp">#include &lt;private/qquickitem_p.h&gt;
+#include &lt;private/qquickwindow_p.h&gt;
+</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskIsUpdateBlocked</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">isVisible</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">qskItem</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskQuickItem</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">qskItem</span><span class="o">-&gt;</span><span class="n">testUpdateFlag</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">DeferredUpdate</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="c">#if 0
+    /*
+        Blocking items, that are outside the window would be easy,
+        but we have not yet found a performant way to send update notifications
+        when an item enters/leaves the window. TODO ...
+     */
+    else if ( const auto control = qskControlCast( item ) )
+    {
+        const QRectF itemRect( item-&gt;mapToScene( QPointF() ), item-&gt;size() );
+        const QRectF sceneRect( 0, 0, item-&gt;window()-&gt;width(), item-&gt;window()-&gt;height() );
+
+        return !itemRect.intersects( sceneRect );
+    }
+#endif
+</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskBlockDirty</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsUpdateBlocked</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">componentComplete</span> <span class="o">=</span> <span class="o">!</span><span class="n">on</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">children</span> <span class="o">=</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">childItems</span><span class="p">();</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">child</span> <span class="o">:</span> <span class="n">children</span> <span class="p">)</span>
+        <span class="n">qskBlockDirty</span><span class="p">(</span> <span class="n">child</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">ResetBlockedDirtyJob</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QRunnable</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">ResetBlockedDirtyJob</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_window</span><span class="p">(</span> <span class="n">window</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">run</span><span class="p">()</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="n">qskBlockDirty</span><span class="p">(</span> <span class="n">m_window</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="p">(),</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">m_window</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="n">QskDirtyItemFilter</span><span class="o">::</span><span class="n">QskDirtyItemFilter</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QObject</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskDirtyItemFilter</span><span class="o">::~</span><span class="n">QskDirtyItemFilter</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDirtyItemFilter</span><span class="o">::</span><span class="n">addWindow</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_windows</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">window</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_windows</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span>
+
+    <span class="cm">/*
+        Depending on the configration the scene graph runs on
+        a different thread and we need a direct connection to
+        filter the dirty list in the scene graph thread.
+
+        As QObject::sender() is not valid, when using a direct
+        connection between different threads, we need an
+        extra lambda to pass window as parameter.
+     */</span>
+
+    <span class="n">connect</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickWindow</span><span class="o">::</span><span class="n">beforeSynchronizing</span><span class="p">,</span>
+        <span class="n">window</span><span class="p">,</span> <span class="p">[</span> <span class="k">this</span><span class="p">,</span> <span class="n">window</span> <span class="p">]</span> <span class="p">{</span> <span class="n">beforeSynchronizing</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span> <span class="p">},</span>
+        <span class="n">Qt</span><span class="o">::</span><span class="n">DirectConnection</span> <span class="p">);</span>
+
+    <span class="n">connect</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QObject</span><span class="o">::</span><span class="n">destroyed</span><span class="p">,</span>
+        <span class="k">this</span><span class="p">,</span> <span class="p">[</span> <span class="k">this</span><span class="p">,</span> <span class="n">window</span> <span class="p">]</span> <span class="p">{</span> <span class="n">m_windows</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDirtyItemFilter</span><span class="o">::</span><span class="n">beforeSynchronizing</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">filterDirtyList</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="n">qskIsUpdateBlocked</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">QQuickWindowPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">window</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">renderer</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            In this specific initial situation QQuickWindow updates
+            the dirtyList after emitting "beforeSynchronizing".
+            So we need a special hack setting/resetting componentComplete
+            to avoid having all items in the dirtyList.
+         */</span>
+        <span class="n">qskBlockDirty</span><span class="p">(</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="p">(),</span> <span class="nb">true</span> <span class="p">);</span>
+
+        <span class="n">window</span><span class="o">-&gt;</span><span class="n">scheduleRenderJob</span><span class="p">(</span> <span class="k">new</span> <span class="n">ResetBlockedDirtyJob</span><span class="p">(</span> <span class="n">window</span> <span class="p">),</span>
+            <span class="n">QQuickWindow</span><span class="o">::</span><span class="n">AfterSynchronizingStage</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDirtyItemFilter</span><span class="o">::</span><span class="n">filterDirtyList</span><span class="p">(</span>
+    <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span> <span class="kt">bool</span> <span class="p">(</span> <span class="o">*</span><span class="n">isBlocked</span> <span class="p">)(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">window</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">QQuickWindowPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">dirtyItemList</span><span class="p">;</span> <span class="n">item</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">nextItem</span> <span class="o">=</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">nextDirtyItem</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">isBlocked</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">removeFromDirtyList</span><span class="p">();</span>
+
+        <span class="n">item</span> <span class="o">=</span> <span class="n">nextItem</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

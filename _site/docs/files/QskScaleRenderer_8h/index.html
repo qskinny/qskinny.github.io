@@ -1,0 +1,95 @@
+<h1 id="nodesqskscalerendererh">nodes/QskScaleRenderer.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskScaleRenderer/">QskScaleRenderer</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_SCALE_RENDERER_H
+#define QSK_SCALE_RENDERER_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include "QskIntervalF.h"
+#include "QskScaleTickmarks.h"
+#include "QskTextColors.h"
+#include "QskColorFilter.h"
+</span>
+<span class="cp">#include &lt;qnamespace.h&gt;
+#include &lt;qfont.h&gt;
+#include &lt;qcolor.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskSkinnable</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSGNode</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QVariant</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QRectF</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskScaleRenderer</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setBoundaries</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setTickmarks</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskScaleTickmarks</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setTickColor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setTickWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setFont</span><span class="p">(</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setTextColors</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextColors</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setColorFilter</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updateScaleNode</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">tickmarksRect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">labelsRect</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="k">virtual</span> <span class="n">QVariant</span> <span class="n">labelAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">pos</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QSizeF</span> <span class="n">boundingLabelSize</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updateTicksNode</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updateLabelsNode</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">ticksRect</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">labelsRect</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">m_orientation</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">;</span>
+
+    <span class="n">QskIntervalF</span> <span class="n">m_boundaries</span><span class="p">;</span>
+    <span class="n">QskScaleTickmarks</span> <span class="n">m_tickmarks</span><span class="p">;</span>
+
+    <span class="n">QColor</span> <span class="n">m_tickColor</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">black</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">m_tickWidth</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+
+    <span class="n">QFont</span> <span class="n">m_font</span><span class="p">;</span>
+    <span class="n">QskTextColors</span> <span class="n">m_textColors</span><span class="p">;</span>
+
+    <span class="n">QskColorFilter</span> <span class="n">m_colorFilter</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

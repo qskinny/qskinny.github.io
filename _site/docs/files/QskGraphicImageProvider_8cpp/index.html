@@ -1,0 +1,164 @@
+<h1 id="graphicqskgraphicimageprovidercpp">graphic/QskGraphicImageProvider.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QSize</td>
+      <td><strong><a href="/docs/files/QskGraphicImageProvider_8cpp/#function-qskgraphicsize">qskGraphicSize</a></strong>(const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; graphic, const QSize &amp; requestedSize, QSize * result)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskgraphicsize">function qskGraphicSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QSize</span> <span class="n">qskGraphicSize</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="n">graphic</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSize</span> <span class="o">&amp;</span> <span class="n">requestedSize</span><span class="p">,</span>
+    <span class="n">QSize</span> <span class="o">*</span> <span class="n">result</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskGraphicImageProvider.h"
+#include "QskGraphic.h"
+#include "QskGraphicProvider.h"
+#include "QskGraphicTextureFactory.h"
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QSize</span> <span class="nf">qskGraphicSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">graphic</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">requestedSize</span><span class="p">,</span> <span class="n">QSize</span><span class="o">*</span> <span class="n">result</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="n">defaultSize</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">.</span><span class="n">defaultSize</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">requestedSize</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">defaultSize</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">requestedSize</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="n">defaultSize</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+        <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span>
+            <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">f</span> <span class="o">*</span> <span class="n">defaultSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">/</span> <span class="n">defaultSize</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+        <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span> <span class="n">f</span> <span class="o">*</span> <span class="n">defaultSize</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span>
+            <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">defaultSize</span><span class="p">.</span><span class="n">toSize</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">result</span> <span class="p">)</span>
+        <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicImageProvider</span><span class="o">::</span><span class="n">QskGraphicImageProvider</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span><span class="p">,</span> <span class="n">ImageType</span> <span class="n">type</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QQuickImageProvider</span><span class="p">(</span> <span class="n">type</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_providerId</span><span class="p">(</span> <span class="n">providerId</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicImageProvider</span><span class="o">::~</span><span class="n">QskGraphicImageProvider</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskGraphicImageProvider</span><span class="o">::</span><span class="n">graphicProviderId</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_providerId</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QImage</span> <span class="n">QskGraphicImageProvider</span><span class="o">::</span><span class="n">requestImage</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">id</span><span class="p">,</span> <span class="n">QSize</span><span class="o">*</span> <span class="n">size</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">requestedSize</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// mutex ???</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// during startup QML layouts need some time to find its</span>
+        <span class="c1">// sizes. To avoid warnings from returning empty images</span>
+        <span class="c1">// we return something.</span>
+
+        <span class="k">static</span> <span class="n">QImage</span> <span class="n">dummy</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">QImage</span><span class="o">::</span><span class="n">Format_ARGB32_Premultiplied</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="n">dummy</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">requestGraphic</span><span class="p">(</span> <span class="n">id</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">graphic</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QImage</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">QSize</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">qskGraphicSize</span><span class="p">(</span> <span class="o">*</span><span class="n">graphic</span><span class="p">,</span> <span class="n">requestedSize</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">graphic</span><span class="o">-&gt;</span><span class="n">toImage</span><span class="p">(</span> <span class="n">sz</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">KeepAspectRatio</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QPixmap</span> <span class="n">QskGraphicImageProvider</span><span class="o">::</span><span class="n">requestPixmap</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">id</span><span class="p">,</span> <span class="n">QSize</span><span class="o">*</span> <span class="n">size</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">requestedSize</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// during startup QML layouts need some time to find its</span>
+        <span class="c1">// sizes. To avoid warnings from returning empty pixmaps</span>
+        <span class="c1">// we return something.</span>
+
+        <span class="k">static</span> <span class="n">QPixmap</span> <span class="n">dummy</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="n">dummy</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">requestGraphic</span><span class="p">(</span> <span class="n">id</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">graphic</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QPixmap</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">QSize</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">qskGraphicSize</span><span class="p">(</span> <span class="o">*</span><span class="n">graphic</span><span class="p">,</span> <span class="n">requestedSize</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">graphic</span><span class="o">-&gt;</span><span class="n">toPixmap</span><span class="p">(</span> <span class="n">sz</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">KeepAspectRatio</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QQuickTextureFactory</span><span class="o">*</span> <span class="n">QskGraphicImageProvider</span><span class="o">::</span><span class="n">requestTexture</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">id</span><span class="p">,</span> <span class="n">QSize</span><span class="o">*</span> <span class="n">size</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">requestedSize</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">requestedSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">requestGraphic</span><span class="p">(</span> <span class="n">id</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">graphic</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">QSize</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">qskGraphicSize</span><span class="p">(</span> <span class="o">*</span><span class="n">graphic</span><span class="p">,</span> <span class="n">requestedSize</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">QskGraphicTextureFactory</span><span class="p">(</span> <span class="o">*</span><span class="n">graphic</span><span class="p">,</span> <span class="n">sz</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QskGraphic</span><span class="o">*</span> <span class="n">QskGraphicImageProvider</span><span class="o">::</span><span class="n">requestGraphic</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">id</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">graphicProvider</span> <span class="o">=</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">graphicProvider</span><span class="p">(</span> <span class="n">m_providerId</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">graphicProvider</span><span class="o">-&gt;</span><span class="n">requestGraphic</span><span class="p">(</span> <span class="n">id</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

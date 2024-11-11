@@ -1,0 +1,154 @@
+<h1 id="graphicqskgraphicpaintenginecpp">graphic/QskGraphicPaintEngine.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a> *</td>
+      <td><strong><a href="/docs/files/QskGraphicPaintEngine_8cpp/#function-qskgraphic">qskGraphic</a></strong>(QskGraphicPaintEngine * engine)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskgraphic">function qskGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QskGraphic</span> <span class="o">*</span> <span class="n">qskGraphic</span><span class="p">(</span>
+    <span class="n">QskGraphicPaintEngine</span> <span class="o">*</span> <span class="n">engine</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskGraphicPaintEngine.h"
+#include "QskGraphic.h"
+</span>
+<span class="cp">#include &lt;qpainterpath.h&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QskGraphic</span><span class="o">*</span> <span class="nf">qskGraphic</span><span class="p">(</span> <span class="n">QskGraphicPaintEngine</span><span class="o">*</span> <span class="n">engine</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">engine</span><span class="o">-&gt;</span><span class="n">isActive</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskGraphic</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">engine</span><span class="o">-&gt;</span><span class="n">paintDevice</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicPaintEngine</span><span class="o">::</span><span class="n">QskGraphicPaintEngine</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">QPaintEngine</span><span class="p">(</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">AllFeatures</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicPaintEngine</span><span class="o">::~</span><span class="n">QskGraphicPaintEngine</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskGraphicPaintEngine</span><span class="o">::</span><span class="n">begin</span><span class="p">(</span> <span class="n">QPaintDevice</span><span class="o">*</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setActive</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskGraphicPaintEngine</span><span class="o">::</span><span class="n">end</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setActive</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QPaintEngine</span><span class="o">::</span><span class="n">Type</span> <span class="n">QskGraphicPaintEngine</span><span class="o">::</span><span class="n">type</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">User</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicPaintEngine</span><span class="o">::</span><span class="n">updateState</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPaintEngineState</span><span class="o">&amp;</span> <span class="n">state</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">qskGraphic</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">graphic</span><span class="o">-&gt;</span><span class="n">updateState</span><span class="p">(</span> <span class="n">state</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicPaintEngine</span><span class="o">::</span><span class="n">drawPath</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPainterPath</span><span class="o">&amp;</span> <span class="n">path</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">qskGraphic</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">graphic</span><span class="o">-&gt;</span><span class="n">drawPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicPaintEngine</span><span class="o">::</span><span class="n">drawPolygon</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPointF</span><span class="o">*</span> <span class="n">points</span><span class="p">,</span> <span class="kt">int</span> <span class="n">pointCount</span><span class="p">,</span> <span class="n">PolygonDrawMode</span> <span class="n">mode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">qskGraphic</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QPainterPath</span> <span class="n">path</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">pointCount</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">path</span><span class="p">.</span><span class="n">moveTo</span><span class="p">(</span> <span class="n">points</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="p">);</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">pointCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+                <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="n">points</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">mode</span> <span class="o">!=</span> <span class="n">PolylineMode</span> <span class="p">)</span>
+                <span class="n">path</span><span class="p">.</span><span class="n">closeSubpath</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">graphic</span><span class="o">-&gt;</span><span class="n">drawPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicPaintEngine</span><span class="o">::</span><span class="n">drawPolygon</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPoint</span><span class="o">*</span> <span class="n">points</span><span class="p">,</span> <span class="kt">int</span> <span class="n">pointCount</span><span class="p">,</span> <span class="n">PolygonDrawMode</span> <span class="n">mode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">qskGraphic</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QPainterPath</span> <span class="n">path</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">pointCount</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">path</span><span class="p">.</span><span class="n">moveTo</span><span class="p">(</span> <span class="n">points</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="p">);</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">pointCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+                <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="n">points</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">mode</span> <span class="o">!=</span> <span class="n">PolylineMode</span> <span class="p">)</span>
+                <span class="n">path</span><span class="p">.</span><span class="n">closeSubpath</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">graphic</span><span class="o">-&gt;</span><span class="n">drawPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicPaintEngine</span><span class="o">::</span><span class="n">drawPixmap</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QPixmap</span><span class="o">&amp;</span> <span class="n">pixmap</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">subRect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">qskGraphic</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">graphic</span><span class="o">-&gt;</span><span class="n">drawPixmap</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">pixmap</span><span class="p">,</span> <span class="n">subRect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicPaintEngine</span><span class="o">::</span><span class="n">drawImage</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QImage</span><span class="o">&amp;</span> <span class="n">image</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">subRect</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImageConversionFlags</span> <span class="n">flags</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">qskGraphic</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">graphic</span><span class="o">-&gt;</span><span class="n">drawImage</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">subRect</span><span class="p">,</span> <span class="n">flags</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicPaintEngine</span><span class="o">::</span><span class="n">drawTextItem</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">position</span><span class="p">,</span> <span class="k">const</span> <span class="n">QTextItem</span><span class="o">&amp;</span> <span class="n">textItem</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// TODO ...</span>
+    <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">drawTextItem</span><span class="p">(</span> <span class="n">position</span><span class="p">,</span> <span class="n">textItem</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

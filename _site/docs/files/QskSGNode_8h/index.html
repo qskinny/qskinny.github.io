@@ -1,0 +1,101 @@
+<h1 id="nodesqsksgnodeh">nodes/QskSGNode.h</h1>
+
+<h2 id="namespaces">Namespaces</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong><a href="/docs/namespaces/namespaceQskSGNode/">QskSGNode</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_SG_NODE_H
+#define QSK_SG_NODE_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include &lt;qsgnode.h&gt;
+</span>
+<span class="k">namespace</span> <span class="n">QskSGNode</span>
+<span class="p">{</span>
+    <span class="k">enum</span> <span class="n">Role</span> <span class="o">:</span> <span class="n">quint8</span>
+    <span class="p">{</span>
+        <span class="n">FirstReservedRole</span> <span class="o">=</span> <span class="mh">0xff</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span>
+
+        <span class="n">DebugRole</span> <span class="o">=</span> <span class="mh">0xff</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">BackgroundRole</span><span class="p">,</span>
+
+        <span class="n">NoRole</span>
+    <span class="p">};</span>
+
+    <span class="kr">inline</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">Flags</span> <span class="n">nodeRoleFlags</span><span class="p">(</span> <span class="n">quint8</span> <span class="n">role</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">Flags</span> <span class="o">&gt;</span><span class="p">(</span> <span class="p">(</span> <span class="n">role</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">Flags</span> <span class="n">flags</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">quint8</span> <span class="o">&gt;</span><span class="p">(</span> <span class="p">(</span> <span class="p">(</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="mh">0x0ffff</span> <span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span> <span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">node</span> <span class="o">?</span> <span class="n">nodeRole</span><span class="p">(</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="p">)</span> <span class="o">:</span> <span class="mh">0xff</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setNodeRole</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">role</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">node</span> <span class="p">)</span>
+            <span class="n">node</span><span class="o">-&gt;</span><span class="n">setFlags</span><span class="p">(</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">|</span> <span class="n">nodeRoleFlags</span><span class="p">(</span> <span class="n">role</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">QSK_EXPORT</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">findChildNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">role</span> <span class="p">);</span>
+
+    <span class="c1">// nodeRoles: sort order</span>
+    <span class="n">QSK_EXPORT</span> <span class="kt">void</span> <span class="n">replaceChildNode</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">quint8</span> <span class="o">&gt;&amp;</span> <span class="n">roles</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">role</span><span class="p">,</span>
+        <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parentNode</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">oldNode</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">newNode</span> <span class="p">);</span>
+
+    <span class="c1">// without child</span>
+    <span class="n">QSK_EXPORT</span> <span class="kt">void</span> <span class="n">removeAllChildNodesAfter</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">child</span> <span class="p">);</span>
+
+    <span class="c1">// including child</span>
+    <span class="n">QSK_EXPORT</span> <span class="kt">void</span> <span class="n">removeAllChildNodesFrom</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">child</span> <span class="p">);</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">Node</span> <span class="p">&gt;</span>
+    <span class="kr">inline</span> <span class="n">Node</span><span class="o">*</span> <span class="n">createNode</span><span class="p">(</span> <span class="n">quint8</span> <span class="n">role</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">();</span>
+        <span class="n">setNodeRole</span><span class="p">(</span> <span class="n">node</span><span class="p">,</span> <span class="n">role</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">Node</span> <span class="p">&gt;</span>
+    <span class="kr">inline</span> <span class="n">Node</span><span class="o">*</span> <span class="n">appendChildNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">role</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="n">createNode</span><span class="o">&lt;</span> <span class="n">Node</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">role</span> <span class="p">);</span>
+        <span class="n">parent</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">node</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

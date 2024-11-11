@@ -1,0 +1,105 @@
+<h1 id="commonqskobjectcounterh">common/QskObjectCounter.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskObjectCounter/">QskObjectCounter</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskObjectCounter_8h/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskObjectCounter &amp; counter)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskObjectCounter</span> <span class="o">&amp;</span> <span class="n">counter</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_OBJECT_COUNTER_H
+#define QSK_OBJECT_COUNTER_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include &lt;memory&gt;
+</span>
+<span class="k">class</span> <span class="nc">QObject</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskObjectCounter</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">ObjectType</span>
+    <span class="p">{</span>
+        <span class="n">Objects</span><span class="p">,</span>
+        <span class="n">Items</span>
+    <span class="p">};</span>
+
+    <span class="n">QskObjectCounter</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">debugAtDestruction</span> <span class="o">=</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskObjectCounter</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">setActive</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">isActive</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">reset</span><span class="p">();</span>
+
+    <span class="kt">int</span> <span class="n">created</span><span class="p">(</span> <span class="n">ObjectType</span> <span class="o">=</span> <span class="n">Objects</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">destroyed</span><span class="p">(</span> <span class="n">ObjectType</span> <span class="o">=</span> <span class="n">Objects</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">current</span><span class="p">(</span> <span class="n">ObjectType</span> <span class="o">=</span> <span class="n">Objects</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">maximum</span><span class="p">(</span> <span class="n">ObjectType</span> <span class="o">=</span> <span class="n">Objects</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">debugStatistics</span><span class="p">(</span> <span class="n">QDebug</span><span class="p">,</span> <span class="n">ObjectType</span> <span class="o">=</span> <span class="n">Objects</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">dump</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+
+<span class="p">};</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="k">class</span> <span class="nc">QDebug</span><span class="p">;</span>
+<span class="n">QSK_EXPORT</span> <span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskObjectCounter</span><span class="o">&amp;</span> <span class="p">);</span>
+
+<span class="cp">#endif
+</span>
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

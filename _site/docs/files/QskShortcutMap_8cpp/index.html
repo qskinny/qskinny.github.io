@@ -1,0 +1,454 @@
+<h1 id="controlsqskshortcutmapcpp">controls/QskShortcutMap.cpp</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskShortcutHandler/">QskShortcutHandler</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QShortcutMap *</td>
+      <td><strong><a href="/docs/files/QskShortcutMap_8cpp/#function-qskshortcutmap">qskShortcutMap</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskShortcutMap_8cpp/#function-qskcontextmatcher">qskContextMatcher</a></strong>(QObject * object, Qt::ShortcutContext context)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskshortcutmap">function qskShortcutMap</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QShortcutMap</span> <span class="o">*</span> <span class="n">qskShortcutMap</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskcontextmatcher">function qskContextMatcher</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">bool</span> <span class="n">qskContextMatcher</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ShortcutContext</span> <span class="n">context</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskShortcutMap.h"
+#include "QskMetaInvokable.h"
+#include "QskQuick.h"
+</span>
+<span class="cp">#include &lt;qkeysequence.h&gt;
+#include &lt;qquickitem.h&gt;
+</span>
+
+<span class="cp">#include &lt;QtGui/private/qguiapplication_p.h&gt;
+</span>
+
+<span class="cp">#include &lt;map&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QShortcutMap</span><span class="o">*</span> <span class="nf">qskShortcutMap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qGuiApp</span> <span class="o">?</span> <span class="o">&amp;</span><span class="n">QGuiApplicationPrivate</span><span class="o">::</span><span class="n">instance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">shortcutMap</span> <span class="o">:</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskShortcutHandler</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskShortcutHandler</span><span class="p">();</span>
+
+    <span class="kt">int</span> <span class="n">insert</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">autoRepeat</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskMetaInvokable</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">remove</span><span class="p">(</span> <span class="kt">int</span> <span class="n">id</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setEnabled</span><span class="p">(</span> <span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setEnabled</span><span class="p">(</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setAutoRepeat</span><span class="p">(</span> <span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">repeat</span> <span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="n">eventFilter</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">invoke</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">cleanUp</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="k">class</span> <span class="nc">InvokeData</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">InvokeData</span><span class="p">()</span>
+            <span class="o">:</span> <span class="n">item</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">receiver</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">invoke</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">that</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">InvokeData</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+            <span class="k">auto</span> <span class="n">object</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QObject</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">receiver</span> <span class="p">);</span>
+
+            <span class="kt">void</span><span class="o">*</span> <span class="n">args</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="nb">nullptr</span> <span class="p">};</span>
+            <span class="n">that</span><span class="o">-&gt;</span><span class="n">invokable</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">QKeySequence</span> <span class="n">sequence</span><span class="p">;</span>
+        <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">receiver</span><span class="p">;</span>
+        <span class="n">QskMetaInvokable</span> <span class="n">invokable</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">InvokeData</span> <span class="o">&gt;</span> <span class="n">m_invokeDataMap</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Q_GLOBAL_STATIC</span><span class="p">(</span> <span class="n">QskShortcutHandler</span><span class="p">,</span> <span class="n">qskShortcutHandler</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="kt">bool</span> <span class="nf">qskContextMatcher</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ShortcutContext</span> <span class="n">context</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">context</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ApplicationShortcut</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">object</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">&amp;&amp;</span> <span class="n">context</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">WindowShortcut</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">QskShortcutMap</span><span class="o">::</span><span class="n">contextMatcher</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">context</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                Unfortunatley there is no way to know about
+                the contextItem without making it the receiver of
+                the following QShortcutEvent. So we have to install
+                an event handler to process and swallow it in QskShortcutHandler.
+             */</span>
+
+            <span class="n">item</span><span class="o">-&gt;</span><span class="n">installEventFilter</span><span class="p">(</span> <span class="n">qskShortcutHandler</span> <span class="p">);</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskShortcutHandler</span><span class="o">::</span><span class="n">QskShortcutHandler</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// to process all sort of shortcut events at the same place</span>
+    <span class="n">installEventFilter</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskShortcutHandler</span><span class="o">::</span><span class="n">insert</span><span class="p">(</span>
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span> <span class="n">sequence</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">autoRepeat</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskMetaInvokable</span><span class="o">&amp;</span> <span class="n">invokable</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">sequence</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskShortcutMap: invalid shortcut key sequence"</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">invokable</span><span class="p">.</span><span class="n">parameterCount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskShortcutMap: invalid slot parameter count"</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">connect</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QObject</span><span class="o">::</span><span class="n">destroyed</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskShortcutHandler</span><span class="o">::</span><span class="n">cleanUp</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">UniqueConnection</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">map</span> <span class="o">=</span> <span class="n">qskShortcutMap</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">!=</span> <span class="n">receiver</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">connect</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QObject</span><span class="o">::</span><span class="n">destroyed</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskShortcutHandler</span><span class="o">::</span><span class="n">cleanUp</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">UniqueConnection</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">id</span> <span class="o">=</span> <span class="n">map</span><span class="o">-&gt;</span><span class="n">addShortcut</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">WindowShortcut</span><span class="p">,</span> <span class="n">qskContextMatcher</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">id</span> <span class="o">=</span> <span class="n">map</span><span class="o">-&gt;</span><span class="n">addShortcut</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ApplicationShortcut</span><span class="p">,</span> <span class="n">qskContextMatcher</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">m_invokeDataMap</span><span class="p">[</span> <span class="n">id</span> <span class="p">];</span>
+
+    <span class="n">data</span><span class="p">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">;</span>
+    <span class="n">data</span><span class="p">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+    <span class="n">data</span><span class="p">.</span><span class="n">receiver</span> <span class="o">=</span> <span class="n">receiver</span><span class="p">;</span>
+    <span class="n">data</span><span class="p">.</span><span class="n">invokable</span> <span class="o">=</span> <span class="n">invokable</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">autoRepeat</span> <span class="p">)</span>
+        <span class="n">setAutoRepeat</span><span class="p">(</span> <span class="n">id</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">id</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskShortcutHandler</span><span class="o">::</span><span class="n">remove</span><span class="p">(</span> <span class="kt">int</span> <span class="n">id</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_invokeDataMap</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">id</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">==</span> <span class="n">m_invokeDataMap</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">map</span> <span class="o">=</span> <span class="n">qskShortcutMap</span><span class="p">();</span>
+    <span class="n">map</span><span class="o">-&gt;</span><span class="n">removeShortcut</span><span class="p">(</span> <span class="n">id</span><span class="p">,</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">item</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">receiver</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">receiver</span><span class="p">;</span>
+
+    <span class="n">m_invokeDataMap</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span> <span class="n">it</span> <span class="p">);</span>
+
+    <span class="cm">/*
+        Finally let's check if we can disconnect
+        from the destroyed signals
+     */</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="n">m_invokeDataMap</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">&amp;&amp;</span> <span class="n">receiver</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">entry</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">item</span> <span class="o">==</span> <span class="n">item</span> <span class="p">)</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">entry</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">receiver</span> <span class="o">==</span> <span class="n">receiver</span> <span class="p">)</span>
+            <span class="n">receiver</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+        <span class="n">item</span><span class="o">-&gt;</span><span class="n">disconnect</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span> <span class="o">&amp;&amp;</span> <span class="n">receiver</span> <span class="o">!=</span> <span class="n">item</span> <span class="p">)</span>
+        <span class="n">receiver</span><span class="o">-&gt;</span><span class="n">disconnect</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskShortcutHandler</span><span class="o">::</span><span class="n">cleanUp</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/*
+        When item != receiver we might remain being connected
+        to destroyed signals we are not interested in anymore. TODO ...
+     */</span>
+    <span class="k">auto</span> <span class="n">map</span> <span class="o">=</span> <span class="n">qskShortcutMap</span><span class="p">();</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_invokeDataMap</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_invokeDataMap</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">item</span> <span class="o">==</span> <span class="n">object</span> <span class="o">||</span> <span class="n">data</span><span class="p">.</span><span class="n">receiver</span> <span class="o">==</span> <span class="n">object</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">map</span> <span class="p">)</span>
+                <span class="n">map</span><span class="o">-&gt;</span><span class="n">removeShortcut</span><span class="p">(</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">,</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+            <span class="n">it</span> <span class="o">=</span> <span class="n">m_invokeDataMap</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span> <span class="n">it</span> <span class="p">);</span>
+
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="o">++</span><span class="n">it</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskShortcutHandler</span><span class="o">::</span><span class="n">setEnabled</span><span class="p">(</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span> <span class="n">sequence</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_invokeDataMap</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+        <span class="n">it</span> <span class="o">!=</span> <span class="n">m_invokeDataMap</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">sequence</span> <span class="o">==</span> <span class="n">sequence</span> <span class="p">)</span>
+            <span class="n">setEnabled</span><span class="p">(</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskShortcutHandler</span><span class="o">::</span><span class="n">setEnabled</span><span class="p">(</span> <span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">enabled</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">map</span> <span class="o">=</span> <span class="n">qskShortcutMap</span><span class="p">();</span>
+    <span class="n">map</span><span class="o">-&gt;</span><span class="n">setShortcutEnabled</span><span class="p">(</span> <span class="n">enabled</span><span class="p">,</span> <span class="n">id</span><span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskShortcutHandler</span><span class="o">::</span><span class="n">setAutoRepeat</span><span class="p">(</span> <span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">repeat</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">map</span> <span class="o">=</span> <span class="n">qskShortcutMap</span><span class="p">();</span>
+    <span class="n">map</span><span class="o">-&gt;</span><span class="n">setShortcutAutoRepeat</span><span class="p">(</span> <span class="n">repeat</span><span class="p">,</span> <span class="n">id</span><span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskShortcutHandler</span><span class="o">::</span><span class="n">eventFilter</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">!=</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">Shortcut</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">object</span> <span class="o">!=</span> <span class="k">this</span> <span class="p">)</span>
+        <span class="n">object</span><span class="o">-&gt;</span><span class="n">removeEventFilter</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QShortcutEvent</span><span class="o">*</span> <span class="n">se</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QShortcutEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+<span class="c">#if 0
+    // do we want to handle this ???
+    if ( se-&gt;isAmbiguous() )
+        ....
+#endif
+</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_invokeDataMap</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">se</span><span class="o">-&gt;</span><span class="n">shortcutId</span><span class="p">()</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_invokeDataMap</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span><span class="o">&amp;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+
+        <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">data</span><span class="p">.</span><span class="n">item</span> <span class="o">==</span> <span class="n">object</span> <span class="p">);</span>
+
+        <span class="n">data</span><span class="p">.</span><span class="n">invoke</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// seems like someone else is also interested in shortcuts</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskShortcutHandler</span><span class="o">::</span><span class="n">invoke</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span> <span class="n">sequence</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">found</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="n">m_invokeDataMap</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span><span class="o">&amp;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">entry</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">item</span> <span class="o">==</span> <span class="n">item</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="n">sequence</span> <span class="o">==</span> <span class="n">sequence</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">data</span><span class="p">.</span><span class="n">invoke</span><span class="p">();</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">found</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskShortcutMap</span><span class="o">::</span><span class="n">addMethod</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span> <span class="n">sequence</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">autoRepeat</span><span class="p">,</span> <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">method</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskShortcutMap: bad receiver for shortcut:"</span> <span class="o">&lt;&lt;</span> <span class="n">sequence</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">qskShortcutHandler</span><span class="o">-&gt;</span><span class="n">insert</span><span class="p">(</span>
+        <span class="n">item</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">autoRepeat</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">qskMetaMethod</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">method</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskShortcutMap</span><span class="o">::</span><span class="n">addFunction</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span> <span class="n">sequence</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">autoRepeat</span><span class="p">,</span> <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="n">function</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">receiver</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+        <span class="p">(</span> <span class="n">function</span><span class="p">.</span><span class="n">functionType</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">MemberFunction</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskShortcutMap: bad receiver for shortcut:"</span> <span class="o">&lt;&lt;</span> <span class="n">sequence</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">qskShortcutHandler</span><span class="o">-&gt;</span><span class="n">insert</span><span class="p">(</span>
+        <span class="n">item</span><span class="p">,</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">autoRepeat</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">function</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskShortcutMap</span><span class="o">::</span><span class="n">invokeCallback</span><span class="p">(</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span> <span class="n">sequence</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">qskShortcutHandler</span><span class="o">-&gt;</span><span class="n">invoke</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">sequence</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskShortcutMap</span><span class="o">::</span><span class="n">invokeCallback</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span> <span class="n">sequence</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">window</span> <span class="o">?</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="p">()</span> <span class="o">:</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">qskShortcutHandler</span><span class="o">-&gt;</span><span class="n">invoke</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">sequence</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskShortcutMap</span><span class="o">::</span><span class="n">invokeCallback</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span> <span class="n">sequence</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskShortcutHandler</span><span class="o">-&gt;</span><span class="n">invoke</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">sequence</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskShortcutMap</span><span class="o">::</span><span class="n">setAutoRepeat</span><span class="p">(</span> <span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskShortcutHandler</span><span class="o">-&gt;</span><span class="n">setAutoRepeat</span><span class="p">(</span> <span class="n">id</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskShortcutMap</span><span class="o">::</span><span class="n">setEnabled</span><span class="p">(</span> <span class="k">const</span> <span class="n">QKeySequence</span><span class="o">&amp;</span> <span class="n">sequence</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskShortcutHandler</span><span class="o">-&gt;</span><span class="n">setEnabled</span><span class="p">(</span> <span class="n">sequence</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskShortcutMap</span><span class="o">::</span><span class="n">setEnabled</span><span class="p">(</span> <span class="kt">int</span> <span class="n">id</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskShortcutHandler</span><span class="o">-&gt;</span><span class="n">setEnabled</span><span class="p">(</span> <span class="n">id</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskShortcutMap</span><span class="o">::</span><span class="n">removeShortcut</span><span class="p">(</span> <span class="kt">int</span> <span class="n">id</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskShortcutHandler</span><span class="o">-&gt;</span><span class="n">remove</span><span class="p">(</span> <span class="n">id</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskShortcutMap</span><span class="o">::</span><span class="n">contextMatcher</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ShortcutContext</span> <span class="n">context</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">context</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ApplicationShortcut</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">&amp;&amp;</span> <span class="n">context</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">WindowShortcut</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">focusWindow</span> <span class="o">=</span> <span class="n">QGuiApplication</span><span class="o">::</span><span class="n">focusWindow</span><span class="p">();</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">window</span> <span class="o">=</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">window</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">window</span> <span class="o">!=</span> <span class="n">focusWindow</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">while</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                We have to find out if the active focus is inside
+                the surronding shortcut scope.
+             */</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsShortcutScope</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">hasFocus</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">parentItem</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

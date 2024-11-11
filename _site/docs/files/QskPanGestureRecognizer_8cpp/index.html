@@ -1,0 +1,342 @@
+<h1 id="controlsqskpangesturerecognizercpp">controls/QskPanGestureRecognizer.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskPanGestureRecognizer_8cpp/#function-qskisinorientation">qskIsInOrientation</a></strong>(const QPointF &amp; from, const QPointF &amp; to, Qt::Orientations orientations)</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/files/QskPanGestureRecognizer_8cpp/#function-qskdistance">qskDistance</a></strong>(const QPointF &amp; from, const QPointF &amp; to, Qt::Orientations orientations)</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/files/QskPanGestureRecognizer_8cpp/#function-qskangle">qskAngle</a></strong>(const QPointF &amp; from, const QPointF &amp; to, Qt::Orientations orientations)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskPanGestureRecognizer_8cpp/#function-qsksendpangestureevent">qskSendPanGestureEvent</a></strong>(QQuickItem * item, QskGesture::State state, qreal velocity, qreal angle, const QPointF &amp; origin, const QPointF &amp; lastPosition, const QPointF &amp; position)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskisinorientation">function qskIsInOrientation</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskIsInOrientation</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskdistance">function qskDistance</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">qskDistance</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskangle">function qskAngle</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">qskAngle</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksendpangestureevent">function qskSendPanGestureEvent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskSendPanGestureEvent</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="n">QskGesture</span><span class="o">::</span><span class="n">State</span> <span class="n">state</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">velocity</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">angle</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="o">&amp;</span> <span class="n">origin</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="o">&amp;</span> <span class="n">lastPosition</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="o">&amp;</span> <span class="n">position</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "QskPanGestureRecognizer.h"
+#include "QskEvent.h"
+#include "QskGesture.h"
+</span>
+<span class="cp">#include &lt;qcoreapplication.h&gt;
+#include &lt;qline.h&gt;
+#include &lt;qmath.h&gt;
+#include &lt;qquickitem.h&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskIsInOrientation</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientations</span> <span class="o">==</span> <span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">fabs</span><span class="p">(</span> <span class="n">to</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="n">from</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">fabs</span><span class="p">(</span> <span class="n">to</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="n">from</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientations</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span> <span class="n">dx</span> <span class="o">&gt;=</span> <span class="n">ratio</span> <span class="o">*</span> <span class="n">dy</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientations</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span> <span class="n">dy</span> <span class="o">&gt;=</span> <span class="n">ratio</span> <span class="o">*</span> <span class="n">dx</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// should never happen</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="nf">qskDistance</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientations</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">fabs</span><span class="p">(</span> <span class="n">to</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="n">from</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientations</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">fabs</span><span class="p">(</span> <span class="n">to</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="n">from</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">to</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="n">from</span><span class="p">.</span><span class="n">x</span><span class="p">();</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">to</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="n">from</span><span class="p">.</span><span class="n">y</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">qSqrt</span><span class="p">(</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">dy</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="nf">qskAngle</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientations</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span> <span class="n">to</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">from</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="p">)</span> <span class="o">?</span> <span class="mf">0.0</span> <span class="o">:</span> <span class="mf">180.0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientations</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span> <span class="n">to</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">from</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="p">)</span> <span class="o">?</span> <span class="mf">270.0</span> <span class="o">:</span> <span class="mf">90.0</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">QLineF</span><span class="p">(</span> <span class="n">from</span><span class="p">,</span> <span class="n">to</span> <span class="p">).</span><span class="n">angle</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskSendPanGestureEvent</span><span class="p">(</span>
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="n">QskGesture</span><span class="o">::</span><span class="n">State</span> <span class="n">state</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">velocity</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">angle</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">origin</span><span class="p">,</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">lastPosition</span><span class="p">,</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">position</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">gesture</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span> <span class="n">QskPanGesture</span> <span class="o">&gt;</span><span class="p">();</span>
+    <span class="n">gesture</span><span class="o">-&gt;</span><span class="n">setState</span><span class="p">(</span> <span class="n">state</span> <span class="p">);</span>
+
+    <span class="n">gesture</span><span class="o">-&gt;</span><span class="n">setAngle</span><span class="p">(</span> <span class="n">angle</span> <span class="p">);</span>
+    <span class="n">gesture</span><span class="o">-&gt;</span><span class="n">setVelocity</span><span class="p">(</span> <span class="n">velocity</span> <span class="p">);</span>
+
+    <span class="n">gesture</span><span class="o">-&gt;</span><span class="n">setOrigin</span><span class="p">(</span> <span class="n">origin</span> <span class="p">);</span>
+    <span class="n">gesture</span><span class="o">-&gt;</span><span class="n">setLastPosition</span><span class="p">(</span> <span class="n">lastPosition</span> <span class="p">);</span>
+    <span class="n">gesture</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span> <span class="n">position</span> <span class="p">);</span>
+
+    <span class="n">QskGestureEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">gesture</span> <span class="p">);</span>
+    <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">VelocityTracker</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">VelocityTracker</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">reset</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">record</span><span class="p">(</span> <span class="kt">int</span> <span class="n">elapsed</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">velocity</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">m_values</span><span class="p">[</span> <span class="n">m_pos</span> <span class="p">].</span><span class="n">velocity</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">velocity</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="o">!=</span> <span class="p">(</span> <span class="n">m_values</span><span class="p">[</span> <span class="n">m_pos</span> <span class="p">].</span><span class="n">velocity</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="n">reset</span><span class="p">();</span> <span class="c1">// direction has changed</span>
+            <span class="p">}</span>
+
+            <span class="n">m_values</span><span class="p">[</span> <span class="n">m_pos</span> <span class="p">].</span><span class="n">elapsed</span> <span class="o">=</span> <span class="n">elapsed</span><span class="p">;</span>
+            <span class="n">m_values</span><span class="p">[</span> <span class="n">m_pos</span> <span class="p">].</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">velocity</span><span class="p">;</span>
+
+            <span class="n">m_pos</span> <span class="o">=</span> <span class="p">(</span> <span class="n">m_pos</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">%</span> <span class="n">Count</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">v</span> <span class="o">:</span> <span class="n">m_values</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">v</span><span class="p">.</span><span class="n">elapsed</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+                <span class="n">v</span><span class="p">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">m_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">velocity</span><span class="p">(</span> <span class="n">ulong</span> <span class="n">elapsed</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="n">qreal</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">numVelocities</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+            <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">v</span> <span class="o">:</span> <span class="n">m_values</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// only swipe events within the last 500 ms will be considered</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">v</span><span class="p">.</span><span class="n">elapsed</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">elapsed</span> <span class="o">-</span> <span class="n">v</span><span class="p">.</span><span class="n">elapsed</span> <span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">500</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">sum</span> <span class="o">+=</span> <span class="n">v</span><span class="p">.</span><span class="n">velocity</span><span class="p">;</span>
+                    <span class="n">numVelocities</span><span class="o">++</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="p">(</span> <span class="n">numVelocities</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">?</span> <span class="p">(</span> <span class="n">sum</span> <span class="o">/</span> <span class="n">numVelocities</span> <span class="p">)</span> <span class="o">:</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="kt">int</span> <span class="n">m_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">enum</span> <span class="p">{</span> <span class="n">Count</span> <span class="o">=</span> <span class="mi">3</span> <span class="p">};</span>
+
+        <span class="k">struct</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">elapsed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">qreal</span> <span class="n">velocity</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="p">}</span> <span class="n">m_values</span><span class="p">[</span> <span class="n">Count</span> <span class="p">];</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskPanGestureRecognizer</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">orientations</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">minDistance</span><span class="p">(</span> <span class="mi">15</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">timestamp</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">angle</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">minDistance</span><span class="p">;</span>
+
+    <span class="n">ulong</span> <span class="n">timestamp</span><span class="p">;</span> <span class="c1">// timestamp of the last mouse event</span>
+    <span class="n">qreal</span> <span class="n">angle</span><span class="p">;</span>
+
+    <span class="n">QPointF</span> <span class="n">origin</span><span class="p">;</span>
+    <span class="n">QPointF</span> <span class="n">pos</span><span class="p">;</span> <span class="c1">// position of the last mouse event</span>
+
+    <span class="n">VelocityTracker</span> <span class="n">velocityTracker</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskPanGestureRecognizer</span><span class="o">::</span><span class="n">QskPanGestureRecognizer</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskPanGestureRecognizer</span><span class="o">::~</span><span class="n">QskPanGestureRecognizer</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPanGestureRecognizer</span><span class="o">::</span><span class="n">setOrientations</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientations</span> <span class="o">=</span> <span class="n">orientations</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">QskPanGestureRecognizer</span><span class="o">::</span><span class="n">orientations</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientations</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPanGestureRecognizer</span><span class="o">::</span><span class="n">setMinDistance</span><span class="p">(</span> <span class="kt">int</span> <span class="n">pixels</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">minDistance</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">pixels</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskPanGestureRecognizer</span><span class="o">::</span><span class="n">minDistance</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">minDistance</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPanGestureRecognizer</span><span class="o">::</span><span class="n">pressEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">origin</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pos</span> <span class="o">=</span> <span class="n">qskMousePosition</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">timestamp</span><span class="p">();</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">velocityTracker</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPanGestureRecognizer</span><span class="o">::</span><span class="n">moveEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">ulong</span> <span class="n">elapsed</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">()</span> <span class="o">-</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">ulong</span> <span class="n">elapsedTotal</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">()</span> <span class="o">-</span> <span class="n">timestamp</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="n">oldPos</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pos</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">();</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pos</span> <span class="o">=</span> <span class="n">qskMousePosition</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">elapsedTotal</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="c1">// ???</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">qskDistance</span><span class="p">(</span> <span class="n">oldPos</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pos</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientations</span> <span class="p">);</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">/</span> <span class="p">(</span> <span class="n">elapsed</span> <span class="o">/</span> <span class="mf">1000.0</span> <span class="p">);</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">velocityTracker</span><span class="p">.</span><span class="n">record</span><span class="p">(</span> <span class="n">elapsedTotal</span><span class="p">,</span> <span class="n">velocity</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">started</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">state</span><span class="p">()</span> <span class="o">!=</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">Accepted</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">qskDistance</span><span class="p">(</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">origin</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pos</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientations</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">dist</span> <span class="p">)</span> <span class="o">&gt;=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">minDistance</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+            <span class="n">qskIsInOrientation</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">origin</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pos</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientations</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">accept</span><span class="p">();</span>
+            <span class="n">started</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">angle</span> <span class="o">=</span> <span class="n">qskAngle</span><span class="p">(</span> <span class="n">oldPos</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pos</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientations</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">state</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">Accepted</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">velocityTracker</span><span class="p">.</span><span class="n">velocity</span><span class="p">(</span> <span class="n">elapsedTotal</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">started</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">qskSendPanGestureEvent</span><span class="p">(</span> <span class="n">watchedItem</span><span class="p">(),</span> <span class="n">QskGesture</span><span class="o">::</span><span class="n">Started</span><span class="p">,</span>
+                <span class="n">velocity</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">angle</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">origin</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">origin</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pos</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">qskSendPanGestureEvent</span><span class="p">(</span> <span class="n">watchedItem</span><span class="p">(),</span> <span class="n">QskGesture</span><span class="o">::</span><span class="n">Updated</span><span class="p">,</span>
+                <span class="n">velocity</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">angle</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">origin</span><span class="p">,</span> <span class="n">oldPos</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pos</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPanGestureRecognizer</span><span class="o">::</span><span class="n">releaseEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">state</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskGestureRecognizer</span><span class="o">::</span><span class="n">Accepted</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">ulong</span> <span class="n">elapsedTotal</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">()</span> <span class="o">-</span> <span class="n">timestamp</span><span class="p">();</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">velocityTracker</span><span class="p">.</span><span class="n">velocity</span><span class="p">(</span> <span class="n">elapsedTotal</span> <span class="p">);</span>
+
+        <span class="n">qskSendPanGestureEvent</span><span class="p">(</span> <span class="n">watchedItem</span><span class="p">(),</span> <span class="n">QskGesture</span><span class="o">::</span><span class="n">Finished</span><span class="p">,</span>
+            <span class="n">velocity</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">angle</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">origin</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pos</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pos</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,210 @@
+<h1 id="commonqskrgbvaluecpp">common/QskRgbValue.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QColor</td>
+      <td><strong><a href="/docs/files/QskRgbValue_8cpp/#function-qskinterpolatedcolor">qskInterpolatedColor</a></strong>(const QColor &amp; c1, const QColor &amp; c2, qreal ratio)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskinterpolatedcolor">function qskInterpolatedColor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QColor</span> <span class="n">qskInterpolatedColor</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">c1</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">c2</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">ratio</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskRgbValue.h"
+</span>
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="kr">inline</span> <span class="kt">int</span> <span class="n">value</span><span class="p">(</span> <span class="kt">int</span> <span class="n">from</span><span class="p">,</span> <span class="kt">int</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="kt">int</span><span class="p">(</span> <span class="n">from</span> <span class="o">+</span> <span class="p">(</span> <span class="n">to</span> <span class="o">-</span> <span class="n">from</span> <span class="p">)</span> <span class="o">*</span> <span class="n">ratio</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">valueF</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">from</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="kt">int</span><span class="p">(</span> <span class="n">from</span> <span class="o">+</span> <span class="p">(</span> <span class="n">to</span> <span class="o">-</span> <span class="n">from</span> <span class="p">)</span> <span class="o">*</span> <span class="n">ratio</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QColor</span> <span class="nf">qskInterpolatedColor</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">c1</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">c2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">spec</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QColor</span><span class="o">::</span><span class="n">Rgb</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">red</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">g</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">green</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">green</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">blue</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">blue</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">alpha</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">alpha</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+
+            <span class="k">return</span> <span class="n">QColor</span><span class="o">::</span><span class="n">fromRgb</span><span class="p">(</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QColor</span><span class="o">::</span><span class="n">Hsv</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">hue</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">hue</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">saturation</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">saturation</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">value</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">value</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">alpha</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">alpha</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+
+            <span class="k">return</span> <span class="n">QColor</span><span class="o">::</span><span class="n">fromHsv</span><span class="p">(</span> <span class="n">h</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QColor</span><span class="o">::</span><span class="n">Cmyk</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">cyan</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">cyan</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">magenta</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">magenta</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">yellow</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">yellow</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">black</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">black</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">alpha</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">alpha</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+
+            <span class="k">return</span> <span class="n">QColor</span><span class="o">::</span><span class="n">fromCmykF</span><span class="p">(</span> <span class="n">c</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">a</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QColor</span><span class="o">::</span><span class="n">Hsl</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">hue</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">hue</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">s</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">saturation</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">saturation</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">lightness</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">lightness</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">alpha</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">alpha</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+
+            <span class="k">return</span> <span class="n">QColor</span><span class="o">::</span><span class="n">fromHsl</span><span class="p">(</span> <span class="n">h</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">a</span> <span class="p">);</span>
+        <span class="p">}</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 14, 0 )
+</span>        <span class="k">case</span> <span class="n">QColor</span><span class="o">::</span><span class="n">ExtendedRgb</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">r</span> <span class="o">=</span> <span class="n">valueF</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">redF</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">redF</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">g</span> <span class="o">=</span> <span class="n">valueF</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">greenF</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">greenF</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">b</span> <span class="o">=</span> <span class="n">valueF</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">blueF</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">blueF</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">a</span> <span class="o">=</span> <span class="n">valueF</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">alphaF</span><span class="p">(),</span> <span class="n">c2</span><span class="p">.</span><span class="n">alphaF</span><span class="p">(),</span> <span class="n">ratio</span> <span class="p">);</span>
+
+            <span class="k">return</span> <span class="n">QColor</span><span class="o">::</span><span class="n">fromRgbF</span><span class="p">(</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="p">);</span>
+        <span class="p">}</span>
+<span class="cp">#endif
+</span>        <span class="k">case</span> <span class="n">QColor</span><span class="o">::</span><span class="n">Invalid</span><span class="p">:</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">c2</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QRgb</span> <span class="n">QskRgb</span><span class="o">::</span><span class="n">interpolated</span><span class="p">(</span> <span class="n">QRgb</span> <span class="n">rgb1</span><span class="p">,</span> <span class="n">QRgb</span> <span class="n">rgb2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// interpolating in HSV usually provides better results !!</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">rgb1</span> <span class="o">==</span> <span class="n">rgb2</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">rgb1</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">qRed</span><span class="p">(</span> <span class="n">rgb1</span> <span class="p">),</span> <span class="n">qRed</span><span class="p">(</span> <span class="n">rgb2</span> <span class="p">),</span> <span class="n">ratio</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">g</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">qGreen</span><span class="p">(</span> <span class="n">rgb1</span> <span class="p">),</span> <span class="n">qGreen</span><span class="p">(</span> <span class="n">rgb2</span> <span class="p">),</span> <span class="n">ratio</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">qBlue</span><span class="p">(</span> <span class="n">rgb1</span> <span class="p">),</span> <span class="n">qBlue</span><span class="p">(</span> <span class="n">rgb2</span> <span class="p">),</span> <span class="n">ratio</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">value</span><span class="p">(</span> <span class="n">qAlpha</span><span class="p">(</span> <span class="n">rgb1</span> <span class="p">),</span> <span class="n">qAlpha</span><span class="p">(</span> <span class="n">rgb2</span> <span class="p">),</span> <span class="n">ratio</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">qRgba</span><span class="p">(</span> <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QColor</span> <span class="n">QskRgb</span><span class="o">::</span><span class="n">interpolated</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">c1</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">c2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">c1</span> <span class="o">==</span> <span class="n">c2</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">c2</span><span class="p">;</span>
+
+    <span class="cm">/*
+        If one of the colors is invalid we treat it like
+        a transparent version of the other color
+     */</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">c1</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QColor</span> <span class="n">c</span> <span class="o">=</span> <span class="n">c2</span><span class="p">;</span>
+        <span class="n">c</span><span class="p">.</span><span class="n">setAlpha</span><span class="p">(</span> <span class="n">ratio</span> <span class="o">*</span> <span class="n">c2</span><span class="p">.</span><span class="n">alpha</span><span class="p">()</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">c2</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QColor</span> <span class="n">c</span> <span class="o">=</span> <span class="n">c1</span><span class="p">;</span>
+        <span class="n">c</span><span class="p">.</span><span class="n">setAlpha</span><span class="p">(</span> <span class="p">(</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">ratio</span> <span class="p">)</span> <span class="o">*</span> <span class="n">c1</span><span class="p">.</span><span class="n">alpha</span><span class="p">()</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">spec</span><span class="p">()</span> <span class="o">==</span> <span class="n">c2</span><span class="p">.</span><span class="n">spec</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">qskInterpolatedColor</span><span class="p">(</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">ratio</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">qskInterpolatedColor</span><span class="p">(</span> <span class="n">c1</span><span class="p">.</span><span class="n">convertTo</span><span class="p">(</span> <span class="n">c2</span><span class="p">.</span><span class="n">spec</span><span class="p">()</span> <span class="p">),</span> <span class="n">c2</span><span class="p">,</span> <span class="n">ratio</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRgb</span> <span class="n">QskRgb</span><span class="o">::</span><span class="n">rgb</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">GlobalColor</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">QskRgb</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="n">QRgb</span> <span class="n">rgbValues</span><span class="p">[]</span> <span class="o">=</span>
+    <span class="p">{</span>
+        <span class="n">White</span><span class="p">,</span>   <span class="c1">// Qt::color0</span>
+        <span class="n">Black</span><span class="p">,</span>   <span class="c1">// Qt::color1</span>
+        <span class="n">Black</span><span class="p">,</span>   <span class="c1">// Qt::black</span>
+        <span class="n">White</span><span class="p">,</span>   <span class="c1">// Qt::white</span>
+        <span class="n">Grey</span><span class="p">,</span>    <span class="c1">// Qt::darkGray</span>
+        <span class="n">qRgb</span><span class="p">(</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">164</span> <span class="p">),</span> <span class="c1">// Qt::gray</span>
+        <span class="n">Silver</span><span class="p">,</span>  <span class="c1">// Qt::lightGray</span>
+        <span class="n">Red</span><span class="p">,</span>     <span class="c1">// Qt::red</span>
+        <span class="n">Lime</span><span class="p">,</span>    <span class="c1">// Qt::green</span>
+        <span class="n">Blue</span><span class="p">,</span>    <span class="c1">// Qt::blue</span>
+        <span class="n">Cyan</span><span class="p">,</span>    <span class="c1">// Qt::cyan</span>
+        <span class="n">Magenta</span><span class="p">,</span> <span class="c1">// Qt::magenta</span>
+        <span class="n">Yellow</span><span class="p">,</span>  <span class="c1">// Qt::yellow</span>
+        <span class="n">Maroon</span><span class="p">,</span>  <span class="c1">// Qt::darkRed</span>
+        <span class="n">Green</span><span class="p">,</span>   <span class="c1">// Qt::darkGreen</span>
+        <span class="n">Navy</span><span class="p">,</span>    <span class="c1">// Qt::darkBlue</span>
+        <span class="n">Teal</span><span class="p">,</span>    <span class="c1">// Qt::darkCyan</span>
+        <span class="n">Purple</span><span class="p">,</span>  <span class="c1">// Qt::darkMagenta</span>
+        <span class="n">Olive</span><span class="p">,</span> <span class="c1">// Qt::darkYellow</span>
+        <span class="n">Transparent</span> <span class="c1">// Qt::transparent</span>
+    <span class="p">};</span>
+
+    <span class="k">return</span> <span class="n">rgbValues</span><span class="p">[</span> <span class="n">color</span> <span class="p">];</span>
+<span class="p">}</span>
+
+<span class="n">QRgb</span> <span class="n">QskRgb</span><span class="o">::</span><span class="n">lighter</span><span class="p">(</span> <span class="n">QRgb</span> <span class="n">rgb</span><span class="p">,</span> <span class="kt">int</span> <span class="n">factor</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">factor</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">rgb</span><span class="p">;</span>
+
+    <span class="c1">// guess we can find a faster implementation without using QColor TODO ...</span>
+    <span class="k">return</span> <span class="n">QColor</span><span class="o">::</span><span class="n">fromRgba</span><span class="p">(</span> <span class="n">rgb</span> <span class="p">).</span><span class="n">lighter</span><span class="p">(</span> <span class="n">factor</span> <span class="p">).</span><span class="n">rgba</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QRgb</span> <span class="n">QskRgb</span><span class="o">::</span><span class="n">darker</span><span class="p">(</span> <span class="n">QRgb</span> <span class="n">rgb</span><span class="p">,</span> <span class="kt">int</span> <span class="n">factor</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">factor</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">rgb</span><span class="p">;</span>
+
+    <span class="c1">// guess we can find a faster implementation without using QColor TODO ...</span>
+    <span class="k">return</span> <span class="n">QColor</span><span class="o">::</span><span class="n">fromRgba</span><span class="p">(</span> <span class="n">rgb</span> <span class="p">).</span><span class="n">darker</span><span class="p">(</span> <span class="n">factor</span> <span class="p">).</span><span class="n">rgba</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

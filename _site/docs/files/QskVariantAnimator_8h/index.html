@@ -1,0 +1,81 @@
+<h1 id="controlsqskvariantanimatorh">controls/QskVariantAnimator.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskVariantAnimator/">QskVariantAnimator</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_VARIANT_ANIMATOR_H
+#define QSK_VARIANT_ANIMATOR_H
+</span>
+<span class="cp">#include "QskAnimator.h"
+#include &lt;qvariant.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskVariantAnimator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskAnimator</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskVariantAnimator</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">QskVariantAnimator</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setCurrentValue</span><span class="p">(</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="n">QVariant</span> <span class="n">currentValue</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setStartValue</span><span class="p">(</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="n">QVariant</span> <span class="n">startValue</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setEndValue</span><span class="p">(</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="n">QVariant</span> <span class="n">endValue</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">void</span> <span class="n">setup</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">advance</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">done</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QVariant</span> <span class="n">m_startValue</span><span class="p">;</span>
+    <span class="n">QVariant</span> <span class="n">m_endValue</span><span class="p">;</span>
+    <span class="n">QVariant</span> <span class="n">m_currentValue</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="p">(</span> <span class="o">*</span><span class="n">m_interpolator</span> <span class="p">)();</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="n">QVariant</span> <span class="n">QskVariantAnimator</span><span class="o">::</span><span class="n">startValue</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_startValue</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">QVariant</span> <span class="n">QskVariantAnimator</span><span class="o">::</span><span class="n">endValue</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_endValue</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">QVariant</span> <span class="n">QskVariantAnimator</span><span class="o">::</span><span class="n">currentValue</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_currentValue</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

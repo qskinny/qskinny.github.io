@@ -1,0 +1,114 @@
+<h1 id="inputpanelqskinputcontexth">inputpanel/QskInputContext.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskInputContextFactory/">QskInputContextFactory</a></strong></td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/">QskInputContext</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_INPUT_CONTEXT_H
+#define QSK_INPUT_CONTEXT_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+</span>
+<span class="cp">#include &lt;qinputmethod.h&gt;
+#include &lt;qnamespace.h&gt;
+#include &lt;qobject.h&gt;
+</span>
+<span class="cp">#include &lt;memory&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskTextPredictor</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskInputPanel</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskInputEngine</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskPopup</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskWindow</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QQuickItem</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskInputContextFactory</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QskInputContextFactory</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskInputContextFactory</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="n">QskTextPredictor</span><span class="o">*</span> <span class="n">createPredictor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="n">QskInputPanel</span><span class="o">*</span> <span class="n">createPanel</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskInputContext</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QObject</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QskInputContext</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">QskInputContext</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">setFactory</span><span class="p">(</span> <span class="n">QskInputContextFactory</span><span class="o">*</span> <span class="p">);</span>
+    <span class="n">QskInputContextFactory</span><span class="o">*</span> <span class="n">factory</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QRectF</span> <span class="n">panelRect</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setInputPanelVisible</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">isInputPanelVisible</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QLocale</span> <span class="n">locale</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="n">QskInputContext</span><span class="o">*</span> <span class="n">instance</span><span class="p">();</span>
+    <span class="k">static</span> <span class="kt">void</span> <span class="n">setInstance</span><span class="p">(</span> <span class="n">QskInputContext</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="n">QskTextPredictor</span><span class="o">*</span> <span class="n">textPredictor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="n">locale</span> <span class="p">);</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">activeChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">panelRectChanged</span><span class="p">();</span>
+
+  <span class="nl">protected:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">showPanel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">);</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">hidePanel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">hideChannel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskInputPanel</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="c1">// called from QskPlatformInputContext</span>
+    <span class="k">friend</span> <span class="k">class</span> <span class="nc">QskPlatformInputContext</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">setFocusObject</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">);</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">update</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQueries</span> <span class="p">);</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">invokeAction</span><span class="p">(</span> <span class="n">QInputMethod</span><span class="o">::</span><span class="n">Action</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cursorPosition</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">commitPrediction</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

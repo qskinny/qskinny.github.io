@@ -1,0 +1,81 @@
+<h1 id="controlsqskscrollareah">controls/QskScrollArea.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskScrollArea/">QskScrollArea</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_SCROLL_AREA_H
+#define QSK_SCROLL_AREA_H
+</span>
+<span class="cp">#include "QskScrollView.h"
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskScrollArea</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskScrollView</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">scrolledItem</span> <span class="n">READ</span> <span class="n">scrolledItem</span>
+        <span class="n">WRITE</span> <span class="n">setScrolledItem</span> <span class="n">NOTIFY</span> <span class="n">scrolledItemChanged</span> <span class="n">FINAL</span><span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">itemResizable</span> <span class="n">READ</span> <span class="n">isItemResizable</span>
+        <span class="n">WRITE</span> <span class="n">setItemResizable</span> <span class="n">NOTIFY</span> <span class="n">itemResizableChanged</span> <span class="n">FINAL</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">itemFocusClipping</span> <span class="n">READ</span> <span class="n">hasItemFocusClipping</span>
+        <span class="n">WRITE</span> <span class="n">setItemFocusClipping</span> <span class="n">FINAL</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskScrollView</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QskScrollArea</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskScrollArea</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setScrolledItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">);</span>
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">scrolledItem</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setItemResizable</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">isItemResizable</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setItemFocusClipping</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">hasItemFocusClipping</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">scrolledItemChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">itemResizableChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">void</span> <span class="n">updateLayout</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+    <span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">translateItem</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">adjustItem</span><span class="p">();</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

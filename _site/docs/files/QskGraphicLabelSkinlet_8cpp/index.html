@@ -1,0 +1,194 @@
+<h1 id="controlsqskgraphiclabelskinletcpp">controls/QskGraphicLabelSkinlet.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskGraphicLabelSkinlet.h"
+#include "QskGraphicLabel.h"
+</span>
+<span class="cp">#include "QskAspect.h"
+#include "QskColorFilter.h"
+#include "QskFunctions.h"
+#include "QskGraphic.h"
+#include "QskTextureNode.h"
+</span>
+<span class="n">QskGraphicLabelSkinlet</span><span class="o">::</span><span class="n">QskGraphicLabelSkinlet</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">skin</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setNodeRoles</span><span class="p">(</span> <span class="p">{</span> <span class="n">PanelRole</span><span class="p">,</span> <span class="n">GraphicRole</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicLabelSkinlet</span><span class="o">::~</span><span class="n">QskGraphicLabelSkinlet</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+<span class="n">QRectF</span> <span class="n">QskGraphicLabelSkinlet</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">Panel</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">contentsRect</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">Graphic</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">innerRect</span> <span class="o">=</span> <span class="n">contentsRect</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">label</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskGraphicLabel</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">innerRect</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">subControlContentsRect</span><span class="p">(</span>
+                <span class="n">innerRect</span><span class="p">,</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">graphicRect</span><span class="p">(</span> <span class="n">label</span><span class="p">,</span> <span class="n">innerRect</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskGraphicLabelSkinlet</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">label</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskGraphicLabel</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">nodeRole</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">PanelRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">label</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">()</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+            <span class="k">return</span> <span class="n">updateBoxNode</span><span class="p">(</span> <span class="n">label</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">GraphicRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">updateGraphicNode</span><span class="p">(</span> <span class="n">label</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRect</span> <span class="n">QskGraphicLabelSkinlet</span><span class="o">::</span><span class="n">graphicRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskGraphicLabel</span><span class="o">*</span> <span class="n">label</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">QskGraphicLabel</span><span class="p">;</span>
+
+    <span class="c1">// textures are in integers, to avoid useless recalculations</span>
+    <span class="c1">// that finally will be rounded anyway, we calculate in integers</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">fillMode</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">fillMode</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">QRect</span> <span class="n">graphicRect</span> <span class="o">=</span> <span class="n">contentsRect</span><span class="p">.</span><span class="n">toAlignedRect</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">fillMode</span> <span class="o">==</span> <span class="n">Q</span><span class="o">::</span><span class="n">Stretch</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">graphicRect</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">QSizeF</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">effectiveSourceSize</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">fillMode</span> <span class="o">==</span> <span class="n">Q</span><span class="o">::</span><span class="n">PreserveAspectFit</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sz</span><span class="p">.</span><span class="n">scale</span><span class="p">(</span> <span class="n">graphicRect</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">Qt</span><span class="o">::</span><span class="n">KeepAspectRatio</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">fillMode</span> <span class="o">==</span> <span class="n">Q</span><span class="o">::</span><span class="n">PreserveAspectCrop</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sz</span><span class="p">.</span><span class="n">scale</span><span class="p">(</span> <span class="n">graphicRect</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">Qt</span><span class="o">::</span><span class="n">KeepAspectRatioByExpanding</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">qskAlignedRect</span><span class="p">(</span> <span class="n">graphicRect</span><span class="p">,</span>
+        <span class="p">(</span> <span class="kt">int</span> <span class="p">)</span> <span class="n">sz</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="p">(</span> <span class="kt">int</span> <span class="p">)</span> <span class="n">sz</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">alignment</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskGraphicLabelSkinlet</span><span class="o">::</span><span class="n">updateGraphicNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskGraphicLabel</span><span class="o">*</span> <span class="n">label</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">QskGraphicLabel</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">colorFilter</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">graphicFilter</span><span class="p">();</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Graphic</span> <span class="p">);</span>
+
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">mirrored</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">mirror</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">mirrored</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">fillMode</span><span class="p">()</span> <span class="o">==</span> <span class="n">Q</span><span class="o">::</span><span class="n">Stretch</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">QskSkinlet</span><span class="o">::</span><span class="n">updateGraphicNode</span><span class="p">(</span> <span class="n">label</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">(),</span> <span class="n">colorFilter</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">mirrored</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">QskSkinlet</span><span class="o">::</span><span class="n">updateGraphicNode</span><span class="p">(</span> <span class="n">label</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">(),</span> <span class="n">colorFilter</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignCenter</span><span class="p">,</span> <span class="n">mirrored</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskGraphicLabelSkinlet</span><span class="o">::</span><span class="n">sizeHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">QskGraphicLabel</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">hasConstraint</span> <span class="o">=</span>
+        <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">label</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskGraphicLabel</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">sourceSize</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">effectiveSourceSize</span><span class="p">();</span>
+
+    <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">sourceSize</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hasConstraint</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">sourceSize</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">innerConstraint</span> <span class="o">=</span> <span class="n">constraint</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">max</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;::</span><span class="n">max</span><span class="p">();</span>
+
+            <span class="n">QRectF</span> <span class="n">r</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">max</span><span class="p">,</span> <span class="n">max</span> <span class="p">);</span>
+            
+            <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+                <span class="n">r</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+            <span class="k">else</span>
+                <span class="n">r</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="n">innerConstraint</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">subControlContentsRect</span><span class="p">(</span> <span class="n">r</span><span class="p">,</span> <span class="n">Q</span><span class="o">::</span><span class="n">Panel</span> <span class="p">).</span><span class="n">size</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">aspectRatio</span> <span class="o">=</span> <span class="n">sourceSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="n">sourceSize</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="n">hint</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">innerConstraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="n">aspectRatio</span> <span class="p">);</span>
+        <span class="k">else</span> 
+            <span class="n">hint</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">innerConstraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">*</span> <span class="n">aspectRatio</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">hint</span> <span class="o">=</span> <span class="n">hint</span><span class="p">.</span><span class="n">expandedTo</span><span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">strutSizeHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Graphic</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">hint</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">outerBoxSize</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Panel</span><span class="p">,</span> <span class="n">hint</span> <span class="p">);</span>
+        <span class="n">hint</span> <span class="o">=</span> <span class="n">hint</span><span class="p">.</span><span class="n">expandedTo</span><span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">strutSizeHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Panel</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hasConstraint</span> <span class="p">)</span>
+        <span class="n">hint</span> <span class="o">=</span> <span class="n">hintWithoutConstraint</span><span class="p">(</span> <span class="n">hint</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskGraphicLabelSkinlet.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

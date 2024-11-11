@@ -1,0 +1,190 @@
+<h1 id="controlsqskgestureh">controls/QskGesture.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskGesture/">QskGesture</a></strong></td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskTapGesture/">QskTapGesture</a></strong></td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskTapAndHoldGesture/">QskTapAndHoldGesture</a></strong></td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskPanGesture/">QskPanGesture</a></strong></td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskSwipeGesture/">QskSwipeGesture</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_GESTURE_H
+#define QSK_GESTURE_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+</span>
+<span class="cp">#include &lt;qmetatype.h&gt;
+#include &lt;qpoint.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskGesture</span>
+<span class="p">{</span>
+    <span class="n">Q_GADGET</span>
+
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">Type</span>
+    <span class="p">{</span>
+        <span class="n">NoType</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+
+        <span class="n">Tap</span><span class="p">,</span>
+        <span class="n">TapAndHold</span><span class="p">,</span>
+        <span class="n">Pan</span><span class="p">,</span>
+<span class="c">#if 0
+        // TODO
+        Pinch,
+#endif
+</span>        <span class="n">Swipe</span><span class="p">,</span>
+
+        <span class="n">CustomType</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="p">};</span>
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">Type</span> <span class="p">)</span>
+
+    <span class="k">enum</span> <span class="n">State</span>
+    <span class="p">{</span>
+        <span class="n">NoGesture</span><span class="p">,</span>
+
+        <span class="n">Started</span><span class="p">,</span>
+        <span class="n">Updated</span><span class="p">,</span>
+        <span class="n">Finished</span><span class="p">,</span>
+        <span class="n">Canceled</span>
+    <span class="p">};</span>
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">State</span> <span class="p">)</span>
+
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">QskGesture</span><span class="p">();</span>
+
+    <span class="n">Type</span> <span class="n">type</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_type</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setState</span><span class="p">(</span> <span class="n">State</span> <span class="p">);</span>
+    <span class="kr">inline</span> <span class="n">State</span> <span class="n">state</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_state</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="nl">protected:</span>
+    <span class="n">QskGesture</span><span class="p">(</span> <span class="n">Type</span> <span class="n">type</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">Type</span> <span class="n">m_type</span><span class="p">;</span>
+    <span class="n">State</span> <span class="n">m_state</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskTapGesture</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskGesture</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskGesture</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QskTapGesture</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">QskTapGesture</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setPosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">pos</span> <span class="p">);</span>
+    <span class="kr">inline</span> <span class="n">QPointF</span> <span class="n">position</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_position</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QPointF</span> <span class="n">m_position</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskTapAndHoldGesture</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskGesture</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskGesture</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QskTapAndHoldGesture</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">QskTapAndHoldGesture</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setPosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">pos</span> <span class="p">);</span>
+    <span class="kr">inline</span> <span class="n">QPointF</span> <span class="n">position</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_position</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setTimeout</span><span class="p">(</span> <span class="kt">int</span> <span class="n">msecs</span> <span class="p">);</span>
+    <span class="kr">inline</span> <span class="kt">int</span> <span class="n">timeout</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_timeout</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QPointF</span> <span class="n">m_position</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">m_timeout</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskPanGesture</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskGesture</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskGesture</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QskPanGesture</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">QskPanGesture</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setVelocity</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">velocity</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_velocity</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setOrigin</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kr">inline</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">origin</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_origin</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setLastPosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kr">inline</span> <span class="n">QPointF</span> <span class="n">lastPosition</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_lastPosition</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setPosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kr">inline</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">position</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_position</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setAngle</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">degrees</span> <span class="p">);</span>
+    <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">angle</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_angle</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QPointF</span> <span class="n">delta</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_position</span> <span class="o">-</span> <span class="n">m_lastPosition</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="nl">private:</span>
+    <span class="n">qreal</span> <span class="n">m_angle</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">m_velocity</span><span class="p">;</span>
+
+    <span class="n">QPointF</span> <span class="n">m_origin</span><span class="p">;</span>
+    <span class="n">QPointF</span> <span class="n">m_lastPosition</span><span class="p">;</span>
+    <span class="n">QPointF</span> <span class="n">m_position</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskSwipeGesture</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskGesture</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskGesture</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QskSwipeGesture</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">QskSwipeGesture</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setVelocity</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="p">);</span>
+    <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">velocity</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_velocity</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setAngle</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">angle</span> <span class="p">);</span>
+    <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">angle</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">qreal</span> <span class="n">m_velocity</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">m_angle</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,574 @@
+<h1 id="qskintervalf">QskIntervalF</h1>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+      <th> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>constexpr</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-qskintervalf">QskIntervalF</a></strong>() =default</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-qskintervalf">QskIntervalF</a></strong>(qreal lowerBound, qreal upperBound)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-setinterval">setInterval</a></strong>(qreal lowerBound, qreal upperBound)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-operator==">operator==</a></strong>(const QskIntervalF &amp; other) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-operator!=">operator!=</a></strong>(const QskIntervalF &amp; other) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr qreal</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-lowerbound">lowerBound</a></strong>() const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-setlowerbound">setLowerBound</a></strong>(qreal value)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr qreal</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-upperbound">upperBound</a></strong>() const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-setupperbound">setUpperBound</a></strong>(qreal value)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-spanfromlowerbound">spanFromLowerBound</a></strong>(qreal value)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-spanfromupperbound">spanFromUpperBound</a></strong>(qreal value)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr qreal</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-width">width</a></strong>() const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-setwidth">setWidth</a></strong>(qreal width)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-contains">contains</a></strong>(qreal value) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-contains">contains</a></strong>(const QskIntervalF &amp; interval) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-isboundary">isBoundary</a></strong>(qreal value) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-fuzzycontains">fuzzyContains</a></strong>(qreal value) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-fuzzycontains">fuzzyContains</a></strong>(const QskIntervalF &amp; interval) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-fuzzyisboundary">fuzzyIsBoundary</a></strong>(qreal value) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-translate">translate</a></strong>(qreal offset)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr QskIntervalF</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-translated">translated</a></strong>(qreal offset) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-intersects">intersects</a></strong>(const QskIntervalF &amp; other) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QskIntervalF</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-intersected">intersected</a></strong>(const QskIntervalF &amp; other) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-unite">unite</a></strong>(const QskIntervalF &amp; other)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QskIntervalF</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-united">united</a></strong>(const QskIntervalF &amp; other) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-extend">extend</a></strong>(qreal value)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QskIntervalF</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-extended">extended</a></strong>(qreal value) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QskIntervalF</td>
+      <td>**[operator</td>
+      <td>](/docs/classes/classQskIntervalF/#function-operator</td>
+      <td>)**(const QskIntervalF &amp; other) const</td>
+    </tr>
+    <tr>
+      <td>QskIntervalF</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-operator&amp;">operator&amp;</a></strong>(const QskIntervalF &amp; other) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QskIntervalF &amp;</td>
+      <td>**[operator</td>
+      <td>=](/docs/classes/classQskIntervalF/#function-operator</td>
+      <td>=)**(const QskIntervalF &amp; other)</td>
+    </tr>
+    <tr>
+      <td>QskIntervalF &amp;</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-operator&amp;=">operator&amp;=</a></strong>(const QskIntervalF &amp; other)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QskIntervalF</td>
+      <td>**[operator</td>
+      <td>](/docs/classes/classQskIntervalF/#function-operator</td>
+      <td>)**(qreal value) const</td>
+    </tr>
+    <tr>
+      <td>QskIntervalF &amp;</td>
+      <td>**[operator</td>
+      <td>=](/docs/classes/classQskIntervalF/#function-operator</td>
+      <td>=)**(qreal value)</td>
+    </tr>
+    <tr>
+      <td>constexpr bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-isvalid">isValid</a></strong>() const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-isnull">isNull</a></strong>() const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr bool</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-isempty">isEmpty</a></strong>() const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-invalidate">invalidate</a></strong>()</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QskIntervalF</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-interpolated">interpolated</a></strong>(const QskIntervalF &amp; to, qreal progress) const</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>constexpr QskIntervalF</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-normalized">normalized</a></strong>(qreal value1, qreal value2)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QVariant</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#function-interpolate">interpolate</a></strong>(const QskIntervalF &amp; intv1, const QskIntervalF &amp; intv2, qreal progress)</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-properties">Public Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#property-lowerbound">lowerBound</a></strong></td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#property-upperbound">upperBound</a></strong></td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskIntervalF/#property-width">width</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskintervalf">function QskIntervalF</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">constexpr</span> <span class="n">QskIntervalF</span><span class="p">()</span> <span class="o">=</span><span class="k">default</span>
+</code></pre></div></div>
+
+<h3 id="function-qskintervalf-1">function QskIntervalF</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskIntervalF</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">lowerBound</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">upperBound</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-setinterval">function setInterval</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">setInterval</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">lowerBound</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">upperBound</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator==</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-1">function operator!=</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-lowerbound">function lowerBound</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">lowerBound</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setlowerbound">function setLowerBound</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">setLowerBound</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-upperbound">function upperBound</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">upperBound</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setupperbound">function setUpperBound</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">setUpperBound</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-spanfromlowerbound">function spanFromLowerBound</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">spanFromLowerBound</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-spanfromupperbound">function spanFromUpperBound</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">spanFromUpperBound</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-width">function width</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setwidth">function setWidth</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">setWidth</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">width</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-contains">function contains</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">contains</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-contains-1">function contains</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">contains</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">interval</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-isboundary">function isBoundary</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">isBoundary</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-fuzzycontains">function fuzzyContains</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">fuzzyContains</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-fuzzycontains-1">function fuzzyContains</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">fuzzyContains</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">interval</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-fuzzyisboundary">function fuzzyIsBoundary</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">fuzzyIsBoundary</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-translate">function translate</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">translate</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">offset</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-translated">function translated</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskIntervalF</span> <span class="n">translated</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">offset</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-intersects">function intersects</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">intersects</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-intersected">function intersected</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskIntervalF</span> <span class="n">intersected</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-unite">function unite</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">unite</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-united">function united</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskIntervalF</span> <span class="n">united</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-extend">function extend</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">extend</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-extended">function extended</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskIntervalF</span> <span class="n">extended</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-2">function operator|</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="k">operator</span><span class="o">|</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-3">function operator&amp;</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="k">operator</span><span class="o">&amp;</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-4">function operator|=</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">|=</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-5">function operator&amp;=</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">&amp;=</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-6">function operator|</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="k">operator</span><span class="o">|</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-7">function operator|=</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">|=</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-isvalid">function isValid</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">isValid</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-isnull">function isNull</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">isNull</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-isempty">function isEmpty</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-invalidate">function invalidate</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">invalidate</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-interpolated">function interpolated</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskIntervalF</span> <span class="n">interpolated</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">progress</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-normalized">function normalized</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskIntervalF</span> <span class="n">normalized</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value1</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">value2</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-interpolate">function interpolate</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QVariant</span> <span class="n">interpolate</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">intv1</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">intv2</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">progress</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="public-property-documentation">Public Property Documentation</h2>
+
+<h3 id="property-lowerbound">property lowerBound</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">lowerBound</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="property-upperbound">property upperBound</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">upperBound</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="property-width">property width</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">width</span><span class="p">;</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:28 CEST</p>

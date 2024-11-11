@@ -1,0 +1,161 @@
+<h1 id="dialogsqskmessagesubwindowcpp">dialogs/QskMessageSubWindow.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskMessageSubWindow.h"
+#include "QskGraphic.h"
+#include "QskGraphicLabel.h"
+#include "QskLinearBox.h"
+#include "QskSkin.h"
+#include "QskTextLabel.h"
+</span>
+<span class="cp">#include &lt;qfontmetrics.h&gt;
+</span>
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">TextLabel</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskTextLabel</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">TextLabel</span><span class="p">(</span> <span class="n">QskMessageSubWindow</span><span class="o">*</span> <span class="n">box</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setObjectName</span><span class="p">(</span> <span class="n">QStringLiteral</span><span class="p">(</span> <span class="s">"QskMessageSubWindowTextLabel"</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Preferred</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Preferred</span> <span class="p">);</span>
+
+            <span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignLeft</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignTop</span> <span class="p">);</span>
+            <span class="n">setWrapMode</span><span class="p">(</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">WordWrap</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTextLabel</span><span class="o">::</span><span class="n">textChanged</span><span class="p">,</span>
+                <span class="n">box</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">textChanged</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTextLabel</span><span class="o">::</span><span class="n">textOptionsChanged</span><span class="p">,</span>
+                <span class="n">box</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">textOptionsChanged</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">SymbolLabel</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskGraphicLabel</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">SymbolLabel</span><span class="p">(</span> <span class="n">QskMessageSubWindow</span><span class="o">*</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setObjectName</span><span class="p">(</span> <span class="n">QStringLiteral</span><span class="p">(</span> <span class="s">"QskMessageSubWindowSymbolLabel"</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span> <span class="p">);</span>
+
+            <span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignTop</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignHCenter</span> <span class="p">);</span>
+            <span class="n">updateSourceSize</span><span class="p">();</span>
+        <span class="p">}</span>
+
+      <span class="nl">protected:</span>
+        <span class="kt">void</span> <span class="n">changeEvent</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">FontChange</span> <span class="p">)</span>
+                <span class="n">updateSourceSize</span><span class="p">();</span>
+
+            <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">changeEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="kt">void</span> <span class="n">updateSourceSize</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="c1">// when there is no explicit size known,</span>
+            <span class="c1">// we always adjust the icon according to the font</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sourceSize</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">QFont</span> <span class="n">font</span> <span class="o">=</span> <span class="n">effectiveFont</span><span class="p">(</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">Text</span> <span class="p">);</span>
+                <span class="n">setPreferredSize</span><span class="p">(</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">QFontMetricsF</span><span class="p">(</span> <span class="n">font</span> <span class="p">).</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskMessageSubWindow</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskGraphicLabel</span><span class="o">*</span> <span class="n">symbolLabel</span><span class="p">;</span>
+    <span class="n">QskTextLabel</span><span class="o">*</span> <span class="n">textLabel</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">QskMessageSubWindow</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TextLabel</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">symbolLabel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SymbolLabel</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">symbolLabel</span><span class="o">-&gt;</span><span class="n">hide</span><span class="p">();</span>
+
+    <span class="k">auto</span> <span class="n">box</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskLinearBox</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">);</span>
+    <span class="n">box</span><span class="o">-&gt;</span><span class="n">setDefaultAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignTop</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignHCenter</span> <span class="p">);</span>
+    <span class="n">box</span><span class="o">-&gt;</span><span class="n">setSpacing</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+    <span class="n">box</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">symbolLabel</span> <span class="p">);</span>
+    <span class="n">box</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span> <span class="p">);</span>
+    <span class="n">box</span><span class="o">-&gt;</span><span class="n">setStretchFactor</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span><span class="p">,</span> <span class="mi">10</span> <span class="p">);</span>
+
+    <span class="n">setContentItem</span><span class="p">(</span> <span class="n">box</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskMessageSubWindow</span><span class="o">::~</span><span class="n">QskMessageSubWindow</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">setText</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span><span class="o">-&gt;</span><span class="n">setText</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">text</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">setTextOptions</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span><span class="o">-&gt;</span><span class="n">setTextOptions</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTextOptions</span> <span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">textOptions</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">setSymbolSource</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">symbolLabel</span><span class="o">-&gt;</span><span class="n">setSource</span><span class="p">(</span> <span class="n">url</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">symbolLabel</span><span class="o">-&gt;</span><span class="n">setVisible</span><span class="p">(</span> <span class="o">!</span><span class="n">url</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">box</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="n">QskLinearBox</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">contentItem</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">box</span><span class="o">-&gt;</span><span class="n">setSpacing</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">symbolLabel</span><span class="o">-&gt;</span><span class="n">isVisible</span><span class="p">()</span> <span class="o">?</span> <span class="mi">15</span> <span class="o">:</span> <span class="mi">0</span> <span class="p">);</span> <span class="c1">// metrics !!</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">setSymbolType</span><span class="p">(</span> <span class="kt">int</span> <span class="n">symbolType</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setSymbol</span><span class="p">(</span> <span class="n">effectiveSkin</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">symbol</span><span class="p">(</span> <span class="n">symbolType</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QUrl</span> <span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">symbolSource</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">symbolLabel</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">setSymbol</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">symbol</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">symbolLabel</span><span class="o">-&gt;</span><span class="n">setVisible</span><span class="p">(</span> <span class="o">!</span><span class="n">symbol</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">symbolLabel</span><span class="o">-&gt;</span><span class="n">setGraphic</span><span class="p">(</span> <span class="n">symbol</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphic</span> <span class="n">QskMessageSubWindow</span><span class="o">::</span><span class="n">symbol</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">symbolLabel</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskMessageSubWindow.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

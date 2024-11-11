@@ -1,0 +1,78 @@
+<h1 id="dialogsqskdialogbuttoncpp">dialogs/QskDialogButton.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskDialogButton.h"
+#include "QskDialogButtonBox.h"
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskDialogButton</span><span class="p">,</span> <span class="n">Panel</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskDialogButton</span><span class="p">,</span> <span class="n">Text</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskDialogButton</span><span class="p">,</span> <span class="n">Graphic</span> <span class="p">)</span>
+
+<span class="n">QskDialogButton</span><span class="o">::</span><span class="n">QskDialogButton</span><span class="p">(</span>
+        <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">action</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskPushButton</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_action</span><span class="p">(</span> <span class="n">action</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setText</span><span class="p">(</span> <span class="n">QskDialogButtonBox</span><span class="o">::</span><span class="n">buttonText</span><span class="p">(</span> <span class="n">m_action</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskDialogButton</span><span class="o">::</span><span class="n">QskDialogButton</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskDialogButton</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">NoAction</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskDialogButton</span><span class="o">::~</span><span class="n">QskDialogButton</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">QskDialogButton</span><span class="o">::</span><span class="n">substitutedSubcontrol</span><span class="p">(</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Panel</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QskDialogButton</span><span class="o">::</span><span class="n">Panel</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Text</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QskDialogButton</span><span class="o">::</span><span class="n">Text</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Graphic</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QskDialogButton</span><span class="o">::</span><span class="n">Graphic</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">substitutedSubcontrol</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogButton</span><span class="o">::</span><span class="n">setAction</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">action</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">action</span> <span class="o">!=</span> <span class="n">m_action</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_action</span> <span class="o">=</span> <span class="n">action</span><span class="p">;</span>
+        <span class="n">setText</span><span class="p">(</span> <span class="n">QskDialogButtonBox</span><span class="o">::</span><span class="n">buttonText</span><span class="p">(</span> <span class="n">m_action</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">actionChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">QskDialogButton</span><span class="o">::</span><span class="n">action</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_action</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogButton</span><span class="o">::</span><span class="n">changeEvent</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LocaleChange</span> <span class="p">)</span>
+        <span class="n">setText</span><span class="p">(</span> <span class="n">QskDialogButtonBox</span><span class="o">::</span><span class="n">buttonText</span><span class="p">(</span> <span class="n">m_action</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">changeEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskDialogButton.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

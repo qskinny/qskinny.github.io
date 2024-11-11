@@ -1,0 +1,183 @@
+<h1 id="nodesqsktickmarksnodecpp">nodes/QskTickmarksNode.cpp</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskTickmarksNodePrivate/">QskTickmarksNodePrivate</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>constexpr qreal</td>
+      <td><strong><a href="/docs/files/QskTickmarksNode_8cpp/#function-qsktickfactor">qskTickFactor</a></strong>(QskScaleTickmarks::TickType type)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qsktickfactor">function qskTickFactor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">qskTickFactor</span><span class="p">(</span>
+    <span class="n">QskScaleTickmarks</span><span class="o">::</span><span class="n">TickType</span> <span class="n">type</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "QskTickmarksNode.h"
+#include "QskScaleTickmarks.h"
+</span>
+<span class="cp">#include &lt;QSGFlatColorMaterial&gt;
+#include &lt;QSGGeometryNode&gt;
+#include &lt;QRectF&gt;
+</span>
+
+<span class="cp">#include &lt;private/qsgnode_p.h&gt;
+</span>
+
+<span class="k">static</span> <span class="k">constexpr</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="nf">qskTickFactor</span><span class="p">(</span> <span class="n">QskScaleTickmarks</span><span class="o">::</span><span class="n">TickType</span> <span class="n">type</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">TM</span> <span class="o">=</span> <span class="n">QskScaleTickmarks</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">type</span> <span class="o">==</span> <span class="n">TM</span><span class="o">::</span><span class="n">MinorTick</span> <span class="o">?</span> <span class="mf">0.7</span> <span class="o">:</span> <span class="p">(</span> <span class="n">type</span> <span class="o">==</span> <span class="n">TM</span><span class="o">::</span><span class="n">MinorTick</span> <span class="o">?</span> <span class="mf">0.85</span> <span class="o">:</span> <span class="mf">1.0</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskTickmarksNodePrivate</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QSGGeometryNodePrivate</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskTickmarksNodePrivate</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">geometry</span><span class="p">(</span> <span class="n">QSGGeometry</span><span class="o">::</span><span class="n">defaultAttributes_Point2D</span><span class="p">(),</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 8, 0 )
+</span>        <span class="n">geometry</span><span class="p">.</span><span class="n">setDrawingMode</span><span class="p">(</span> <span class="n">QSGGeometry</span><span class="o">::</span><span class="n">DrawLines</span> <span class="p">);</span>
+<span class="cp">#else
+</span>        <span class="n">geometry</span><span class="p">.</span><span class="n">setDrawingMode</span><span class="p">(</span> <span class="n">GL_LINES</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>        <span class="n">geometry</span><span class="p">.</span><span class="n">setVertexDataPattern</span><span class="p">(</span> <span class="n">QSGGeometry</span><span class="o">::</span><span class="n">StaticPattern</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">QSGGeometry</span> <span class="n">geometry</span><span class="p">;</span>
+    <span class="n">QSGFlatColorMaterial</span> <span class="n">material</span><span class="p">;</span>
+
+    <span class="n">QskIntervalF</span> <span class="n">boundaries</span><span class="p">;</span>
+    <span class="n">QskScaleTickmarks</span> <span class="n">tickmarks</span><span class="p">;</span>
+
+    <span class="n">QRectF</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">lineWidth</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">uint</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskTickmarksNode</span><span class="o">::</span><span class="n">QskTickmarksNode</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">QSGGeometryNode</span><span class="p">(</span> <span class="o">*</span><span class="k">new</span> <span class="n">QskTickmarksNodePrivate</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskTickmarksNode</span> <span class="p">);</span>
+
+    <span class="n">setGeometry</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">geometry</span> <span class="p">);</span>
+    <span class="n">setMaterial</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">material</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTickmarksNode</span><span class="o">::~</span><span class="n">QskTickmarksNode</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTickmarksNode</span><span class="o">::</span><span class="n">update</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">boundaries</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskScaleTickmarks</span><span class="o">&amp;</span> <span class="n">tickmarks</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">lineWidth</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskTickmarksNode</span> <span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">lineWidth</span> <span class="o">!=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">lineWidth</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">d</span><span class="o">-&gt;</span><span class="n">lineWidth</span> <span class="o">=</span> <span class="n">lineWidth</span><span class="p">;</span>
+        <span class="n">d</span><span class="o">-&gt;</span><span class="n">geometry</span><span class="p">.</span><span class="n">setLineWidth</span><span class="p">(</span> <span class="n">lineWidth</span> <span class="p">);</span>
+
+        <span class="n">markDirty</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">DirtyGeometry</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">uint</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">tickmarks</span><span class="p">.</span><span class="n">hash</span><span class="p">(</span> <span class="mi">17435</span> <span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="n">hash</span> <span class="o">!=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">hash</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">rect</span> <span class="o">!=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">rect</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">d</span><span class="o">-&gt;</span><span class="n">hash</span> <span class="o">=</span> <span class="n">hash</span><span class="p">;</span>
+        <span class="n">d</span><span class="o">-&gt;</span><span class="n">rect</span> <span class="o">=</span> <span class="n">rect</span><span class="p">;</span>
+
+        <span class="n">d</span><span class="o">-&gt;</span><span class="n">geometry</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span> <span class="n">tickmarks</span><span class="p">.</span><span class="n">tickCount</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">);</span>
+        <span class="k">auto</span> <span class="n">vertexData</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">geometry</span><span class="p">.</span><span class="n">vertexDataAsPoint2D</span><span class="p">();</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">min</span> <span class="o">=</span> <span class="n">boundaries</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">();</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">range</span> <span class="o">=</span> <span class="n">boundaries</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+
+        <span class="k">using</span> <span class="n">TM</span> <span class="o">=</span> <span class="n">QskScaleTickmarks</span><span class="p">;</span>
+
+        <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">TM</span><span class="o">::</span><span class="n">MinorTick</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">TM</span><span class="o">::</span><span class="n">MajorTick</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">tickType</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">TM</span><span class="o">::</span><span class="n">TickType</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">ticks</span> <span class="o">=</span> <span class="n">tickmarks</span><span class="p">.</span><span class="n">ticks</span><span class="p">(</span> <span class="n">tickType</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="n">range</span><span class="p">;</span>
+                <span class="k">const</span> <span class="kt">float</span> <span class="n">len</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">*</span> <span class="n">qskTickFactor</span><span class="p">(</span> <span class="n">tickType</span> <span class="p">);</span>
+
+                <span class="k">for</span><span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">tick</span> <span class="o">:</span> <span class="n">ticks</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">const</span> <span class="k">auto</span> <span class="n">x</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span> <span class="n">tick</span> <span class="o">-</span> <span class="n">min</span> <span class="p">)</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">;</span>
+
+                    <span class="n">vertexData</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">set</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
+                    <span class="n">vertexData</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">set</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="n">len</span> <span class="p">);</span>
+                    <span class="n">vertexData</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">/</span> <span class="n">range</span><span class="p">;</span>
+                <span class="k">const</span> <span class="kt">float</span> <span class="n">len</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">*</span> <span class="n">qskTickFactor</span><span class="p">(</span> <span class="n">tickType</span> <span class="p">);</span>
+
+                <span class="k">for</span><span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">tick</span> <span class="o">:</span> <span class="n">ticks</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">const</span> <span class="k">auto</span> <span class="n">y</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span> <span class="n">tick</span> <span class="o">-</span> <span class="n">min</span> <span class="p">)</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">;</span>
+
+                    <span class="n">vertexData</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">set</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">(),</span> <span class="n">y</span> <span class="p">);</span>
+                    <span class="n">vertexData</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">set</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="o">-</span> <span class="n">len</span><span class="p">,</span> <span class="n">y</span> <span class="p">);</span>
+                    <span class="n">vertexData</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">d</span><span class="o">-&gt;</span><span class="n">geometry</span><span class="p">.</span><span class="n">markVertexDataDirty</span><span class="p">();</span>
+        <span class="n">markDirty</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">DirtyGeometry</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">color</span> <span class="o">!=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">material</span><span class="p">.</span><span class="n">color</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">d</span><span class="o">-&gt;</span><span class="n">material</span><span class="p">.</span><span class="n">setColor</span><span class="p">(</span> <span class="n">color</span> <span class="p">);</span>
+        <span class="n">markDirty</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">DirtyMaterial</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

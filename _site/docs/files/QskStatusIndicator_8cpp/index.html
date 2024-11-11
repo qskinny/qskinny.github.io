@@ -1,0 +1,265 @@
+<h1 id="controlsqskstatusindicatorcpp">controls/QskStatusIndicator.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskStatusIndicator.h"
+#include "QskColorFilter.h"
+#include "QskGraphic.h"
+#include "QskGraphicProvider.h"
+</span>
+<span class="cp">#include &lt;qdebug.h&gt;
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskStatusIndicator</span><span class="p">,</span> <span class="n">Graphic</span> <span class="p">)</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">StatusData</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">StatusData</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">graphic</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">graphic</span><span class="p">(</span> <span class="n">graphic</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">isDirty</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="n">StatusData</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">source</span><span class="p">(</span> <span class="n">url</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">isDirty</span><span class="p">(</span> <span class="o">!</span><span class="n">url</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">ensureGraphic</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskStatusIndicator</span><span class="o">*</span> <span class="n">indicator</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">source</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">isDirty</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">graphic</span> <span class="o">=</span> <span class="n">indicator</span><span class="o">-&gt;</span><span class="n">loadSource</span><span class="p">(</span> <span class="n">source</span> <span class="p">);</span>
+                <span class="n">isDirty</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">QUrl</span> <span class="n">source</span><span class="p">;</span>
+        <span class="n">QskGraphic</span> <span class="n">graphic</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">isDirty</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskStatusIndicator</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">currentStatus</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">currentStatus</span><span class="p">;</span>
+    <span class="n">QMap</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">StatusData</span> <span class="o">&gt;</span> <span class="n">map</span><span class="p">;</span>
+    <span class="k">mutable</span> <span class="n">QList</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span> <span class="n">statusList</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">QskStatusIndicator</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Expanding</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskStatusIndicator</span><span class="o">::~</span><span class="n">QskStatusIndicator</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QUrl</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">source</span><span class="p">(</span> <span class="kt">int</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">constFind</span><span class="p">(</span> <span class="n">status</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">constEnd</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">QUrl</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">setSource</span><span class="p">(</span> <span class="kt">int</span> <span class="n">status</span><span class="p">,</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">hasChanged</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">status</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">source</span> <span class="o">!=</span> <span class="n">url</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">it</span><span class="o">-&gt;</span><span class="n">source</span> <span class="o">=</span> <span class="n">url</span><span class="p">;</span>
+            <span class="n">it</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+            <span class="n">it</span><span class="o">-&gt;</span><span class="n">isDirty</span> <span class="o">=</span> <span class="o">!</span><span class="n">url</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">();</span>
+
+            <span class="n">hasChanged</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">status</span><span class="p">,</span> <span class="n">StatusData</span><span class="p">(</span> <span class="n">url</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">statusList</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+        <span class="n">hasChanged</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hasChanged</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">status</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentStatus</span> <span class="p">)</span>
+            <span class="n">update</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphic</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">graphic</span><span class="p">(</span> <span class="kt">int</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">status</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">it</span><span class="o">-&gt;</span><span class="n">ensureGraphic</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QskGraphic</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">setGraphic</span><span class="p">(</span> <span class="kt">int</span> <span class="n">status</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">graphic</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">hasChanged</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">status</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">||</span> <span class="n">graphic</span> <span class="o">!=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">graphic</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">it</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+            <span class="n">it</span><span class="o">-&gt;</span><span class="n">isDirty</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="n">it</span><span class="o">-&gt;</span><span class="n">graphic</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">;</span>
+
+            <span class="n">hasChanged</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">status</span><span class="p">,</span> <span class="n">StatusData</span><span class="p">(</span> <span class="n">graphic</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">statusList</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+        <span class="n">hasChanged</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hasChanged</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">status</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentStatus</span> <span class="p">)</span>
+            <span class="n">update</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskColorFilter</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">graphicFilter</span><span class="p">(</span> <span class="kt">int</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">status</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">effectiveGraphicFilter</span><span class="p">(</span> <span class="n">Graphic</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">setGraphicRole</span><span class="p">(</span> <span class="kt">int</span> <span class="n">role</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setGraphicRoleHint</span><span class="p">(</span> <span class="n">Graphic</span><span class="p">,</span> <span class="n">role</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">graphicRoleChanged</span><span class="p">(</span> <span class="n">role</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">resetGraphicRole</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetGraphicRoleHint</span><span class="p">(</span> <span class="n">Graphic</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">graphicRoleChanged</span><span class="p">(</span> <span class="n">graphicRoleHint</span><span class="p">(</span> <span class="n">Graphic</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">graphicRole</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">graphicRoleHint</span><span class="p">(</span> <span class="n">Graphic</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">status</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentStatus</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">hasStatus</span><span class="p">(</span> <span class="kt">int</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">setStatus</span><span class="p">(</span> <span class="kt">int</span> <span class="n">status</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">status</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentStatus</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">constFind</span><span class="p">(</span> <span class="n">status</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">constEnd</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskStatusIndicator: invalid status:"</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">;</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentStatus</span> <span class="o">=</span> <span class="n">status</span><span class="p">;</span>
+    <span class="n">Q_EMIT</span> <span class="n">statusChanged</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentStatus</span> <span class="p">);</span>
+
+    <span class="c1">// we should have a mode to decide if we</span>
+    <span class="c1">// want to keep the hidden graphics in memory</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">isDirty</span> <span class="p">)</span>
+        <span class="n">polish</span><span class="p">();</span>
+
+    <span class="n">update</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QList</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">statusList</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="cm">/*
+        We should be have a QMap&lt; int, QskGraphic &gt;, so that
+        users can iterate over all entries without having to
+        do extra lookups for each entry. TODO ...
+     */</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">statusList</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">statusList</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">keys</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">statusList</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">changeEvent</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">StyleChange</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">statusData</span> <span class="o">:</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">statusData</span><span class="p">.</span><span class="n">source</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">statusData</span><span class="p">.</span><span class="n">graphic</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+                <span class="n">statusData</span><span class="p">.</span><span class="n">isDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">changeEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">updateLayout</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentStatus</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">it</span><span class="o">-&gt;</span><span class="n">ensureGraphic</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphic</span> <span class="n">QskStatusIndicator</span><span class="o">::</span><span class="n">loadSource</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">loadGraphic</span><span class="p">(</span> <span class="n">url</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskStatusIndicator.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

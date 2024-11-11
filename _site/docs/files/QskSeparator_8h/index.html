@@ -1,0 +1,74 @@
+<h1 id="controlsqskseparatorh">controls/QskSeparator.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskSeparator/">QskSeparator</a></strong> <br />Separates a group of items from adjacent items.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_SEPARATOR_H
+#define QSK_SEPARATOR_H
+</span>
+<span class="cp">#include "QskControl.h"
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskSeparator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskControl</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="n">READ</span> <span class="n">orientation</span>
+        <span class="n">WRITE</span> <span class="n">setOrientation</span> <span class="n">NOTIFY</span> <span class="n">orientationChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">extent</span> <span class="n">READ</span> <span class="n">extent</span>
+        <span class="n">WRITE</span> <span class="n">setExtent</span> <span class="n">RESET</span> <span class="n">resetExtent</span> <span class="n">NOTIFY</span> <span class="n">extentChanged</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskControl</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QSK_SUBCONTROLS</span><span class="p">(</span> <span class="n">Panel</span> <span class="p">)</span>
+
+    <span class="n">QskSeparator</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="n">QskSeparator</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+    <span class="o">~</span><span class="n">QskSeparator</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">);</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setExtent</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetExtent</span><span class="p">();</span>
+    <span class="n">qreal</span> <span class="n">extent</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="n">effectivePlacement</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">orientationChanged</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">extentChanged</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">m_orientation</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

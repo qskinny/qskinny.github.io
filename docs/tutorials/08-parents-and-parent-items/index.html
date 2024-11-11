@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+    <head>    
+
+        <title>8. Parents and parent items - The QSkinny UI framework</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="A documentation theme"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i%26display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" href="/assets/css/main.css">
+        <link rel="stylesheet" href="/assets/css/syntax.css">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        
+    </head>
+    <body>
+        
+        <div id="page" class="site">
+  <header id="masthead" class="site-header outer">
+  <div class="inner">
+    <div class="site-header-inside">
+      <div class="site-branding">
+        
+        
+        <p class="site-title"><a href="/"></a></p>
+        
+      </div><!-- .site-branding -->
+      
+      
+      <nav id="main-navigation" class="site-navigation" aria-label="Main Navigation">
+        <div class="site-nav-inside">
+          <button id="menu-close" class="menu-toggle"><span class="screen-reader-text">Open Menu</span><span class="icon-close" aria-hidden="true"></span></button>
+          <ul class="menu">
+          
+            
+            
+            <li class="menu-item">
+              
+              
+<a class="" href="/">
+  
+  Home
+  
+</a>
+
+              
+            </li>
+          
+            
+            
+            <li class="menu-item">
+              
+              
+<a class="" href="/docs/tutorials/01-What-is-QSkinny/">
+  
+  Tutorials
+  
+</a>
+
+              
+            </li>
+          
+            
+            
+            <li class="menu-item">
+              
+              
+<a class="" href="/docs/api/html/" target="_blank" rel="noopener">
+  
+  API documentation
+  
+</a>
+
+              
+            </li>
+          
+            
+            
+            <li class="menu-item menu-button">
+              
+              
+<a class="button" href="https://github.com/uwerat/qskinny" target="_blank" rel="noopener">
+  
+  GitHub
+  
+</a>
+
+              
+            </li>
+          
+          </ul>
+        </div><!-- .site-nav-inside -->
+      </nav><!-- .site-navigation -->
+      <button id="menu-open" class="menu-toggle"><span class="screen-reader-text">Close Menu</span><span class="icon-menu" aria-hidden="true"></span></button>
+      
+    </div><!-- .site-header-inside -->
+  </div><!-- .inner -->
+</header><!-- .site-header -->
+
+  <main id="content" class="site-content">
+    <div class="inner outer">
+  <div class="docs-content">
+    
+    
+
+
+
+
+<nav id="docs-nav" class="docs-nav" style="z-index: 1000">
+  <div id="docs-nav-inside" class="docs-nav-inside sticky">
+    <button id="docs-nav-toggle" class="docs-nav-toggle">Navigate Docs<span class="icon-angle-right" aria-hidden="true"></span></button>
+    <div class="docs-nav-menu">
+      <select id="search-field">
+      </select>
+      <br /><br />
+      <ul id="docs-menu" class="docs-menu">
+        <li class="docs-menu-item">
+          <a href=""></a>
+        </li>
+        
+          
+          
+          
+          
+          
+          
+          
+          <li class="docs-menu-item has-children active">
+            <a href="/docs/tutorials/">Tutorials</a>
+            
+            
+              <button class="docs-submenu-toggle"><span class="screen-reader-text">Submenu</span><span class="icon-angle-right" aria-hidden="true"></span></button>
+              
+              
+
+
+<div class="docs-submenu-div">
+    <ul class="docs-submenu">
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/01-What-is-QSkinny/">1. What is QSkinny?</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/02-Why-QSkinny/">2. Why QSkinny?</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/03-writing-your-first-application/">3. Writing your first application</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/04-Layouts/">4. Layouts</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/05-Skins/">5. Skins</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/06-The-theming-engine-in-depth/">6. The theming engine in depth</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/07-scalable-graphics/">7. (Scalable) graphics</a>
+        </li>
+    
+        <li class="docs-menu-item current">
+        <a href="/docs/tutorials/08-parents-and-parent-items/">8. Parents and parent items</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/09-qskinny-and-qml/">9. Using QSkinny and QML</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/10-writing-own-controls/">10. Writing own controls</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/11-How-to-build-for-Wasm/">10. Building QSkinny for WebAssembly (Wasm)</a>
+        </li>
+    
+        <li class="docs-menu-item">
+        <a href="/docs/tutorials/11-scene-graph/">11. Scene graph representations of controls</a>
+        </li>
+    
+    </ul>
+</div>
+
+            
+          </li>
+        
+      </ul><!-- .docs-menu -->
+    </div><!-- .docs-nav-menu -->
+  </div><!-- .docs-nav-inside -->
+</nav><!-- .docs-nav -->
+
+    <article class="post type-docs">
+      <div class="post-inside">
+        <header class="post-header">
+          <h1 class="post-title line-left">8. Parents and parent items</h1>
+        </header><!-- .post-header -->
+        <div class="post-content">
+          <div class="sect1">
+<h2 id="parents-and-parent-items">Parents and parent items</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Creating an app with QSkinny consists of creating controls, putting them
+into layouts and nesting layouts and controls inside each other. The
+nesting already creates some sort of a hierarchy in the app, see the
+"Nesting layouts" section in the <a href="Layouts.html">layouts page</a>. In
+more general terms, all controls are part of several hierarchies:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <strong>object tree</strong>. This is a tree of <code>QObject</code> instances which manages
+lifetime: Objects created with a parent will get deleted whenever their
+parent is deleted. For more information, see the Qt documentation on
+<a href="https://doc.qt.io/qt-5/objecttrees.html">Object Trees &amp; Ownership</a>.</p>
+</li>
+<li>
+<p>The <strong>item tree</strong>. This is a tree of items displayed on the screen,
+i.e. <code>QQuickItem</code> instances. Qt will traverse the item tree when
+rendering items on the screen. The positioning of an item depends on its
+parent item, e.g. layouts will position their child items according to
+certain policies. In addition, visual items will inherit properties from
+its parent item like visibility or opacity. The item tree is often
+similar to the object tree, but not necessarily: Instances of
+<code>QQuickItem</code> can have a parent item set, but have another parent, or no
+parent at all. See also the Qt documentation on
+<a href="https://doc.qt.io/qt-5/qtquick-visualcanvas-visualparent.html">Concepts -
+Visual Parent in Qt Quick</a>.</p>
+</li>
+<li>
+<p>The <strong>scene graph</strong>. The scene graph contains a representation of
+graphic primitives like rectangles, textures (i.e. images) and text, to
+allow efficient rendering on the screen with OpenGL or other backends.
+This is described in more details in <a href="scene-graph.html">scene graph
+representations of controls</a>.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="example">Example</h3>
+<div class="paragraph">
+<p>Let’s look at the "Nesting layouts" example from the
+<a href="Layouts.html">layouts documentation</a>. The UI looks like this:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/nesting-layouts.png" alt="Nested layouts">
+</div>
+<div class="title">Figure 1. UI with nested layouts</div>
+</div>
+<div class="paragraph">
+<p>The code for this UI is below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>auto* outerBox = new QskLinearBox( Qt::Vertical );
+
+auto* topBar = new QskLinearBox( Qt::Horizontal, outerBox );
+
+auto* topLabel1 = new QskTextLabel( "top bar label 1", topBar );
+auto* topLabel2 = new QskTextLabel( "top bar label 2", topBar );
+auto* topLabel3 = new QskTextLabel( "top bar label 3", topBar );
+
+auto* mainBox = new QskLinearBox( Qt::Horizontal, outerBox );
+
+auto* menuBox = new QskLinearBox( Qt::Vertical, mainBox );
+
+auto* menuLabel1 = new QskTextLabel( "menu 1", menuBox );
+auto* menuLabel2 = new QskTextLabel( "menu 2", menuBox );
+auto* menuLabel3 = new QskTextLabel( "menu 3", menuBox );
+
+auto* mainText = new QskTextLabel( "here main area", mainBox );
+
+QskWindow window;
+window.addItem( outerBox );
+window.show();</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="object-tree">Object tree</h4>
+<div class="paragraph">
+<p>In the example above, when we created a new element, we always passed
+the <code>QObject</code> parent as an argument to the constructor, which is good
+practice. We do that for instance in this line:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>auto* topLabel1 = new QskTextLabel( "top bar label 1", topBar );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This makes sure <code>topBar</code> is a parent of <code>topLabel1</code>. It means that when
+<code>topBar</code> is deleted, it will automatically delete <code>topLabel1</code>, because
+the latter is a child of the <code>topBar</code>.</p>
+</div>
+<div class="paragraph">
+<p>Below is an image of the object tree, i.e. the <code>QObject</code> parent-child
+relationship. The <code>QskWindow</code> is hereby the parent of the
+<code>QQuickRootItem</code>, which itself is the parent of the <code>outer box</code>, and so
+on. For information on how to obtain this tree, see
+<a href="https://doc.qt.io/qt-5/qobject.html#dumpObjectTree">QObject::dumpObjectTree()</a>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/object-hierarchy.png" alt="QObject hierarchy">
+</div>
+<div class="title">Figure 2. QObject tree (and item tree) of the nested layouts UI</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="item-tree">Item tree</h4>
+<div class="paragraph">
+<p>The Item tree for the example above is identical to the object tree. As
+described, we always pass the parent object in the constructor:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>auto* topLabel1 = new QskTextLabel( "top bar label 1", topBar );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The line above will (in addition to the setting the parent) also ensure
+that <code>topBar</code> will be a <strong>parent item</strong> of <code>topLabel1</code>; this is done by
+the <code>QQuickItem</code> constructor.</p>
+</div>
+<div class="paragraph">
+<p>Even if we had not passed the parent in the constructor, we could still
+add the label to the <code>topBar</code> via an explicit call:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>auto* topLabel1 = new QskTextLabel( "top bar label 1" );
+topBar-&gt;addItem( topLabel1 );</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The call to <code>addItem()</code> above sets the parent item of <code>topLabel1</code> to
+<code>topBar</code> and thus the latter will display it as one of its children. In
+this case it would also set the parent, because the <code>topLabel1</code> does not
+have one yet. In other words, setting a parent item will also set the
+parent <strong>if</strong> the parent is null.</p>
+</div>
+<div class="paragraph">
+<p>So since the <code>topBar</code> is a parent item of <code>topLabel1</code>, it means that
+<code>topLabel1</code> will inherit settings like visibility and opacity from
+<code>topBar</code>. For instance, if we set the the visibility of the <code>topBar</code> to
+false, all its child items will be invisible as well (which in this case
+would be all top bar labels). If we set the opacity to 0.2, all its
+child items will be almost transparent:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>topBar-&gt;setOpacity( 0.2 );</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/nesting-layouts-item-tree-1.png" alt="Changing the item tree">
+</div>
+<div class="title">Figure 3. Changing opacity of an item will affect all its child items</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="difference-in-object-trees-and-item-trees">Difference in object trees and item trees</h4>
+<div class="paragraph">
+<p>As an example for when the object tree and item tree differ, let’s
+decide to add a bottom bar to our UI and move our <code>topLabel1</code> from the
+top bar to the bottom bar. This is easy:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>auto* bottomBar = new QskLinearBox( Qt::Horizontal, outerBox );
+topLabel1-&gt;setParentItem( bottomBar );</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/nesting-layouts-item-tree-2.png" alt="Moving a label to the bottom bar">
+</div>
+<div class="title">Figure 4. Moving a label from the top bar to the bottom bar</div>
+</div>
+<div class="paragraph">
+<p>Now we decide to get rid of our top bar altogether:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>topBar-&gt;deleteLater();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will also delete our label from the bottom bar:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/nesting-layouts-item-tree-3.png" alt="Deleting the top bar">
+</div>
+<div class="title">Figure 5. Deleting the top bar will delete all its children</div>
+</div>
+<div class="paragraph">
+<p>The reason why the label from the bottom bar was also deleted is that
+with the call to <code>setParentItem()</code> above we set a new parent item; the
+parent, however, was still <code>topBar</code> (the call to <code>setParentItem()</code> did
+not change the parent, because it was not null). So when the <code>topBar</code>
+was deleted, it deleted all of its children, including the moved label
+<code>topLabel1</code>.</p>
+</div>
+<div class="paragraph">
+<p>After we moved the label to the bottom bar, the object tree was
+different from the item tree, hence we got a surprising result when
+deleting the top bar. It is a good idea to try to keep the trees the
+same, and be aware of the existence of both of them.</p>
+</div>
+<div class="paragraph">
+<p>If we reparent our label to the bottom bar before deleting the top bar,
+we get the desired effect:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>topLabel1-&gt;setParent( bottomBar );
+topLabel1-&gt;setParentItem( bottomBar );
+topBar-&gt;deleteLater();</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/nesting-layouts-item-tree-4.png" alt="Reparenting the item">
+</div>
+<div class="title">Figure 6. Reparenting the label will keep it alive when deleting the top bar</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+          
+          
+          
+            
+            
+            
+            
+            
+          
+        </div><!-- .post-content -->
+      </div><!-- .post-inside -->
+    </article><!-- .post -->
+    <nav id="page-nav" class="page-nav">
+      <div id="page-nav-inside" class="page-nav-inside sticky">
+        <h2 class="page-nav-title">Jump to Section</h2>
+        <div id="page-nav-link-container"></div>
+      </div><!-- .page-nav-inside -->
+    </nav><!-- .page-nav -->
+  </div><!-- .docs-content -->
+</div><!-- .inner-->
+
+  </main><!-- .site-content -->
+  <footer id="colophon" class="site-footer outer">
+  <div class="inner">
+    <div class="site-footer-inside">
+      <p class="site-info">
+        
+        
+        <span class="copyright">&copy; The QSkinny project. All rights reserved.</span>
+        
+        
+      </p><!-- .site-info -->
+      
+      
+      <div class="social-links">
+        
+          
+          
+<a class="button button-icon" href="https://github.com/uwerat/qskinny" target="_blank" rel="noopener">
+  
+  <span class="icon fab fa-github" aria-hidden="true"></span><span class="screen-reader-text">GitHub</span>
+  
+</a>
+
+        
+      </div><!-- .social-links -->
+      
+    </div><!-- .site-footer-inside -->
+  </div><!-- .inner -->
+</footer><!-- .site-footer -->
+
+</div><!-- .site -->
+
+        <!-- Scripts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="/assets/js/plugins.js"></script>
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/page-load.js"></script>
+        <script src="/assets/js/qskinny-search.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    </body>
+</html>

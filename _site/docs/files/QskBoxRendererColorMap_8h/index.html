@@ -1,0 +1,289 @@
+<h1 id="nodesqskboxrenderercolormaph">nodes/QskBoxRendererColorMap.h</h1>
+
+<h2 id="namespaces">Namespaces</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong><a href="/docs/namespaces/namespaceQskVertex/">QskVertex</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_BOX_RENDERER_COLOR_MAP_H
+#define QSK_BOX_RENDERER_COLOR_MAP_H
+</span>
+<span class="cp">#include &lt;QskGradient.h&gt;
+#include &lt;QskVertex.h&gt;
+</span>
+<span class="cp">#include &lt;cassert&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskBoxShapeMetrics</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="n">QskVertex</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">ColorMapNone</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="k">constexpr</span> <span class="kr">inline</span> <span class="n">Color</span> <span class="n">colorAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">Color</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">ColorMapSolid</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="k">constexpr</span> <span class="kr">inline</span> <span class="n">ColorMapSolid</span><span class="p">(</span> <span class="n">Color</span> <span class="n">color</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_color</span><span class="p">(</span> <span class="n">color</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Color</span> <span class="n">colorAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_color</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">Color</span> <span class="n">m_color</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">ColorMapGradient</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">ColorMapGradient</span><span class="p">(</span> <span class="n">Color</span> <span class="n">color1</span><span class="p">,</span> <span class="n">Color</span> <span class="n">color2</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_color1</span><span class="p">(</span> <span class="n">color1</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_color2</span><span class="p">(</span> <span class="n">color2</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Color</span> <span class="n">colorAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_color1</span><span class="p">.</span><span class="n">interpolatedTo</span><span class="p">(</span> <span class="n">m_color2</span><span class="p">,</span> <span class="n">value</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">Color</span> <span class="n">m_color1</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">Color</span> <span class="n">m_color2</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">ColorIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">advance</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="n">assert</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+            <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Color</span> <span class="n">color</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="n">assert</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+            <span class="k">return</span> <span class="n">Color</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">isDone</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">SolidColorIterator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ColorIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">SolidColorIterator</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_color</span><span class="p">(</span> <span class="n">color</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Color</span> <span class="n">colorAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_color</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">Color</span> <span class="n">m_color</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">TwoColorIterator01</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ColorIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">TwoColorIterator01</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color1</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color2</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_color1</span><span class="p">(</span> <span class="n">color1</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_color2</span><span class="p">(</span> <span class="n">color2</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Color</span> <span class="n">colorAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_color1</span><span class="p">.</span><span class="n">interpolatedTo</span><span class="p">(</span> <span class="n">m_color2</span><span class="p">,</span> <span class="n">value</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">Color</span> <span class="n">m_color1</span><span class="p">,</span> <span class="n">m_color2</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">TwoColorIterator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ColorIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">TwoColorIterator</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">value2</span><span class="p">,</span>
+                <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color1</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color2</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_value1</span><span class="p">(</span> <span class="n">value1</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_range</span><span class="p">(</span> <span class="n">value2</span> <span class="o">-</span> <span class="n">value1</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_color1</span><span class="p">(</span> <span class="n">color1</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_color2</span><span class="p">(</span> <span class="n">color2</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Color</span> <span class="n">colorAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">r</span> <span class="o">=</span> <span class="p">(</span> <span class="n">value</span> <span class="o">-</span> <span class="n">m_value1</span> <span class="p">)</span> <span class="o">/</span> <span class="n">m_range</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">m_color1</span><span class="p">.</span><span class="n">interpolatedTo</span><span class="p">(</span> <span class="n">m_color2</span><span class="p">,</span> <span class="n">r</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">m_value1</span><span class="p">,</span> <span class="n">m_range</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">Color</span> <span class="n">m_color1</span><span class="p">,</span> <span class="n">m_color2</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">GradientColorIterator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ColorIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">GradientColorIterator</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">value2</span><span class="p">,</span>
+                <span class="k">const</span> <span class="n">QskGradientStops</span><span class="o">&amp;</span> <span class="n">stops</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_value1</span><span class="p">(</span> <span class="n">value1</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_value2</span><span class="p">(</span> <span class="n">value2</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_stops</span><span class="p">(</span> <span class="n">stops</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">stops</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="p">);</span>
+
+            <span class="n">m_color1</span> <span class="o">=</span> <span class="n">stops</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">color</span><span class="p">();</span>
+            <span class="n">m_color2</span> <span class="o">=</span> <span class="n">stops</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">color</span><span class="p">();</span>
+
+            <span class="n">m_valueStep1</span> <span class="o">=</span> <span class="n">value1</span><span class="p">;</span>
+            <span class="n">m_valueStep2</span> <span class="o">=</span> <span class="n">valueAt</span><span class="p">(</span> <span class="n">stops</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">position</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">m_stepSize</span> <span class="o">=</span> <span class="n">m_valueStep2</span> <span class="o">-</span> <span class="n">m_valueStep1</span><span class="p">;</span>
+
+            <span class="n">m_index</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_valueStep2</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Color</span> <span class="n">color</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_color2</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">Color</span> <span class="n">colorAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">r</span> <span class="o">=</span> <span class="p">(</span> <span class="n">value</span> <span class="o">-</span> <span class="n">m_valueStep1</span> <span class="p">)</span> <span class="o">/</span> <span class="n">m_stepSize</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">m_color1</span><span class="p">.</span><span class="n">interpolatedTo</span><span class="p">(</span> <span class="n">m_color2</span><span class="p">,</span> <span class="n">r</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">advance</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">stop</span> <span class="o">=</span> <span class="n">m_stops</span><span class="p">[</span> <span class="o">++</span><span class="n">m_index</span> <span class="p">];</span>
+
+            <span class="n">m_color1</span> <span class="o">=</span> <span class="n">m_color2</span><span class="p">;</span>
+            <span class="n">m_color2</span> <span class="o">=</span> <span class="n">stop</span><span class="p">.</span><span class="n">color</span><span class="p">();</span>
+
+            <span class="n">m_valueStep1</span> <span class="o">=</span> <span class="n">m_valueStep2</span><span class="p">;</span>
+            <span class="n">m_valueStep2</span> <span class="o">=</span> <span class="n">valueAt</span><span class="p">(</span> <span class="n">stop</span><span class="p">.</span><span class="n">position</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">m_stepSize</span> <span class="o">=</span> <span class="n">m_valueStep2</span> <span class="o">-</span> <span class="n">m_valueStep1</span><span class="p">;</span>
+
+            <span class="k">return</span> <span class="o">!</span><span class="n">isDone</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">isDone</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_index</span> <span class="o">&gt;=</span> <span class="n">m_stops</span><span class="p">.</span><span class="n">count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">valueAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">pos</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_value1</span> <span class="o">+</span> <span class="n">pos</span> <span class="o">*</span> <span class="p">(</span> <span class="p">(</span> <span class="n">m_value2</span> <span class="o">-</span> <span class="n">m_value1</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">m_value1</span><span class="p">,</span> <span class="n">m_value2</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">QskGradientStops</span> <span class="n">m_stops</span><span class="p">;</span>
+
+        <span class="kt">int</span> <span class="n">m_index</span><span class="p">;</span>
+        <span class="n">qreal</span> <span class="n">m_valueStep1</span><span class="p">,</span> <span class="n">m_valueStep2</span><span class="p">,</span> <span class="n">m_stepSize</span><span class="p">;</span>
+        <span class="n">Color</span> <span class="n">m_color1</span><span class="p">,</span> <span class="n">m_color2</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ContourIterator</span><span class="p">,</span> <span class="k">class</span> <span class="nc">ColorIterator</span> <span class="p">&gt;</span>
+    <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">fillOrdered</span><span class="p">(</span> <span class="n">ContourIterator</span><span class="o">&amp;</span> <span class="n">contourIt</span><span class="p">,</span>
+        <span class="n">ColorIterator</span><span class="o">&amp;</span> <span class="n">colorIt</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">do</span>
+        <span class="p">{</span>
+            <span class="k">while</span> <span class="p">(</span> <span class="o">!</span><span class="n">colorIt</span><span class="p">.</span><span class="n">isDone</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">colorIt</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">contourIt</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">contourIt</span><span class="p">.</span><span class="n">setGradientLine</span><span class="p">(</span> <span class="n">colorIt</span><span class="p">,</span> <span class="n">line</span><span class="o">++</span> <span class="p">);</span>
+                <span class="n">colorIt</span><span class="p">.</span><span class="n">advance</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="n">contourIt</span><span class="p">.</span><span class="n">setContourLine</span><span class="p">(</span> <span class="n">colorIt</span><span class="p">,</span> <span class="n">line</span><span class="o">++</span> <span class="p">);</span>
+
+        <span class="p">}</span> <span class="k">while</span> <span class="p">(</span> <span class="n">contourIt</span><span class="p">.</span><span class="n">advance</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">line</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ContourIterator</span> <span class="p">&gt;</span>
+    <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">fillOrdered</span><span class="p">(</span> <span class="n">ContourIterator</span><span class="o">&amp;</span> <span class="n">contourIt</span><span class="p">,</span>
+        <span class="n">qreal</span> <span class="n">value1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">value2</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">gradient</span><span class="p">.</span><span class="n">stops</span><span class="p">().</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">value2</span> <span class="o">==</span> <span class="mf">1.0</span> <span class="o">&amp;&amp;</span> <span class="n">value1</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">TwoColorIterator01</span> <span class="n">colorIt</span><span class="p">(</span> <span class="n">gradient</span><span class="p">.</span><span class="n">startColor</span><span class="p">(),</span> <span class="n">gradient</span><span class="p">.</span><span class="n">endColor</span><span class="p">()</span> <span class="p">);</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">fillOrdered</span><span class="p">(</span> <span class="n">contourIt</span><span class="p">,</span> <span class="n">colorIt</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">TwoColorIterator</span> <span class="n">colorIt</span><span class="p">(</span> <span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span>
+                    <span class="n">gradient</span><span class="p">.</span><span class="n">startColor</span><span class="p">(),</span> <span class="n">gradient</span><span class="p">.</span><span class="n">endColor</span><span class="p">()</span> <span class="p">);</span>
+
+                <span class="n">line</span> <span class="o">=</span> <span class="n">fillOrdered</span><span class="p">(</span> <span class="n">contourIt</span><span class="p">,</span> <span class="n">colorIt</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">GradientColorIterator</span> <span class="n">colorIt</span><span class="p">(</span> <span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span> <span class="n">gradient</span><span class="p">.</span><span class="n">stops</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">fillOrdered</span><span class="p">(</span> <span class="n">contourIt</span><span class="p">,</span> <span class="n">colorIt</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">line</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

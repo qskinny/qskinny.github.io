@@ -1,0 +1,432 @@
+<h1 id="controlsqsksetupcpp">controls/QskSetup.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskSetup_8cpp/#function-qskhasenvironment">qskHasEnvironment</a></strong>(const char * env)</td>
+    </tr>
+    <tr>
+      <td>const QskQuickItem::UpdateFlags</td>
+      <td><strong><a href="/docs/files/QskSetup_8cpp/#function-qskenvironmentupdateflags">qskEnvironmentUpdateFlags</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>QskQuickItem::UpdateFlags</td>
+      <td><strong><a href="/docs/files/QskSetup_8cpp/#function-qskdefaultupdateflags">qskDefaultUpdateFlags</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskSetup_8cpp/#function-qskapplicationhook">qskApplicationHook</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskSetup_8cpp/#function-qskapplicationfilter">qskApplicationFilter</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskSetup_8cpp/#function-qskinheritlocale">qskInheritLocale</a></strong>(QskWindow * window, const QLocale &amp; locale)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskhasenvironment">function qskHasEnvironment</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskHasEnvironment</span><span class="p">(</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">env</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskenvironmentupdateflags">function qskEnvironmentUpdateFlags</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="k">const</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="n">qskEnvironmentUpdateFlags</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskdefaultupdateflags">function qskDefaultUpdateFlags</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="n">qskDefaultUpdateFlags</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskapplicationhook">function qskApplicationHook</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskApplicationHook</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskapplicationfilter">function qskApplicationFilter</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskApplicationFilter</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinheritlocale">function qskInheritLocale</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">qskInheritLocale</span><span class="p">(</span>
+    <span class="n">QskWindow</span> <span class="o">*</span> <span class="n">window</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QLocale</span> <span class="o">&amp;</span> <span class="n">locale</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSetup.h"
+#include "QskControl.h"
+#include "QskControlPrivate.h"
+#include "QskGraphicProviderMap.h"
+#include "QskObjectTree.h"
+#include "QskSkin.h"
+#include "QskSkinManager.h"
+#include "QskWindow.h"
+</span>
+<span class="cp">#include &lt;qguiapplication.h&gt;
+#include &lt;qpointer.h&gt;
+#include &lt;qstylehints.h&gt;
+</span>
+<span class="n">QskSetup</span><span class="o">*</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">s_instance</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskHasEnvironment</span><span class="p">(</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">env</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">ok</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="n">qEnvironmentVariableIntValue</span><span class="p">(</span> <span class="n">env</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ok</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">ok</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">// All other strings are true, apart from "false"</span>
+    <span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">qgetenv</span><span class="p">(</span> <span class="n">env</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="o">!</span><span class="n">result</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">result</span> <span class="o">!=</span> <span class="s">"false"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="k">const</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="nf">qskEnvironmentUpdateFlags</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="n">flags</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskHasEnvironment</span><span class="p">(</span> <span class="s">"QSK_PREFER_RASTER"</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">PreferRasterForTextures</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskHasEnvironment</span><span class="p">(</span> <span class="s">"QSK_FORCE_BACKGROUND"</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">DebugForceBackground</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">flags</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="nf">qskDefaultUpdateFlags</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="n">flags</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">flags</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">DeferredUpdate</span><span class="p">;</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">DeferredPolish</span><span class="p">;</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">DeferredLayout</span><span class="p">;</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">CleanupOnVisibility</span><span class="p">;</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="n">qskEnvironmentUpdateFlags</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">flags</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskApplicationHook</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">QskSetup</span><span class="o">::</span><span class="n">setup</span><span class="p">();</span>
+    <span class="n">qAddPostRoutine</span><span class="p">(</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">cleanup</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskApplicationFilter</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">instance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">installEventFilter</span><span class="p">(</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">instance</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Q_CONSTRUCTOR_FUNCTION</span><span class="p">(</span> <span class="n">qskApplicationHook</span> <span class="p">)</span>
+<span class="n">Q_COREAPP_STARTUP_FUNCTION</span><span class="p">(</span> <span class="n">qskApplicationFilter</span> <span class="p">)</span>
+
+<span class="k">extern</span> <span class="kt">bool</span> <span class="nf">qskInheritLocale</span><span class="p">(</span> <span class="n">QskWindow</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="p">);</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">VisitorLocale</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskObjectTree</span><span class="o">::</span><span class="n">ResolveVisitor</span><span class="o">&lt;</span> <span class="n">QLocale</span> <span class="o">&gt;</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">VisitorLocale</span><span class="p">()</span>
+            <span class="o">:</span> <span class="n">ResolveVisitor</span><span class="o">&lt;</span> <span class="n">QLocale</span> <span class="o">&gt;</span><span class="p">(</span> <span class="s">"locale"</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="kt">bool</span> <span class="n">setImplicitValue</span><span class="p">(</span> <span class="n">QskControl</span><span class="o">*</span> <span class="n">control</span><span class="p">,</span>
+            <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="n">locale</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">QskControlPrivate</span><span class="o">::</span><span class="n">inheritLocale</span><span class="p">(</span> <span class="n">control</span><span class="p">,</span> <span class="n">locale</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">bool</span> <span class="n">setImplicitValue</span><span class="p">(</span> <span class="n">QskWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span>
+            <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="n">locale</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">qskInheritLocale</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="n">locale</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">QLocale</span> <span class="n">value</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskControl</span><span class="o">*</span> <span class="n">control</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">locale</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">QLocale</span> <span class="n">value</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">locale</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskSetup</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">itemUpdateFlags</span><span class="p">(</span> <span class="n">qskDefaultUpdateFlags</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="n">QString</span> <span class="n">skinName</span><span class="p">;</span>
+    <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskSkin</span> <span class="o">&gt;</span> <span class="n">skin</span><span class="p">;</span>
+
+    <span class="n">QskGraphicProviderMap</span> <span class="n">graphicProviders</span><span class="p">;</span>
+    <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="n">itemUpdateFlags</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskSetup</span><span class="o">::</span><span class="n">QskSetup</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskSetup</span><span class="o">::~</span><span class="n">QskSetup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">s_instance</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="c1">// we might be destroyed from Qml !</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">setup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">s_instance</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">s_instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskSetup</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">cleanup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">delete</span> <span class="n">s_instance</span><span class="p">;</span>
+    <span class="n">s_instance</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">setItemUpdateFlags</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="n">flags</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">itemUpdateFlags</span> <span class="o">!=</span> <span class="n">flags</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">itemUpdateFlags</span> <span class="o">=</span> <span class="n">flags</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">itemUpdateFlagsChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">itemUpdateFlags</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">itemUpdateFlags</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">resetItemUpdateFlags</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setItemUpdateFlags</span><span class="p">(</span> <span class="n">qskDefaultUpdateFlags</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">setItemUpdateFlag</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlag</span> <span class="n">flag</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">itemUpdateFlags</span><span class="p">.</span><span class="n">testFlag</span><span class="p">(</span> <span class="n">flag</span> <span class="p">)</span> <span class="o">!=</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">itemUpdateFlags</span> <span class="o">|=</span> <span class="n">flag</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">itemUpdateFlags</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">flag</span><span class="p">;</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">itemUpdateFlagsChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">resetItemUpdateFlag</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlag</span> <span class="n">flag</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setItemUpdateFlag</span><span class="p">(</span> <span class="n">flag</span><span class="p">,</span> <span class="n">flag</span> <span class="o">&amp;</span> <span class="n">qskDefaultUpdateFlags</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">testItemUpdateFlag</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">UpdateFlag</span> <span class="n">flag</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">itemUpdateFlags</span><span class="p">.</span><span class="n">testFlag</span><span class="p">(</span> <span class="n">flag</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSkin</span><span class="o">*</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">setSkin</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">skinName</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">skinName</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinName</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">skin</span> <span class="o">=</span> <span class="n">QskSkinManager</span><span class="o">::</span><span class="n">instance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">createSkin</span><span class="p">(</span> <span class="n">skinName</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">skin</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">skin</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">skin</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">oldSkin</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span> <span class="o">=</span> <span class="n">skin</span><span class="p">;</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinName</span> <span class="o">=</span> <span class="n">skinName</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">oldSkin</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Q_EMIT</span> <span class="n">skinChanged</span><span class="p">(</span> <span class="n">skin</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">oldSkin</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span>
+            <span class="k">delete</span> <span class="n">oldSkin</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">skinName</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinName</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskSkin</span><span class="o">*</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">skin</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span> <span class="o">=</span> <span class="n">QskSkinManager</span><span class="o">::</span><span class="n">instance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">createSkin</span><span class="p">(</span> <span class="n">QString</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span> <span class="p">);</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinName</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span><span class="o">-&gt;</span><span class="n">objectName</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">addGraphicProvider</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span><span class="p">,</span> <span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="n">provider</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphicProviders</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">providerId</span><span class="p">,</span> <span class="n">provider</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">graphicProvider</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="n">provider</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skin</span><span class="o">-&gt;</span><span class="n">graphicProvider</span><span class="p">(</span> <span class="n">providerId</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">provider</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">provider</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphicProviders</span><span class="p">.</span><span class="n">provider</span><span class="p">(</span> <span class="n">providerId</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QLocale</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">inheritedLocale</span><span class="p">(</span> <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">VisitorLocale</span> <span class="n">visitor</span><span class="p">;</span>
+    <span class="n">visitor</span><span class="p">.</span><span class="n">setResolveValue</span><span class="p">(</span> <span class="n">QLocale</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">QskObjectTree</span><span class="o">::</span><span class="n">traverseUp</span><span class="p">(</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QObject</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">object</span> <span class="p">),</span> <span class="n">visitor</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">visitor</span><span class="p">.</span><span class="n">resolveValue</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">inheritLocale</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="n">locale</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">VisitorLocale</span> <span class="n">visitor</span><span class="p">;</span>
+    <span class="n">visitor</span><span class="p">.</span><span class="n">setResolveValue</span><span class="p">(</span> <span class="n">locale</span> <span class="p">);</span>
+
+    <span class="n">QskObjectTree</span><span class="o">::</span><span class="n">traverseDown</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">visitor</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">eventFilter</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">qskControlCast</span><span class="p">(</span> <span class="n">object</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            Qt::FocusPolicy has always been there with widgets, got lost with
+            Qt/Quick and has been reintroduced with Qt/Quick Controls 2 ( QC2 ).
+            Unfortunately this was done once more by adding code on top instead
+            of fixing the foundation.
+
+            But we also don't want to have how it is done in QC2 by adding
+            the focus management in the event handler of the base class.
+            This implementation reverts the expected default behaviour of when
+            events are accepted/ignored + is an error prone nightmare, when it
+            comes to overloading event handlers missing to call the base class.
+
+            That's why we prefer to do the focus management outside of the
+            event handlers.
+         */</span>
+        <span class="k">switch</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonRelease</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">focusPolicy</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ClickFocus</span> <span class="p">)</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ClickFocus</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">const</span> <span class="kt">bool</span> <span class="n">focusOnRelease</span> <span class="o">=</span>
+                        <span class="n">QGuiApplication</span><span class="o">::</span><span class="n">styleHints</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">setFocusOnTouchRelease</span><span class="p">();</span>
+
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">focusOnRelease</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonRelease</span> <span class="p">)</span>
+                            <span class="n">control</span><span class="o">-&gt;</span><span class="n">forceActiveFocus</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MouseFocusReason</span> <span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span> <span class="p">)</span>
+                            <span class="n">control</span><span class="o">-&gt;</span><span class="n">forceActiveFocus</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MouseFocusReason</span> <span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">Wheel</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">control</span><span class="o">-&gt;</span><span class="n">isWheelEnabled</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="cm">/*
+                        We block further processing of the event. This is in line
+                        with not receiving any mouse event that have not been
+                        explicitly enabled with setAcceptedMouseButtons().
+
+                     */</span>
+                    <span class="n">event</span><span class="o">-&gt;</span><span class="n">ignore</span><span class="p">();</span>
+                    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">focusPolicy</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">WheelFocus</span> <span class="p">)</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">WheelFocus</span> <span class="p">)</span>
+                    <span class="n">control</span><span class="o">-&gt;</span><span class="n">forceActiveFocus</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MouseFocusReason</span> <span class="p">);</span>
+
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nl">default:</span>
+                <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskSetup</span><span class="o">*</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">qmlAttachedProperties</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QskSetup</span><span class="o">::</span><span class="n">instance</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="p">)</span>
+<span class="cp">#include "moc_QskSetup.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

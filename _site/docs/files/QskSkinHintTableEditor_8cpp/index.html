@@ -1,0 +1,503 @@
+<h1 id="controlsqskskinhinttableeditorcpp">controls/QskSkinHintTableEditor.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSkinHintTableEditor.h"
+#include "QskSkinHintTable.h"
+</span>
+<span class="cp">#include "QskArcMetrics.h"
+#include "QskMargins.h"
+#include "QskBoxShapeMetrics.h"
+#include "QskBoxBorderMetrics.h"
+#include "QskBoxBorderColors.h"
+#include "QskGradient.h"
+</span>
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="kr">inline</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">lowestState</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">mask</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">StateInt</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">underlying_type</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">count</span> <span class="o">=</span> <span class="n">qCountTrailingZeroBits</span><span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">StateInt</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">mask</span> <span class="p">)</span> <span class="p">);</span> 
+        <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="o">&gt;</span><span class="p">(</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">count</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setHintStateMask</span><span class="p">(</span>
+        <span class="n">QskSkinHintTable</span><span class="o">*</span> <span class="n">table</span><span class="p">,</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">hint</span><span class="p">,</span>
+        <span class="kt">bool</span> <span class="n">noState</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">mask</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">mask</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">noState</span> <span class="o">||</span> <span class="n">states</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="n">table</span><span class="o">-&gt;</span><span class="n">setHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">states</span><span class="p">,</span> <span class="n">hint</span> <span class="p">);</span>
+
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">stateLow</span> <span class="o">=</span> <span class="n">lowestState</span><span class="p">(</span> <span class="n">mask</span> <span class="p">);</span>
+
+        <span class="n">mask</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">stateLow</span><span class="p">;</span>
+
+        <span class="n">setHintStateMask</span><span class="p">(</span> <span class="n">table</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">hint</span><span class="p">,</span> <span class="n">noState</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">mask</span> <span class="p">);</span>
+        <span class="n">setHintStateMask</span><span class="p">(</span> <span class="n">table</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">hint</span><span class="p">,</span> <span class="n">noState</span><span class="p">,</span> <span class="n">states</span> <span class="o">|</span> <span class="n">stateLow</span><span class="p">,</span> <span class="n">mask</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">removeHintStateMask</span><span class="p">(</span>
+        <span class="n">QskSkinHintTable</span><span class="o">*</span> <span class="n">table</span><span class="p">,</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+        <span class="kt">bool</span> <span class="n">noState</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">mask</span> <span class="p">)</span>
+    <span class="p">{</span>   
+        <span class="k">if</span> <span class="p">(</span> <span class="n">mask</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>   
+            <span class="k">if</span> <span class="p">(</span> <span class="n">noState</span> <span class="o">||</span> <span class="n">states</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="n">table</span><span class="o">-&gt;</span><span class="n">removeHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">states</span> <span class="p">);</span>
+            
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">stateLow</span> <span class="o">=</span> <span class="n">lowestState</span><span class="p">(</span> <span class="n">mask</span> <span class="p">);</span>
+        
+        <span class="n">mask</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">stateLow</span><span class="p">;</span>
+        
+        <span class="kt">bool</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">removeHintStateMask</span><span class="p">(</span> <span class="n">table</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">noState</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">mask</span> <span class="p">);</span>
+        <span class="n">ret</span> <span class="o">|=</span> <span class="n">removeHintStateMask</span><span class="p">(</span> <span class="n">table</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">noState</span><span class="p">,</span> <span class="n">states</span> <span class="o">|</span> <span class="n">stateLow</span><span class="p">,</span> <span class="n">mask</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">aspectStrutSize</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">StrutSize</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">aspectMargin</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Margin</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">aspectPadding</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Padding</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">aspectSpacing</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Spacing</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">aspectAlignment</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Alignment</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">aspectFontRole</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">FontRole</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">aspectGraphicRole</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">GraphicRole</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">aspectShape</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Shape</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">aspectBorder</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Border</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">QskSkinHintTableEditor</span><span class="p">(</span> <span class="n">QskSkinHintTable</span><span class="o">*</span> <span class="n">table</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_table</span><span class="p">(</span> <span class="n">table</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setTable</span><span class="p">(</span> <span class="n">QskSkinHintTable</span><span class="o">*</span> <span class="n">table</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_table</span> <span class="o">=</span> <span class="n">table</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinHintTable</span><span class="o">*</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">table</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_table</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setHint</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">hint</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">combination</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_table</span><span class="o">-&gt;</span><span class="n">setHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">hint</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">bool</span> <span class="n">noState</span> <span class="o">=</span>
+            <span class="p">(</span> <span class="n">combination</span><span class="p">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskStateCombination</span><span class="o">::</span><span class="n">CombinationNoState</span> <span class="p">);</span>
+
+        <span class="n">setHintStateMask</span><span class="p">(</span> <span class="n">m_table</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">hint</span><span class="p">,</span>
+            <span class="n">noState</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span><span class="p">(),</span> <span class="n">combination</span><span class="p">.</span><span class="n">states</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removeHint</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">combination</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">m_table</span><span class="o">-&gt;</span><span class="n">removeHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">bool</span> <span class="n">noState</span> <span class="o">=</span>
+            <span class="p">(</span> <span class="n">combination</span><span class="p">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskStateCombination</span><span class="o">::</span><span class="n">CombinationNoState</span> <span class="p">);</span>
+
+        <span class="k">return</span> <span class="n">removeHintStateMask</span><span class="p">(</span> <span class="n">m_table</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span>
+            <span class="n">noState</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span><span class="p">(),</span> <span class="n">combination</span><span class="p">.</span><span class="n">states</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setFlag</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setFlagHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">flag</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">flagHint</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setMetric</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">metric</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">metric</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metricHint</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setColor</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">GlobalColor</span> <span class="n">color</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setColorHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QColor</span><span class="p">(</span> <span class="n">color</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setColor</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QRgb</span> <span class="n">rgb</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setColorHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QColor</span><span class="o">::</span><span class="n">fromRgba</span><span class="p">(</span> <span class="n">rgb</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setColor</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setColorHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QColor</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">color</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">colorHint</span><span class="o">&lt;</span> <span class="n">QColor</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setHGradient</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color1</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color2</span><span class="p">,</span>
+    <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QskGradient</span> <span class="n">gradient</span><span class="p">(</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">color1</span><span class="p">,</span> <span class="n">color2</span> <span class="p">);</span>
+    <span class="n">setGradient</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setVGradient</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color1</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color2</span><span class="p">,</span>
+    <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QskGradient</span> <span class="n">gradient</span><span class="p">(</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">Vertical</span><span class="p">,</span> <span class="n">color1</span><span class="p">,</span> <span class="n">color2</span> <span class="p">);</span>
+    <span class="n">setGradient</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setGradient</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">gradient</span><span class="p">,</span>
+    <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setColorHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGradient</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">gradient</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">colorHint</span><span class="o">&lt;</span> <span class="n">QskGradient</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setStrutSize</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectStrutSize</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">size</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setStrutSize</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectStrutSize</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span>
+        <span class="n">QSizeF</span><span class="p">(</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removeStrutSize</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">removeMetricHint</span><span class="p">(</span> <span class="n">aspectStrutSize</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">strutSize</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metricHint</span><span class="o">&lt;</span> <span class="n">QSizeF</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectStrutSize</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setMargin</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskMargins</span><span class="o">&amp;</span> <span class="n">margins</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectMargin</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">margins</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setMargin</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">left</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">top</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">right</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">bottom</span><span class="p">,</span>
+    <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QskMargins</span> <span class="n">margins</span><span class="p">(</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="p">);</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectMargin</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">margins</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removeMargin</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">removeMetricHint</span><span class="p">(</span> <span class="n">aspectMargin</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskMargins</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">margin</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metricHint</span><span class="o">&lt;</span> <span class="n">QskMargins</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectMargin</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setPadding</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskMargins</span><span class="o">&amp;</span> <span class="n">padding</span><span class="p">,</span>
+    <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectPadding</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">padding</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setPadding</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">left</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">top</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">right</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">bottom</span><span class="p">,</span>
+    <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QskMargins</span> <span class="n">padding</span><span class="p">(</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="p">);</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectPadding</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">padding</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removePadding</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">removeMetricHint</span><span class="p">(</span> <span class="n">aspectPadding</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskMargins</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">padding</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metricHint</span><span class="o">&lt;</span> <span class="n">QskMargins</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectPadding</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setSpacing</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectSpacing</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removeSpacing</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">removeMetricHint</span><span class="p">(</span> <span class="n">aspectSpacing</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">spacing</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metricHint</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectSpacing</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setAlignment</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setFlagHint</span><span class="p">(</span> <span class="n">aspectAlignment</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span>
+        <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removeAlignment</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">removeFlagHint</span><span class="p">(</span> <span class="n">aspectAlignment</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">alignment</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">flagHint</span><span class="o">&lt;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectAlignment</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setFontRole</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fontRole</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setFlagHint</span><span class="p">(</span> <span class="n">aspectFontRole</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">fontRole</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removeFontRole</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">removeFlagHint</span><span class="p">(</span> <span class="n">aspectFontRole</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">fontRole</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">flagHint</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectFontRole</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setGraphicRole</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="kt">int</span> <span class="n">graphicRole</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setFlagHint</span><span class="p">(</span> <span class="n">aspectGraphicRole</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">graphicRole</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removeGraphicRole</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">removeFlagHint</span><span class="p">(</span> <span class="n">aspectGraphicRole</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">graphicRole</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">flagHint</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectGraphicRole</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setBoxShape</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">radius</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeMode</span> <span class="n">sizeMode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectShape</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span>
+        <span class="n">QskBoxShapeMetrics</span><span class="p">(</span> <span class="n">radius</span><span class="p">,</span> <span class="n">sizeMode</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setBoxShape</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">topLeft</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">topRight</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">bottomLeft</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">bottomRight</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeMode</span> <span class="n">sizeMode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectShape</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span>
+        <span class="n">QskBoxShapeMetrics</span><span class="p">(</span> <span class="n">topLeft</span><span class="p">,</span> <span class="n">topRight</span><span class="p">,</span> <span class="n">bottomLeft</span><span class="p">,</span> <span class="n">bottomRight</span><span class="p">,</span> <span class="n">sizeMode</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setBoxShape</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span>
+    <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectShape</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">shape</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removeBoxShape</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">removeMetricHint</span><span class="p">(</span> <span class="n">aspectShape</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxShapeMetrics</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">boxShape</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metricHint</span><span class="o">&lt;</span> <span class="n">QskBoxShapeMetrics</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectShape</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setBoxBorderMetrics</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">borderWidth</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeMode</span> <span class="n">sizeMode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectBorder</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span>
+        <span class="n">QskBoxBorderMetrics</span><span class="p">(</span> <span class="n">borderWidth</span><span class="p">,</span> <span class="n">sizeMode</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setBoxBorderMetrics</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">left</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">top</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">right</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeMode</span> <span class="n">sizeMode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectBorder</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span>
+        <span class="n">QskBoxBorderMetrics</span><span class="p">(</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">sizeMode</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setBoxBorderMetrics</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">borderMetrics</span><span class="p">,</span>
+    <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectBorder</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">borderMetrics</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removeBoxBorderMetric</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">removeMetricHint</span><span class="p">(</span> <span class="n">aspectBorder</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxBorderMetrics</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">boxBorderMetrics</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metricHint</span><span class="o">&lt;</span> <span class="n">QskBoxBorderMetrics</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectBorder</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setBoxBorderColors</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">borderColors</span><span class="p">,</span>
+    <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setColorHint</span><span class="p">(</span> <span class="n">aspectBorder</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">borderColors</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setBoxBorderColors</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">left</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">top</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">right</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">bottom</span><span class="p">,</span>
+    <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setColorHint</span><span class="p">(</span> <span class="n">aspectBorder</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span>
+        <span class="n">QskBoxBorderColors</span><span class="p">(</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="p">),</span>
+        <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removeBoxBorderColors</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">removeColorHint</span><span class="p">(</span> <span class="n">aspectBorder</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxBorderColors</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">boxBorderColors</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">colorHint</span><span class="o">&lt;</span> <span class="n">QskBoxBorderColors</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectBorder</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setArcMetrics</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">startAngle</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">spanAngle</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeMode</span> <span class="n">sizeMode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectShape</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span>
+        <span class="n">QskArcMetrics</span><span class="p">(</span> <span class="n">width</span><span class="p">,</span> <span class="n">startAngle</span><span class="p">,</span> <span class="n">spanAngle</span><span class="p">,</span> <span class="n">sizeMode</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">setArcMetrics</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskArcMetrics</span><span class="o">&amp;</span> <span class="n">arcMetrics</span><span class="p">,</span> <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMetricHint</span><span class="p">(</span> <span class="n">aspectShape</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">arcMetrics</span><span class="p">,</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">removeArcMetrics</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">QskStateCombination</span> <span class="n">combination</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">removeMetricHint</span><span class="p">(</span> <span class="n">aspectShape</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">),</span> <span class="n">combination</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskArcMetrics</span> <span class="n">QskSkinHintTableEditor</span><span class="o">::</span><span class="n">arcMetrics</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metricHint</span><span class="o">&lt;</span> <span class="n">QskArcMetrics</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectShape</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

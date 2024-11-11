@@ -1,0 +1,341 @@
+<h1 id="controlsqskgraphiclabelcpp">controls/QskGraphicLabel.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskGraphicLabel.h"
+#include "QskAspect.h"
+#include "QskColorFilter.h"
+#include "QskGraphic.h"
+#include "QskGraphicProvider.h"
+#include "QskSetup.h"
+#include "QskSkin.h"
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskGraphicLabel</span><span class="p">,</span> <span class="n">Panel</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskGraphicLabel</span><span class="p">,</span> <span class="n">Graphic</span> <span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">QskGraphicLabel</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">sourceUrl</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">source</span><span class="p">(</span> <span class="n">sourceUrl</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">sourceSize</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">fillMode</span><span class="p">(</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">PreserveAspectFit</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">mirror</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">isSourceDirty</span><span class="p">(</span> <span class="o">!</span><span class="n">sourceUrl</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">hasPanel</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="n">QUrl</span> <span class="n">source</span><span class="p">;</span>
+    <span class="n">QSize</span> <span class="n">sourceSize</span><span class="p">;</span>
+
+    <span class="n">QskGraphic</span> <span class="n">graphic</span><span class="p">;</span>
+
+    <span class="n">uint</span> <span class="n">fillMode</span> <span class="o">:</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">mirror</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isSourceDirty</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">hasPanel</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">QskGraphicLabel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">source</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">(</span> <span class="n">source</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Expanding</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">QskGraphicLabel</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskGraphicLabel</span><span class="p">(</span> <span class="n">QUrl</span><span class="p">(),</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">QskGraphicLabel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">source</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskGraphicLabel</span><span class="p">(</span> <span class="n">QUrl</span><span class="p">(</span> <span class="n">source</span> <span class="p">),</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">QskGraphicLabel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">graphic</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskGraphicLabel</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicLabel</span><span class="o">::~</span><span class="n">QskGraphicLabel</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">setPanel</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPanel</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPanel</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">update</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">panelChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">hasPanel</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QUrl</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">source</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">setSource</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">source</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setSource</span><span class="p">(</span> <span class="n">QUrl</span><span class="p">(</span> <span class="n">source</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">setSource</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">url</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isSourceDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span> <span class="o">=</span> <span class="n">url</span><span class="p">;</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">polish</span><span class="p">();</span>
+    <span class="n">update</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">sourceChanged</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphic</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">graphic</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">setGraphic</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">graphic</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span> <span class="o">!=</span> <span class="n">graphic</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">bool</span> <span class="n">keepImplicitSize</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">sourceSize</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span>
+            <span class="o">||</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">.</span><span class="n">defaultSize</span><span class="p">()</span> <span class="o">==</span> <span class="n">graphic</span><span class="p">.</span><span class="n">defaultSize</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">keepImplicitSize</span> <span class="p">)</span>
+            <span class="n">resetImplicitSize</span><span class="p">();</span>
+
+        <span class="n">update</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">// in case we have a sequence setting a source and a graphic later</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isSourceDirty</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+        <span class="n">Q_EMIT</span> <span class="n">sourceChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">setGraphicRole</span><span class="p">(</span> <span class="kt">int</span> <span class="n">role</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setGraphicRoleHint</span><span class="p">(</span> <span class="n">Graphic</span><span class="p">,</span> <span class="n">role</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">graphicRoleChanged</span><span class="p">(</span> <span class="n">role</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">resetGraphicRole</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetGraphicRoleHint</span><span class="p">(</span> <span class="n">Graphic</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">graphicRoleChanged</span><span class="p">(</span> <span class="n">graphicRoleHint</span><span class="p">(</span> <span class="n">Graphic</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">graphicRole</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">graphicRoleHint</span><span class="p">(</span> <span class="n">Graphic</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskColorFilter</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">graphicFilter</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// can be removed once we can store a filter inidividually</span>
+    <span class="c1">// for a skinnable</span>
+
+    <span class="k">return</span> <span class="n">effectiveGraphicFilter</span><span class="p">(</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">Graphic</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">setMirror</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">mirror</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">mirror</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">sourceSize</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">||</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">mirrorChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">mirror</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">mirror</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">setSourceSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QSize</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">sz</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="n">sz</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">sz</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="n">sz</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">sourceSize</span> <span class="o">!=</span> <span class="n">sz</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">sourceSize</span> <span class="o">=</span> <span class="n">sz</span><span class="p">;</span>
+
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">sourceSizeChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QSize</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">sourceSize</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">sourceSize</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">resetSourceSize</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setSourceSize</span><span class="p">(</span> <span class="n">QSize</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">setFillMode</span><span class="p">(</span> <span class="n">FillMode</span> <span class="n">mode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">mode</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">fillMode</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">fillMode</span> <span class="o">=</span> <span class="n">mode</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">fillModeChanged</span><span class="p">(</span> <span class="n">mode</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">FillMode</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">fillMode</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">FillMode</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">fillMode</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setAlignmentHint</span><span class="p">(</span> <span class="n">Graphic</span><span class="p">,</span> <span class="n">alignment</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">alignmentChanged</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">resetAlignment</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetAlignmentHint</span><span class="p">(</span> <span class="n">Graphic</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">alignmentChanged</span><span class="p">(</span> <span class="n">alignment</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">alignment</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">alignmentHint</span><span class="p">(</span> <span class="n">Graphic</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignLeft</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignVCenter</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphic</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">loadSource</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">loadGraphic</span><span class="p">(</span> <span class="n">url</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">updateResources</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isSourceDirty</span> <span class="p">)</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span> <span class="o">=</span> <span class="n">loadSource</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span> <span class="p">);</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isSourceDirty</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">effectiveSourceSize</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">sourceSize</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">sourceSize</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">sourceSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">sourceSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// the size has been explicitly set</span>
+        <span class="k">return</span> <span class="n">sourceSize</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isSourceDirty</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// we have to load to know about the geometry</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span> <span class="o">=</span> <span class="n">loadSource</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span> <span class="p">);</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isSourceDirty</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">QSizeF</span> <span class="n">sz</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">QSizeF</span> <span class="n">defaultSize</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">.</span><span class="n">defaultSize</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">sourceSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">sourceSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// size is derived from the default size</span>
+            <span class="n">sz</span> <span class="o">=</span> <span class="n">defaultSize</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">sourceSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// only the height has been given</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sourceSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">/</span> <span class="n">defaultSize</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+            <span class="n">sz</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">f</span> <span class="o">*</span> <span class="n">defaultSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">sz</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">sourceSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="c1">// only the width has been given</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">f</span> <span class="o">=</span> <span class="n">sourceSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="n">defaultSize</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+            <span class="n">sz</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">sourceSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">sz</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">f</span> <span class="o">*</span> <span class="n">defaultSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">sz</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicLabel</span><span class="o">::</span><span class="n">changeEvent</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">StyleChange</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">source</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">qskSetup</span><span class="o">-&gt;</span><span class="n">skin</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">hasGraphicProvider</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// we might need to reload from a different skin</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isSourceDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">changeEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskGraphicLabel.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

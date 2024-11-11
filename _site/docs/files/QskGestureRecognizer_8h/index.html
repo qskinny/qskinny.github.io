@@ -1,0 +1,96 @@
+<h1 id="controlsqskgesturerecognizerh">controls/QskGestureRecognizer.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/">QskGestureRecognizer</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_GESTURE_RECOGNIZER_H
+#define QSK_GESTURE_RECOGNIZER_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+</span>
+<span class="cp">#include &lt;qnamespace.h&gt;
+#include &lt;memory&gt;
+</span>
+<span class="k">class</span> <span class="nc">QQuickItem</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QEvent</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QMouseEvent</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskGestureRecognizer</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">State</span>
+    <span class="p">{</span>
+        <span class="n">Idle</span><span class="p">,</span>
+        <span class="n">Pending</span><span class="p">,</span>
+        <span class="n">Accepted</span>
+    <span class="p">};</span>
+
+    <span class="n">QskGestureRecognizer</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">QskGestureRecognizer</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">setWatchedItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">);</span>
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">watchedItem</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="c1">// Qt::NoButton means: all buttons accepted</span>
+    <span class="kt">void</span> <span class="n">setAcceptedMouseButtons</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="p">);</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="n">acceptedMouseButtons</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setTimeout</span><span class="p">(</span> <span class="kt">int</span> <span class="p">);</span>
+    <span class="kt">int</span> <span class="n">timeout</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="c1">// timestamp, when the Idle state had been left</span>
+    <span class="n">ulong</span> <span class="n">timestamp</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">processEvent</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">blockReplayedEvents</span> <span class="o">=</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">reject</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">accept</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">abort</span><span class="p">();</span>
+
+    <span class="n">State</span> <span class="n">state</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isReplaying</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">hasProcessedBefore</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">protected:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">pressEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">);</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">moveEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">);</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">releaseEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">stateChanged</span><span class="p">(</span> <span class="n">State</span> <span class="n">from</span><span class="p">,</span> <span class="n">State</span> <span class="n">to</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">setState</span><span class="p">(</span> <span class="n">State</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">reset</span><span class="p">();</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

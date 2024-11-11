@@ -1,0 +1,208 @@
+<h1 id="nodesqskboxrendererh">nodes/QskBoxRenderer.h</h1>
+
+<h2 id="namespaces">Namespaces</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong><a href="/docs/namespaces/namespaceQskVertex/">QskVertex</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskBoxRenderer/">QskBoxRenderer</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_BOX_RENDERER_H
+#define QSK_BOX_RENDERER_H
+</span>
+<span class="cp">#include "QskBoxShapeMetrics.h"
+</span>
+<span class="cp">#include &lt;qrect.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskBoxBorderMetrics</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskBoxBorderColors</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskGradient</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSGGeometry</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="n">QskVertex</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">ColoredLine</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskBoxRenderer</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">renderBorder</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">renderFill</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">renderBox</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="k">class</span> <span class="nc">Quad</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">Quad</span><span class="p">()</span> <span class="k">noexcept</span>
+            <span class="o">:</span> <span class="n">left</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">top</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">right</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">bottom</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">width</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">height</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">Quad</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">)</span> <span class="k">noexcept</span>
+            <span class="o">:</span> <span class="n">left</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">top</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">right</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">bottom</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">width</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">height</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span> <span class="k">const</span> <span class="n">Quad</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+        <span class="p">{</span>
+            <span class="k">return</span>
+                <span class="p">(</span> <span class="n">left</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">left</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+                <span class="p">(</span> <span class="n">right</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">right</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+                <span class="p">(</span> <span class="n">top</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">top</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+                <span class="p">(</span> <span class="n">bottom</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">bottom</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span> <span class="k">const</span> <span class="n">Quad</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="o">!</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span> <span class="o">==</span> <span class="n">other</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span> <span class="n">width</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">height</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">qreal</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">Metrics</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">Metrics</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="p">);</span>
+
+        <span class="n">Quad</span> <span class="n">outerQuad</span><span class="p">;</span>
+        <span class="n">Quad</span> <span class="n">innerQuad</span><span class="p">;</span>
+<span class="cp">#if 1
+</span>        <span class="n">Quad</span> <span class="n">centerQuad</span><span class="p">;</span> <span class="c1">// to be removed</span>
+<span class="cp">#endif
+</span>
+        <span class="k">struct</span> <span class="nc">Corner</span>
+        <span class="p">{</span>
+            <span class="kt">bool</span> <span class="n">isCropped</span><span class="p">;</span>
+            <span class="n">qreal</span> <span class="n">centerX</span><span class="p">,</span> <span class="n">centerY</span><span class="p">;</span>
+            <span class="n">qreal</span> <span class="n">radiusX</span><span class="p">,</span> <span class="n">radiusY</span><span class="p">;</span>
+            <span class="n">qreal</span> <span class="n">radiusInnerX</span><span class="p">,</span> <span class="n">radiusInnerY</span><span class="p">;</span>
+
+            <span class="kt">int</span> <span class="n">stepCount</span><span class="p">;</span>
+
+        <span class="p">}</span> <span class="n">corner</span><span class="p">[</span> <span class="mi">4</span> <span class="p">];</span>
+
+        <span class="kt">bool</span> <span class="n">isBorderRegular</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">isRadiusRegular</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">isTotallyCropped</span><span class="p">;</span>
+    <span class="p">};</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">renderRectFill</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">renderRectBorder</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">renderRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">renderRectellipseFill</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">renderRectellipseBorder</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">renderRectellipse</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">renderDiagonalFill</span><span class="p">(</span> <span class="k">const</span> <span class="n">Metrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="kt">int</span> <span class="n">lineCount</span><span class="p">,</span> <span class="n">QskVertex</span><span class="o">::</span><span class="n">ColoredLine</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">renderRectFill</span><span class="p">(</span> <span class="k">const</span> <span class="n">Quad</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QskVertex</span><span class="o">::</span><span class="n">ColoredLine</span><span class="o">*</span> <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">renderBorder</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">border</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="n">geometry</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">shape</span><span class="p">.</span><span class="n">isRectangle</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">renderRectBorder</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">geometry</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">renderRectellipseBorder</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">geometry</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">renderFill</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">border</span><span class="p">,</span> <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="n">geometry</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">shape</span><span class="p">.</span><span class="n">isRectangle</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">renderRectFill</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">geometry</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">renderRectellipseFill</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">geometry</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">renderBox</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">border</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">borderColors</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">gradient</span><span class="p">,</span>
+    <span class="n">QSGGeometry</span><span class="o">&amp;</span> <span class="n">geometry</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">shape</span><span class="p">.</span><span class="n">isRectangle</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">renderRect</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">borderColors</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">geometry</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">renderRectellipse</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">borderColors</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">geometry</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

@@ -1,0 +1,534 @@
+<h1 id="qskdialog">QskDialog</h1>
+
+<p>Inherits from QObject</p>
+
+<h2 id="public-types">Public Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#enum-policy">Policy</a></strong> { EmbeddedBox, EmbeddedWindow, TopLevelWindow}</td>
+    </tr>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#enum-action">Action</a></strong> { NoAction = 0, Ok = 1 « 10, Save = 1 « 11, SaveAll = 1 « 12, Open = 1 « 13, Yes = 1 « 14, YesToAll = 1 « 15, No = 1 « 16, NoToAll = 1 « 17, Abort = 1 « 18, Retry = 1 « 19, Ignore = 1 « 20, Close = 1 « 21, Cancel = 1 « 22, Discard = 1 « 23, Help = 1 « 24, Apply = 1 « 25, Reset = 1 « 26, RestoreDefaults = 1 « 27}</td>
+    </tr>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#enum-actionrole">ActionRole</a></strong> { InvalidRole = -1, AcceptRole, RejectRole, DestructiveRole, UserRole, HelpRole, YesRole, NoRole, ResetRole, ApplyRole, NActionRoles}</td>
+    </tr>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#enum-buttonlayoutflag">ButtonLayoutFlag</a></strong> { ActionMask = 0x0FFFFFFF, AlternateRole = 1 « 28, Stretch = 1 « 29, Reverse = 1 « 30}</td>
+    </tr>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#enum-dialogcode">DialogCode</a></strong> { Rejected = 0, Accepted}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-signals">Public Signals</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#signal-transientparentchanged">transientParentChanged</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#signal-policychanged">policyChanged</a></strong>()</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QskDialog *</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#function-instance">instance</a></strong>()</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#function-setpolicy">setPolicy</a></strong>(Policy policy)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Policy</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#function-policy">policy</a></strong>() const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Q_INVOKABLE void</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#function-settransientparent">setTransientParent</a></strong>(QWindow * window)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Q_INVOKABLE QWindow *</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#function-transientparent">transientParent</a></strong>() const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Q_INVOKABLE Action</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#function-message">message</a></strong>(const QString &amp; title, const QString &amp; text, int symbolType, Actions actions =Ok, Action defaultAction =NoAction) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Q_INVOKABLE Action</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#function-information">information</a></strong>(const QString &amp; title, const QString &amp; text, Actions actions =Ok, Action defaultAction =NoAction) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Q_INVOKABLE Action</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#function-warning">warning</a></strong>(const QString &amp; title, const QString &amp; text, Actions actions =Ok, Action defaultAction =NoAction) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Q_INVOKABLE Action</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#function-critical">critical</a></strong>(const QString &amp; title, const QString &amp; text, Actions actions =Ok, Action defaultAction =NoAction) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Q_INVOKABLE Action</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#function-question">question</a></strong>(const QString &amp; title, const QString &amp; text, Actions actions =Actions(Yes</td>
+      <td>No), Action defaultAction =NoAction) const</td>
+    </tr>
+    <tr>
+      <td>Q_INVOKABLE QString</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#function-select">select</a></strong>(const QString &amp; title, const QString &amp; text, const QStringList &amp; entries, int selectedRow =0) const</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-properties">Public Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Policy</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#property-policy">policy</a></strong></td>
+    </tr>
+    <tr>
+      <td>QWindow *</td>
+      <td><strong><a href="/docs/classes/classQskDialog/#property-transientparent">transientParent</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+
+<h3 id="enum-policy">enum Policy</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>EmbeddedBox</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>EmbeddedWindow</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>TopLevelWindow</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="enum-action">enum Action</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NoAction</td>
+      <td>0</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Ok</td>
+      <td>1 « 10</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Save</td>
+      <td>1 « 11</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>SaveAll</td>
+      <td>1 « 12</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Open</td>
+      <td>1 « 13</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Yes</td>
+      <td>1 « 14</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>YesToAll</td>
+      <td>1 « 15</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>No</td>
+      <td>1 « 16</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>NoToAll</td>
+      <td>1 « 17</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Abort</td>
+      <td>1 « 18</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Retry</td>
+      <td>1 « 19</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Ignore</td>
+      <td>1 « 20</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Close</td>
+      <td>1 « 21</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Cancel</td>
+      <td>1 « 22</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Discard</td>
+      <td>1 « 23</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Help</td>
+      <td>1 « 24</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Apply</td>
+      <td>1 « 25</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Reset</td>
+      <td>1 « 26</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>RestoreDefaults</td>
+      <td>1 « 27</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="enum-actionrole">enum ActionRole</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>InvalidRole</td>
+      <td>-1</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>AcceptRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>RejectRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>DestructiveRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>UserRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>HelpRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>YesRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>NoRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>ResetRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>ApplyRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>NActionRoles</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="enum-buttonlayoutflag">enum ButtonLayoutFlag</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ActionMask</td>
+      <td>0x0FFFFFFF</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>AlternateRole</td>
+      <td>1 « 28</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Stretch</td>
+      <td>1 « 29</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Reverse</td>
+      <td>1 « 30</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="enum-dialogcode">enum DialogCode</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Rejected</td>
+      <td>0</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Accepted</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-signals-documentation">Public Signals Documentation</h2>
+
+<h3 id="signal-transientparentchanged">signal transientParentChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">transientParentChanged</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="signal-policychanged">signal policyChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">policyChanged</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-instance">function instance</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QskDialog</span> <span class="o">*</span> <span class="n">instance</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-setpolicy">function setPolicy</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setPolicy</span><span class="p">(</span>
+    <span class="n">Policy</span> <span class="n">policy</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-policy">function policy</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Policy</span> <span class="n">policy</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-settransientparent">function setTransientParent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="kt">void</span> <span class="n">setTransientParent</span><span class="p">(</span>
+    <span class="n">QWindow</span> <span class="o">*</span> <span class="n">window</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-transientparent">function transientParent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="n">QWindow</span> <span class="o">*</span> <span class="n">transientParent</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-message">function message</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="n">Action</span> <span class="n">message</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">symbolType</span><span class="p">,</span>
+    <span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span><span class="n">Ok</span><span class="p">,</span>
+    <span class="n">Action</span> <span class="n">defaultAction</span> <span class="o">=</span><span class="n">NoAction</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-information">function information</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="n">Action</span> <span class="n">information</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+    <span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span><span class="n">Ok</span><span class="p">,</span>
+    <span class="n">Action</span> <span class="n">defaultAction</span> <span class="o">=</span><span class="n">NoAction</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-warning">function warning</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="n">Action</span> <span class="n">warning</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+    <span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span><span class="n">Ok</span><span class="p">,</span>
+    <span class="n">Action</span> <span class="n">defaultAction</span> <span class="o">=</span><span class="n">NoAction</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-critical">function critical</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="n">Action</span> <span class="n">critical</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+    <span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span><span class="n">Ok</span><span class="p">,</span>
+    <span class="n">Action</span> <span class="n">defaultAction</span> <span class="o">=</span><span class="n">NoAction</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-question">function question</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="n">Action</span> <span class="n">question</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+    <span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span><span class="n">Actions</span><span class="p">(</span><span class="n">Yes</span><span class="o">|</span><span class="n">No</span><span class="p">),</span>
+    <span class="n">Action</span> <span class="n">defaultAction</span> <span class="o">=</span><span class="n">NoAction</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-select">function select</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="n">QString</span> <span class="n">select</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QStringList</span> <span class="o">&amp;</span> <span class="n">entries</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">selectedRow</span> <span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h2 id="public-property-documentation">Public Property Documentation</h2>
+
+<h3 id="property-policy">property policy</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Policy</span> <span class="n">policy</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="property-transientparent">property transientParent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QWindow</span> <span class="o">*</span> <span class="n">transientParent</span><span class="p">;</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

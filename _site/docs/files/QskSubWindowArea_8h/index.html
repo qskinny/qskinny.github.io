@@ -1,0 +1,68 @@
+<h1 id="controlsqsksubwindowareah">controls/QskSubWindowArea.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskSubWindowArea/">QskSubWindowArea</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_SUB_WINDOW_AREA_H
+#define QSK_SUB_WINDOW_AREA_H 1
+</span>
+<span class="cp">#include "QskControl.h"
+</span>
+<span class="k">class</span> <span class="nc">QskGradient</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskSubWindow</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskSubWindowArea</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskControl</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskControl</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QSK_SUBCONTROLS</span><span class="p">(</span> <span class="n">Panel</span> <span class="p">)</span>
+
+    <span class="n">QskSubWindowArea</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskSubWindowArea</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">void</span> <span class="n">geometryChangeEvent</span><span class="p">(</span> <span class="n">QskGeometryChangeEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">eventFilter</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">bool</span> <span class="n">mouseEventFilter</span><span class="p">(</span> <span class="n">QskSubWindow</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span> <span class="n">ItemChange</span><span class="p">,</span> <span class="k">const</span> <span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">setDragging</span><span class="p">(</span> <span class="n">QskSubWindow</span><span class="o">*</span><span class="p">,</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">setActive</span><span class="p">(</span> <span class="n">QskSubWindow</span><span class="o">*</span><span class="p">,</span> <span class="kt">bool</span> <span class="p">);</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

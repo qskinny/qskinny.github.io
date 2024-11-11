@@ -1,0 +1,112 @@
+<h1 id="controlsqskscrollboxh">controls/QskScrollBox.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskScrollBox/">QskScrollBox</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_SCROLL_BOX_H
+#define QSK_SCROLL_BOX_H
+</span>
+<span class="cp">#include "QskControl.h"
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskScrollBox</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskControl</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QPointF</span> <span class="n">scrollPos</span> <span class="n">READ</span> <span class="n">scrollPos</span>
+        <span class="n">WRITE</span> <span class="n">setScrollPos</span> <span class="n">NOTIFY</span> <span class="n">scrollPosChanged</span> <span class="n">FINAL</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">flickableOrientations</span> <span class="n">READ</span> <span class="n">flickableOrientations</span>
+        <span class="n">WRITE</span> <span class="n">setFlickableOrientations</span> <span class="n">NOTIFY</span> <span class="n">flickableOrientationsChanged</span> <span class="n">FINAL</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">autoScrollFocusedItem</span> <span class="n">READ</span> <span class="n">autoScrollFocusItem</span>
+        <span class="n">WRITE</span> <span class="n">setAutoScrollFocusedItem</span> <span class="n">NOTIFY</span> <span class="n">autoScrollFocusedItemChanged</span> <span class="n">FINAL</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskControl</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QskScrollBox</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskScrollBox</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setAutoScrollFocusedItem</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">autoScrollFocusItem</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setFlickableOrientations</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="p">);</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">flickableOrientations</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">flickRecognizerTimeout</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setFlickRecognizerTimeout</span><span class="p">(</span> <span class="kt">int</span> <span class="n">timeout</span> <span class="p">);</span>
+
+    <span class="k">virtual</span> <span class="n">QskAnimationHint</span> <span class="n">flickHint</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">QPointF</span> <span class="n">scrollPos</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QSizeF</span> <span class="n">scrollableSize</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="n">QRectF</span> <span class="n">viewContentsRect</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">QRectF</span> <span class="n">gestureRect</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">scrolledTo</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">scrollPosChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">scrollableSizeChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">autoScrollFocusedItemChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">flickableOrientationsChanged</span><span class="p">();</span>
+
+  <span class="k">public</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">setScrollPos</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">scrollTo</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">ensureItemVisible</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">ensureFocusItemVisible</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">ensureVisible</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">ensureVisible</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">void</span> <span class="n">geometryChangeEvent</span><span class="p">(</span> <span class="n">QskGeometryChangeEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">windowChangeEvent</span><span class="p">(</span> <span class="n">QskWindowChangeEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">gestureEvent</span><span class="p">(</span> <span class="n">QskGestureEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+<span class="cp">#ifndef QT_NO_WHEELEVENT
+</span>    <span class="kt">void</span> <span class="n">wheelEvent</span><span class="p">(</span> <span class="n">QWheelEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="n">QPointF</span> <span class="n">scrollOffset</span><span class="p">(</span> <span class="k">const</span> <span class="n">QWheelEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+<span class="cp">#endif
+</span>
+    <span class="kt">bool</span> <span class="n">gestureFilter</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setScrollableSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QPointF</span> <span class="n">boundedScrollPos</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">onFocusItemChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">connectWindow</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

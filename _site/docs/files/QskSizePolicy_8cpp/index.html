@@ -1,0 +1,113 @@
+<h1 id="commonqsksizepolicycpp">common/QskSizePolicy.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskSizePolicy_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskSizePolicy &amp; policy)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskSizePolicy</span> <span class="o">&amp;</span> <span class="n">policy</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSizePolicy.h"
+</span>
+<span class="cp">#ifndef QT_NO_DEBUG
+#include &lt;qdebug.h&gt;
+#endif
+</span>
+<span class="cp">#include &lt;utility&gt;
+</span>
+<span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">ConstraintType</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">constraintType</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">constexpr</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">IgnoreFlag</span> <span class="o">|</span> <span class="n">ConstrainedFlag</span><span class="p">;</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG
+</span>    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="p">(</span> <span class="n">m_horizontalPolicy</span> <span class="o">&amp;</span> <span class="n">mask</span> <span class="p">)</span> <span class="o">==</span> <span class="n">mask</span> <span class="p">)</span>
+        <span class="o">||</span> <span class="p">(</span> <span class="p">(</span> <span class="n">m_verticalPolicy</span> <span class="o">&amp;</span> <span class="n">mask</span> <span class="p">)</span> <span class="o">==</span> <span class="n">mask</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"invalid policy having IgnoreFlag and ConstrainedFlag"</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="cp">#endif
+</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">m_horizontalPolicy</span> <span class="o">&amp;</span> <span class="n">mask</span> <span class="p">)</span> <span class="o">==</span> <span class="n">ConstrainedFlag</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">WidthForHeight</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">m_verticalPolicy</span> <span class="o">&amp;</span> <span class="n">mask</span> <span class="p">)</span> <span class="o">==</span> <span class="n">ConstrainedFlag</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">HeightForWidth</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Unconstrained</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">effectiveSizeHintType</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">policy</span> <span class="o">=</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="o">?</span> <span class="n">horizontalPolicy</span><span class="p">()</span> <span class="o">:</span> <span class="n">verticalPolicy</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MinimumSize</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">policy</span> <span class="o">&amp;</span> <span class="n">ShrinkFlag</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MaximumSize</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">policy</span> <span class="o">&amp;</span> <span class="p">(</span> <span class="n">GrowFlag</span> <span class="o">|</span> <span class="n">ExpandFlag</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">which</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">transpose</span><span class="p">()</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span> <span class="n">m_horizontalPolicy</span><span class="p">,</span> <span class="n">m_verticalPolicy</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="cp">#include &lt;qdebug.h&gt;
+</span>
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskSizePolicy</span><span class="o">&amp;</span> <span class="n">policy</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"SizePolicy"</span> <span class="o">&lt;&lt;</span> <span class="sc">'('</span><span class="p">;</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="n">policy</span><span class="p">.</span><span class="n">horizontalPolicy</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">", "</span> <span class="o">&lt;&lt;</span> <span class="n">policy</span><span class="p">.</span><span class="n">verticalPolicy</span><span class="p">();</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">')'</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="cp">#include "moc_QskSizePolicy.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

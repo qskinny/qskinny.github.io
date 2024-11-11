@@ -1,0 +1,103 @@
+<h1 id="controlsqskboundedinputh">controls/QskBoundedInput.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/">QskBoundedInput</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_BOUNDED_INPUT_H
+#define QSK_BOUNDED_INPUT_H
+</span>
+<span class="cp">#include "QskBoundedControl.h"
+</span>
+<span class="k">class</span> <span class="nc">QskIntervalF</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskBoundedInput</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskBoundedControl</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">stepSize</span> <span class="n">READ</span> <span class="n">stepSize</span> <span class="n">WRITE</span> <span class="n">setStepSize</span> <span class="n">NOTIFY</span> <span class="n">stepSizeChanged</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">int</span> <span class="n">pageSize</span> <span class="n">READ</span> <span class="n">pageSize</span> <span class="n">WRITE</span> <span class="n">setPageSize</span> <span class="n">NOTIFY</span> <span class="n">pageSizeChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">snap</span> <span class="n">READ</span> <span class="n">snap</span> <span class="n">WRITE</span> <span class="n">setSnap</span> <span class="n">NOTIFY</span> <span class="n">snapChanged</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">readOnly</span> <span class="n">READ</span> <span class="n">isReadOnly</span> <span class="n">WRITE</span> <span class="n">setReadOnly</span> <span class="n">NOTIFY</span> <span class="n">readOnlyChanged</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskBoundedControl</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QSK_STATES</span><span class="p">(</span> <span class="n">ReadOnly</span> <span class="p">)</span>
+
+    <span class="n">QskBoundedInput</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskBoundedInput</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">stepSize</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">pageSize</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setSnap</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">snap</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setReadOnly</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">isReadOnly</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="k">public</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">setStepSize</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setPageSize</span><span class="p">(</span> <span class="kt">int</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">stepUp</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">stepDown</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">pageUp</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">pageDown</span><span class="p">();</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">increment</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">offset</span> <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">stepSizeChanged</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">pageSizeChanged</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">snapChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">readOnlyChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">void</span> <span class="n">keyPressEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+<span class="cp">#ifndef QT_NO_WHEELEVENT
+</span>    <span class="kt">void</span> <span class="n">wheelEvent</span><span class="p">(</span> <span class="n">QWheelEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+<span class="cp">#endif
+</span>
+    <span class="kt">void</span> <span class="n">componentComplete</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">alignInput</span><span class="p">();</span>
+
+    <span class="n">qreal</span> <span class="n">alignedValue</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QskIntervalF</span> <span class="n">alignedInterval</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">qreal</span> <span class="n">m_stepSize</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">m_pageSize</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">m_snap</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

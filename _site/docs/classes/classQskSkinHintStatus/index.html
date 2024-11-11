@@ -1,0 +1,161 @@
+<h1 id="qskskinhintstatus">QskSkinHintStatus</h1>
+
+<p><a href="#detailed-description">More…</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">#include &lt;QskSkinnable.h&gt;</code></p>
+
+<h2 id="public-types">Public Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskSkinHintStatus/#enum-source">Source</a></strong> { NoSource = 0, Skinnable, Skin, Animator}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskSkinHintStatus/#function-qskskinhintstatus">QskSkinHintStatus</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskSkinHintStatus/#function-isvalid">isValid</a></strong>() const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-attributes">Public Attributes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/docs/classes/classQskSkinHintStatus/#enum-source">Source</a></td>
+      <td><strong><a href="/docs/classes/classQskSkinHintStatus/#variable-source">source</a></strong></td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskAspect/">QskAspect</a></td>
+      <td><strong><a href="/docs/classes/classQskSkinHintStatus/#variable-aspect">aspect</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="detailed-description">Detailed Description</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">QskSkinHintStatus</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>See</strong>: <a href="/docs/classes/classQskSkinnable/#function-effectiveskinhint">QskSkinnable::effectiveSkinHint()</a></p>
+
+<p><a href="/docs/classes/classQskSkinHintStatus/">QskSkinHintStatus</a> provides the information how a lookup for a skin hint had been resolved and where the value has been found.</p>
+
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+
+<h3 id="enum-source">enum Source</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NoSource</td>
+      <td>0</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> The lookup had failed to find a valid hint
+``` |
+| Skinnable | |  
+
+</code></pre></div></div>
+<p>The hint has been found in the local table of the skinnable</p>
+<pre><code class="language-|">| Skin | |  
+
+</code></pre>
+<p>The hint has been found in the table of the skin</p>
+<pre><code class="language-|">| Animator | |  
+
+</code></pre>
+<p>The hint has been taken from an animator, that is in the process
+of interpolating between values of different states</p>
+<pre><code class="language-|">
+
+
+
+## Public Functions Documentation
+
+### function QskSkinHintStatus
+
+```cpp
+inline QskSkinHintStatus()
+</code></pre>
+
+<p><strong>See</strong>: <a href="/docs/classes/classQskSkinHintStatus/#function-isvalid">isValid()</a></p>
+
+<p>Initializes the status to be invalid, by setting the source to <a href="/docs/classes/classQskSkinHintStatus/#enumvalue-nosource">QskSkinHintStatus::NoSource</a></p>
+
+<h3 id="function-isvalid">function isValid</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">bool</span> <span class="n">isValid</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<p><strong>Return</strong>: True, when having a source &gt; <a href="/docs/classes/classQskSkinHintStatus/#enumvalue-nosource">QskSkinHintStatus::NoSource</a></p>
+
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+
+<h3 id="variable-source">variable source</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Source</span> <span class="n">source</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>See</strong>: <a href="/docs/classes/classQskSkinHintStatus/#enum-source">QskSkinHintStatus::Source</a></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Source, where the hint has been found
+</code></pre></div></div>
+
+<h3 id="variable-aspect">variable aspect</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>See</strong>: <a href="/docs/classes/classQskAspect/">QskAspect</a></p>
+
+<p><strong>Note</strong>: The resolved apsect usually differs from the aspect that has been passed as input parameter for <a href="/docs/classes/classQskSkinnable/#function-effectiveskinhint">QskSkinnable::effectiveSkinHint()</a></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Resolved aspect, that lead to a successful match in one of the
+available sources
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:28 CEST</p>

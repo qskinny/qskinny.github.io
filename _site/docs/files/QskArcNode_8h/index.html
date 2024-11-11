@@ -1,0 +1,56 @@
+<h1 id="nodesqskarcnodeh">nodes/QskArcNode.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskArcNode/">QskArcNode</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**********************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_ARC_NODE_H
+#define QSK_ARC_NODE_H
+</span>
+<span class="cp">#include "QskArcMetrics.h"
+#include "QskGradient.h"
+#include "QskPaintedNode.h"
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskArcNode</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskPaintedNode</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskArcNode</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">QskArcNode</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setArcData</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskArcMetrics</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="n">QQuickWindow</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">paint</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">*</span> <span class="n">painter</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="n">uint</span> <span class="n">hash</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QskArcMetrics</span> <span class="n">m_metrics</span><span class="p">;</span>
+    <span class="n">QskGradient</span> <span class="n">m_gradient</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

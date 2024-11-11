@@ -1,0 +1,650 @@
+<h1 id="controlsqskpopupcpp">controls/QskPopup.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskPopup_8cpp/#function-qsksetfocus">qskSetFocus</a></strong>(QQuickItem * item, bool on)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskPopup_8cpp/#function-qsksendpopupevent">qskSendPopupEvent</a></strong>(QQuickWindow * window, QskPopup * popup, bool on)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qsksetfocus">function qskSetFocus</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskSetFocus</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">on</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksendpopupevent">function qskSendPopupEvent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskSendPopupEvent</span><span class="p">(</span>
+    <span class="n">QQuickWindow</span> <span class="o">*</span> <span class="n">window</span><span class="p">,</span>
+    <span class="n">QskPopup</span> <span class="o">*</span> <span class="n">popup</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">on</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskPopup.h"
+#include "QskAspect.h"
+#include "QskInputGrabber.h"
+#include "QskQuick.h"
+#include "QskWindow.h"
+#include "QskEvent.h"
+</span>
+
+<span class="cp">#include &lt;private/qquickwindow_p.h&gt;
+#include &lt;private/qquickitem_p.h&gt;
+</span>
+
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskPopup</span><span class="p">,</span> <span class="n">Overlay</span> <span class="p">)</span>
+<span class="n">QSK_SYSTEM_STATE</span><span class="p">(</span> <span class="n">QskPopup</span><span class="p">,</span> <span class="n">Closed</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">FirstSystemState</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskSetFocus</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="cm">/*
+        For unknown reasons Qt::PopupFocusReason is blocked inside of
+        QQuickItem::setFocus. So let's bypass it calling
+        QQuickWindowPrivate::setFocusInScope/clearFocusInScope directly,
+     */</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">scope</span> <span class="o">=</span> <span class="n">qskNearestFocusScope</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 1, 0 )
+</span>        <span class="k">auto</span> <span class="n">dw</span> <span class="o">=</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">deliveryAgentPrivate</span><span class="p">();</span>
+<span class="cp">#else
+</span>        <span class="k">auto</span> <span class="n">dw</span> <span class="o">=</span> <span class="n">QQuickWindowPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>        <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">dw</span><span class="o">-&gt;</span><span class="n">setFocusInScope</span><span class="p">(</span> <span class="n">scope</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PopupFocusReason</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="c1">// to avoid an assertion we have to check if we have the subFocus</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">scope</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">subFocusItem</span> <span class="o">==</span> <span class="n">item</span> <span class="p">)</span>
+                <span class="n">dw</span><span class="o">-&gt;</span><span class="n">clearFocusInScope</span><span class="p">(</span> <span class="n">scope</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PopupFocusReason</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskSendPopupEvent</span><span class="p">(</span>
+    <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span> <span class="n">QskPopup</span><span class="o">*</span> <span class="n">popup</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">window</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">type</span> <span class="o">=</span> <span class="n">on</span> <span class="o">?</span> <span class="n">QskEvent</span><span class="o">::</span><span class="n">PopupAdded</span> <span class="o">:</span> <span class="n">QskEvent</span><span class="o">::</span><span class="n">PopupRemoved</span><span class="p">;</span>
+
+        <span class="n">QskPopupEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">type</span><span class="p">,</span> <span class="n">popup</span> <span class="p">);</span>
+        <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">InputGrabber</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskInputGrabber</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskInputGrabber</span><span class="p">;</span>
+
+      <span class="nl">public:</span>
+        <span class="n">InputGrabber</span><span class="p">(</span> <span class="n">QskPopup</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+      <span class="nl">protected:</span>
+        <span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="kt">bool</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">eventType</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">eventType</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">popup</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskPopup</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">parentItem</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">isAccepted</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+                        <span class="p">(</span> <span class="n">popup</span><span class="o">-&gt;</span><span class="n">popupFlags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">CloseOnPressOutside</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">popup</span><span class="o">-&gt;</span><span class="n">close</span><span class="p">();</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">eventType</span> <span class="o">==</span> <span class="n">QskEvent</span><span class="o">::</span><span class="n">GeometryChange</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">popup</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskPopup</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">parentItem</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">popup</span><span class="o">-&gt;</span><span class="n">hasOverlay</span><span class="p">()</span> <span class="p">)</span>
+                        <span class="n">popup</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">ok</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskPopup</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">flags</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">isModal</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">hasFaderEffect</span><span class="p">(</span> <span class="nb">true</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">autoGrabFocus</span><span class="p">(</span> <span class="nb">true</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">handoverFocus</span><span class="p">(</span> <span class="nb">true</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="n">InputGrabber</span><span class="o">*</span> <span class="n">inputGrabber</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="n">uint</span> <span class="n">priority</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">QskAspect</span> <span class="n">faderAspect</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">flags</span>           <span class="o">:</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isModal</span>        <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">hasFaderEffect</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">autoGrabFocus</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">handoverFocus</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskPopup</span><span class="o">::</span><span class="n">QskPopup</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// initially the popup is closed and invisible</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">setVisible</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">Closed</span> <span class="p">);</span>
+
+    <span class="c1">// we need to stop event propagation</span>
+    <span class="n">setAcceptedMouseButtons</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AllButtons</span> <span class="p">);</span>
+    <span class="n">setWheelEnabled</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="c1">// we don't want to be resized by layout code</span>
+    <span class="n">setTransparentForPositioner</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="n">setFlag</span><span class="p">(</span> <span class="n">ItemIsFocusScope</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="n">setTabFence</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="n">setFocusPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">StrongFocus</span> <span class="p">);</span>
+
+    <span class="cm">/*
+        sending a notification to the window, that can
+        be used to register popups for some sort of
+        popup/window management
+     */</span>
+    <span class="n">qskSendPopupEvent</span><span class="p">(</span> <span class="n">window</span><span class="p">(),</span> <span class="k">this</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskPopup</span><span class="o">::~</span><span class="n">QskPopup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">qskSendPopupEvent</span><span class="p">(</span> <span class="n">window</span><span class="p">(),</span> <span class="k">this</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">open</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setOpen</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">close</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setOpen</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">setOpen</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">==</span> <span class="n">isOpen</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="n">QskControl</span><span class="o">::</span><span class="n">setVisible</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+
+    <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">Closed</span><span class="p">,</span> <span class="o">!</span><span class="n">on</span> <span class="p">);</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">openChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">opened</span><span class="p">();</span>
+    <span class="k">else</span>
+        <span class="n">Q_EMIT</span> <span class="n">closed</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isFading</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Q_EMIT</span> <span class="n">fadingChanged</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">on</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Inherited</span><span class="o">::</span><span class="n">setVisible</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">testPopupFlag</span><span class="p">(</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">DeleteOnClose</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="n">deleteLater</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">isOpen</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="n">hasSkinState</span><span class="p">(</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">Closed</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">isFading</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">faderAspect</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="n">QskSkinHintStatus</span> <span class="n">status</span><span class="p">;</span>
+    <span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">effectiveSkinHint</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">faderAspect</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">status</span><span class="p">.</span><span class="n">source</span> <span class="o">==</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">Animator</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">overlayRect</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hasOverlay</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span><span class="o">-&gt;</span><span class="n">grabberRect</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">QRectF</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">updateInputGrabber</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">parentItem</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">isVisible</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+        <span class="p">(</span> <span class="n">isModal</span><span class="p">()</span> <span class="o">||</span> <span class="n">testPopupFlag</span><span class="p">(</span> <span class="n">CloseOnPressOutside</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">children</span> <span class="o">=</span> <span class="n">childItems</span><span class="p">();</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InputGrabber</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">children</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="cm">/*
+                    Even if the input grabber has no content it has an effect
+                    on QQuickItem::childAt. Also tools like Squish struggle with
+                    sorting out items without content.
+                    So let's better move the grabber to the beginning.
+                 */</span>
+                <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span><span class="o">-&gt;</span><span class="n">stackBefore</span><span class="p">(</span> <span class="n">children</span><span class="p">.</span><span class="n">first</span><span class="p">()</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                In QQuickWindowPrivate::deliverPressOrReleaseEvent ( 5.12 )
+                might crash, when we delete the grabber as a result of a
+                mouse event somewehere below the popup.
+             */</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span><span class="o">-&gt;</span><span class="n">deleteLater</span><span class="p">();</span>
+
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">faderAspect</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">faderAspect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">setFaderAspect</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">faderAspect</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">;</span>
+    <span class="n">faderAspect</span><span class="p">.</span><span class="n">clearStates</span><span class="p">();</span> <span class="c1">// animated values are always stateless</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">faderAspect</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">faderAspect</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isFading</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// stop the running animation TODO ...</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">faderAspect</span> <span class="o">=</span> <span class="n">faderAspect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">isTransitionAccepted</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isVisible</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasFaderEffect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">faderAspect</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">isColor</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">subControl</span><span class="p">()</span> <span class="o">==</span> <span class="n">effectiveSubcontrol</span><span class="p">(</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">Overlay</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">isTransitionAccepted</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">setPriority</span><span class="p">(</span> <span class="n">uint</span> <span class="n">priority</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">priority</span> <span class="o">!=</span> <span class="n">priority</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">priority</span> <span class="o">=</span> <span class="n">priority</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">priorityChanged</span><span class="p">(</span> <span class="n">priority</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">uint</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">priority</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">priority</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">setModal</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isModal</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isModal</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+    <span class="n">updateInputGrabber</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">modalChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">isModal</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isModal</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">setFaderEffect</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasFaderEffect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasFaderEffect</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">faderEffectChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">hasFaderEffect</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasFaderEffect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">setPopupFlags</span><span class="p">(</span> <span class="n">PopupFlags</span> <span class="n">flags</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="n">flags</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskPopup</span><span class="o">::</span><span class="n">PopupFlags</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">popupFlags</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">PopupFlags</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">setPopupFlag</span><span class="p">(</span> <span class="n">PopupFlag</span> <span class="n">flag</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">flags</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="n">flag</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="n">flags</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">flag</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">flags</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="n">flags</span><span class="p">;</span>
+        <span class="n">updateInputGrabber</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">testPopupFlag</span><span class="p">(</span> <span class="n">PopupFlag</span> <span class="n">flag</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">flag</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">setOverlay</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setFlagHint</span><span class="p">(</span> <span class="n">Overlay</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Style</span><span class="p">,</span> <span class="n">on</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">overlayChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">resetOverlay</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetFlagHint</span><span class="p">(</span> <span class="n">Overlay</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Style</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">overlayChanged</span><span class="p">(</span> <span class="n">hasOverlay</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">hasOverlay</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">flagHint</span><span class="o">&lt;</span> <span class="kt">bool</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">Overlay</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Style</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">grabFocus</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">==</span> <span class="n">hasFocus</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qskSetFocus</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">successor</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">handoverFocus</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                Qt/Quick does not handover the focus to another item,
+                when the active focus gets lost. For the situation of
+                a popup being closed we try to do it.
+             */</span>
+            <span class="n">successor</span> <span class="o">=</span> <span class="n">focusSuccessor</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">successor</span> <span class="p">)</span>
+            <span class="n">qskSetFocus</span><span class="p">(</span> <span class="n">successor</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">hasFocus</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">qskSetFocus</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">KeyPress</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">KeyRelease</span><span class="p">:</span>
+
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">Wheel</span><span class="p">:</span>
+
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonPress</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseMove</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">MouseButtonRelease</span><span class="p">:</span>
+
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">HoverEnter</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">HoverLeave</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="c1">// swallow the event</span>
+            <span class="n">event</span><span class="o">-&gt;</span><span class="n">accept</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">w</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="n">QskWindow</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">window</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="n">w</span><span class="o">-&gt;</span><span class="n">setEventAcceptance</span><span class="p">(</span> <span class="n">QskWindow</span><span class="o">::</span><span class="n">EventPropagationStopped</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QskEvent</span><span class="o">::</span><span class="n">Animator</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">animtorEvent</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAnimatorEvent</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">animtorEvent</span><span class="o">-&gt;</span><span class="n">state</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskAnimatorEvent</span><span class="o">::</span><span class="n">Terminated</span> <span class="p">)</span>
+                <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">animtorEvent</span><span class="o">-&gt;</span><span class="n">aspect</span><span class="p">()</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">faderAspect</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isOpen</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">Inherited</span><span class="o">::</span><span class="n">setVisible</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">testPopupFlag</span><span class="p">(</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">DeleteOnClose</span> <span class="p">)</span> <span class="p">)</span>
+                        <span class="n">deleteLater</span><span class="p">();</span>
+                <span class="p">}</span>
+
+                <span class="n">Q_EMIT</span> <span class="n">fadingChanged</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                Don't accept touch events otherwise we don't receive the
+                synthesized mouse events and need to handle both type of
+                events from now on.
+                But by accepting the mouse event propagation of the touch
+                events also stops.
+             */</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">ok</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">focusInEvent</span><span class="p">(</span> <span class="n">QFocusEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">focusInEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isFocusScope</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">isTabFence</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">scopedFocusItem</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">reason</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PopupFocusReason</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                When receiving the focus we need to have a focused
+                item, so that the tab focus chain has a starting point.
+
+                But we only do it when the reason is Qt::PopupFocusReason
+                as we also receive focus events during the process of reparenting
+                children and setting the focus there can leave the item tree
+                in an invalid state.
+             */</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">focusItem</span> <span class="o">=</span> <span class="n">nextItemInFocusChain</span><span class="p">(</span> <span class="nb">true</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsItemComplete</span><span class="p">(</span> <span class="n">focusItem</span> <span class="p">)</span>
+                    <span class="o">&amp;&amp;</span> <span class="n">qskIsAncestorOf</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">focusItem</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">focusItem</span><span class="o">-&gt;</span><span class="n">setFocus</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">focusOutEvent</span><span class="p">(</span> <span class="n">QFocusEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">focusOutEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">focusSuccessor</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">scope</span> <span class="o">=</span> <span class="n">qskNearestFocusScope</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">children</span> <span class="o">=</span> <span class="n">qskPaintOrderChildItems</span><span class="p">(</span> <span class="n">scope</span> <span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">children</span><span class="p">.</span><span class="n">crbegin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">children</span><span class="p">.</span><span class="n">crend</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">child</span> <span class="o">=</span> <span class="o">*</span><span class="n">it</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">child</span> <span class="o">!=</span> <span class="k">this</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">child</span><span class="o">-&gt;</span><span class="n">isFocusScope</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+                <span class="n">child</span><span class="o">-&gt;</span><span class="n">activeFocusOnTab</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">child</span><span class="o">-&gt;</span><span class="n">isVisible</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="n">child</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">aboutToShow</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">autoGrabFocus</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// What to do, when we are hidden below another popup ??</span>
+        <span class="n">grabFocus</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">aboutToShow</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChange</span> <span class="n">change</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span> <span class="n">change</span><span class="p">,</span> <span class="n">value</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">change</span> <span class="o">==</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemVisibleHasChanged</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">updateInputGrabber</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">boolValue</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">polish</span><span class="p">();</span> <span class="c1">// so that aboutToShow is called. TODO ...</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">grabFocus</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">change</span> <span class="o">==</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemParentHasChanged</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span><span class="p">;</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputGrabber</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+        <span class="n">updateInputGrabber</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">windowChangeEvent</span><span class="p">(</span> <span class="n">QskWindowChangeEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskSendPopupEvent</span><span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">oldWindow</span><span class="p">(),</span> <span class="k">this</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="n">qskSendPopupEvent</span><span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">(),</span> <span class="k">this</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">windowChangeEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskPopup.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,280 @@
+<h1 id="commonqsktextoptionsh">common/QskTextOptions.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskTextOptions/">QskTextOptions</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>uint</td>
+      <td><strong><a href="/docs/files/QskTextOptions_8h/#function-qhash">qHash</a></strong>(const QskTextOptions &amp; options, uint seed =0)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskTextOptions_8h/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskTextOptions &amp; options)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskTextOptions_8h/#function-q_declare_typeinfo">Q_DECLARE_TYPEINFO</a></strong>(QskTextOptions , Q_MOVABLE_TYPE )</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="attributes">Attributes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>constexpr QskTextOptions::TextFormat QskTextOptions::const</td>
+      <td><strong><a href="/docs/files/QskTextOptions_8h/#variable-noexcept">noexcept</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qhash">function qHash</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">uint</span> <span class="n">qHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span> <span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span>
+    <span class="n">uint</span> <span class="n">seed</span> <span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span> <span class="o">&amp;</span> <span class="n">options</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-q_declare_typeinfo">function Q_DECLARE_TYPEINFO</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span>
+    <span class="n">QskTextOptions</span> <span class="p">,</span>
+    <span class="n">Q_MOVABLE_TYPE</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="attributes-documentation">Attributes Documentation</h2>
+
+<h3 id="variable-noexcept">variable noexcept</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">constexpr</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">TextFormat</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="k">const</span> <span class="k">noexcept</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_format</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_TEXT_OPTIONS_H
+#define QSK_TEXT_OPTIONS_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+</span>
+<span class="cp">#include &lt;qmetatype.h&gt;
+#include &lt;qtextoption.h&gt;
+</span>
+<span class="cp">#include &lt;limits&gt;
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskTextOptions</span>
+<span class="p">{</span>
+    <span class="n">Q_GADGET</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">TextFormat</span> <span class="n">format</span> <span class="n">READ</span> <span class="n">format</span> <span class="n">WRITE</span> <span class="n">setFormat</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="n">elideMode</span> <span class="n">READ</span> <span class="n">elideMode</span> <span class="n">WRITE</span> <span class="n">setElideMode</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">WrapMode</span> <span class="n">wrapMode</span> <span class="n">READ</span> <span class="n">wrapMode</span> <span class="n">WRITE</span> <span class="n">setWrapMode</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">FontSizeMode</span> <span class="n">fontSizeMode</span> <span class="n">READ</span> <span class="n">fontSizeMode</span> <span class="n">WRITE</span> <span class="n">setFontSizeMode</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">int</span> <span class="n">maximumLineCount</span> <span class="n">READ</span> <span class="n">maximumLineCount</span> <span class="n">WRITE</span> <span class="n">setMaximumLineCount</span> <span class="p">)</span>
+
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">FontSizeMode</span>
+    <span class="p">{</span>
+        <span class="n">FixedSize</span><span class="p">,</span>
+        <span class="n">HorizontalFit</span><span class="p">,</span>
+        <span class="n">VerticalFit</span><span class="p">,</span>
+        <span class="n">Fit</span>
+    <span class="p">};</span>
+
+    <span class="k">enum</span> <span class="n">WrapMode</span>
+    <span class="p">{</span>
+        <span class="n">NoWrap</span> <span class="o">=</span> <span class="n">QTextOption</span><span class="o">::</span><span class="n">NoWrap</span><span class="p">,</span>
+        <span class="n">WordWrap</span> <span class="o">=</span> <span class="n">QTextOption</span><span class="o">::</span><span class="n">WordWrap</span><span class="p">,</span>
+        <span class="n">WrapAnywhere</span> <span class="o">=</span> <span class="n">QTextOption</span><span class="o">::</span><span class="n">WrapAnywhere</span><span class="p">,</span>
+        <span class="n">Wrap</span> <span class="o">=</span> <span class="n">QTextOption</span><span class="o">::</span><span class="n">WrapAtWordBoundaryOrAnywhere</span>
+    <span class="p">};</span>
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">WrapMode</span> <span class="p">)</span>
+
+    <span class="k">enum</span> <span class="n">TextFormat</span>
+    <span class="p">{</span>
+        <span class="n">PlainText</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PlainText</span><span class="p">,</span>
+        <span class="n">RichText</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RichText</span><span class="p">,</span>
+        <span class="n">AutoText</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AutoText</span><span class="p">,</span>
+        <span class="n">StyledText</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1">// taken from QQuickText::StyledText</span>
+    <span class="p">};</span>
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">TextFormat</span> <span class="p">)</span>
+
+    <span class="k">constexpr</span> <span class="n">QskTextOptions</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="n">TextFormat</span> <span class="n">format</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setFormat</span><span class="p">(</span> <span class="n">TextFormat</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="n">TextFormat</span> <span class="n">effectiveFormat</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="n">elideMode</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setElideMode</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="n">effectiveElideMode</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="n">FontSizeMode</span> <span class="n">fontSizeMode</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setFontSizeMode</span><span class="p">(</span> <span class="n">FontSizeMode</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="n">WrapMode</span> <span class="n">wrapMode</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setWrapMode</span><span class="p">(</span> <span class="n">WrapMode</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">maximumLineCount</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setMaximumLineCount</span><span class="p">(</span> <span class="kt">int</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">textFlags</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">int</span> <span class="n">m_maximumLineCount</span><span class="p">;</span>
+    <span class="n">FontSizeMode</span> <span class="n">m_fontSizeMode</span> <span class="o">:</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">WrapMode</span> <span class="n">m_wrapMode</span> <span class="o">:</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="n">TextFormat</span> <span class="n">m_format</span> <span class="o">:</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="n">m_elideMode</span> <span class="o">:</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">QskTextOptions</span><span class="p">()</span> <span class="k">noexcept</span>
+    <span class="o">:</span> <span class="n">m_maximumLineCount</span><span class="p">(</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;::</span><span class="n">max</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_fontSizeMode</span><span class="p">(</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">FixedSize</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_wrapMode</span><span class="p">(</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">NoWrap</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_format</span><span class="p">(</span> <span class="n">PlainText</span> <span class="p">)</span> <span class="c1">// AutoText ???</span>
+    <span class="p">,</span> <span class="n">m_elideMode</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ElideNone</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">setFormat</span><span class="p">(</span> <span class="n">TextFormat</span> <span class="n">format</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_format</span> <span class="o">=</span> <span class="n">format</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">constexpr</span> <span class="kr">inline</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">TextFormat</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">format</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_format</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">setElideMode</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="n">elideMode</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_elideMode</span> <span class="o">=</span> <span class="n">elideMode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">constexpr</span> <span class="kr">inline</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">elideMode</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_elideMode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">constexpr</span> <span class="kr">inline</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">effectiveElideMode</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="n">m_wrapMode</span> <span class="o">!=</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">NoWrap</span> <span class="p">)</span> <span class="o">?</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ElideNone</span> <span class="o">:</span> <span class="n">m_elideMode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">setWrapMode</span><span class="p">(</span> <span class="n">WrapMode</span> <span class="n">wrapMode</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_wrapMode</span> <span class="o">=</span> <span class="n">wrapMode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">constexpr</span> <span class="kr">inline</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">WrapMode</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">wrapMode</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_wrapMode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">setFontSizeMode</span><span class="p">(</span> <span class="n">FontSizeMode</span> <span class="n">fontSizeMode</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_fontSizeMode</span> <span class="o">=</span> <span class="n">fontSizeMode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">constexpr</span> <span class="kr">inline</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">FontSizeMode</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">fontSizeMode</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_fontSizeMode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">setMaximumLineCount</span><span class="p">(</span> <span class="kt">int</span> <span class="n">lineCount</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_maximumLineCount</span> <span class="o">=</span> <span class="n">lineCount</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">constexpr</span> <span class="kr">inline</span> <span class="kt">int</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">maximumLineCount</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_maximumLineCount</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="k">operator</span><span class="o">==</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="n">m_format</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_format</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="p">(</span> <span class="n">m_elideMode</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_elideMode</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="p">(</span> <span class="n">m_wrapMode</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_wrapMode</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="p">(</span> <span class="n">m_fontSizeMode</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_fontSizeMode</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+           <span class="p">(</span> <span class="n">m_maximumLineCount</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_maximumLineCount</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="k">operator</span><span class="o">!=</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span> <span class="o">==</span> <span class="n">other</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSK_EXPORT</span> <span class="n">uint</span> <span class="n">qHash</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">uint</span> <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span><span class="k">class</span> <span class="nc">QDebug</span><span class="p">;</span>
+
+<span class="n">QSK_EXPORT</span> <span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+<span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span> <span class="n">QskTextOptions</span><span class="p">,</span> <span class="n">Q_MOVABLE_TYPE</span> <span class="p">);</span>
+<span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskTextOptions</span> <span class="p">)</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

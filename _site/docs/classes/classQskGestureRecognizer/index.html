@@ -1,0 +1,286 @@
+<h1 id="qskgesturerecognizer">QskGestureRecognizer</h1>
+
+<p>Inherited by <a href="/docs/classes/classQskPanGestureRecognizer/">QskPanGestureRecognizer</a></p>
+
+<h2 id="public-types">Public Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#enum-state">State</a></strong> { Idle, Pending, Accepted}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-qskgesturerecognizer">QskGestureRecognizer</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>virtual</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-~qskgesturerecognizer">~QskGestureRecognizer</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-setwatcheditem">setWatchedItem</a></strong>(QQuickItem * item)</td>
+    </tr>
+    <tr>
+      <td>QQuickItem *</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-watcheditem">watchedItem</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-setacceptedmousebuttons">setAcceptedMouseButtons</a></strong>(Qt::MouseButtons buttons)</td>
+    </tr>
+    <tr>
+      <td>Qt::MouseButtons</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-acceptedmousebuttons">acceptedMouseButtons</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-settimeout">setTimeout</a></strong>(int ms)</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-timeout">timeout</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>ulong</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-timestamp">timestamp</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-processevent">processEvent</a></strong>(QQuickItem * item, QEvent * event, bool blockReplayedEvents =true)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-reject">reject</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-accept">accept</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-abort">abort</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>State</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-state">state</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-isreplaying">isReplaying</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-hasprocessedbefore">hasProcessedBefore</a></strong>(const QMouseEvent * event) const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-pressevent">pressEvent</a></strong>(const QMouseEvent * )</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-moveevent">moveEvent</a></strong>(const QMouseEvent * )</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-releaseevent">releaseEvent</a></strong>(const QMouseEvent * )</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskGestureRecognizer/#function-statechanged">stateChanged</a></strong>(State from, State to)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+
+<h3 id="enum-state">enum State</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Idle</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Pending</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Accepted</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskgesturerecognizer">function QskGestureRecognizer</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGestureRecognizer</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskgesturerecognizer-1">function ~QskGestureRecognizer</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="o">~</span><span class="n">QskGestureRecognizer</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-setwatcheditem">function setWatchedItem</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWatchedItem</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-watcheditem">function watchedItem</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">watchedItem</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setacceptedmousebuttons">function setAcceptedMouseButtons</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setAcceptedMouseButtons</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="n">buttons</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-acceptedmousebuttons">function acceptedMouseButtons</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">MouseButtons</span> <span class="n">acceptedMouseButtons</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-settimeout">function setTimeout</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setTimeout</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">ms</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-timeout">function timeout</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">timeout</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-timestamp">function timestamp</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ulong</span> <span class="n">timestamp</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-processevent">function processEvent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">processEvent</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="n">QEvent</span> <span class="o">*</span> <span class="n">event</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">blockReplayedEvents</span> <span class="o">=</span><span class="nb">true</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-reject">function reject</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">reject</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-accept">function accept</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">accept</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-abort">function abort</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">abort</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-state">function state</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">State</span> <span class="n">state</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-isreplaying">function isReplaying</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isReplaying</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-hasprocessedbefore">function hasProcessedBefore</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">hasProcessedBefore</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMouseEvent</span> <span class="o">*</span> <span class="n">event</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-pressevent">function pressEvent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">pressEvent</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMouseEvent</span> <span class="o">*</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-moveevent">function moveEvent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">moveEvent</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMouseEvent</span> <span class="o">*</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-releaseevent">function releaseEvent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">releaseEvent</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMouseEvent</span> <span class="o">*</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-statechanged">function stateChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">stateChanged</span><span class="p">(</span>
+    <span class="n">State</span> <span class="n">from</span><span class="p">,</span>
+    <span class="n">State</span> <span class="n">to</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

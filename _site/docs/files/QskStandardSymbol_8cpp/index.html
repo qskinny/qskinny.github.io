@@ -1,0 +1,331 @@
+<h1 id="graphicqskstandardsymbolcpp">graphic/QskStandardSymbol.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskStandardSymbol_8cpp/#function-qskokgraphic">qskOkGraphic</a></strong>(QPainter * painter)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskStandardSymbol_8cpp/#function-qskcancelgraphic">qskCancelGraphic</a></strong>(QPainter * painter)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskStandardSymbol_8cpp/#function-qskcriticalgraphic">qskCriticalGraphic</a></strong>(QPainter * painter)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskStandardSymbol_8cpp/#function-qskwarninggraphic">qskWarningGraphic</a></strong>(QPainter * painter)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskStandardSymbol_8cpp/#function-qskquestiongraphic">qskQuestionGraphic</a></strong>(QPainter * painter)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskStandardSymbol_8cpp/#function-qskinformationgraphic">qskInformationGraphic</a></strong>(QPainter * painter)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskokgraphic">function qskOkGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskOkGraphic</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskcancelgraphic">function qskCancelGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskCancelGraphic</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskcriticalgraphic">function qskCriticalGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskCriticalGraphic</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskwarninggraphic">function qskWarningGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskWarningGraphic</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskquestiongraphic">function qskQuestionGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskQuestionGraphic</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinformationgraphic">function qskInformationGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskInformationGraphic</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskStandardSymbol.h"
+#include "QskGraphic.h"
+</span>
+<span class="cp">#include &lt;qpainter.h&gt;
+#include &lt;qpainterpath.h&gt;
+</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskOkGraphic</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">*</span> <span class="n">painter</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QPainterPath</span> <span class="n">path</span><span class="p">;</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">moveTo</span><span class="p">(</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">43</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">13.5</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mf">12.25</span><span class="p">,</span> <span class="mf">42.5</span><span class="p">,</span> <span class="mf">11.75</span><span class="p">,</span> <span class="mf">41.5</span> <span class="p">);</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">20.5</span> <span class="p">);</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">17.25</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">16.5</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">15.75</span><span class="p">,</span> <span class="mf">4.75</span><span class="p">,</span> <span class="mf">16.25</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">,</span> <span class="mf">17.75</span> <span class="p">);</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mf">14.75</span><span class="p">,</span> <span class="mi">34</span> <span class="p">);</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">17.25</span><span class="p">,</span> <span class="mf">28.25</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mf">23.25</span><span class="p">,</span> <span class="mf">22.75</span><span class="p">,</span> <span class="mf">18.5</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">26.75</span><span class="p">,</span> <span class="mf">12.25</span><span class="p">,</span> <span class="mf">31.25</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">,</span> <span class="mf">38.25</span><span class="p">,</span> <span class="mf">0.75</span> <span class="p">);</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">39.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">41.25</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">42.25</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">43.25</span><span class="p">,</span> <span class="mf">2.25</span><span class="p">,</span> <span class="mf">43.25</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mf">5.25</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">35.50</span><span class="p">,</span> <span class="mf">10.75</span><span class="p">,</span> <span class="mf">31.5</span><span class="p">,</span> <span class="mf">15.75</span><span class="p">,</span> <span class="mf">27.75</span><span class="p">,</span> <span class="mf">21.5</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">24.25</span><span class="p">,</span> <span class="mf">27.25</span><span class="p">,</span> <span class="mf">21.25</span><span class="p">,</span> <span class="mf">33.75</span><span class="p">,</span> <span class="mf">16.75</span><span class="p">,</span> <span class="mf">41.5</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">16.25</span><span class="p">,</span> <span class="mf">42.5</span><span class="p">,</span> <span class="mf">15.25</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mf">14.25</span><span class="p">,</span> <span class="mi">43</span> <span class="p">);</span>
+
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setPen</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoPen</span> <span class="p">);</span>
+
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setBrush</span><span class="p">(</span> <span class="n">QColor</span><span class="p">(</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="mi">80</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">drawPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskCancelGraphic</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">*</span> <span class="n">painter</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QPainterPath</span> <span class="n">path</span><span class="p">;</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">moveTo</span><span class="p">(</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">15</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">5</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">20</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">35</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">40</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">35</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span> <span class="p">);</span>
+
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setPen</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoPen</span> <span class="p">);</span>
+
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setBrush</span><span class="p">(</span> <span class="n">QColor</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">red</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">drawPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskCriticalGraphic</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">*</span> <span class="n">painter</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QPainterPath</span> <span class="n">path</span><span class="p">;</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">addEllipse</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">addRect</span><span class="p">(</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">5</span> <span class="p">);</span>
+
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setPen</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoPen</span> <span class="p">);</span>
+    <span class="c1">// painter-&gt;setBrush( QColor( Qt::black ) );</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setBrush</span><span class="p">(</span> <span class="n">QColor</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">red</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">drawPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskWarningGraphic</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">*</span> <span class="n">painter</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">outerRect</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">36</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">off</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">qMin</span><span class="p">(</span> <span class="n">outerRect</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">outerRect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">offBottom</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span> <span class="n">outerRect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="n">outerRect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="o">*</span> <span class="n">off</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">innerRect</span> <span class="o">=</span> <span class="n">outerRect</span><span class="p">.</span><span class="n">adjusted</span><span class="p">(</span> <span class="n">off</span><span class="p">,</span> <span class="n">off</span><span class="p">,</span> <span class="o">-</span><span class="n">off</span><span class="p">,</span> <span class="o">-</span><span class="n">offBottom</span> <span class="p">);</span>
+
+    <span class="n">QPainterPath</span> <span class="n">path</span><span class="p">;</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">moveTo</span><span class="p">(</span> <span class="n">outerRect</span><span class="p">.</span><span class="n">center</span><span class="p">().</span><span class="n">x</span><span class="p">(),</span> <span class="n">outerRect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="n">outerRect</span><span class="p">.</span><span class="n">right</span><span class="p">(),</span> <span class="n">outerRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="n">outerRect</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">outerRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">closeSubpath</span><span class="p">();</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">moveTo</span><span class="p">(</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">right</span><span class="p">(),</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">center</span><span class="p">().</span><span class="n">x</span><span class="p">(),</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">closeSubpath</span><span class="p">();</span>
+
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setPen</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoPen</span> <span class="p">);</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setBrush</span><span class="p">(</span> <span class="n">QColor</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">red</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">drawPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">off</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">r1</span><span class="p">(</span>
+        <span class="n">innerRect</span><span class="p">.</span><span class="n">center</span><span class="p">().</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="n">d</span><span class="p">,</span>
+        <span class="n">innerRect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span>
+        <span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">,</span>
+        <span class="mf">0.5</span> <span class="o">*</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">fillRect</span><span class="p">(</span> <span class="n">r1</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">black</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">r2</span><span class="p">(</span>
+        <span class="n">r1</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span>
+        <span class="n">r1</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">innerRect</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span>
+        <span class="n">r1</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span>
+        <span class="n">r1</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">fillRect</span><span class="p">(</span> <span class="n">r2</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">black</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskQuestionGraphic</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">*</span> <span class="n">painter</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+
+    <span class="n">QPainterPath</span> <span class="n">path</span><span class="p">;</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">addRect</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">);</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">moveTo</span><span class="p">(</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.63</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mf">0.325</span><span class="p">,</span> <span class="mf">0.63</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.325</span><span class="p">,</span> <span class="mf">0.578</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.554</span><span class="p">,</span> <span class="mf">0.3425</span><span class="p">,</span> <span class="mf">0.532</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.3575</span><span class="p">,</span> <span class="mf">0.51</span><span class="p">,</span> <span class="mf">0.385</span><span class="p">,</span> <span class="mf">0.484</span><span class="p">,</span> <span class="mf">0.43</span><span class="p">,</span> <span class="mf">0.452</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.495</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">,</span> <span class="mf">0.5125</span><span class="p">,</span> <span class="mf">0.388</span><span class="p">,</span> <span class="mf">0.5225</span><span class="p">,</span> <span class="mf">0.374</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.5325</span><span class="p">,</span> <span class="mf">0.358</span><span class="p">,</span> <span class="mf">0.54</span><span class="p">,</span> <span class="mf">0.342</span><span class="p">,</span> <span class="mf">0.54</span><span class="p">,</span> <span class="mf">0.328</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.54</span><span class="p">,</span> <span class="mf">0.304</span><span class="p">,</span> <span class="mf">0.53</span><span class="p">,</span> <span class="mf">0.286</span><span class="p">,</span> <span class="mf">0.51</span><span class="p">,</span> <span class="mf">0.272</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.49</span><span class="p">,</span> <span class="mf">0.258</span><span class="p">,</span> <span class="mf">0.46</span><span class="p">,</span> <span class="mf">0.252</span><span class="p">,</span> <span class="mf">0.425</span><span class="p">,</span> <span class="mf">0.252</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.3925</span><span class="p">,</span> <span class="mf">0.252</span><span class="p">,</span> <span class="mf">0.355</span><span class="p">,</span> <span class="mf">0.258</span><span class="p">,</span> <span class="mf">0.315</span><span class="p">,</span> <span class="mf">0.27</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.275</span><span class="p">,</span> <span class="mf">0.28</span><span class="p">,</span> <span class="mf">0.235</span><span class="p">,</span> <span class="mf">0.298</span><span class="p">,</span> <span class="mf">0.1925</span><span class="p">,</span> <span class="mf">0.32</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="mf">0.195</span><span class="p">,</span> <span class="mf">0.162</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.245</span><span class="p">,</span> <span class="mf">0.148</span><span class="p">,</span> <span class="mf">0.29</span><span class="p">,</span> <span class="mf">0.138</span><span class="p">,</span> <span class="mf">0.3325</span><span class="p">,</span> <span class="mf">0.132</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.3725</span><span class="p">,</span> <span class="mf">0.124</span><span class="p">,</span> <span class="mf">0.4125</span><span class="p">,</span> <span class="mf">0.122</span><span class="p">,</span> <span class="mf">0.4525</span><span class="p">,</span> <span class="mf">0.122</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.5525</span><span class="p">,</span> <span class="mf">0.122</span><span class="p">,</span> <span class="mf">0.63</span><span class="p">,</span> <span class="mf">0.138</span><span class="p">,</span> <span class="mf">0.685</span><span class="p">,</span> <span class="mf">0.172</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.7375</span><span class="p">,</span> <span class="mf">0.204</span><span class="p">,</span> <span class="mf">0.765</span><span class="p">,</span> <span class="mf">0.252</span><span class="p">,</span> <span class="mf">0.765</span><span class="p">,</span> <span class="mf">0.316</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.7625</span><span class="p">,</span> <span class="mf">0.348</span><span class="p">,</span> <span class="mf">0.755</span><span class="p">,</span> <span class="mf">0.378</span><span class="p">,</span> <span class="mf">0.74</span><span class="p">,</span> <span class="mf">0.404</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.725</span><span class="p">,</span> <span class="mf">0.43</span><span class="p">,</span> <span class="mf">0.695</span><span class="p">,</span> <span class="mf">0.458</span><span class="p">,</span> <span class="mf">0.6575</span><span class="p">,</span> <span class="mf">0.488</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.5875</span><span class="p">,</span> <span class="mf">0.536</span><span class="p">,</span> <span class="mf">0.57</span><span class="p">,</span> <span class="mf">0.552</span><span class="p">,</span> <span class="mf">0.5625</span><span class="p">,</span> <span class="mf">0.566</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.578</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.592</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.63</span> <span class="p">);</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">closeSubpath</span><span class="p">();</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">addRect</span><span class="p">(</span> <span class="mf">0.325</span><span class="p">,</span> <span class="mf">0.66</span><span class="p">,</span> <span class="mf">0.55</span> <span class="o">-</span> <span class="mf">0.325</span><span class="p">,</span> <span class="p">(</span> <span class="mf">0.55</span> <span class="o">-</span> <span class="mf">0.325</span> <span class="p">)</span> <span class="o">*</span> <span class="n">w</span> <span class="o">/</span> <span class="n">h</span> <span class="p">);</span>
+
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">scale</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">);</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setPen</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoPen</span> <span class="p">);</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setBrush</span><span class="p">(</span> <span class="n">QColor</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">black</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">drawPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskInformationGraphic</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">*</span> <span class="n">painter</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">dotRect</span><span class="p">(</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="mf">0.15</span> <span class="o">*</span> <span class="n">h</span><span class="p">,</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">h</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">barRect</span><span class="p">(</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">h</span><span class="p">,</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">h</span> <span class="p">);</span>
+
+    <span class="n">QPainterPath</span> <span class="n">path</span><span class="p">;</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">addRect</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">addEllipse</span><span class="p">(</span> <span class="n">dotRect</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">dx</span> <span class="o">=</span> <span class="mf">0.33</span> <span class="o">*</span> <span class="n">barRect</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">dy</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">dotRect</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">moveTo</span><span class="p">(</span> <span class="n">barRect</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">barRect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">cubicTo</span><span class="p">(</span>
+        <span class="n">barRect</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">barRect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">+</span> <span class="n">dy</span><span class="p">,</span>
+        <span class="n">barRect</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dx</span><span class="p">,</span> <span class="n">barRect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">+</span> <span class="n">dy</span><span class="p">,</span>
+        <span class="n">barRect</span><span class="p">.</span><span class="n">right</span><span class="p">(),</span> <span class="n">barRect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="n">barRect</span><span class="p">.</span><span class="n">right</span><span class="p">(),</span> <span class="n">barRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">lineTo</span><span class="p">(</span> <span class="n">barRect</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">barRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">closeSubpath</span><span class="p">();</span>
+
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setPen</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoPen</span> <span class="p">);</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setBrush</span><span class="p">(</span> <span class="n">QColor</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">black</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">drawPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphic</span> <span class="n">QskStandardSymbol</span><span class="o">::</span><span class="n">graphic</span><span class="p">(</span> <span class="n">Type</span> <span class="n">symbolType</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="n">QskGraphic</span> <span class="n">graphics</span><span class="p">[</span> <span class="n">SymbolTypeCount</span> <span class="p">];</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">symbolType</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">symbolType</span> <span class="o">&gt;=</span> <span class="n">SymbolTypeCount</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QskGraphic</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">graphics</span><span class="p">[</span> <span class="n">symbolType</span> <span class="p">].</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QPainter</span> <span class="n">painter</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">graphics</span><span class="p">[</span> <span class="n">symbolType</span> <span class="p">]</span> <span class="p">);</span>
+        <span class="n">painter</span><span class="p">.</span><span class="n">setRenderHint</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">::</span><span class="n">Antialiasing</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+
+        <span class="k">switch</span> <span class="p">(</span> <span class="n">symbolType</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">case</span> <span class="n">QskStandardSymbol</span><span class="o">::</span><span class="n">Ok</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="n">qskOkGraphic</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">painter</span> <span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="n">QskStandardSymbol</span><span class="o">::</span><span class="n">Cancel</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="n">qskCancelGraphic</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">painter</span> <span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="n">QskStandardSymbol</span><span class="o">::</span><span class="n">Warning</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="n">qskWarningGraphic</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">painter</span> <span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="n">QskStandardSymbol</span><span class="o">::</span><span class="n">Critical</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="n">qskCriticalGraphic</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">painter</span> <span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="n">QskStandardSymbol</span><span class="o">::</span><span class="n">Question</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="n">qskQuestionGraphic</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">painter</span> <span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="n">QskStandardSymbol</span><span class="o">::</span><span class="n">Information</span><span class="p">:</span>
+            <span class="nl">default:</span>
+            <span class="p">{</span>
+                <span class="n">qskInformationGraphic</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">painter</span> <span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">graphics</span><span class="p">[</span> <span class="n">symbolType</span> <span class="p">];</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskStandardSymbol.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

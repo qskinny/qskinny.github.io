@@ -1,0 +1,113 @@
+<h1 id="controlsqskanimatorh">controls/QskAnimator.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/">QskAnimator</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_ANIMATOR_H
+#define QSK_ANIMATOR_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+</span>
+<span class="cp">#include &lt;qeasingcurve.h&gt;
+#include &lt;qobjectdefs.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QQuickWindow</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QObject</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QDebug</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskAnimator</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskAnimator</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">QskAnimator</span><span class="p">();</span>
+
+    <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setWindow</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setEasingCurve</span><span class="p">(</span> <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">Type</span> <span class="n">type</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setEasingCurve</span><span class="p">(</span> <span class="k">const</span> <span class="n">QEasingCurve</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QEasingCurve</span><span class="o">&amp;</span> <span class="n">easingCurve</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setAutoRepeat</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">autoRepeat</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setDuration</span><span class="p">(</span> <span class="kt">int</span> <span class="n">ms</span> <span class="p">);</span>
+    <span class="kt">int</span> <span class="n">duration</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isRunning</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">qint64</span> <span class="n">elapsed</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">start</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">stop</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">update</span><span class="p">();</span>
+
+    <span class="k">static</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">Connection</span> <span class="n">addCleanupHandler</span><span class="p">(</span>
+        <span class="n">QObject</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">method</span><span class="p">,</span>
+        <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span> <span class="p">);</span>
+
+    <span class="k">static</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">Connection</span> <span class="n">addAdvanceHandler</span><span class="p">(</span>
+        <span class="n">QObject</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">method</span><span class="p">,</span>
+        <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">type</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span> <span class="p">);</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>    <span class="k">static</span> <span class="kt">void</span> <span class="n">debugStatistics</span><span class="p">(</span> <span class="n">QDebug</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+  <span class="nl">protected:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">setup</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">advance</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">done</span><span class="p">();</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">m_window</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">m_duration</span><span class="p">;</span>
+    <span class="n">QEasingCurve</span> <span class="n">m_easingCurve</span><span class="p">;</span>
+    <span class="n">qint64</span> <span class="n">m_startTime</span><span class="p">;</span> <span class="c1">// quint32 might be enough</span>
+
+    <span class="kt">bool</span> <span class="n">m_autoRepeat</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="kt">bool</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">isRunning</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_startTime</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">int</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">duration</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_duration</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">bool</span> <span class="n">QskAnimator</span><span class="o">::</span><span class="n">autoRepeat</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_autoRepeat</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

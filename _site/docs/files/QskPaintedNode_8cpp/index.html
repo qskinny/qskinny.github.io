@@ -1,0 +1,72 @@
+<h1 id="nodesqskpaintednodecpp">nodes/QskPaintedNode.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskPaintedNode.h"
+#include "QskTextureRenderer.h"
+</span>
+<span class="k">class</span> <span class="nc">QskPaintedNode</span><span class="o">::</span><span class="n">PaintHelper</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">PaintHelper</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="kr">inline</span> <span class="n">PaintHelper</span><span class="p">(</span> <span class="n">QskPaintedNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">m_node</span><span class="p">(</span> <span class="n">node</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">paint</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">*</span> <span class="n">painter</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span> <span class="k">override</span>
+    <span class="p">{</span>
+        <span class="n">m_node</span><span class="o">-&gt;</span><span class="n">paint</span><span class="p">(</span> <span class="n">painter</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QskPaintedNode</span><span class="o">*</span> <span class="n">m_node</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskPaintedNode</span><span class="o">::</span><span class="n">QskPaintedNode</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskPaintedNode</span><span class="o">::~</span><span class="n">QskPaintedNode</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPaintedNode</span><span class="o">::</span><span class="n">update</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span>
+    <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">RenderMode</span> <span class="n">renderMode</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRect</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">isTextureDirty</span> <span class="o">=</span> <span class="n">isNull</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isTextureDirty</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">oldRect</span> <span class="o">=</span> <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">rect</span><span class="p">();</span>
+        <span class="n">isTextureDirty</span> <span class="o">=</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">!=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">oldRect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span> <span class="o">||</span>
+            <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">!=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">oldRect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">newHash</span> <span class="o">=</span> <span class="n">hash</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">newHash</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">newHash</span> <span class="o">!=</span> <span class="n">m_hash</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_hash</span> <span class="o">=</span> <span class="n">newHash</span><span class="p">;</span>
+        <span class="n">isTextureDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">auto</span> <span class="n">textureId</span> <span class="o">=</span> <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">textureId</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isTextureDirty</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">PaintHelper</span> <span class="n">helper</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+        <span class="n">textureId</span> <span class="o">=</span> <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">createTexture</span><span class="p">(</span>
+            <span class="n">renderMode</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">helper</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">setTexture</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">textureId</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

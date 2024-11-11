@@ -1,0 +1,101 @@
+<h1 id="layoutsqsklinearlayoutengineh">layouts/QskLinearLayoutEngine.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskLinearLayoutEngine/">QskLinearLayoutEngine</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_LINEAR_LAYOUT_ENGINE_H
+#define QSK_LINEAR_LAYOUT_ENGINE_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include "QskLayoutEngine2D.h"
+</span>
+<span class="cp">#include &lt;qnamespace.h&gt;
+#include &lt;memory&gt;
+</span>
+<span class="k">class</span> <span class="nc">QQuickItem</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QSizeF</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QRectF</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QskLinearLayoutEngine</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskLayoutEngine2D</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskLinearLayoutEngine</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span><span class="p">,</span> <span class="n">uint</span> <span class="n">dimension</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskLinearLayoutEngine</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="n">setDimension</span><span class="p">(</span> <span class="n">uint</span> <span class="n">dimension</span> <span class="p">);</span>
+    <span class="n">uint</span> <span class="n">dimension</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">count</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">insertItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">);</span>
+    <span class="kt">int</span> <span class="n">addItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">insertSpacerAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">spacing</span> <span class="p">);</span>
+    <span class="kt">int</span> <span class="n">addSpacer</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">spacing</span> <span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="n">removeAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">clear</span><span class="p">();</span>
+
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">itemAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">spacerAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">setStretchFactorAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">int</span> <span class="n">stretchFactor</span> <span class="p">);</span>
+    <span class="kt">int</span> <span class="n">stretchFactorAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">Q_DISABLE_COPY</span><span class="p">(</span><span class="n">QskLinearLayoutEngine</span><span class="p">)</span>
+
+    <span class="kt">void</span> <span class="n">layoutItems</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">effectiveCount</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">effectiveCount</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">invalidateElementCache</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">setupChain</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segments</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QskLayoutChain</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="kt">int</span> <span class="n">QskLinearLayoutEngine</span><span class="o">::</span><span class="n">addItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">insertItem</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">int</span> <span class="n">QskLinearLayoutEngine</span><span class="o">::</span><span class="n">addSpacer</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">spacing</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">insertSpacerAt</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">spacing</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

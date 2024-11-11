@@ -1,0 +1,835 @@
+<h1 id="commonqskmetainvokablecpp">common/QskMetaInvokable.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qskregistermetainvokable">qskRegisterMetaInvokable</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void *</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qskmetatypecreate">qskMetaTypeCreate</a></strong>(int type, const void * copy)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qskinvokemetacallqueued">qskInvokeMetaCallQueued</a></strong>(QObject * object, QMetaObject::Call call, ushort offset, ushort index, int nargs, int * types, void * args[], QSemaphore * semaphore =nullptr)</td>
+    </tr>
+    <tr>
+      <td>QMetaMethod</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qskmetamethod">qskMetaMethod</a></strong>(const QObject * object, const char * methodName)</td>
+    </tr>
+    <tr>
+      <td>QMetaMethod</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qskmetamethod">qskMetaMethod</a></strong>(const QMetaObject * metaObject, const char * methodName)</td>
+    </tr>
+    <tr>
+      <td>QMetaMethod</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qsknotifysignal">qskNotifySignal</a></strong>(const QObject * object, const char * propertyName)</td>
+    </tr>
+    <tr>
+      <td>QMetaMethod</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qsknotifysignal">qskNotifySignal</a></strong>(const QMetaObject * metaObject, const char * propertyName)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qskinvokemetacall">qskInvokeMetaCall</a></strong>(QObject * object, const QMetaObject * metaObject, QMetaObject::Call call, int offset, int index, void * argv[], Qt::ConnectionType connectionType)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qskinvokemetapropertywrite">qskInvokeMetaPropertyWrite</a></strong>(QObject * context, const QMetaProperty &amp; property, void * args[], Qt::ConnectionType connectionType)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qskinvokemetapropertywrite">qskInvokeMetaPropertyWrite</a></strong>(QObject * context, const QMetaObject * metaObject, int propertyIndex, void * args[], Qt::ConnectionType connectionType)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qskinvokemetamethod">qskInvokeMetaMethod</a></strong>(QObject * object, const QMetaMethod &amp; method, void * args[], Qt::ConnectionType connectionType)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskMetaInvokable_8cpp/#function-qskinvokemetamethod">qskInvokeMetaMethod</a></strong>(QObject * object, const QMetaObject * metaObject, int methodIndex, void * argv[], Qt::ConnectionType connectionType)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskregistermetainvokable">function qskRegisterMetaInvokable</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskRegisterMetaInvokable</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmetatypecreate">function qskMetaTypeCreate</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="o">*</span> <span class="n">qskMetaTypeCreate</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">type</span><span class="p">,</span>
+    <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span> <span class="n">copy</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinvokemetacallqueued">function qskInvokeMetaCallQueued</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskInvokeMetaCallQueued</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="n">QMetaObject</span><span class="o">::</span><span class="n">Call</span> <span class="n">call</span><span class="p">,</span>
+    <span class="n">ushort</span> <span class="n">offset</span><span class="p">,</span>
+    <span class="n">ushort</span> <span class="n">index</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">nargs</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="o">*</span> <span class="n">types</span><span class="p">,</span>
+    <span class="kt">void</span> <span class="o">*</span> <span class="n">args</span><span class="p">[],</span>
+    <span class="n">QSemaphore</span> <span class="o">*</span> <span class="n">semaphore</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmetamethod">function qskMetaMethod</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QMetaMethod</span> <span class="n">qskMetaMethod</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">methodName</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmetamethod-1">function qskMetaMethod</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QMetaMethod</span> <span class="n">qskMetaMethod</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span> <span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">methodName</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsknotifysignal">function qskNotifySignal</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QMetaMethod</span> <span class="n">qskNotifySignal</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">propertyName</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsknotifysignal-1">function qskNotifySignal</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QMetaMethod</span> <span class="n">qskNotifySignal</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span> <span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">propertyName</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinvokemetacall">function qskInvokeMetaCall</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskInvokeMetaCall</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span> <span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span>
+    <span class="n">QMetaObject</span><span class="o">::</span><span class="n">Call</span> <span class="n">call</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">offset</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">index</span><span class="p">,</span>
+    <span class="kt">void</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[],</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinvokemetapropertywrite">function qskInvokeMetaPropertyWrite</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">qskInvokeMetaPropertyWrite</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">context</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QMetaProperty</span> <span class="o">&amp;</span> <span class="n">property</span><span class="p">,</span>
+    <span class="kt">void</span> <span class="o">*</span> <span class="n">args</span><span class="p">[],</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinvokemetapropertywrite-1">function qskInvokeMetaPropertyWrite</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">qskInvokeMetaPropertyWrite</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">context</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span> <span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">propertyIndex</span><span class="p">,</span>
+    <span class="kt">void</span> <span class="o">*</span> <span class="n">args</span><span class="p">[],</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinvokemetamethod">function qskInvokeMetaMethod</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">qskInvokeMetaMethod</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QMetaMethod</span> <span class="o">&amp;</span> <span class="n">method</span><span class="p">,</span>
+    <span class="kt">void</span> <span class="o">*</span> <span class="n">args</span><span class="p">[],</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinvokemetamethod-1">function qskInvokeMetaMethod</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">qskInvokeMetaMethod</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span> <span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">methodIndex</span><span class="p">,</span>
+    <span class="kt">void</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[],</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskMetaInvokable.h"
+#include "QskMetaFunction.h"
+</span>
+<span class="cp">#include &lt;qmetaobject.h&gt;
+#include &lt;qobject.h&gt;
+#include &lt;qcoreapplication.h&gt;
+#include &lt;qsemaphore.h&gt;
+#include &lt;qthread.h&gt;
+</span>
+
+<span class="cp">#include &lt;private/qobject_p.h&gt;
+</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskRegisterMetaInvokable</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">qRegisterMetaType</span><span class="o">&lt;</span> <span class="n">QskMetaInvokable</span> <span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">Q_CONSTRUCTOR_FUNCTION</span><span class="p">(</span> <span class="n">qskRegisterMetaInvokable</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span><span class="o">*</span> <span class="nf">qskMetaTypeCreate</span><span class="p">(</span> <span class="kt">int</span> <span class="n">type</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">copy</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 0, 0 )
+</span>    <span class="k">return</span> <span class="n">QMetaType</span><span class="p">(</span> <span class="n">type</span> <span class="p">).</span><span class="n">create</span><span class="p">(</span> <span class="n">copy</span> <span class="p">);</span>
+<span class="cp">#else
+</span>    <span class="k">return</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">create</span><span class="p">(</span> <span class="n">type</span><span class="p">,</span> <span class="n">copy</span> <span class="p">);</span>
+<span class="cp">#endif
+</span><span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">CallFunction</span> <span class="o">=</span> <span class="n">QObjectPrivate</span><span class="o">::</span><span class="n">StaticMetaCallFunction</span><span class="p">;</span>
+
+    <span class="k">class</span> <span class="nc">Function</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskMetaFunction</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">Function</span><span class="p">(</span> <span class="kt">void</span><span class="o">*</span> <span class="n">functionCall</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">QskMetaFunction</span><span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">FunctionCall</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">functionCall</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">ref</span><span class="p">(</span> <span class="kt">void</span><span class="o">*</span> <span class="n">functionCall</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">functionCall</span> <span class="p">)</span>
+                <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">FunctionCall</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">functionCall</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">ref</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">deref</span><span class="p">(</span> <span class="kt">void</span><span class="o">*</span> <span class="n">functionCall</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">functionCall</span> <span class="p">)</span>
+                <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">FunctionCall</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">functionCall</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">destroyIfLastRef</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">MetaCallEvent</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QMetaCallEvent</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">MetaCallEvent</span><span class="p">(</span>
+                <span class="n">QMetaObject</span><span class="o">::</span><span class="n">Call</span> <span class="n">call</span><span class="p">,</span> <span class="n">CallFunction</span> <span class="n">callFunction</span><span class="p">,</span> <span class="n">ushort</span> <span class="n">offset</span><span class="p">,</span>
+                <span class="n">ushort</span> <span class="n">index</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nargs</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">types</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">args</span><span class="p">[],</span>
+                <span class="n">QSemaphore</span><span class="o">*</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">QMetaCallEvent</span><span class="p">(</span> <span class="n">offset</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">callFunction</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+<span class="cp">#if QT_VERSION &lt; QT_VERSION_CHECK( 5, 14, 0 )
+</span>                <span class="n">nargs</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span>
+<span class="cp">#endif
+</span>                <span class="n">args</span><span class="p">,</span> <span class="n">semaphore</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_call</span><span class="p">(</span> <span class="n">call</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_callFunction</span><span class="p">(</span> <span class="n">callFunction</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_index</span><span class="p">(</span> <span class="n">index</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">nargs</span> <span class="p">)</span>
+            <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">types</span> <span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">placeMetaCall</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="n">m_callFunction</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">m_call</span><span class="p">,</span> <span class="n">m_index</span><span class="p">,</span> <span class="n">args</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">Call</span> <span class="n">m_call</span><span class="p">;</span>
+
+        <span class="c1">// as those members from QMetaCallEvent are not accessible</span>
+        <span class="n">CallFunction</span> <span class="n">m_callFunction</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">ushort</span> <span class="n">m_index</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskInvokeMetaCallQueued</span><span class="p">(</span>
+    <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">Call</span> <span class="n">call</span><span class="p">,</span> <span class="n">ushort</span> <span class="n">offset</span><span class="p">,</span>
+    <span class="n">ushort</span> <span class="n">index</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nargs</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">types</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">args</span><span class="p">[],</span>
+    <span class="n">QSemaphore</span><span class="o">*</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">callFunction</span> <span class="o">=</span> <span class="n">object</span><span class="o">-&gt;</span><span class="n">metaObject</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">d</span><span class="p">.</span><span class="n">static_metacall</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">event</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MetaCallEvent</span><span class="p">(</span> <span class="n">call</span><span class="p">,</span> <span class="n">callFunction</span><span class="p">,</span>
+        <span class="n">offset</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">nargs</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">semaphore</span> <span class="p">);</span>
+
+    <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">postEvent</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QMetaMethod</span> <span class="nf">qskMetaMethod</span><span class="p">(</span> <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">methodName</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">object</span> <span class="o">?</span> <span class="n">qskMetaMethod</span><span class="p">(</span> <span class="n">object</span><span class="o">-&gt;</span><span class="n">metaObject</span><span class="p">(),</span> <span class="n">methodName</span> <span class="p">)</span> <span class="o">:</span> <span class="n">QMetaMethod</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QMetaMethod</span> <span class="nf">qskMetaMethod</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">methodName</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">metaObject</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">methodName</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QMetaMethod</span><span class="p">();</span>
+
+    <span class="k">constexpr</span> <span class="kt">char</span> <span class="n">signalIndicator</span> <span class="o">=</span> <span class="sc">'0'</span> <span class="o">+</span> <span class="n">QSIGNAL_CODE</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="kt">char</span> <span class="n">slotIndicator</span> <span class="o">=</span> <span class="sc">'0'</span> <span class="o">+</span> <span class="n">QSLOT_CODE</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">methodName</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">==</span> <span class="n">signalIndicator</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">signature</span> <span class="o">=</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">normalizedSignature</span><span class="p">(</span> <span class="n">methodName</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">);</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">indexOfSignal</span><span class="p">(</span> <span class="n">signature</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">methodName</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">==</span> <span class="n">slotIndicator</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">signature</span> <span class="o">=</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">normalizedSignature</span><span class="p">(</span> <span class="n">methodName</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">);</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">indexOfSlot</span><span class="p">(</span> <span class="n">signature</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">signature</span> <span class="o">=</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">normalizedSignature</span><span class="p">(</span> <span class="n">methodName</span> <span class="p">);</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">indexOfMethod</span><span class="p">(</span> <span class="n">signature</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">?</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">method</span><span class="p">(</span> <span class="n">index</span> <span class="p">)</span> <span class="o">:</span> <span class="n">QMetaMethod</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QMetaMethod</span> <span class="nf">qskNotifySignal</span><span class="p">(</span> <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">propertyName</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">object</span> <span class="o">?</span> <span class="n">qskNotifySignal</span><span class="p">(</span> <span class="n">object</span><span class="o">-&gt;</span><span class="n">metaObject</span><span class="p">(),</span> <span class="n">propertyName</span> <span class="p">)</span> <span class="o">:</span> <span class="n">QMetaMethod</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QMetaMethod</span> <span class="nf">qskNotifySignal</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">propertyName</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">metaObject</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">propertyName</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QMetaMethod</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">propertyIndex</span> <span class="o">=</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">indexOfProperty</span><span class="p">(</span> <span class="n">propertyName</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">propertyIndex</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">property</span> <span class="o">=</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span> <span class="n">propertyIndex</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="n">property</span><span class="p">.</span><span class="n">notifySignal</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QMetaMethod</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskInvokeMetaCall</span><span class="p">(</span>
+    <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span>
+    <span class="n">QMetaObject</span><span class="o">::</span><span class="n">Call</span> <span class="n">call</span><span class="p">,</span> <span class="kt">int</span> <span class="n">offset</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">argv</span><span class="p">[],</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QObject</span> <span class="o">&gt;</span> <span class="n">receiver</span><span class="p">(</span> <span class="n">object</span> <span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">invokeType</span> <span class="o">=</span> <span class="n">connectionType</span> <span class="o">&amp;</span> <span class="mh">0x3</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">invokeType</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">invokeType</span> <span class="o">=</span> <span class="p">(</span> <span class="n">object</span> <span class="o">&amp;&amp;</span> <span class="n">object</span><span class="o">-&gt;</span><span class="kr">thread</span><span class="p">()</span> <span class="o">!=</span> <span class="n">QThread</span><span class="o">::</span><span class="n">currentThread</span><span class="p">()</span> <span class="p">)</span>
+            <span class="o">?</span> <span class="n">Qt</span><span class="o">::</span><span class="n">QueuedConnection</span> <span class="o">:</span> <span class="n">Qt</span><span class="o">::</span><span class="n">DirectConnection</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">invokeType</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">DirectConnection</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+<span class="cp">#if 1
+</span>                <span class="c1">// do we really always need an object, what about Q_GADGET ???</span>
+                <span class="k">return</span><span class="p">;</span>
+<span class="cp">#endif
+</span>            <span class="p">}</span>
+
+            <span class="cm">/*
+                QMetaObject::metacall seems to be made for situations we don't have.
+                Need to dive deeper into the Qt code to be 100% sure TODO ...
+             */</span>
+
+            <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">d</span><span class="p">.</span><span class="n">static_metacall</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">argv</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BlockingQueuedConnection</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="o">||</span>
+                <span class="p">(</span> <span class="n">receiver</span><span class="o">-&gt;</span><span class="kr">thread</span><span class="p">()</span> <span class="o">==</span> <span class="n">QThread</span><span class="o">::</span><span class="n">currentThread</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// We would end up in a deadlock, better do nothing</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">QSemaphore</span> <span class="n">semaphore</span><span class="p">;</span>
+
+            <span class="n">qskInvokeMetaCallQueued</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span>
+                <span class="n">offset</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">nullptr</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">semaphore</span> <span class="p">);</span>
+
+            <span class="n">semaphore</span><span class="p">.</span><span class="n">acquire</span><span class="p">();</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">QueuedConnection</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+                <span class="k">return</span><span class="p">;</span>
+
+            <span class="kt">int</span><span class="o">*</span> <span class="n">types</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+            <span class="kt">void</span><span class="o">**</span> <span class="n">arguments</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">argc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">call</span> <span class="o">==</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">InvokeMetaMethod</span> <span class="p">)</span>
+            <span class="p">{</span>
+<span class="cp">#if 1
+</span>                <span class="c1">// should be doable without QMetaMethod. TODO ...</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">method</span> <span class="o">=</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">method</span><span class="p">(</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">index</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>                <span class="n">argc</span> <span class="o">=</span> <span class="n">method</span><span class="p">.</span><span class="n">parameterCount</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+
+                <span class="n">types</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">malloc</span><span class="p">(</span> <span class="n">argc</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span> <span class="kt">int</span> <span class="p">)</span> <span class="p">)</span> <span class="p">);</span>
+                <span class="n">arguments</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">void</span><span class="o">**</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">malloc</span><span class="p">(</span> <span class="n">argc</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span> <span class="kt">void</span><span class="o">*</span> <span class="p">)</span> <span class="p">)</span> <span class="p">);</span>
+
+                <span class="cm">/*
+                    The first one is the return type, one that is always
+                    invalid for Queued Connections.
+                 */</span>
+
+                <span class="n">types</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">UnknownType</span><span class="p">;</span>
+                <span class="n">arguments</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+                <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">argc</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">argv</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">argv</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+                        <span class="n">receiver</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+
+                    <span class="n">types</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">=</span> <span class="n">method</span><span class="p">.</span><span class="n">parameterType</span><span class="p">(</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">);</span>
+                    <span class="n">arguments</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">=</span> <span class="n">qskMetaTypeCreate</span><span class="p">(</span> <span class="n">types</span><span class="p">[</span> <span class="n">i</span> <span class="p">],</span> <span class="n">argv</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="c1">// should be doable without QMetaMethod. TODO ...</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">property</span> <span class="o">=</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">index</span> <span class="p">);</span>
+
+                <span class="n">argc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+                <span class="n">types</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">malloc</span><span class="p">(</span> <span class="n">argc</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span> <span class="kt">int</span> <span class="p">)</span> <span class="p">)</span> <span class="p">);</span>
+                <span class="n">arguments</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">void</span><span class="o">**</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">malloc</span><span class="p">(</span> <span class="n">argc</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span> <span class="kt">void</span><span class="o">*</span> <span class="p">)</span> <span class="p">)</span> <span class="p">);</span>
+
+                <span class="n">types</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="n">property</span><span class="p">.</span><span class="n">userType</span><span class="p">();</span>
+                <span class="n">arguments</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="n">qskMetaTypeCreate</span><span class="p">(</span> <span class="n">types</span><span class="p">[</span> <span class="mi">0</span> <span class="p">],</span> <span class="n">argv</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// object might have died in the meantime</span>
+                <span class="n">free</span><span class="p">(</span> <span class="n">types</span> <span class="p">);</span>
+                <span class="n">free</span><span class="p">(</span> <span class="n">arguments</span> <span class="p">);</span>
+
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">qskInvokeMetaCallQueued</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span>
+                <span class="n">offset</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">arguments</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">qskInvokeMetaPropertyWrite</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">context</span><span class="p">,</span> <span class="k">const</span> <span class="n">QMetaProperty</span><span class="o">&amp;</span> <span class="n">property</span><span class="p">,</span>
+    <span class="kt">void</span><span class="o">*</span> <span class="n">args</span><span class="p">[],</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskInvokeMetaPropertyWrite</span><span class="p">(</span> <span class="n">context</span><span class="p">,</span> <span class="n">property</span><span class="p">.</span><span class="n">enclosingMetaObject</span><span class="p">(),</span>
+        <span class="n">property</span><span class="p">.</span><span class="n">propertyIndex</span><span class="p">(),</span> <span class="n">args</span><span class="p">,</span> <span class="n">connectionType</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">qskInvokeMetaPropertyWrite</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">context</span><span class="p">,</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">propertyIndex</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">args</span><span class="p">[],</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// check for is writable ???</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">metaObject</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">propertyIndex</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+        <span class="p">(</span> <span class="n">propertyIndex</span> <span class="o">&lt;</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">propertyCount</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">propertyOffset</span><span class="p">();</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">index</span> <span class="o">=</span> <span class="n">propertyIndex</span> <span class="o">-</span> <span class="n">offset</span><span class="p">;</span>
+
+        <span class="n">qskInvokeMetaCall</span><span class="p">(</span> <span class="n">context</span><span class="p">,</span> <span class="n">metaObject</span><span class="p">,</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">WriteProperty</span><span class="p">,</span>
+            <span class="n">offset</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">args</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">connectionType</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">qskInvokeMetaMethod</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QMetaMethod</span><span class="o">&amp;</span> <span class="n">method</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">args</span><span class="p">[],</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskInvokeMetaMethod</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">method</span><span class="p">.</span><span class="n">enclosingMetaObject</span><span class="p">(),</span>
+        <span class="n">method</span><span class="p">.</span><span class="n">methodIndex</span><span class="p">(),</span> <span class="n">args</span><span class="p">,</span> <span class="n">connectionType</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">qskInvokeMetaMethod</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span> <span class="kt">int</span> <span class="n">methodIndex</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">argv</span><span class="p">[],</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">metaObject</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">methodIndex</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+        <span class="p">(</span> <span class="n">methodIndex</span> <span class="o">&lt;</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">methodCount</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">methodOffset</span><span class="p">();</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">index</span> <span class="o">=</span> <span class="n">methodIndex</span> <span class="o">-</span> <span class="n">offset</span><span class="p">;</span>
+
+        <span class="n">qskInvokeMetaCall</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">metaObject</span><span class="p">,</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">InvokeMetaMethod</span><span class="p">,</span>
+            <span class="n">offset</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">connectionType</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">QskMetaInvokable</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMetaMethod</span><span class="o">&amp;</span> <span class="n">method</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_metaData</span><span class="p">{</span> <span class="n">method</span><span class="p">.</span><span class="n">enclosingMetaObject</span><span class="p">(),</span> <span class="n">method</span><span class="p">.</span><span class="n">methodIndex</span><span class="p">()</span> <span class="p">}</span>
+    <span class="p">,</span> <span class="n">m_type</span><span class="p">(</span> <span class="n">MetaMethod</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">QskMetaInvokable</span><span class="p">(</span> <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">methodName</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskMetaInvokable</span><span class="p">(</span> <span class="n">qskMetaMethod</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">methodName</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">QskMetaInvokable</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">metaObject</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">methodName</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskMetaInvokable</span><span class="p">(</span> <span class="n">qskMetaMethod</span><span class="p">(</span> <span class="n">metaObject</span><span class="p">,</span> <span class="n">methodName</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">QskMetaInvokable</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMetaProperty</span><span class="o">&amp;</span> <span class="n">property</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_metaData</span><span class="p">{</span> <span class="n">property</span><span class="p">.</span><span class="n">enclosingMetaObject</span><span class="p">(),</span> <span class="n">property</span><span class="p">.</span><span class="n">propertyIndex</span><span class="p">()</span> <span class="p">}</span>
+    <span class="p">,</span> <span class="n">m_type</span><span class="p">(</span> <span class="n">MetaProperty</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">QskMetaInvokable</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="n">function</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_functionData</span><span class="p">{</span> <span class="n">function</span><span class="p">.</span><span class="n">functionCall</span><span class="p">()</span> <span class="p">}</span>
+    <span class="p">,</span> <span class="n">m_type</span><span class="p">(</span> <span class="n">MetaFunction</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Function</span><span class="o">::</span><span class="n">ref</span><span class="p">(</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">QskMetaInvokable</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaInvokable</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_type</span><span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_type</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">MetaMethod</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">MetaProperty</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span><span class="p">;</span>
+            <span class="n">m_metaData</span><span class="p">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_metaData</span><span class="p">.</span><span class="n">index</span><span class="p">;</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaFunction</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span><span class="p">;</span>
+            <span class="n">Function</span><span class="o">::</span><span class="n">ref</span><span class="p">(</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nl">default:</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaInvokable</span><span class="o">::~</span><span class="n">QskMetaInvokable</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_type</span> <span class="o">==</span> <span class="n">MetaFunction</span> <span class="p">)</span>
+        <span class="n">Function</span><span class="o">::</span><span class="n">deref</span><span class="p">(</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaInvokable</span><span class="o">&amp;</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaInvokable</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">MetaMethod</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">MetaProperty</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_type</span> <span class="o">==</span> <span class="n">MetaFunction</span> <span class="p">)</span>
+                <span class="n">Function</span><span class="o">::</span><span class="n">deref</span><span class="p">(</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">);</span>
+
+            <span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span><span class="p">;</span>
+            <span class="n">m_metaData</span><span class="p">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_metaData</span><span class="p">.</span><span class="n">index</span><span class="p">;</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaFunction</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_type</span> <span class="o">==</span> <span class="n">MetaFunction</span> <span class="p">)</span>
+                <span class="n">Function</span><span class="o">::</span><span class="n">deref</span><span class="p">(</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">);</span>
+
+            <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span><span class="p">;</span>
+            <span class="n">Function</span><span class="o">::</span><span class="n">ref</span><span class="p">(</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nl">default:</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_type</span> <span class="o">==</span> <span class="n">MetaFunction</span> <span class="p">)</span>
+                <span class="n">Function</span><span class="o">::</span><span class="n">deref</span><span class="p">(</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">m_type</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_type</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="k">operator</span><span class="o">==</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaInvokable</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_type</span> <span class="o">!=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_type</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">MetaMethod</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">MetaProperty</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span> <span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+                   <span class="p">(</span> <span class="n">m_metaData</span><span class="p">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_metaData</span><span class="p">.</span><span class="n">index</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaFunction</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">isNull</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">MetaMethod</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">MetaProperty</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">m_metaData</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="p">.</span><span class="n">metaObject</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">d</span><span class="p">.</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="p">(</span> <span class="n">m_type</span> <span class="o">==</span> <span class="n">MetaMethod</span> <span class="p">)</span>
+                <span class="o">?</span> <span class="n">d</span><span class="p">.</span><span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">methodCount</span><span class="p">()</span> <span class="o">:</span> <span class="n">d</span><span class="p">.</span><span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">propertyCount</span><span class="p">();</span>
+
+            <span class="k">return</span> <span class="n">d</span><span class="p">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">count</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaFunction</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nl">default:</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">reset</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_type</span> <span class="o">==</span> <span class="n">MetaFunction</span> <span class="p">)</span>
+        <span class="n">Function</span><span class="o">::</span><span class="n">deref</span><span class="p">(</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">);</span>
+
+    <span class="n">m_type</span> <span class="o">=</span> <span class="n">Invalid</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">parameterCount</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">MetaMethod</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="c1">// should be doable without QMetaMethod. TODO ...</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">method</span> <span class="o">=</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">method</span><span class="p">();</span>
+            <span class="k">return</span> <span class="n">method</span><span class="p">.</span><span class="n">parameterCount</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaProperty</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaFunction</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">function</span><span class="p">().</span><span class="n">parameterCount</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">parameterType</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">MetaMethod</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">method</span> <span class="o">=</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">method</span><span class="p">();</span>
+            <span class="k">return</span> <span class="n">method</span><span class="p">.</span><span class="n">parameterType</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaProperty</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">property</span> <span class="o">=</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">property</span><span class="p">();</span>
+            <span class="k">return</span> <span class="n">property</span><span class="p">.</span><span class="n">userType</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaFunction</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">types</span> <span class="o">=</span> <span class="n">function</span><span class="p">().</span><span class="n">parameterTypes</span><span class="p">();</span>
+            <span class="k">return</span> <span class="n">types</span><span class="p">[</span> <span class="n">index</span> <span class="p">];</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">UnknownType</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">returnType</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">MetaMethod</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">method</span><span class="p">().</span><span class="n">returnType</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaFunction</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">function</span><span class="p">().</span><span class="n">returnType</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaProperty</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">Void</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">Void</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QByteArray</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">name</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">MetaMethod</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">method</span><span class="p">().</span><span class="n">name</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaProperty</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">property</span><span class="p">().</span><span class="n">name</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaFunction</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="c1">// what to do here ???</span>
+            <span class="k">return</span> <span class="n">QByteArray</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">QByteArray</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QMetaMethod</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">method</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_type</span> <span class="o">==</span> <span class="n">MetaMethod</span> <span class="o">&amp;&amp;</span> <span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">method</span><span class="p">(</span> <span class="n">m_metaData</span><span class="p">.</span><span class="n">index</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">QMetaMethod</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QMetaProperty</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">property</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_type</span> <span class="o">==</span> <span class="n">MetaProperty</span> <span class="o">&amp;&amp;</span> <span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span> <span class="n">m_metaData</span><span class="p">.</span><span class="n">index</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">QMetaProperty</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskMetaFunction</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">function</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_type</span> <span class="o">==</span> <span class="n">MetaFunction</span> <span class="o">&amp;&amp;</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Function</span> <span class="n">function</span><span class="p">(</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskMetaFunction</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">function</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QskMetaFunction</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskMetaInvokable</span><span class="o">::</span><span class="n">invoke</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">args</span><span class="p">[],</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">connectionType</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">MetaMethod</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">qskInvokeMetaMethod</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span><span class="p">,</span>
+                <span class="n">m_metaData</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">connectionType</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaProperty</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">qskInvokeMetaPropertyWrite</span><span class="p">(</span>
+                <span class="n">object</span><span class="p">,</span> <span class="n">m_metaData</span><span class="p">.</span><span class="n">metaObject</span><span class="p">,</span> <span class="n">m_metaData</span><span class="p">.</span><span class="n">index</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">connectionType</span> <span class="p">);</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">MetaFunction</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">Function</span> <span class="n">function</span><span class="p">(</span> <span class="n">m_functionData</span><span class="p">.</span><span class="n">functionCall</span> <span class="p">);</span>
+                <span class="n">function</span><span class="p">.</span><span class="n">invoke</span><span class="p">(</span> <span class="n">object</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">connectionType</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nl">default:</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

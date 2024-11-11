@@ -1,0 +1,122 @@
+<h1 id="dialogsqskdialogbuttonboxh">dialogs/QskDialogButtonBox.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskDialogButtonBox/">QskDialogButtonBox</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_DIALOG_BUTTON_BOX_H
+#define QSK_DIALOG_BUTTON_BOX_H
+</span>
+<span class="cp">#include "QskBox.h"
+#include "QskDialog.h"
+</span>
+<span class="k">class</span> <span class="nc">QskPushButton</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskDialogButtonBox</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskBox</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="n">READ</span> <span class="n">orientation</span>
+        <span class="n">WRITE</span> <span class="n">setOrientation</span> <span class="n">NOTIFY</span> <span class="n">orientationChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">centeredButtons</span> <span class="n">READ</span> <span class="n">centeredButtons</span>
+        <span class="n">WRITE</span> <span class="n">setCenteredButtons</span> <span class="n">NOTIFY</span> <span class="n">centeredButtonsChanged</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskBox</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QSK_SUBCONTROLS</span><span class="p">(</span> <span class="n">Panel</span> <span class="p">)</span>
+
+    <span class="n">QskDialogButtonBox</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="n">QskDialogButtonBox</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+    <span class="o">~</span><span class="n">QskDialogButtonBox</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">);</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setCenteredButtons</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">center</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">centeredButtons</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">addButton</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">*</span><span class="p">,</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">ActionRole</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">removeButton</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">clear</span><span class="p">();</span>
+
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">buttons</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">buttons</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">ActionRole</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">ActionRole</span> <span class="n">actionRole</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">addAction</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setActions</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="p">);</span>
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="n">actions</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">action</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">button</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">clickedAction</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setDefaultButton</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="p">);</span>
+    <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">defaultButton</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="kt">bool</span> <span class="n">isDefaultButtonKeyEvent</span><span class="p">(</span> <span class="k">const</span> <span class="n">QKeyEvent</span><span class="o">*</span> <span class="p">);</span>
+    <span class="k">static</span> <span class="n">QString</span> <span class="n">buttonText</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="p">);</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">clicked</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">button</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">accepted</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">rejected</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">centeredButtonsChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">orientationChanged</span><span class="p">();</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span> <span class="n">ItemChange</span><span class="p">,</span> <span class="k">const</span> <span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">updateLayout</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+    <span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">createButton</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">invalidateLayout</span><span class="p">();</span>
+
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">substitutedSubcontrol</span><span class="p">(</span>
+        <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">onButtonClicked</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">rearrangeButtons</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">updateTabFocusChain</span><span class="p">();</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

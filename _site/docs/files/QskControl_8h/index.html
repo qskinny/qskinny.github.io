@@ -1,0 +1,330 @@
+<h1 id="controlsqskcontrolh">controls/QskControl.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskControl/">QskControl</a></strong> <br />Base class of all controls.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="/docs/classes/classQskControl/">QskControl</a> *</td>
+      <td><strong><a href="/docs/files/QskControl_8h/#function-qskcontrolcast">qskControlCast</a></strong>(QObject * object)</td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskControl/">QskControl</a> *</td>
+      <td><strong><a href="/docs/files/QskControl_8h/#function-qskcontrolcast">qskControlCast</a></strong>(const QObject * object)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskcontrolcast">function qskControlCast</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="n">QskControl</span> <span class="o">*</span> <span class="n">qskControlCast</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskcontrolcast-1">function qskControlCast</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">const</span> <span class="n">QskControl</span> <span class="o">*</span> <span class="n">qskControlCast</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_CONTROL_H
+#define QSK_CONTROL_H
+</span>
+<span class="cp">#include "QskQuickItem.h"
+#include "QskSkinnable.h"
+#include "QskAspect.h"
+#include "QskGradient.h"
+#include "QskSizePolicy.h"
+</span>
+<span class="cp">#include &lt;qlocale.h&gt;
+#include &lt;memory&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskControlPrivate</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskGestureEvent</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskControl</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskQuickItem</span><span class="p">,</span> <span class="k">public</span> <span class="n">QskSkinnable</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QLocale</span> <span class="n">locale</span> <span class="n">READ</span> <span class="n">locale</span>
+        <span class="n">WRITE</span> <span class="n">setLocale</span> <span class="n">RESET</span> <span class="n">resetLocale</span> <span class="n">NOTIFY</span> <span class="n">localeChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">autoFillBackground</span> <span class="n">READ</span> <span class="n">autoFillBackground</span>
+        <span class="n">WRITE</span> <span class="n">setAutoFillBackground</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">autoLayoutChildren</span> <span class="n">READ</span> <span class="n">autoLayoutChildren</span>
+        <span class="n">WRITE</span> <span class="n">setAutoLayoutChildren</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">FocusPolicy</span> <span class="n">focusPolicy</span> <span class="n">READ</span> <span class="n">focusPolicy</span>
+        <span class="n">WRITE</span> <span class="n">setFocusPolicy</span> <span class="n">NOTIFY</span> <span class="n">focusPolicyChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">wheelEnabled</span> <span class="n">READ</span> <span class="n">isWheelEnabled</span>
+        <span class="n">WRITE</span> <span class="n">setWheelEnabled</span> <span class="n">NOTIFY</span> <span class="n">wheelEnabledChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">visibleToLayout</span> <span class="n">READ</span> <span class="n">isVisibleToLayout</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QskMargins</span> <span class="n">margins</span> <span class="n">READ</span> <span class="n">margins</span>
+        <span class="n">WRITE</span> <span class="n">setMargins</span> <span class="n">RESET</span> <span class="n">resetMargins</span> <span class="n">NOTIFY</span> <span class="n">marginsChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QskGradient</span> <span class="n">background</span> <span class="n">READ</span> <span class="n">background</span>
+        <span class="n">WRITE</span> <span class="n">setBackground</span> <span class="n">RESET</span> <span class="n">resetBackground</span> <span class="n">NOTIFY</span> <span class="n">backgroundChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QskSizePolicy</span> <span class="n">sizePolicy</span> <span class="n">READ</span> <span class="n">sizePolicy</span> <span class="n">WRITE</span> <span class="n">setSizePolicy</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QSizeF</span> <span class="n">minimumSize</span> <span class="n">READ</span> <span class="n">minimumSize</span> <span class="n">WRITE</span> <span class="n">setMinimumSize</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QSizeF</span> <span class="n">maximumSize</span> <span class="n">READ</span> <span class="n">maximumSize</span> <span class="n">WRITE</span> <span class="n">setMaximumSize</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QSizeF</span> <span class="n">preferredSize</span> <span class="n">READ</span> <span class="n">preferredSize</span> <span class="n">WRITE</span> <span class="n">setPreferredSize</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QSizeF</span> <span class="n">sizeConstraint</span> <span class="n">READ</span> <span class="n">sizeConstraint</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskQuickItem</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QSK_STATES</span><span class="p">(</span> <span class="n">Disabled</span><span class="p">,</span> <span class="n">Hovered</span><span class="p">,</span> <span class="n">Focused</span> <span class="p">)</span>
+
+    <span class="k">enum</span> <span class="n">LayoutHint</span>
+    <span class="p">{</span>
+        <span class="c1">// How to be treated by layouts</span>
+        <span class="n">RetainSizeWhenHidden</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span>
+
+        <span class="cm">/*
+            Adjust the item even, even when being hidden
+            Depending on the type of layout the value only works
+            in combination with RetainSizeWhenHidden
+         */</span>
+        <span class="n">LayoutWhenHidden</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">LayoutHint</span> <span class="p">)</span>
+    <span class="n">Q_DECLARE_FLAGS</span><span class="p">(</span> <span class="n">LayoutHints</span><span class="p">,</span> <span class="n">LayoutHint</span> <span class="p">)</span>
+
+    <span class="n">QskControl</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskControl</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setMargins</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setMargins</span><span class="p">(</span> <span class="n">qreal</span><span class="p">,</span> <span class="n">qreal</span><span class="p">,</span> <span class="n">qreal</span><span class="p">,</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setMargins</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMarginsF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetMargins</span><span class="p">();</span>
+    <span class="n">QMarginsF</span> <span class="n">margins</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setBackgroundColor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setBackground</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetBackground</span><span class="p">();</span>
+    <span class="n">QskGradient</span> <span class="n">background</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QRectF</span> <span class="n">contentsRect</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QRectF</span> <span class="n">layoutRect</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="n">QRectF</span> <span class="n">layoutRectForSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="n">QRectF</span> <span class="n">gestureRect</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="n">QRectF</span> <span class="n">focusIndicatorRect</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="n">QRectF</span> <span class="n">focusIndicatorClipRect</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">using</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">;</span>
+    <span class="n">QRectF</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QRectF</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">using</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">subControlContentsRect</span><span class="p">;</span>
+    <span class="n">QRectF</span> <span class="n">subControlContentsRect</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QRectF</span> <span class="n">subControlContentsRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setAutoFillBackground</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">autoFillBackground</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setAutoLayoutChildren</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">autoLayoutChildren</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setWheelEnabled</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">isWheelEnabled</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setFocusPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">FocusPolicy</span> <span class="p">);</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">FocusPolicy</span> <span class="n">focusPolicy</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="p">);</span>
+
+    <span class="n">QskSizePolicy</span> <span class="n">sizePolicy</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="n">sizePolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="c1">// hints for how to be treated by layouts</span>
+    <span class="kt">void</span> <span class="n">setLayoutAlignmentHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="p">);</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">layoutAlignmentHint</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setLayoutHint</span><span class="p">(</span> <span class="n">LayoutHint</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">testLayoutHint</span><span class="p">(</span> <span class="n">LayoutHint</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setLayoutHints</span><span class="p">(</span> <span class="n">LayoutHints</span> <span class="p">);</span>
+    <span class="n">LayoutHints</span> <span class="n">layoutHints</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isVisibleToLayout</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setMinimumSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setMinimumSize</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setMinimumWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setMinimumHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setMaximumSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setMaximumSize</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setMaximumWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setMaximumHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setPreferredSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setPreferredSize</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setPreferredWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setPreferredHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setFixedSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setFixedSize</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setFixedWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setFixedHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setExplicitSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setExplicitSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetExplicitSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="p">);</span>
+
+    <span class="n">QSizeF</span> <span class="n">minimumSize</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QSizeF</span> <span class="n">maximumSize</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QSizeF</span> <span class="n">preferredSize</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QSizeF</span> <span class="n">explicitSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QSizeF</span> <span class="n">implicitSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QSizeF</span> <span class="n">sizeHint</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">heightForWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">widthForHeight</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QSizeF</span> <span class="n">effectiveSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="o">=</span> <span class="n">QSizeF</span><span class="p">()</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QSizeF</span> <span class="n">sizeConstraint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="o">=</span> <span class="n">QSizeF</span><span class="p">()</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QSizeF</span> <span class="n">sizeConstraint</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QLocale</span> <span class="n">locale</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">resetLocale</span><span class="p">();</span>
+
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="o">&gt;</span> <span class="n">subControls</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">backgroundChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">marginsChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMarginsF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">focusIndicatorRectChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">localeChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">focusPolicyChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">wheelEnabledChanged</span><span class="p">();</span>
+
+  <span class="k">public</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">setLocale</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">gestureEvent</span><span class="p">(</span> <span class="n">QskGestureEvent</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">hoverEnterEvent</span><span class="p">(</span> <span class="n">QHoverEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">hoverLeaveEvent</span><span class="p">(</span> <span class="n">QHoverEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">childMouseEventFilter</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">bool</span> <span class="n">gestureFilter</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span> <span class="n">ItemChange</span><span class="p">,</span> <span class="k">const</span> <span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">geometryChange</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="p">);</span>
+
+    <span class="c1">// called from updatePolish</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">updateResources</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">updateLayout</span><span class="p">();</span>
+
+    <span class="k">virtual</span> <span class="n">QSizeF</span> <span class="n">contentsSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">setActiveFocusOnTab</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>                 <span class="c1">// use setFocusPolicy</span>
+    <span class="kt">void</span> <span class="n">updateInputMethod</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQueries</span> <span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span> <span class="c1">// use qskUpdateInputMethod</span>
+
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updateItemPaintNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">updateItemPolish</span><span class="p">()</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+
+    <span class="n">QskControl</span><span class="o">*</span> <span class="n">owningControl</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">Q_DECLARE_PRIVATE</span><span class="p">(</span> <span class="n">QskControl</span> <span class="p">)</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">QskControl</span><span class="o">::</span><span class="n">sizeConstraint</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">sizeConstraint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">QskControl</span><span class="o">::</span><span class="n">sizeHint</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">QskControl</span><span class="o">::</span><span class="n">minimumSize</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MinimumSize</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">QskControl</span><span class="o">::</span><span class="n">maximumSize</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MaximumSize</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">QskControl</span><span class="o">::</span><span class="n">preferredSize</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">QskControl</span><span class="o">*</span> <span class="nf">qskControlCast</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="n">QskControl</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">object</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">const</span> <span class="n">QskControl</span><span class="o">*</span> <span class="nf">qskControlCast</span><span class="p">(</span> <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskControl</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">object</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

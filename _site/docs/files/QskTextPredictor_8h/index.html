@@ -1,0 +1,75 @@
+<h1 id="inputpanelqsktextpredictorh">inputpanel/QskTextPredictor.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskTextPredictor/">QskTextPredictor</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_TEXT_PREDICTOR_H
+#define QSK_TEXT_PREDICTOR_H
+</span>
+<span class="cp">#include &lt;QskGlobal.h&gt;
+#include &lt;qobject.h&gt;
+</span>
+<span class="c1">// abstract base class for input methods for retrieving predictive text</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskTextPredictor</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">Attribute</span>
+    <span class="p">{</span>
+        <span class="n">Words</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">Attribute</span> <span class="p">)</span>
+    <span class="n">Q_DECLARE_FLAGS</span><span class="p">(</span> <span class="n">Attributes</span><span class="p">,</span> <span class="n">Attribute</span> <span class="p">)</span>
+
+    <span class="o">~</span><span class="n">QskTextPredictor</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">request</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="kt">int</span> <span class="n">candidateCount</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="n">QString</span> <span class="n">candidate</span><span class="p">(</span> <span class="kt">int</span> <span class="p">)</span> <span class="k">const</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="n">QStringList</span> <span class="n">candidates</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Attributes</span> <span class="n">attributes</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">predictionChanged</span><span class="p">();</span>
+
+  <span class="nl">protected:</span>
+    <span class="n">QskTextPredictor</span><span class="p">(</span> <span class="n">Attributes</span><span class="p">,</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="k">const</span> <span class="n">Attributes</span> <span class="n">m_attributes</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

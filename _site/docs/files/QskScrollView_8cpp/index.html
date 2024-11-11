@@ -1,0 +1,305 @@
+<h1 id="controlsqskscrollviewcpp">controls/QskScrollView.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskScrollView.h"
+#include "QskAnimationHint.h"
+#include "QskBoxBorderMetrics.h"
+#include "QskEvent.h"
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="p">,</span> <span class="n">Panel</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="p">,</span> <span class="n">Viewport</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="p">,</span> <span class="n">HorizontalScrollBar</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="p">,</span> <span class="n">HorizontalScrollHandle</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="p">,</span> <span class="n">VerticalScrollBar</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="p">,</span> <span class="n">VerticalScrollHandle</span> <span class="p">)</span>
+
+<span class="n">QSK_SYSTEM_STATE</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="p">,</span> <span class="n">VerticalHandlePressed</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">FirstSystemState</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="n">QSK_SYSTEM_STATE</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="p">,</span> <span class="n">HorizontalHandlePressed</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">FirstSystemState</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span> <span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">QskScrollView</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">horizontalScrollBarPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAsNeeded</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">verticalScrollBarPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAsNeeded</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">isScrolling</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarPolicy</span> <span class="n">horizontalScrollBarPolicy</span><span class="p">;</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarPolicy</span> <span class="n">verticalScrollBarPolicy</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">scrollPressPos</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">isScrolling</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskScrollView</span><span class="o">::</span><span class="n">QskScrollView</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskScrollView</span><span class="o">::~</span><span class="n">QskScrollView</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskAnimationHint</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">flickHint</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveAnimation</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Metric</span><span class="p">,</span>
+        <span class="n">QskScrollView</span><span class="o">::</span><span class="n">Viewport</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">NoState</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarPolicy</span> <span class="n">policy</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">policy</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">verticalScrollBarPolicy</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">verticalScrollBarPolicy</span> <span class="o">=</span> <span class="n">policy</span><span class="p">;</span>
+        <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">verticalScrollBarPolicyChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarPolicy</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">verticalScrollBarPolicy</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">verticalScrollBarPolicy</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarPolicy</span> <span class="n">policy</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">policy</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">horizontalScrollBarPolicy</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">horizontalScrollBarPolicy</span> <span class="o">=</span> <span class="n">policy</span><span class="p">;</span>
+        <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">horizontalScrollBarPolicyChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarPolicy</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">horizontalScrollBarPolicy</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">horizontalScrollBarPolicy</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">isScrolling</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isScrolling</span> <span class="o">==</span> <span class="n">orientation</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">viewContentsRect</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// This code should be done in the skinlet. TODO ...</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">bw</span> <span class="o">=</span> <span class="n">boxBorderMetricsHint</span><span class="p">(</span> <span class="n">Viewport</span> <span class="p">).</span><span class="n">widthAt</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopEdge</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">r</span> <span class="o">=</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">Viewport</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">r</span><span class="p">.</span><span class="n">adjusted</span><span class="p">(</span> <span class="n">bw</span><span class="p">,</span> <span class="n">bw</span><span class="p">,</span> <span class="o">-</span><span class="n">bw</span><span class="p">,</span> <span class="o">-</span><span class="n">bw</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">mousePressEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">mousePos</span> <span class="o">=</span> <span class="n">qskMousePosition</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">VerticalScrollBar</span> <span class="p">).</span><span class="n">contains</span><span class="p">(</span> <span class="n">mousePos</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">QRectF</span> <span class="n">handleRect</span> <span class="o">=</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">VerticalScrollHandle</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">handleRect</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">mousePos</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isScrolling</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span><span class="p">;</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollPressPos</span> <span class="o">=</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">y</span><span class="p">();</span>
+
+            <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">VerticalHandlePressed</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">QRectF</span> <span class="n">vRect</span> <span class="o">=</span> <span class="n">viewContentsRect</span><span class="p">();</span>
+
+            <span class="n">qreal</span> <span class="n">y</span> <span class="o">=</span> <span class="n">scrollPos</span><span class="p">().</span><span class="n">y</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">handleRect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">y</span> <span class="o">-=</span> <span class="n">vRect</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+            <span class="k">else</span>
+                <span class="n">y</span> <span class="o">+=</span> <span class="n">vRect</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+            <span class="n">setScrollPos</span><span class="p">(</span> <span class="n">QPointF</span><span class="p">(</span> <span class="n">scrollPos</span><span class="p">().</span><span class="n">x</span><span class="p">(),</span> <span class="n">y</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">HorizontalScrollBar</span> <span class="p">).</span><span class="n">contains</span><span class="p">(</span> <span class="n">mousePos</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">QRectF</span> <span class="n">handleRect</span> <span class="o">=</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">HorizontalScrollHandle</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">handleRect</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">mousePos</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isScrolling</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">;</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollPressPos</span> <span class="o">=</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">x</span><span class="p">();</span>
+
+            <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">HorizontalHandlePressed</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">QRectF</span> <span class="n">vRect</span> <span class="o">=</span> <span class="n">viewContentsRect</span><span class="p">();</span>
+
+            <span class="n">qreal</span> <span class="n">x</span> <span class="o">=</span> <span class="n">scrollPos</span><span class="p">().</span><span class="n">x</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">handleRect</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">x</span> <span class="o">-=</span> <span class="n">vRect</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+            <span class="k">else</span>
+                <span class="n">x</span> <span class="o">+=</span> <span class="n">vRect</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+
+            <span class="n">setScrollPos</span><span class="p">(</span> <span class="n">QPointF</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">scrollPos</span><span class="p">().</span><span class="n">y</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">mousePressEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">mouseMoveEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isScrolling</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Inherited</span><span class="o">::</span><span class="n">mouseMoveEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">mousePos</span> <span class="o">=</span> <span class="n">qskMousePosition</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+    <span class="n">QPointF</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">scrollPos</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isScrolling</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollPressPos</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">HorizontalScrollBar</span> <span class="p">).</span><span class="n">width</span><span class="p">();</span>
+
+        <span class="n">pos</span><span class="p">.</span><span class="n">rx</span><span class="p">()</span> <span class="o">+=</span> <span class="n">dx</span> <span class="o">/</span> <span class="n">w</span> <span class="o">*</span> <span class="n">scrollableSize</span><span class="p">().</span><span class="n">width</span><span class="p">();</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollPressPos</span> <span class="o">=</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">x</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isScrolling</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollPressPos</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">VerticalScrollBar</span> <span class="p">).</span><span class="n">height</span><span class="p">();</span>
+
+        <span class="n">pos</span><span class="p">.</span><span class="n">ry</span><span class="p">()</span> <span class="o">+=</span> <span class="n">dy</span> <span class="o">/</span> <span class="n">h</span> <span class="o">*</span> <span class="n">scrollableSize</span><span class="p">().</span><span class="n">height</span><span class="p">();</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollPressPos</span> <span class="o">=</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">y</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">pos</span> <span class="o">!=</span> <span class="n">scrollPos</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">setScrollPos</span><span class="p">(</span> <span class="n">pos</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">mouseReleaseEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isScrolling</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Inherited</span><span class="o">::</span><span class="n">mouseReleaseEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isScrolling</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollPressPos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">HorizontalHandlePressed</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">VerticalHandlePressed</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_WHEELEVENT
+</span>
+<span class="n">QPointF</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">scrollOffset</span><span class="p">(</span> <span class="k">const</span> <span class="n">QWheelEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QPointF</span> <span class="n">offset</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">wheelPos</span> <span class="o">=</span> <span class="n">qskWheelPosition</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+<span class="cp">#if QT_VERSION &lt; QT_VERSION_CHECK( 5, 14, 0 )
+</span>    <span class="k">const</span> <span class="k">auto</span> <span class="n">wheelDelta</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">delta</span><span class="p">();</span>
+<span class="cp">#else
+</span>    <span class="k">const</span> <span class="n">QPoint</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">angleDelta</span><span class="p">();</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">wheelDelta</span> <span class="o">=</span> <span class="p">(</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">delta</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">delta</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="o">?</span> <span class="n">delta</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">:</span> <span class="n">delta</span><span class="p">.</span><span class="n">y</span><span class="p">();</span>
+<span class="cp">#endif
+</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">VerticalScrollBar</span> <span class="p">).</span><span class="n">contains</span><span class="p">(</span> <span class="n">wheelPos</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">offset</span><span class="p">.</span><span class="n">setY</span><span class="p">(</span> <span class="n">wheelDelta</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">HorizontalScrollBar</span> <span class="p">).</span><span class="n">contains</span><span class="p">(</span> <span class="n">wheelPos</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">offset</span><span class="p">.</span><span class="n">setX</span><span class="p">(</span> <span class="n">wheelDelta</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">scrollOffset</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">offset</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">scrollableOrientations</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// layoutRect ???</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">vr</span> <span class="o">=</span> <span class="n">contentsRect</span><span class="p">();</span>
+
+    <span class="k">auto</span> <span class="n">policyVertical</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">verticalScrollBarPolicy</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">policyHorizontal</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">horizontalScrollBarPolicy</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">policyVertical</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAsNeeded</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qreal</span> <span class="n">height</span> <span class="o">=</span> <span class="n">vr</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">policyHorizontal</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAlwaysOn</span> <span class="p">)</span>
+            <span class="n">height</span> <span class="o">-=</span> <span class="n">metric</span><span class="p">(</span> <span class="n">HorizontalScrollBar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">scrollableSize</span><span class="p">().</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">height</span> <span class="p">)</span>
+            <span class="n">policyVertical</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAlwaysOn</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">policyHorizontal</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAsNeeded</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qreal</span> <span class="n">width</span> <span class="o">=</span> <span class="n">vr</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">policyVertical</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAlwaysOn</span> <span class="p">)</span>
+            <span class="n">width</span> <span class="o">-=</span> <span class="n">metric</span><span class="p">(</span> <span class="n">VerticalScrollBar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">scrollableSize</span><span class="p">().</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">width</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">policyHorizontal</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAlwaysOn</span><span class="p">;</span>
+
+            <span class="c1">// we have to check the vertical once more</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">policyVertical</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAsNeeded</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+                 <span class="p">(</span> <span class="n">scrollableSize</span><span class="p">().</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;</span>
+                     <span class="n">vr</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="n">metric</span><span class="p">(</span> <span class="n">HorizontalScrollBar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">policyVertical</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAlwaysOn</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">policyHorizontal</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAlwaysOn</span> <span class="p">)</span>
+        <span class="n">orientations</span> <span class="o">|=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">policyVertical</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ScrollBarAlwaysOn</span> <span class="p">)</span>
+        <span class="n">orientations</span> <span class="o">|=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">orientations</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskScrollView.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

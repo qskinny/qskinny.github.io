@@ -1,0 +1,122 @@
+<h1 id="nodesqskgraphicnodecpp">nodes/QskGraphicNode.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>uint</td>
+      <td><strong><a href="/docs/files/QskGraphicNode_8cpp/#function-qskhash">qskHash</a></strong>(const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; graphic, const QskColorFilter &amp; colorFilter, QskTextureRenderer::RenderMode renderMode)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskhash">function qskHash</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">uint</span> <span class="n">qskHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="n">graphic</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span> <span class="o">&amp;</span> <span class="n">colorFilter</span><span class="p">,</span>
+    <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">RenderMode</span> <span class="n">renderMode</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskGraphicNode.h"
+#include "QskGraphic.h"
+#include "QskColorFilter.h"
+#include "QskPainterCommand.h"
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">uint</span> <span class="nf">qskHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">graphic</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">colorFilter</span><span class="p">,</span>
+    <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">RenderMode</span> <span class="n">renderMode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">uint</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">12000</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">substitutions</span> <span class="o">=</span> <span class="n">colorFilter</span><span class="p">.</span><span class="n">substitutions</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">substitutions</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">hash</span> <span class="o">=</span> <span class="n">qHashBits</span><span class="p">(</span> <span class="n">substitutions</span><span class="p">.</span><span class="n">constData</span><span class="p">(),</span>
+            <span class="n">substitutions</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">substitutions</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="p">),</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">.</span><span class="n">hash</span><span class="p">(</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="n">renderMode</span><span class="p">,</span> <span class="n">hash</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">hash</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicNode</span><span class="o">::</span><span class="n">QskGraphicNode</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_hash</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicNode</span><span class="o">::~</span><span class="n">QskGraphicNode</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicNode</span><span class="o">::</span><span class="n">setGraphic</span><span class="p">(</span>
+    <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">graphic</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">colorFilter</span><span class="p">,</span>
+    <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">RenderMode</span> <span class="n">renderMode</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">mirrored</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">isTextureDirty</span> <span class="o">=</span> <span class="n">isNull</span><span class="p">();</span>
+
+    <span class="n">QSize</span> <span class="n">textureSize</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">graphic</span><span class="p">.</span><span class="n">commandTypes</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskGraphic</span><span class="o">::</span><span class="n">RasterData</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            simple raster data - usually a QImage/QPixmap only.
+            There is no benefit in rescaling it into the target rectangle
+            by the CPU and creating a new texture.
+         */</span>
+        <span class="n">textureSize</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">.</span><span class="n">defaultSize</span><span class="p">().</span><span class="n">toSize</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">textureSize</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">().</span><span class="n">toSize</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isTextureDirty</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">oldRect</span> <span class="o">=</span> <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">rect</span><span class="p">();</span>
+            <span class="n">isTextureDirty</span> <span class="o">=</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">!=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">oldRect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span> <span class="o">||</span>
+                <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">!=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">oldRect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">qskHash</span><span class="p">(</span> <span class="n">graphic</span><span class="p">,</span> <span class="n">colorFilter</span><span class="p">,</span> <span class="n">renderMode</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hash</span> <span class="o">!=</span> <span class="n">m_hash</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_hash</span> <span class="o">=</span> <span class="n">hash</span><span class="p">;</span>
+        <span class="n">isTextureDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">auto</span> <span class="n">textureId</span> <span class="o">=</span> <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">textureId</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isTextureDirty</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">textureId</span> <span class="o">=</span> <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">createTextureFromGraphic</span><span class="p">(</span>
+            <span class="n">renderMode</span><span class="p">,</span> <span class="n">textureSize</span><span class="p">,</span> <span class="n">graphic</span><span class="p">,</span> <span class="n">colorFilter</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">IgnoreAspectRatio</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">setTexture</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">textureId</span><span class="p">,</span> <span class="n">mirrored</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

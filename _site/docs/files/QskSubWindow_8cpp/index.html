@@ -1,0 +1,272 @@
+<h1 id="controlsqsksubwindowcpp">controls/QskSubWindow.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSubWindow.h"
+#include "QskAspect.h"
+#include "QskFunctions.h"
+#include "QskGraphic.h"
+#include "QskGraphicProvider.h"
+#include "QskTextOptions.h"
+#include "QskQuick.h"
+</span>
+<span class="cp">#include &lt;qurl.h&gt;
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSubWindow</span><span class="p">,</span> <span class="n">Panel</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSubWindow</span><span class="p">,</span> <span class="n">TitleBarPanel</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSubWindow</span><span class="p">,</span> <span class="n">TitleBarSymbol</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSubWindow</span><span class="p">,</span> <span class="n">TitleBarText</span> <span class="p">)</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">aspectDecoration</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">TitleBarPanel</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Flag</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Style</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskSubWindow</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">isWindowIconSourceDirty</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">windowTitleTextOptions</span><span class="p">.</span><span class="n">setElideMode</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ElideRight</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">QString</span> <span class="n">windowTitle</span><span class="p">;</span>
+    <span class="n">QskTextOptions</span> <span class="n">windowTitleTextOptions</span><span class="p">;</span>
+
+    <span class="n">QUrl</span> <span class="n">windowIconSource</span><span class="p">;</span>
+    <span class="n">QskGraphic</span> <span class="n">windowIcon</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isWindowIconSourceDirty</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskSubWindow</span><span class="o">::</span><span class="n">QskSubWindow</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMargins</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+    <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">MinimumExpanding</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">MinimumExpanding</span> <span class="p">);</span>
+
+    <span class="n">setAutoLayoutChildren</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSubWindow</span><span class="o">::~</span><span class="n">QskSubWindow</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">setDecorations</span><span class="p">(</span> <span class="n">Decorations</span> <span class="n">decorations</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setFlagHint</span><span class="p">(</span> <span class="n">aspectDecoration</span><span class="p">(),</span> <span class="n">decorations</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">decorationsChanged</span><span class="p">(</span> <span class="n">decorations</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSubWindow</span><span class="o">::</span><span class="n">Decorations</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">decorations</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">flagHint</span><span class="o">&lt;</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">Decorations</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspectDecoration</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">setDecoration</span><span class="p">(</span> <span class="n">Decoration</span> <span class="n">decoration</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">decorations</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="n">d</span> <span class="o">|=</span> <span class="n">decoration</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="n">d</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">decoration</span><span class="p">;</span>
+
+    <span class="n">setDecorations</span><span class="p">(</span> <span class="n">d</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">resetDecorations</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetFlagHint</span><span class="p">(</span> <span class="n">aspectDecoration</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">decorationsChanged</span><span class="p">(</span> <span class="n">decorations</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">hasDecoration</span><span class="p">(</span> <span class="n">Decoration</span> <span class="n">decoration</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">decorations</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">decoration</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">setWindowTitle</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">title</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowTitle</span> <span class="o">!=</span> <span class="n">title</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowTitle</span> <span class="o">=</span> <span class="n">title</span><span class="p">;</span>
+
+        <span class="n">update</span><span class="p">();</span>
+        <span class="n">Q_EMIT</span> <span class="n">windowTitleChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">windowTitle</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowTitle</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">setWindowTitleTextOptions</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">options</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowTitleTextOptions</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowTitleTextOptions</span> <span class="o">=</span> <span class="n">options</span><span class="p">;</span>
+
+        <span class="n">update</span><span class="p">();</span>
+        <span class="n">Q_EMIT</span> <span class="n">windowTitleTextOptionsChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskTextOptions</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">windowTitleTextOptions</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowTitleTextOptions</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">setWindowIconSource</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setWindowIconSource</span><span class="p">(</span> <span class="n">QUrl</span><span class="p">(</span> <span class="n">url</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">setWindowIconSource</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIconSource</span> <span class="o">==</span> <span class="n">url</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIconSource</span> <span class="o">=</span> <span class="n">url</span><span class="p">;</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIcon</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isWindowIconSourceDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="n">polish</span><span class="p">();</span>
+    <span class="n">update</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">windowIconSourceChanged</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QUrl</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">windowIconSource</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIconSource</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">setWindowIcon</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">graphic</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">graphic</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIcon</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIcon</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIconSource</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIconSource</span> <span class="o">=</span> <span class="n">QString</span><span class="p">();</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isWindowIconSourceDirty</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+            <span class="n">Q_EMIT</span> <span class="n">windowIconSourceChanged</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">polish</span><span class="p">();</span>
+        <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">windowIconChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphic</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">windowIcon</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIcon</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">hasWindowIcon</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="p">(</span> <span class="n">windowIcon</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">windowIconSource</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">titleBarRect</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">TitleBarPanel</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LayoutRequest</span> <span class="p">)</span>
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">updateLayout</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isWindowIconSourceDirty</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIconSource</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIcon</span> <span class="o">=</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">loadGraphic</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">windowIconSource</span> <span class="p">);</span>
+            <span class="n">Q_EMIT</span> <span class="n">windowIconChanged</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isWindowIconSourceDirty</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">updateLayout</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">layoutRectForSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QRectF</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="n">rect</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span> <span class="n">size</span> <span class="p">);</span>
+    <span class="n">rect</span><span class="p">.</span><span class="n">setTop</span><span class="p">(</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">size</span><span class="p">,</span> <span class="n">TitleBarPanel</span> <span class="p">).</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">innerBox</span><span class="p">(</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">rect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">layoutSizeHint</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// the size we get from the children</span>
+    <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">which</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// should be Minimum Width/Height from the skin hints</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">hint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="n">hint</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">qskDpiScaled</span><span class="p">(</span> <span class="mi">100</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">hint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="n">hint</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">qskDpiScaled</span><span class="p">(</span> <span class="mi">80</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChange</span> <span class="n">change</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span> <span class="n">change</span><span class="p">,</span> <span class="n">value</span> <span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">change</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChildAddedChange</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChildRemovedChange</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">qskIsTransparentForPositioner</span><span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">resetImplicitSize</span><span class="p">();</span>
+                <span class="n">polish</span><span class="p">();</span>
+            <span class="p">}</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+            <span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskSubWindow.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

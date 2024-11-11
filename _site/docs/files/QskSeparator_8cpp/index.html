@@ -1,0 +1,87 @@
+<h1 id="controlsqskseparatorcpp">controls/QskSeparator.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSeparator.h"
+#include "QskAspect.h"
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSeparator</span><span class="p">,</span> <span class="n">Panel</span> <span class="p">)</span>
+
+<span class="n">QskSeparator</span><span class="o">::</span><span class="n">QskSeparator</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskSeparator</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskSeparator</span><span class="o">::</span><span class="n">QskSeparator</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_orientation</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Minimum</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSeparator</span><span class="o">::~</span><span class="n">QskSeparator</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSeparator</span><span class="o">::</span><span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">m_orientation</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_orientation</span> <span class="o">=</span> <span class="n">orientation</span><span class="p">;</span>
+
+<span class="cp">#if 1
+</span>    <span class="c1">// swapping the size policy: guess this is what a user expects</span>
+    <span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">sizePolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">),</span> <span class="n">sizePolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">update</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">orientationChanged</span><span class="p">(</span> <span class="n">m_orientation</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">QskSeparator</span><span class="o">::</span><span class="n">orientation</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_orientation</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSeparator</span><span class="o">::</span><span class="n">setExtent</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">extent</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">extent</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">extent</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setMetric</span><span class="p">(</span> <span class="n">Panel</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span><span class="p">,</span> <span class="n">extent</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">extentChanged</span><span class="p">(</span> <span class="n">extent</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSeparator</span><span class="o">::</span><span class="n">resetExtent</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetMetric</span><span class="p">(</span> <span class="n">Panel</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">extentChanged</span><span class="p">(</span> <span class="n">extent</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskSeparator</span><span class="o">::</span><span class="n">extent</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metric</span><span class="p">(</span> <span class="n">Panel</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="n">QskSeparator</span><span class="o">::</span><span class="n">effectivePlacement</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_orientation</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskSeparator.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,126 @@
+<h1 id="graphicqskgraphicprovidermapcpp">graphic/QskGraphicProviderMap.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QString</td>
+      <td><strong><a href="/docs/files/QskGraphicProviderMap_8cpp/#function-qskkey">qskKey</a></strong>(const QString &amp; providerId)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskkey">function qskKey</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QString</span> <span class="n">qskKey</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">providerId</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskGraphicProviderMap.h"
+#include "QskGraphicProvider.h"
+</span>
+<span class="cp">#include &lt;qhash.h&gt;
+#include &lt;qpointer.h&gt;
+#include &lt;qstring.h&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QString</span> <span class="nf">qskKey</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">providerId</span><span class="p">.</span><span class="n">toLower</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskGraphicProviderMap</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QHash</span><span class="o">&lt;</span> <span class="n">QString</span><span class="p">,</span> <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskGraphicProvider</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">hashTab</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskGraphicProviderMap</span><span class="o">::</span><span class="n">QskGraphicProviderMap</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicProviderMap</span><span class="o">::~</span><span class="n">QskGraphicProviderMap</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span> <span class="p">)</span>
+        <span class="k">delete</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicProviderMap</span><span class="o">::</span><span class="n">insert</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span><span class="p">,</span> <span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="n">provider</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">provider</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">remove</span><span class="p">(</span> <span class="n">providerId</span> <span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">qskKey</span><span class="p">(</span> <span class="n">providerId</span> <span class="p">),</span>
+        <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskGraphicProvider</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">provider</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicProviderMap</span><span class="o">::</span><span class="n">remove</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">qskKey</span><span class="p">(</span> <span class="n">providerId</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">delete</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span> <span class="n">it</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="n">QskGraphicProviderMap</span><span class="o">::</span><span class="n">take</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="n">provider</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">qskKey</span><span class="p">(</span> <span class="n">providerId</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">provider</span> <span class="o">=</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span> <span class="n">it</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">provider</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="n">QskGraphicProviderMap</span><span class="o">::</span><span class="n">provider</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">qskKey</span><span class="p">(</span> <span class="n">providerId</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">().</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// someone outside has deleted the provider, we can remove the entry</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span> <span class="n">it</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGraphicProviderMap</span><span class="o">::</span><span class="n">size</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// might not be correct, when providers have been deleted</span>
+    <span class="c1">// from the outside. TODO ...</span>
+
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hashTab</span><span class="p">.</span><span class="n">count</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

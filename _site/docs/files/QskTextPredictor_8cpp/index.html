@@ -1,0 +1,45 @@
+<h1 id="inputpanelqsktextpredictorcpp">inputpanel/QskTextPredictor.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskTextPredictor.h"
+</span>
+<span class="n">QskTextPredictor</span><span class="o">::</span><span class="n">QskTextPredictor</span><span class="p">(</span> <span class="n">Attributes</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QObject</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_attributes</span><span class="p">(</span> <span class="n">attributes</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskTextPredictor</span><span class="o">::~</span><span class="n">QskTextPredictor</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskTextPredictor</span><span class="o">::</span><span class="n">Attributes</span> <span class="n">QskTextPredictor</span><span class="o">::</span><span class="n">attributes</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_attributes</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QStringList</span> <span class="n">QskTextPredictor</span><span class="o">::</span><span class="n">candidates</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">count</span> <span class="o">=</span> <span class="n">candidateCount</span><span class="p">();</span>
+
+    <span class="n">QStringList</span> <span class="n">candidates</span><span class="p">;</span>
+    <span class="n">candidates</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span> <span class="n">count</span> <span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="n">candidates</span> <span class="o">+=</span> <span class="n">candidate</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">candidates</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskTextPredictor.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

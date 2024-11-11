@@ -1,0 +1,98 @@
+<h1 id="nodesqskboxclipnodecpp">nodes/QskBoxClipNode.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>uint</td>
+      <td><strong><a href="/docs/files/QskBoxClipNode_8cpp/#function-qskmetricshash">qskMetricsHash</a></strong>(const QskBoxShapeMetrics &amp; shape, const QskBoxBorderMetrics &amp; border)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskmetricshash">function qskMetricsHash</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">uint</span> <span class="n">qskMetricsHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span> <span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span> <span class="o">&amp;</span> <span class="n">border</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskBoxClipNode.h"
+#include "QskBoxBorderMetrics.h"
+#include "QskBoxRenderer.h"
+#include "QskBoxShapeMetrics.h"
+#include "QskFunctions.h"
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">uint</span> <span class="nf">qskMetricsHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">border</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">uint</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">13000</span><span class="p">;</span>
+
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">shape</span><span class="p">.</span><span class="n">hash</span><span class="p">(</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">border</span><span class="p">.</span><span class="n">hash</span><span class="p">(</span> <span class="n">hash</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxClipNode</span><span class="o">::</span><span class="n">QskBoxClipNode</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_hash</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_geometry</span><span class="p">(</span> <span class="n">QSGGeometry</span><span class="o">::</span><span class="n">defaultAttributes_Point2D</span><span class="p">(),</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setGeometry</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_geometry</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxClipNode</span><span class="o">::~</span><span class="n">QskBoxClipNode</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxClipNode</span><span class="o">::</span><span class="n">setBox</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">border</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">uint</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">qskMetricsHash</span><span class="p">(</span> <span class="n">shape</span><span class="p">,</span> <span class="n">border</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hash</span> <span class="o">==</span> <span class="n">m_hash</span> <span class="o">&amp;&amp;</span> <span class="n">rect</span> <span class="o">==</span> <span class="n">m_rect</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_rect</span> <span class="o">=</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="n">m_hash</span> <span class="o">=</span> <span class="n">hash</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">shape</span><span class="p">.</span><span class="n">isRectangle</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_geometry</span><span class="p">.</span><span class="n">vertexCount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="n">m_geometry</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+
+        <span class="n">setIsRectangular</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">setIsRectangular</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="n">QskBoxRenderer</span><span class="p">().</span><span class="n">renderFill</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">border</span><span class="p">,</span> <span class="n">m_geometry</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*
+        Even in situations, where the clipping is not rectangular, it is
+        useful to know its bounding rectangle
+     */</span>
+    <span class="n">setClipRect</span><span class="p">(</span> <span class="n">qskValidOrEmptyInnerRect</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">border</span><span class="p">.</span><span class="n">widths</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="n">markDirty</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">DirtyGeometry</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

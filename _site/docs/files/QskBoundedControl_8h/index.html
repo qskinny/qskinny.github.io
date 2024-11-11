@@ -1,0 +1,89 @@
+<h1 id="controlsqskboundedcontrolh">controls/QskBoundedControl.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskBoundedControl/">QskBoundedControl</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_BOUNDED_CONTROL_H
+#define QSK_BOUNDED_CONTROL_H
+</span>
+<span class="cp">#include "QskControl.h"
+</span>
+<span class="k">class</span> <span class="nc">QskIntervalF</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskBoundedControl</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskControl</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">minimum</span> <span class="n">READ</span> <span class="n">minimum</span> <span class="n">WRITE</span> <span class="n">setMinimum</span> <span class="n">NOTIFY</span> <span class="n">minimumChanged</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">maximum</span> <span class="n">READ</span> <span class="n">maximum</span> <span class="n">WRITE</span> <span class="n">setMaximum</span> <span class="n">NOTIFY</span> <span class="n">maximumChanged</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QskIntervalF</span> <span class="n">boundaries</span> <span class="n">READ</span> <span class="n">boundaries</span>
+        <span class="n">WRITE</span> <span class="n">setBoundaries</span> <span class="n">NOTIFY</span> <span class="n">boundariesChanged</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskControl</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="o">~</span><span class="n">QskBoundedControl</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">minimum</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">maximum</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">boundaryLength</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setBoundaries</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">min</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">max</span> <span class="p">);</span>
+    <span class="n">QskIntervalF</span> <span class="n">boundaries</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">boundedValue</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">valueAsRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">valueFromRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="k">public</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">setMinimum</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setMaximum</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setBoundaries</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="p">);</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">minimumChanged</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">maximumChanged</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">boundariesChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span>  <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="n">QskBoundedControl</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="n">QskBoundedControl</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">min</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">max</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">componentComplete</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">adjustBoundaries</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">increasing</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="n">qreal</span> <span class="n">m_minimum</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">m_maximum</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

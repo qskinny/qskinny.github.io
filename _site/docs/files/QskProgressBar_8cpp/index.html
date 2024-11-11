@@ -1,0 +1,317 @@
+<h1 id="controlsqskprogressbarcpp">controls/QskProgressBar.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskProgressBar.h"
+</span>
+<span class="cp">#include "QskIntervalF.h"
+#include "QskGradient.h"
+#include "QskFunctions.h"
+#include "QskAnimator.h"
+#include "QskAspect.h"
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskProgressBar</span><span class="p">,</span> <span class="n">Groove</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskProgressBar</span><span class="p">,</span> <span class="n">Bar</span> <span class="p">)</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">PositionAnimator</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskAnimator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">PositionAnimator</span><span class="p">(</span> <span class="n">QskProgressBar</span><span class="o">*</span> <span class="n">progressBar</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_progressBar</span><span class="p">(</span> <span class="n">progressBar</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setAutoRepeat</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+            <span class="n">setDuration</span><span class="p">(</span> <span class="mi">1300</span> <span class="p">);</span>
+
+            <span class="n">setWindow</span><span class="p">(</span> <span class="n">progressBar</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">advance</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">aspect</span> <span class="o">=</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">Bar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Position</span><span class="p">;</span>
+
+            <span class="n">m_progressBar</span><span class="o">-&gt;</span><span class="n">setMetric</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">value</span> <span class="p">);</span>
+            <span class="n">m_progressBar</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="n">QskProgressBar</span><span class="o">*</span> <span class="n">m_progressBar</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskProgressBar</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">updateIndeterminateAnimator</span><span class="p">(</span> <span class="n">QskProgressBar</span><span class="o">*</span> <span class="n">progressBar</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isIndeterminate</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">delete</span> <span class="n">animator</span><span class="p">;</span>
+            <span class="n">animator</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">progressBar</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">progressBar</span><span class="o">-&gt;</span><span class="n">isVisible</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">animator</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+                <span class="n">animator</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PositionAnimator</span><span class="p">(</span> <span class="n">progressBar</span> <span class="p">);</span>
+
+            <span class="n">animator</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">animator</span> <span class="p">)</span>
+                <span class="n">animator</span><span class="o">-&gt;</span><span class="n">stop</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">PositionAnimator</span><span class="o">*</span> <span class="n">animator</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">value</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">origin</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">hasOrigin</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isIndeterminate</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskProgressBar</span><span class="o">::</span><span class="n">QskProgressBar</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span>
+        <span class="n">qreal</span> <span class="n">min</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">max</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskBoundedControl</span><span class="p">(</span> <span class="n">min</span><span class="p">,</span> <span class="n">max</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="n">PrivateData</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">orientation</span><span class="p">;</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">minimum</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">MinimumExpanding</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">MinimumExpanding</span> <span class="p">);</span>
+
+    <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">boundariesChanged</span><span class="p">,</span>
+        <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskProgressBar</span><span class="o">::</span><span class="n">adjustValue</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskProgressBar</span><span class="o">::</span><span class="n">QskProgressBar</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskProgressBar</span><span class="p">(</span> <span class="n">orientation</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskProgressBar</span><span class="o">::</span><span class="n">QskProgressBar</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">boundaries</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskProgressBar</span><span class="p">(</span> <span class="n">boundaries</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">(),</span> <span class="n">boundaries</span><span class="p">.</span><span class="n">upperBound</span><span class="p">(),</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskProgressBar</span><span class="o">::</span><span class="n">QskProgressBar</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">min</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">max</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskProgressBar</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">min</span><span class="p">,</span> <span class="n">max</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskProgressBar</span><span class="o">::</span><span class="n">QskProgressBar</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskProgressBar</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskProgressBar</span><span class="o">::~</span><span class="n">QskProgressBar</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">delete</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animator</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">orientation</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">orientation</span><span class="p">;</span>
+        <span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">sizePolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">),</span> <span class="n">sizePolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">orientationChanged</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">isIndeterminate</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isIndeterminate</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">setIndeterminate</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isIndeterminate</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">isIndeterminate</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">updateIndeterminateAnimator</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+    <span class="n">update</span><span class="p">();</span>
+    <span class="n">Q_EMIT</span> <span class="n">indeterminateChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">effectivePlacement</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// so you can define different hints depending on the orientation</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">setBarGradient</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">gradient</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// An API where we set the stops only would be more accurate TODO ...</span>
+    <span class="k">auto</span> <span class="n">g</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">;</span>
+
+    <span class="n">g</span><span class="p">.</span><span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">);</span>
+    <span class="n">setGradientHint</span><span class="p">(</span> <span class="n">Bar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">g</span> <span class="p">);</span>
+
+    <span class="n">g</span><span class="p">.</span><span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">);</span>
+    <span class="n">setGradientHint</span><span class="p">(</span> <span class="n">Bar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Vertical</span><span class="p">,</span> <span class="n">g</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">resetBarGradient</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">resetColor</span><span class="p">(</span> <span class="n">Bar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">);</span>
+    <span class="n">resetColor</span><span class="p">(</span> <span class="n">Bar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGradient</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">barGradient</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">gradientHint</span><span class="p">(</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">Bar</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">setExtent</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">extent</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">extent</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">extent</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setMetric</span><span class="p">(</span> <span class="n">Groove</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span><span class="p">,</span> <span class="n">extent</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">extentChanged</span><span class="p">(</span> <span class="n">extent</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">resetExtent</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetMetric</span><span class="p">(</span> <span class="n">Groove</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">extentChanged</span><span class="p">(</span> <span class="n">extent</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">extent</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metric</span><span class="p">(</span> <span class="n">Groove</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">setOrigin</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">origin</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isComponentComplete</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">boundedValue</span><span class="p">(</span> <span class="n">origin</span> <span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasOrigin</span> <span class="o">||</span> <span class="o">!</span><span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">origin</span><span class="p">,</span> <span class="n">origin</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasOrigin</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="p">;</span>
+
+        <span class="n">update</span><span class="p">();</span>
+        <span class="n">Q_EMIT</span> <span class="n">originChanged</span><span class="p">(</span> <span class="n">origin</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">resetOrigin</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasOrigin</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasOrigin</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+        <span class="n">update</span><span class="p">();</span>
+        <span class="n">Q_EMIT</span> <span class="n">originChanged</span><span class="p">(</span> <span class="n">origin</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">origin</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasOrigin</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">boundedValue</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">origin</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">minimum</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">setValue</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isComponentComplete</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">boundedValue</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+
+    <span class="n">setValueInternal</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">value</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">setValueAsRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">);</span>
+    <span class="n">setValue</span><span class="p">(</span> <span class="n">minimum</span><span class="p">()</span> <span class="o">+</span> <span class="n">ratio</span> <span class="o">*</span> <span class="n">boundaryLength</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">valueAsRatio</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">valueAsRatio</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">value</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">componentComplete</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">componentComplete</span><span class="p">();</span>
+    <span class="n">adjustValue</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">adjustValue</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isComponentComplete</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">setValueInternal</span><span class="p">(</span> <span class="n">boundedValue</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">value</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">setValueInternal</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">value</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">valueChanged</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+
+        <span class="n">update</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskProgressBar</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChange</span> <span class="n">change</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span><span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">change</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemVisibleHasChanged</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemSceneChange</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">updateIndeterminateAnimator</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span> <span class="n">change</span><span class="p">,</span> <span class="n">value</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskProgressBar.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

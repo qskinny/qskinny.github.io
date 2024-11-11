@@ -1,0 +1,144 @@
+<h1 id="commonqsknamespaceh">common/QskNamespace.h</h1>
+
+<h2 id="namespaces">Namespaces</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong><a href="/docs/namespaces/namespaceQsk/">Qsk</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="defines">Defines</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskNamespace_8h/#define-qsk_namespace">QSK_NAMESPACE</a></strong>(name)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskNamespace_8h/#define-qsk_enum">QSK_ENUM</a></strong></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskNamespace_8h/#define-qsk_q_namespace">QSK_Q_NAMESPACE</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="macro-documentation">Macro Documentation</h2>
+
+<h3 id="define-qsk_namespace">define QSK_NAMESPACE</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define QSK_NAMESPACE(
+</span>    <span class="n">name</span>
+<span class="p">)</span>
+<span class="k">namespace</span> <span class="n">name</span>
+</code></pre></div></div>
+
+<h3 id="define-qsk_enum">define QSK_ENUM</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define QSK_ENUM Q_ENUM_NS
+</span></code></pre></div></div>
+
+<h3 id="define-qsk_q_namespace">define QSK_Q_NAMESPACE</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define QSK_Q_NAMESPACE Q_NAMESPACE
+</span></code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_NAMESPACE_H
+#define QSK_NAMESPACE_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include &lt;qmetaobject.h&gt;
+</span>
+<span class="cp">#if QT_VERSION &lt; QT_VERSION_CHECK( 5, 8, 0 )
+</span>    <span class="c1">// hack to run moc over a namespace</span>
+
+    <span class="cp">#ifdef Q_MOC_RUN
+</span>
+        <span class="cp">#define QSK_NAMESPACE( name ) struct name
+</span>        <span class="cp">#define QSK_ENUM( name ) Q_GADGET Q_ENUM( name )
+</span>
+    <span class="cp">#else
+</span>
+        <span class="cp">#define QSK_NAMESPACE( name ) namespace name
+</span>        <span class="cp">#define QSK_ENUM( name ) \
+            inline constexpr const QMetaObject* qt_getEnumMetaObject(name) noexcept { return &amp;staticMetaObject; } \
+            inline constexpr const char* qt_getEnumName(name) noexcept { return #name; }
+</span>
+    <span class="cp">#endif
+</span>
+    <span class="cp">#define QSK_Q_NAMESPACE extern const QMetaObject staticMetaObject;
+</span>
+<span class="cp">#else
+</span>
+    <span class="cp">#define QSK_NAMESPACE( name ) namespace name
+</span>    <span class="cp">#define QSK_ENUM Q_ENUM_NS
+</span>
+    <span class="cp">#define QSK_Q_NAMESPACE Q_NAMESPACE
+#endif
+</span>
+<span class="n">QSK_NAMESPACE</span><span class="p">(</span> <span class="n">Qsk</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QSK_EXPORT</span> <span class="n">QSK_Q_NAMESPACE</span>
+
+    <span class="k">enum</span> <span class="n">Direction</span>
+    <span class="p">{</span>
+        <span class="n">LeftToRight</span><span class="p">,</span>
+        <span class="n">RightToLeft</span><span class="p">,</span>
+        <span class="n">TopToBottom</span><span class="p">,</span>
+        <span class="n">BottomToTop</span>
+    <span class="p">};</span>
+    <span class="n">QSK_ENUM</span><span class="p">(</span> <span class="n">Direction</span> <span class="p">)</span>
+
+    <span class="k">enum</span> <span class="n">Position</span>
+    <span class="p">{</span>
+        <span class="n">Top</span><span class="p">,</span>
+        <span class="n">Left</span><span class="p">,</span>
+        <span class="n">Right</span><span class="p">,</span>
+        <span class="n">Bottom</span>
+    <span class="p">};</span>
+    <span class="n">QSK_ENUM</span><span class="p">(</span> <span class="n">Position</span> <span class="p">)</span>
+
+    <span class="k">enum</span> <span class="n">TextStyle</span>
+    <span class="p">{</span>
+        <span class="n">Normal</span><span class="p">,</span>
+        <span class="n">Outline</span><span class="p">,</span>
+        <span class="n">Raised</span><span class="p">,</span>
+        <span class="n">Sunken</span>
+    <span class="p">};</span>
+    <span class="n">QSK_ENUM</span><span class="p">(</span> <span class="n">TextStyle</span> <span class="p">)</span>
+<span class="p">}</span>
+
+<span class="cp">#undef QSK_NAMESPACE
+#undef QSK_ENUM
+#undef QSK_Q_NAMESPACE
+</span>
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

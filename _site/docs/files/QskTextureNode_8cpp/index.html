@@ -1,0 +1,495 @@
+<h1 id="nodesqsktexturenodecpp">nodes/QskTextureNode.cpp</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskTextureNodePrivate/">QskTextureNodePrivate</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="types">Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>using QSGTextureMaterial</td>
+      <td><strong><a href="/docs/files/QskTextureNode_8cpp/#using-texturematerial">TextureMaterial</a></strong></td>
+    </tr>
+    <tr>
+      <td>using QSGOpaqueTextureMaterial</td>
+      <td><strong><a href="/docs/files/QskTextureNode_8cpp/#using-opaquetexturematerial">OpaqueTextureMaterial</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskTextureNode_8cpp/#function-qskupdategltextureid">qskUpdateGLTextureId</a></strong>(QRhiTexture * rhiTexture, uint textureId)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskTextureNode_8cpp/#function-qskdeletetexture">qskDeleteTexture</a></strong>(const TextureMaterial &amp; material)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="types-documentation">Types Documentation</h2>
+
+<h3 id="using-texturematerial">using TextureMaterial</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">TextureMaterial</span> <span class="o">=</span>  <span class="n">QSGTextureMaterial</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="using-opaquetexturematerial">using OpaqueTextureMaterial</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="n">OpaqueTextureMaterial</span> <span class="o">=</span>  <span class="n">QSGOpaqueTextureMaterial</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskupdategltextureid">function qskUpdateGLTextureId</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskUpdateGLTextureId</span><span class="p">(</span>
+    <span class="n">QRhiTexture</span> <span class="o">*</span> <span class="n">rhiTexture</span><span class="p">,</span>
+    <span class="n">uint</span> <span class="n">textureId</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskdeletetexture">function qskDeleteTexture</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskDeleteTexture</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">TextureMaterial</span> <span class="o">&amp;</span> <span class="n">material</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "QskTextureNode.h"
+#include "QskTextureRenderer.h"
+</span>
+<span class="cp">#include &lt;qopenglfunctions.h&gt;
+#include &lt;qsggeometry.h&gt;
+#include &lt;qsgmaterial.h&gt;
+#include &lt;qquickwindow.h&gt;
+</span>
+
+<span class="cp">#include &lt;private/qsgnode_p.h&gt;
+</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 0, 0 )
+</span>
+<span class="cp">#include &lt;qsgtexture.h&gt;
+#include &lt;qsgtexturematerial.h&gt;
+#include &lt;qsgtexture_platform.h&gt;
+</span>
+
+<span class="cp">#include &lt;private/qrhi_p.h&gt;
+#include &lt;private/qrhigles2_p_p.h&gt;
+</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskUpdateGLTextureId</span><span class="p">(</span> <span class="n">QRhiTexture</span><span class="o">*</span> <span class="n">rhiTexture</span><span class="p">,</span> <span class="n">uint</span> <span class="n">textureId</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// hack time: we do not want to create a new QSGTexture object for each texture</span>
+
+    <span class="k">class</span> <span class="nc">Texture</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QRhiTexture</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">GLuint</span> <span class="n">texture</span><span class="p">;</span>
+        <span class="c1">// ...</span>
+    <span class="p">};</span>
+
+    <span class="n">GLuint</span> <span class="n">id</span> <span class="o">=</span> <span class="n">rhiTexture</span><span class="o">-&gt;</span><span class="n">nativeTexture</span><span class="p">().</span><span class="n">object</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">id</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">funcs</span> <span class="o">=</span> <span class="n">QOpenGLContext</span><span class="o">::</span><span class="n">currentContext</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">functions</span><span class="p">();</span>
+        <span class="n">funcs</span><span class="o">-&gt;</span><span class="n">glDeleteTextures</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">auto</span> <span class="n">glTexture</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Texture</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">rhiTexture</span> <span class="p">);</span>
+    <span class="n">glTexture</span><span class="o">-&gt;</span><span class="n">texture</span> <span class="o">=</span> <span class="n">textureId</span><span class="p">;</span>
+
+    <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">rhiTexture</span><span class="o">-&gt;</span><span class="n">nativeTexture</span><span class="p">().</span><span class="n">object</span> <span class="o">==</span> <span class="n">textureId</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">using</span> <span class="n">TextureMaterial</span> <span class="o">=</span> <span class="n">QSGTextureMaterial</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">OpaqueTextureMaterial</span> <span class="o">=</span> <span class="n">QSGOpaqueTextureMaterial</span><span class="p">;</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskDeleteTexture</span><span class="p">(</span> <span class="k">const</span> <span class="n">TextureMaterial</span><span class="o">&amp;</span> <span class="n">material</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">delete</span> <span class="n">material</span><span class="p">.</span><span class="n">texture</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="cp">#if QT_VERSION &lt; QT_VERSION_CHECK( 6, 0, 0 )
+</span>
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">MaterialShader</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QSGMaterialShader</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">MaterialShader</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">isOpaque</span> <span class="p">);</span>
+
+        <span class="kt">char</span> <span class="k">const</span><span class="o">*</span> <span class="k">const</span><span class="o">*</span> <span class="n">attributeNames</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+        <span class="kt">void</span> <span class="n">updateState</span><span class="p">(</span> <span class="k">const</span> <span class="n">RenderState</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QSGMaterial</span><span class="o">*</span><span class="p">,</span> <span class="n">QSGMaterial</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+      <span class="nl">protected:</span>
+        <span class="kt">void</span> <span class="n">initialize</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+      <span class="nl">private:</span>
+        <span class="kt">int</span> <span class="n">m_matrixId</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">m_opacityId</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="kt">bool</span> <span class="n">m_isOpaque</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">Material</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QSGMaterial</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">Material</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">isOpaque</span> <span class="p">);</span>
+
+        <span class="n">QSGMaterialType</span><span class="o">*</span> <span class="n">type</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+        <span class="n">QSGMaterialShader</span><span class="o">*</span> <span class="n">createShader</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+        <span class="kt">void</span> <span class="n">setTextureId</span><span class="p">(</span> <span class="n">uint</span> <span class="p">);</span>
+        <span class="n">uint</span> <span class="n">textureId</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+        <span class="kt">int</span> <span class="n">compare</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSGMaterial</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+      <span class="nl">private:</span>
+        <span class="n">uint</span> <span class="n">m_textureId</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">bool</span> <span class="n">m_isOpaque</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">TextureMaterial</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Material</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">TextureMaterial</span><span class="p">()</span>
+            <span class="o">:</span> <span class="n">Material</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">OpaqueTextureMaterial</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Material</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">OpaqueTextureMaterial</span><span class="p">()</span>
+            <span class="o">:</span> <span class="n">Material</span><span class="p">(</span> <span class="nb">true</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="n">MaterialShader</span><span class="o">::</span><span class="n">MaterialShader</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">isOpaque</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">m_isOpaque</span><span class="p">(</span> <span class="n">isOpaque</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">setShaderSourceFile</span><span class="p">(</span> <span class="n">QOpenGLShader</span><span class="o">::</span><span class="n">Vertex</span><span class="p">,</span>
+            <span class="n">QStringLiteral</span><span class="p">(</span> <span class="s">":/qt-project.org/scenegraph/shaders/opaquetexture.vert"</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">fragmentShaderFile</span> <span class="o">=</span> <span class="n">m_isOpaque</span>
+            <span class="o">?</span> <span class="n">QStringLiteral</span><span class="p">(</span> <span class="s">":/qt-project.org/scenegraph/shaders/opaquetexture.frag"</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">QStringLiteral</span><span class="p">(</span> <span class="s">":/qt-project.org/scenegraph/shaders/texture.frag"</span> <span class="p">);</span>
+
+        <span class="n">setShaderSourceFile</span><span class="p">(</span> <span class="n">QOpenGLShader</span><span class="o">::</span><span class="n">Fragment</span><span class="p">,</span> <span class="n">fragmentShaderFile</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">char</span> <span class="k">const</span><span class="o">*</span> <span class="k">const</span><span class="o">*</span> <span class="n">MaterialShader</span><span class="o">::</span><span class="n">attributeNames</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">static</span> <span class="kt">char</span> <span class="k">const</span><span class="o">*</span> <span class="k">const</span> <span class="n">attr</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"qt_VertexPosition"</span><span class="p">,</span> <span class="s">"qt_VertexTexCoord"</span><span class="p">,</span> <span class="mi">0</span> <span class="p">};</span>
+        <span class="k">return</span> <span class="n">attr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">MaterialShader</span><span class="o">::</span><span class="n">updateState</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">RenderState</span><span class="o">&amp;</span> <span class="n">state</span><span class="p">,</span> <span class="n">QSGMaterial</span><span class="o">*</span> <span class="n">newMaterial</span><span class="p">,</span> <span class="n">QSGMaterial</span><span class="o">*</span> <span class="n">oldMaterial</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_isOpaque</span> <span class="o">&amp;&amp;</span> <span class="n">state</span><span class="p">.</span><span class="n">isOpacityDirty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">program</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">setUniformValue</span><span class="p">(</span> <span class="n">m_opacityId</span><span class="p">,</span> <span class="n">state</span><span class="p">.</span><span class="n">opacity</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="k">auto</span><span class="o">*</span> <span class="n">materialOld</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Material</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">oldMaterial</span> <span class="p">);</span>
+        <span class="k">auto</span><span class="o">*</span> <span class="n">materialNew</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Material</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">newMaterial</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">materialOld</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span> <span class="o">||</span>
+            <span class="p">(</span> <span class="n">materialOld</span><span class="o">-&gt;</span><span class="n">textureId</span><span class="p">()</span> <span class="o">!=</span> <span class="n">materialNew</span><span class="o">-&gt;</span><span class="n">textureId</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">funcs</span> <span class="o">=</span> <span class="n">QOpenGLContext</span><span class="o">::</span><span class="n">currentContext</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">functions</span><span class="p">();</span>
+            <span class="n">funcs</span><span class="o">-&gt;</span><span class="n">glBindTexture</span><span class="p">(</span> <span class="n">GL_TEXTURE_2D</span><span class="p">,</span> <span class="n">materialNew</span><span class="o">-&gt;</span><span class="n">textureId</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">state</span><span class="p">.</span><span class="n">isMatrixDirty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">program</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">setUniformValue</span><span class="p">(</span> <span class="n">m_matrixId</span><span class="p">,</span> <span class="n">state</span><span class="p">.</span><span class="n">combinedMatrix</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">MaterialShader</span><span class="o">::</span><span class="n">initialize</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">m_matrixId</span> <span class="o">=</span> <span class="n">program</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">uniformLocation</span><span class="p">(</span> <span class="s">"qt_Matrix"</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_isOpaque</span> <span class="p">)</span>
+            <span class="n">m_opacityId</span> <span class="o">=</span> <span class="n">program</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">uniformLocation</span><span class="p">(</span> <span class="s">"opacity"</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Material</span><span class="o">::</span><span class="n">Material</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">isOpaque</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">m_isOpaque</span><span class="p">(</span> <span class="n">isOpaque</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">setFlag</span><span class="p">(</span> <span class="n">Blending</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span> <span class="c1">// alpha blending</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">Material</span><span class="o">::</span><span class="n">setTextureId</span><span class="p">(</span> <span class="n">uint</span> <span class="n">id</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_textureId</span> <span class="o">=</span> <span class="n">id</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">uint</span> <span class="n">Material</span><span class="o">::</span><span class="n">textureId</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">m_textureId</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">QSGMaterialType</span><span class="o">*</span> <span class="n">Material</span><span class="o">::</span><span class="n">type</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_isOpaque</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">static</span> <span class="n">QSGMaterialType</span> <span class="n">typeOpaque</span><span class="p">;</span>
+            <span class="k">return</span> <span class="o">&amp;</span><span class="n">typeOpaque</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">static</span> <span class="n">QSGMaterialType</span> <span class="n">type</span><span class="p">;</span>
+            <span class="k">return</span> <span class="o">&amp;</span><span class="n">type</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">QSGMaterialShader</span><span class="o">*</span> <span class="n">Material</span><span class="o">::</span><span class="n">createShader</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">MaterialShader</span><span class="p">(</span> <span class="n">m_isOpaque</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">Material</span><span class="o">::</span><span class="n">compare</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSGMaterial</span><span class="o">*</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">otherMaterial</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">Material</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">other</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_textureId</span> <span class="o">==</span> <span class="n">otherMaterial</span><span class="o">-&gt;</span><span class="n">m_textureId</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="p">(</span> <span class="n">m_textureId</span> <span class="o">&gt;</span> <span class="n">otherMaterial</span><span class="o">-&gt;</span><span class="n">m_textureId</span> <span class="p">)</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskDeleteTexture</span><span class="p">(</span> <span class="k">const</span> <span class="n">TextureMaterial</span><span class="o">&amp;</span> <span class="n">material</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">material</span><span class="p">.</span><span class="n">textureId</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            In certain environments we have the effect, that at
+            program termination the context is already gone
+         */</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">context</span> <span class="o">=</span> <span class="n">QOpenGLContext</span><span class="o">::</span><span class="n">currentContext</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">GLuint</span> <span class="n">id</span> <span class="o">=</span> <span class="n">material</span><span class="p">.</span><span class="n">textureId</span><span class="p">();</span>
+
+            <span class="k">auto</span> <span class="n">funcs</span> <span class="o">=</span> <span class="n">context</span><span class="o">-&gt;</span><span class="n">functions</span><span class="p">();</span>
+            <span class="n">funcs</span><span class="o">-&gt;</span><span class="n">glDeleteTextures</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="k">class</span> <span class="nc">QskTextureNodePrivate</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QSGGeometryNodePrivate</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskTextureNodePrivate</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">geometry</span><span class="p">(</span> <span class="n">QSGGeometry</span><span class="o">::</span><span class="n">defaultAttributes_TexturedPoint2D</span><span class="p">(),</span> <span class="mi">4</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setTextureId</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span><span class="p">,</span> <span class="n">uint</span> <span class="n">id</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">updateTextureGeometry</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QRectF</span> <span class="n">r</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">mirrored</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">r</span><span class="p">.</span><span class="n">setLeft</span><span class="p">(</span> <span class="mi">1</span> <span class="p">);</span>
+            <span class="n">r</span><span class="p">.</span><span class="n">setRight</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">mirrored</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">r</span><span class="p">.</span><span class="n">setTop</span><span class="p">(</span> <span class="mi">1</span> <span class="p">);</span>
+            <span class="n">r</span><span class="p">.</span><span class="n">setBottom</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="o">=</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">effectiveDevicePixelRatio</span><span class="p">();</span>
+
+        <span class="k">const</span> <span class="n">QRectF</span> <span class="n">scaledRect</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span>
+            <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">/</span> <span class="n">ratio</span> <span class="p">);</span>
+
+        <span class="n">QSGGeometry</span><span class="o">::</span><span class="n">updateTexturedRectGeometry</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">geometry</span><span class="p">,</span> <span class="n">scaledRect</span><span class="p">,</span> <span class="n">r</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">QSGGeometry</span> <span class="n">geometry</span><span class="p">;</span>
+
+    <span class="n">OpaqueTextureMaterial</span> <span class="n">opaqueMaterial</span><span class="p">;</span>
+    <span class="n">TextureMaterial</span> <span class="n">material</span><span class="p">;</span>
+
+    <span class="n">QRectF</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">mirrored</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskTextureNode</span><span class="o">::</span><span class="n">QskTextureNode</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">QSGGeometryNode</span><span class="p">(</span> <span class="o">*</span><span class="k">new</span> <span class="n">QskTextureNodePrivate</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskTextureNode</span> <span class="p">);</span>
+
+    <span class="n">setGeometry</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">geometry</span> <span class="p">);</span>
+
+    <span class="n">setMaterial</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">material</span> <span class="p">);</span>
+    <span class="n">setOpaqueMaterial</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">d</span><span class="o">-&gt;</span><span class="n">opaqueMaterial</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTextureNode</span><span class="o">::~</span><span class="n">QskTextureNode</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Q_D</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextureNode</span> <span class="p">);</span>
+    <span class="n">qskDeleteTexture</span><span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">material</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">setTexture</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="n">uint</span> <span class="n">textureId</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">mirrored</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Q_D</span><span class="p">(</span> <span class="n">QskTextureNode</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">rect</span> <span class="o">!=</span> <span class="n">rect</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">mirrored</span> <span class="o">!=</span> <span class="n">mirrored</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">d</span><span class="o">-&gt;</span><span class="n">rect</span> <span class="o">=</span> <span class="n">rect</span><span class="p">;</span>
+        <span class="n">d</span><span class="o">-&gt;</span><span class="n">mirrored</span> <span class="o">=</span> <span class="n">mirrored</span><span class="p">;</span>
+
+        <span class="n">d</span><span class="o">-&gt;</span><span class="n">updateTextureGeometry</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span>
+        <span class="n">markDirty</span><span class="p">(</span> <span class="n">DirtyGeometry</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">textureId</span> <span class="o">!=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">textureId</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">d</span><span class="o">-&gt;</span><span class="n">setTextureId</span><span class="p">(</span> <span class="n">window</span><span class="p">,</span> <span class="n">textureId</span> <span class="p">);</span>
+        <span class="n">markDirty</span><span class="p">(</span> <span class="n">DirtyMaterial</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#if QT_VERSION &lt; QT_VERSION_CHECK( 6, 0, 0 )
+</span>
+<span class="kt">void</span> <span class="n">QskTextureNodePrivate</span><span class="o">::</span><span class="n">setTextureId</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span><span class="p">,</span> <span class="n">uint</span> <span class="n">textureId</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskDeleteTexture</span><span class="p">(</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">material</span> <span class="p">);</span>
+
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">material</span><span class="p">.</span><span class="n">setTextureId</span><span class="p">(</span> <span class="n">textureId</span> <span class="p">);</span>
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">opaqueMaterial</span><span class="p">.</span><span class="n">setTextureId</span><span class="p">(</span> <span class="n">textureId</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">uint</span> <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">textureId</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">Q_D</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextureNode</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">material</span><span class="p">.</span><span class="n">textureId</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 0, 0 )
+</span>
+<span class="kt">void</span> <span class="n">QskTextureNodePrivate</span><span class="o">::</span><span class="n">setTextureId</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span> <span class="n">uint</span> <span class="n">textureId</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">texture</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">material</span><span class="p">.</span><span class="n">texture</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">texture</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// we do not want to create a new QSGTexture object only</span>
+        <span class="c1">// to replace the textureId</span>
+
+        <span class="k">switch</span><span class="p">(</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">rendererInterface</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">graphicsApi</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">case</span> <span class="n">QSGRendererInterface</span><span class="o">::</span><span class="n">OpenGL</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="n">qskUpdateGLTextureId</span><span class="p">(</span> <span class="n">texture</span><span class="o">-&gt;</span><span class="n">rhiTexture</span><span class="p">(),</span> <span class="n">textureId</span> <span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nl">default:</span>
+            <span class="p">{</span>
+                <span class="k">delete</span> <span class="n">texture</span><span class="p">;</span>
+                <span class="n">texture</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">textureId</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">texture</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">texture</span> <span class="o">=</span> <span class="n">QNativeInterface</span><span class="o">::</span><span class="n">QSGOpenGLTexture</span><span class="o">::</span><span class="n">fromNative</span><span class="p">(</span>
+            <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">GLuint</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">textureId</span> <span class="p">),</span> <span class="n">window</span><span class="p">,</span>
+            <span class="k">this</span><span class="o">-&gt;</span><span class="n">rect</span><span class="p">.</span><span class="n">size</span><span class="p">().</span><span class="n">toSize</span><span class="p">(),</span> <span class="n">QQuickWindow</span><span class="o">::</span><span class="n">TextureHasAlphaChannel</span> <span class="p">);</span>
+
+    <span class="p">}</span>
+
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">material</span><span class="p">.</span><span class="n">setTexture</span><span class="p">(</span> <span class="n">texture</span> <span class="p">);</span>
+    <span class="k">this</span><span class="o">-&gt;</span><span class="n">opaqueMaterial</span><span class="p">.</span><span class="n">setTexture</span><span class="p">(</span> <span class="n">texture</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">uint</span> <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">textureId</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">Q_D</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextureNode</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">texture</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">material</span><span class="p">.</span><span class="n">texture</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">nativeTexture</span> <span class="o">=</span> <span class="n">texture</span><span class="o">-&gt;</span><span class="n">rhiTexture</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">nativeTexture</span><span class="p">();</span>
+        <span class="k">return</span> <span class="n">nativeTexture</span><span class="p">.</span><span class="n">object</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="kt">bool</span> <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">isNull</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">textureId</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">rect</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">Q_D</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextureNode</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">rect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">QskTextureNode</span><span class="o">::</span><span class="n">mirrored</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">Q_D</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextureNode</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">mirrored</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

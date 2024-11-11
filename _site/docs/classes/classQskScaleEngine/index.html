@@ -1,0 +1,153 @@
+<h1 id="qskscaleengine">QskScaleEngine</h1>
+
+<h2 id="public-types">Public Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskScaleEngine/#enum-attribute">Attribute</a></strong> { Inverted = 1 « 0, Floating = 1 « 1}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskScaleEngine/#function-qskscaleengine">QskScaleEngine</a></strong>()</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskScaleEngine/#function-~qskscaleengine">~QskScaleEngine</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskScaleEngine/#function-setattribute">setAttribute</a></strong>(Attribute attribute, bool on =true)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskScaleEngine/#function-testattribute">testAttribute</a></strong>(Attribute attribute) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskScaleEngine/#function-setattributes">setAttributes</a></strong>(Attributes attributes)</td>
+    </tr>
+    <tr>
+      <td>Attributes</td>
+      <td><strong><a href="/docs/classes/classQskScaleEngine/#function-attributes">attributes</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>QskScaleTickmarks</td>
+      <td><strong><a href="/docs/classes/classQskScaleEngine/#function-dividescale">divideScale</a></strong>(qreal x1, qreal x2, int maxMajorSteps, int maxMinorSteps, qreal stepSize =0.0) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskScaleEngine/#function-autoscale">autoScale</a></strong>(int maxNumSteps, qreal &amp; x1, qreal &amp; x2, qreal &amp; stepSize) const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+
+<h3 id="enum-attribute">enum Attribute</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Inverted</td>
+      <td>1 « 0</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Floating</td>
+      <td>1 « 1</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskscaleengine">function QskScaleEngine</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskScaleEngine</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskscaleengine-1">function ~QskScaleEngine</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskScaleEngine</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-setattribute">function setAttribute</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setAttribute</span><span class="p">(</span>
+    <span class="n">Attribute</span> <span class="n">attribute</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span><span class="nb">true</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-testattribute">function testAttribute</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">testAttribute</span><span class="p">(</span>
+    <span class="n">Attribute</span> <span class="n">attribute</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setattributes">function setAttributes</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setAttributes</span><span class="p">(</span>
+    <span class="n">Attributes</span> <span class="n">attributes</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-attributes">function attributes</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Attributes</span> <span class="n">attributes</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-dividescale">function divideScale</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskScaleTickmarks</span> <span class="n">divideScale</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">x1</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">x2</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">maxMajorSteps</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">maxMinorSteps</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">stepSize</span> <span class="o">=</span><span class="mf">0.0</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-autoscale">function autoScale</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">autoScale</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">maxNumSteps</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="o">&amp;</span> <span class="n">x1</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="o">&amp;</span> <span class="n">x2</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="o">&amp;</span> <span class="n">stepSize</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:28 CEST</p>

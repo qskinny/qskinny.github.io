@@ -1,0 +1,252 @@
+<h1 id="nodesqskboxnodecpp">nodes/QskBoxNode.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>uint</td>
+      <td><strong><a href="/docs/files/QskBoxNode_8cpp/#function-qskmetricshash">qskMetricsHash</a></strong>(const QskBoxShapeMetrics &amp; shape, const QskBoxBorderMetrics &amp; borderMetrics)</td>
+    </tr>
+    <tr>
+      <td>uint</td>
+      <td><strong><a href="/docs/files/QskBoxNode_8cpp/#function-qskcolorshash">qskColorsHash</a></strong>(const QskBoxBorderColors &amp; borderColors, const QskGradient &amp; fillGradient)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskmetricshash">function qskMetricsHash</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">uint</span> <span class="n">qskMetricsHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span> <span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span> <span class="o">&amp;</span> <span class="n">borderMetrics</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskcolorshash">function qskColorsHash</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">uint</span> <span class="n">qskColorsHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderColors</span> <span class="o">&amp;</span> <span class="n">borderColors</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGradient</span> <span class="o">&amp;</span> <span class="n">fillGradient</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskBoxNode.h"
+#include "QskBoxBorderColors.h"
+#include "QskBoxBorderMetrics.h"
+#include "QskBoxRenderer.h"
+#include "QskBoxShapeMetrics.h"
+#include "QskGradient.h"
+</span>
+<span class="cp">#include &lt;qglobalstatic.h&gt;
+#include &lt;qsgflatcolormaterial.h&gt;
+#include &lt;qsgvertexcolormaterial.h&gt;
+</span>
+<span class="n">Q_GLOBAL_STATIC</span><span class="p">(</span> <span class="n">QSGVertexColorMaterial</span><span class="p">,</span> <span class="n">qskMaterialVertex</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">uint</span> <span class="nf">qskMetricsHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">borderMetrics</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">uint</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">13000</span><span class="p">;</span>
+
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">shape</span><span class="p">.</span><span class="n">hash</span><span class="p">(</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">borderMetrics</span><span class="p">.</span><span class="n">hash</span><span class="p">(</span> <span class="n">hash</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">uint</span> <span class="nf">qskColorsHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">borderColors</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">fillGradient</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">uint</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">13000</span><span class="p">;</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">borderColors</span><span class="p">.</span><span class="n">hash</span><span class="p">(</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">fillGradient</span><span class="p">.</span><span class="n">hash</span><span class="p">(</span> <span class="n">hash</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxNode</span><span class="o">::</span><span class="n">QskBoxNode</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_metricsHash</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_colorsHash</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_geometry</span><span class="p">(</span> <span class="n">QSGGeometry</span><span class="o">::</span><span class="n">defaultAttributes_ColoredPoint2D</span><span class="p">(),</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setMaterial</span><span class="p">(</span> <span class="n">qskMaterialVertex</span> <span class="p">);</span>
+    <span class="n">setGeometry</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_geometry</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxNode</span><span class="o">::~</span><span class="n">QskBoxNode</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">material</span><span class="p">()</span> <span class="o">!=</span> <span class="n">qskMaterialVertex</span> <span class="p">)</span>
+        <span class="k">delete</span> <span class="n">material</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxNode</span><span class="o">::</span><span class="n">setBoxData</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">fillGradient</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setBoxData</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">QskBoxShapeMetrics</span><span class="p">(),</span> <span class="n">QskBoxBorderMetrics</span><span class="p">(),</span>
+        <span class="n">QskBoxBorderColors</span><span class="p">(),</span> <span class="n">fillGradient</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxNode</span><span class="o">::</span><span class="n">setBoxData</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">borderMetrics</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">borderColors</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">gradient</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QskGradient</span> <span class="n">fillGradient</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">;</span>
+<span class="cp">#if 1
+</span>    <span class="c1">// Renderer is buggy for monochrome gradients with stops. TODO ...</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">fillGradient</span><span class="p">.</span><span class="n">stops</span><span class="p">().</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="n">fillGradient</span><span class="p">.</span><span class="n">isMonochrome</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">fillGradient</span><span class="p">.</span><span class="n">setColor</span><span class="p">(</span> <span class="n">fillGradient</span><span class="p">.</span><span class="n">startColor</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="cp">#endif
+</span>
+<span class="cp">#if 1
+</span>    <span class="k">const</span> <span class="n">uint</span> <span class="n">metricsHash</span> <span class="o">=</span> <span class="n">qskMetricsHash</span><span class="p">(</span> <span class="n">shape</span><span class="p">,</span> <span class="n">borderMetrics</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">uint</span> <span class="n">colorsHash</span> <span class="o">=</span> <span class="n">qskColorsHash</span><span class="p">(</span> <span class="n">borderColors</span><span class="p">,</span> <span class="n">fillGradient</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">metricsHash</span> <span class="o">==</span> <span class="n">m_metricsHash</span> <span class="p">)</span> <span class="o">&amp;&amp;</span>
+        <span class="p">(</span> <span class="n">colorsHash</span> <span class="o">==</span> <span class="n">m_colorsHash</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">rect</span> <span class="o">==</span> <span class="n">m_rect</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">m_metricsHash</span> <span class="o">=</span> <span class="n">metricsHash</span><span class="p">;</span>
+    <span class="n">m_colorsHash</span> <span class="o">=</span> <span class="n">colorsHash</span><span class="p">;</span>
+    <span class="n">m_rect</span> <span class="o">=</span> <span class="n">rect</span><span class="p">;</span>
+
+    <span class="n">markDirty</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">DirtyMaterial</span> <span class="p">);</span>
+    <span class="n">markDirty</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">DirtyGeometry</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_geometry</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">hasFill</span> <span class="o">=</span> <span class="n">fillGradient</span><span class="p">.</span><span class="n">isValid</span><span class="p">();</span>
+
+    <span class="kt">bool</span> <span class="n">hasBorder</span> <span class="o">=</span> <span class="o">!</span><span class="n">borderMetrics</span><span class="p">.</span><span class="n">isNull</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hasBorder</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            Wrong as the border width should have an
+            effect - even if not being visible. TODO ...
+         */</span>
+
+        <span class="n">hasBorder</span> <span class="o">=</span> <span class="n">borderColors</span><span class="p">.</span><span class="n">isVisible</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">hasBorder</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">hasFill</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_geometry</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">isFillMonochrome</span> <span class="o">=</span> <span class="n">hasFill</span> <span class="o">?</span> <span class="n">fillGradient</span><span class="p">.</span><span class="n">isMonochrome</span><span class="p">()</span> <span class="o">:</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">isBorderMonochrome</span> <span class="o">=</span> <span class="n">hasBorder</span> <span class="o">?</span> <span class="n">borderColors</span><span class="p">.</span><span class="n">isMonochrome</span><span class="p">()</span> <span class="o">:</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hasFill</span> <span class="o">&amp;&amp;</span> <span class="n">hasBorder</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">isFillMonochrome</span> <span class="o">&amp;&amp;</span> <span class="n">isBorderMonochrome</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">borderColors</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Left</span> <span class="p">)</span> <span class="o">==</span> <span class="n">fillGradient</span><span class="p">.</span><span class="n">startColor</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// we can draw border and background in one</span>
+                <span class="n">hasBorder</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="c">#if 0
+    /*
+        Always using the same material result in a better batching
+        but wastes some memory. when we have a solid color.
+        Maybe its worth to introduce a flag to control the behaviour,
+        but for the moment we go with performance.
+     */
+
+    bool maybeFlat = true;
+
+    if ( maybeFlat )
+    {
+        if ( ( hasFill &amp;&amp; hasBorder ) ||
+            ( hasFill &amp;&amp; !isFillMonochrome ) ||
+            ( hasBorder &amp;&amp; !isBorderMonochrome ) )
+        {
+            maybeFlat = false;
+        }
+    }
+#else</span>
+    <span class="kt">bool</span> <span class="n">maybeFlat</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="cp">#endif
+</span>
+    <span class="n">QskBoxRenderer</span> <span class="n">renderer</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">maybeFlat</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">setMonochrome</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+        <span class="n">renderer</span><span class="p">.</span><span class="n">renderBox</span><span class="p">(</span> <span class="n">m_rect</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">borderMetrics</span><span class="p">,</span>
+            <span class="n">borderColors</span><span class="p">,</span> <span class="n">fillGradient</span><span class="p">,</span> <span class="o">*</span><span class="n">geometry</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="c1">// all is done with one color</span>
+        <span class="n">setMonochrome</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+        <span class="k">auto</span><span class="o">*</span> <span class="n">flatMaterial</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGFlatColorMaterial</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">material</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">hasFill</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">flatMaterial</span><span class="o">-&gt;</span><span class="n">setColor</span><span class="p">(</span> <span class="n">fillGradient</span><span class="p">.</span><span class="n">startColor</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">renderer</span><span class="p">.</span><span class="n">renderFill</span><span class="p">(</span> <span class="n">m_rect</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">QskBoxBorderMetrics</span><span class="p">(),</span> <span class="o">*</span><span class="n">geometry</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">flatMaterial</span><span class="o">-&gt;</span><span class="n">setColor</span><span class="p">(</span> <span class="n">borderColors</span><span class="p">.</span><span class="n">color</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Left</span> <span class="p">).</span><span class="n">rgba</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">renderer</span><span class="p">.</span><span class="n">renderBorder</span><span class="p">(</span> <span class="n">m_rect</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">borderMetrics</span><span class="p">,</span> <span class="o">*</span><span class="n">geometry</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxNode</span><span class="o">::</span><span class="n">setMonochrome</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">material</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">material</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">==</span> <span class="p">(</span> <span class="n">material</span> <span class="o">!=</span> <span class="n">qskMaterialVertex</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_geometry</span><span class="p">.</span><span class="n">allocate</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">setMaterial</span><span class="p">(</span> <span class="k">new</span> <span class="n">QSGFlatColorMaterial</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="k">const</span> <span class="n">QSGGeometry</span> <span class="n">g</span><span class="p">(</span> <span class="n">QSGGeometry</span><span class="o">::</span><span class="n">defaultAttributes_Point2D</span><span class="p">(),</span> <span class="mi">0</span> <span class="p">);</span>
+        <span class="n">memcpy</span><span class="p">(</span> <span class="p">(</span> <span class="kt">void</span><span class="o">*</span> <span class="p">)</span> <span class="o">&amp;</span><span class="n">m_geometry</span><span class="p">,</span> <span class="p">(</span> <span class="kt">void</span><span class="o">*</span> <span class="p">)</span> <span class="o">&amp;</span><span class="n">g</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">QSGGeometry</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">setMaterial</span><span class="p">(</span> <span class="n">qskMaterialVertex</span> <span class="p">);</span>
+        <span class="k">delete</span> <span class="n">material</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="n">QSGGeometry</span> <span class="n">g</span><span class="p">(</span> <span class="n">QSGGeometry</span><span class="o">::</span><span class="n">defaultAttributes_ColoredPoint2D</span><span class="p">(),</span> <span class="mi">0</span> <span class="p">);</span>
+        <span class="n">memcpy</span><span class="p">(</span> <span class="p">(</span> <span class="kt">void</span><span class="o">*</span> <span class="p">)</span> <span class="o">&amp;</span><span class="n">m_geometry</span><span class="p">,</span> <span class="p">(</span> <span class="kt">void</span><span class="o">*</span> <span class="p">)</span> <span class="o">&amp;</span><span class="n">g</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">QSGGeometry</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

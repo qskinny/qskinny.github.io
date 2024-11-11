@@ -1,0 +1,415 @@
+<h1 id="nodesqskscalerenderercpp">nodes/QskScaleRenderer.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/files/QskScaleRenderer_8cpp/#function-qskremovetraillingnodes">qskRemoveTraillingNodes</a></strong>(QSGNode * node, QSGNode * childNode)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskScaleRenderer_8cpp/#function-qskinsertremovechild">qskInsertRemoveChild</a></strong>(QSGNode * parentNode, QSGNode * oldNode, QSGNode * newNode, bool append)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskremovetraillingnodes">function qskRemoveTraillingNodes</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">qskRemoveTraillingNodes</span><span class="p">(</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">childNode</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinsertremovechild">function qskInsertRemoveChild</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskInsertRemoveChild</span><span class="p">(</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parentNode</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">oldNode</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">newNode</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">append</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskScaleRenderer.h"
+#include "QskSkinlet.h"
+#include "QskSGNode.h"
+#include "QskTickmarksNode.h"
+#include "QskTextNode.h"
+#include "QskGraphicNode.h"
+#include "QskTextOptions.h"
+#include "QskGraphic.h"
+#include "QskControl.h"
+#include "QskFunctions.h"
+</span>
+<span class="cp">#include &lt;qstring.h&gt;
+#include &lt;qfontmetrics.h&gt;
+</span>
+<span class="k">static</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="nf">qskRemoveTraillingNodes</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">childNode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QskSGNode</span><span class="o">::</span><span class="n">removeAllChildNodesFrom</span><span class="p">(</span> <span class="n">node</span><span class="p">,</span> <span class="n">childNode</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskInsertRemoveChild</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parentNode</span><span class="p">,</span>
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">oldNode</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">newNode</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">append</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span> <span class="o">==</span> <span class="n">oldNode</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">oldNode</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">removeChildNode</span><span class="p">(</span> <span class="n">oldNode</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">oldNode</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">OwnedByParent</span> <span class="p">)</span>
+            <span class="k">delete</span> <span class="n">oldNode</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">append</span> <span class="p">)</span>
+            <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">newNode</span> <span class="p">);</span>
+        <span class="k">else</span>
+            <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">prependChildNode</span><span class="p">(</span> <span class="n">newNode</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_orientation</span> <span class="o">=</span> <span class="n">orientation</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">setBoundaries</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">boundaries</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_boundaries</span> <span class="o">=</span> <span class="n">boundaries</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">setTickmarks</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskScaleTickmarks</span><span class="o">&amp;</span> <span class="n">tickmarks</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_tickmarks</span> <span class="o">=</span> <span class="n">tickmarks</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">setTickColor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_tickColor</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">setTickWidth</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_tickWidth</span> <span class="o">=</span> <span class="n">width</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">setFont</span><span class="p">(</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="n">font</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_font</span> <span class="o">=</span> <span class="n">font</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">setTextColors</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextColors</span><span class="o">&amp;</span> <span class="n">textColors</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_textColors</span> <span class="o">=</span> <span class="n">textColors</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">setColorFilter</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">colorFilter</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_colorFilter</span> <span class="o">=</span> <span class="n">colorFilter</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">updateScaleNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">tickmarksRect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">labelsRect</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">enum</span> <span class="n">Role</span>
+    <span class="p">{</span>
+        <span class="n">Ticks</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">Labels</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="p">};</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">node</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSGNode</span><span class="p">();</span>
+
+    <span class="p">{</span>
+        <span class="n">QSGNode</span><span class="o">*</span> <span class="n">oldNode</span> <span class="o">=</span> <span class="n">QskSGNode</span><span class="o">::</span><span class="n">findChildNode</span><span class="p">(</span> <span class="n">node</span><span class="p">,</span> <span class="n">Ticks</span> <span class="p">);</span>
+        <span class="n">QSGNode</span><span class="o">*</span> <span class="n">newNode</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">tickmarksRect</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newNode</span> <span class="o">=</span> <span class="n">updateTicksNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">tickmarksRect</span><span class="p">,</span> <span class="n">oldNode</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span> <span class="p">)</span>
+                <span class="n">QskSGNode</span><span class="o">::</span><span class="n">setNodeRole</span><span class="p">(</span> <span class="n">newNode</span><span class="p">,</span> <span class="n">Ticks</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">qskInsertRemoveChild</span><span class="p">(</span> <span class="n">node</span><span class="p">,</span> <span class="n">oldNode</span><span class="p">,</span> <span class="n">newNode</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="p">{</span>
+        <span class="n">QSGNode</span><span class="o">*</span> <span class="n">oldNode</span> <span class="o">=</span> <span class="n">QskSGNode</span><span class="o">::</span><span class="n">findChildNode</span><span class="p">(</span> <span class="n">node</span><span class="p">,</span> <span class="n">Labels</span> <span class="p">);</span>
+        <span class="n">QSGNode</span><span class="o">*</span> <span class="n">newNode</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">labelsRect</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newNode</span> <span class="o">=</span> <span class="n">updateLabelsNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">tickmarksRect</span><span class="p">,</span> <span class="n">labelsRect</span><span class="p">,</span> <span class="n">oldNode</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span> <span class="p">)</span>
+                <span class="n">QskSGNode</span><span class="o">::</span><span class="n">setNodeRole</span><span class="p">(</span> <span class="n">newNode</span><span class="p">,</span> <span class="n">Labels</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">qskInsertRemoveChild</span><span class="p">(</span> <span class="n">node</span><span class="p">,</span> <span class="n">oldNode</span><span class="p">,</span> <span class="n">newNode</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">updateTicksNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">ticksNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskTickmarksNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">node</span> <span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">ticksNode</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">ticksNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskTickmarksNode</span><span class="p">;</span>
+
+    <span class="n">ticksNode</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">(</span> <span class="n">m_tickColor</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">m_boundaries</span><span class="p">,</span>
+        <span class="n">m_tickmarks</span><span class="p">,</span> <span class="n">m_tickWidth</span><span class="p">,</span> <span class="n">m_orientation</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">ticksNode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">updateLabelsNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">tickmarksRect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">labelsRect</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">||</span> <span class="n">tickmarksRect</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">ticks</span> <span class="o">=</span> <span class="n">m_tickmarks</span><span class="p">.</span><span class="n">majorTicks</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">ticks</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">node</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSGNode</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">QFontMetricsF</span> <span class="n">fm</span><span class="p">(</span> <span class="n">m_font</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">length</span> <span class="o">=</span> <span class="p">(</span> <span class="n">m_orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="o">?</span> <span class="n">tickmarksRect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">:</span> <span class="n">tickmarksRect</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="o">=</span> <span class="n">length</span> <span class="o">/</span> <span class="n">m_boundaries</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+
+    <span class="k">auto</span> <span class="n">nextNode</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">();</span>
+
+    <span class="n">QRectF</span> <span class="n">labelRect</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">tick</span> <span class="o">:</span> <span class="n">ticks</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">enum</span> <span class="n">LabelNodeRole</span>
+        <span class="p">{</span>
+            <span class="n">TextNode</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">GraphicNode</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="p">};</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">label</span> <span class="o">=</span> <span class="n">labelAt</span><span class="p">(</span> <span class="n">tick</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">tickPos</span> <span class="o">=</span> <span class="n">ratio</span> <span class="o">*</span> <span class="p">(</span> <span class="n">tick</span> <span class="o">-</span> <span class="n">m_boundaries</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="n">QString</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">text</span> <span class="o">=</span> <span class="n">label</span><span class="p">.</span><span class="n">toString</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">text</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+                <span class="k">continue</span><span class="p">;</span>
+
+            <span class="n">QRectF</span> <span class="n">r</span><span class="p">;</span>
+            <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">;</span>
+
+            <span class="k">if</span><span class="p">(</span> <span class="n">m_orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">w</span> <span class="o">=</span> <span class="n">qskHorizontalAdvance</span><span class="p">(</span> <span class="n">fm</span><span class="p">,</span> <span class="n">text</span> <span class="p">);</span>
+
+                <span class="k">auto</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">tickmarksRect</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="n">tickPos</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">;</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">pos</span><span class="p">,</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="o">-</span> <span class="n">w</span> <span class="p">);</span>
+
+                <span class="n">r</span> <span class="o">=</span> <span class="n">QRectF</span><span class="p">(</span> <span class="n">pos</span><span class="p">,</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">w</span><span class="p">,</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+                <span class="n">alignment</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignLeft</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">h</span> <span class="o">=</span> <span class="n">fm</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+                <span class="k">auto</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">tickmarksRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span> <span class="n">tickPos</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">h</span> <span class="p">);</span>
+
+                <span class="cm">/*
+                    when clipping the label we can expand the clip rectangle
+                    by the ascent/descent margins, as nothing gets painted there
+                    anyway.
+                 */</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">min</span> <span class="o">=</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span> <span class="n">h</span> <span class="o">-</span> <span class="n">fm</span><span class="p">.</span><span class="n">ascent</span><span class="p">()</span> <span class="p">);</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">max</span> <span class="o">=</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">+</span> <span class="n">fm</span><span class="p">.</span><span class="n">descent</span><span class="p">();</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="n">min</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">max</span> <span class="p">);</span>
+
+                <span class="n">r</span> <span class="o">=</span> <span class="n">QRectF</span><span class="p">(</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">pos</span><span class="p">,</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">h</span> <span class="p">);</span>
+
+                <span class="n">alignment</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignRight</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">nextNode</span> <span class="o">&amp;&amp;</span> <span class="n">QskSGNode</span><span class="o">::</span><span class="n">nodeRole</span><span class="p">(</span> <span class="n">nextNode</span> <span class="p">)</span> <span class="o">!=</span> <span class="n">TextNode</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">nextNode</span> <span class="o">=</span> <span class="n">qskRemoveTraillingNodes</span><span class="p">(</span> <span class="n">node</span><span class="p">,</span> <span class="n">nextNode</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">labelRect</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">labelRect</span><span class="p">.</span><span class="n">intersects</span><span class="p">(</span> <span class="n">r</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">tick</span> <span class="o">!=</span> <span class="n">ticks</span><span class="p">.</span><span class="n">last</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">QString</span><span class="p">();</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">obsoleteNode</span> <span class="o">=</span> <span class="n">nextNode</span>
+                        <span class="o">?</span> <span class="n">nextNode</span><span class="o">-&gt;</span><span class="n">previousSibling</span><span class="p">()</span> <span class="o">:</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">lastChild</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">node</span><span class="o">-&gt;</span><span class="n">removeChildNode</span><span class="p">(</span> <span class="n">obsoleteNode</span> <span class="p">);</span>
+                        <span class="k">if</span> <span class="p">(</span> <span class="n">obsoleteNode</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">OwnedByParent</span> <span class="p">)</span>
+                            <span class="k">delete</span> <span class="n">obsoleteNode</span><span class="p">;</span>
+                    <span class="p">}</span>
+
+                    <span class="n">labelRect</span> <span class="o">=</span> <span class="n">r</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">labelRect</span> <span class="o">=</span> <span class="n">r</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">nextNode</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">nextNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskTextNode</span><span class="p">;</span>
+                <span class="n">QskSGNode</span><span class="o">::</span><span class="n">setNodeRole</span><span class="p">(</span> <span class="n">nextNode</span><span class="p">,</span> <span class="n">TextNode</span> <span class="p">);</span>
+                <span class="n">node</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">nextNode</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">auto</span> <span class="n">textNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskTextNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">nextNode</span> <span class="p">);</span>
+            <span class="n">textNode</span><span class="o">-&gt;</span><span class="n">setTextData</span><span class="p">(</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">owningControl</span><span class="p">(),</span> <span class="n">text</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">m_font</span><span class="p">,</span>
+                <span class="n">QskTextOptions</span><span class="p">(),</span> <span class="n">m_textColors</span><span class="p">,</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Normal</span> <span class="p">);</span>
+
+            <span class="n">nextNode</span> <span class="o">=</span> <span class="n">nextNode</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="n">QskGraphic</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">label</span><span class="p">.</span><span class="n">value</span><span class="o">&lt;</span> <span class="n">QskGraphic</span> <span class="o">&gt;</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">graphic</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+                <span class="k">continue</span><span class="p">;</span>
+
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">h</span> <span class="o">=</span> <span class="n">fm</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">w</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">.</span><span class="n">widthForHeight</span><span class="p">(</span> <span class="n">h</span> <span class="p">);</span>
+
+            <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">;</span>
+
+            <span class="k">if</span><span class="p">(</span> <span class="n">m_orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">tickmarksRect</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">+</span> <span class="n">tickPos</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span><span class="p">;</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">pos</span><span class="p">,</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="o">-</span> <span class="n">w</span> <span class="p">);</span>
+
+                <span class="n">labelRect</span> <span class="o">=</span> <span class="n">QRectF</span><span class="p">(</span> <span class="n">pos</span><span class="p">,</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">);</span>
+                <span class="n">alignment</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignHCenter</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignBottom</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">tickmarksRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span> <span class="n">tickPos</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">h</span> <span class="p">);</span>
+                <span class="n">pos</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">top</span><span class="p">(),</span> <span class="n">pos</span><span class="p">,</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="n">h</span> <span class="p">);</span>
+
+                <span class="n">labelRect</span> <span class="o">=</span> <span class="n">QRectF</span><span class="p">(</span> <span class="n">labelsRect</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="o">-</span> <span class="n">w</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">);</span>
+                <span class="n">alignment</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignRight</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignVCenter</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">nextNode</span> <span class="o">&amp;&amp;</span> <span class="n">QskSGNode</span><span class="o">::</span><span class="n">nodeRole</span><span class="p">(</span> <span class="n">nextNode</span> <span class="p">)</span> <span class="o">!=</span> <span class="n">GraphicNode</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">nextNode</span> <span class="o">=</span> <span class="n">qskRemoveTraillingNodes</span><span class="p">(</span> <span class="n">node</span><span class="p">,</span> <span class="n">nextNode</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">nextNode</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">nextNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskGraphicNode</span><span class="p">;</span>
+                <span class="n">QskSGNode</span><span class="o">::</span><span class="n">setNodeRole</span><span class="p">(</span> <span class="n">nextNode</span><span class="p">,</span> <span class="n">GraphicNode</span> <span class="p">);</span>
+                <span class="n">node</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">nextNode</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">auto</span> <span class="n">graphicNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskGraphicNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">nextNode</span> <span class="p">);</span>
+
+            <span class="n">QskSkinlet</span><span class="o">::</span><span class="n">updateGraphicNode</span><span class="p">(</span>
+                <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">owningControl</span><span class="p">(),</span> <span class="n">graphicNode</span><span class="p">,</span>
+                <span class="n">graphic</span><span class="p">,</span> <span class="n">m_colorFilter</span><span class="p">,</span> <span class="n">labelRect</span><span class="p">,</span> <span class="n">alignment</span> <span class="p">);</span>
+
+            <span class="n">nextNode</span> <span class="o">=</span> <span class="n">nextNode</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">qskRemoveTraillingNodes</span><span class="p">(</span> <span class="n">node</span><span class="p">,</span> <span class="n">nextNode</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">labelAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">pos</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QString</span><span class="o">::</span><span class="n">number</span><span class="p">(</span> <span class="n">pos</span><span class="p">,</span> <span class="sc">'g'</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskScaleRenderer</span><span class="o">::</span><span class="n">boundingLabelSize</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">ticks</span> <span class="o">=</span> <span class="n">m_tickmarks</span><span class="p">.</span><span class="n">majorTicks</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">ticks</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QFontMetricsF</span> <span class="n">fm</span><span class="p">(</span> <span class="n">m_font</span> <span class="p">);</span>
+
+    <span class="n">qreal</span> <span class="n">maxWidth</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">fm</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">tick</span> <span class="o">:</span> <span class="n">ticks</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">label</span> <span class="o">=</span> <span class="n">labelAt</span><span class="p">(</span> <span class="n">tick</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="n">QString</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">qskHorizontalAdvance</span><span class="p">(</span> <span class="n">fm</span><span class="p">,</span> <span class="n">label</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="n">QskGraphic</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">label</span><span class="p">.</span><span class="n">value</span><span class="o">&lt;</span> <span class="n">QskGraphic</span> <span class="o">&gt;</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">graphic</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">.</span><span class="n">widthForHeight</span><span class="p">(</span> <span class="n">h</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">maxWidth</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">maxWidth</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">maxWidth</span><span class="p">,</span> <span class="n">h</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

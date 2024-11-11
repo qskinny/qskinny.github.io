@@ -1,0 +1,1583 @@
+<h1 id="controlsqskskinnablecpp">controls/QskSkinnable.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qskiscontrol">qskIsControl</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable)</td>
+    </tr>
+    <tr>
+      <td>QVariant</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qsktypednullvalue">qskTypedNullValue</a></strong>(const QVariant &amp; value)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qsksetflag">qskSetFlag</a></strong>(<a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, const <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, int flag)</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qskflag">qskFlag</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, const <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, <a href="/docs/classes/classQskSkinHintStatus/">QskSkinHintStatus</a> * status =nullptr)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qsksetmetric">qskSetMetric</a></strong>(<a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, const <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, const QVariant &amp; metric)</td>
+    </tr>
+    <tr>
+      <td>template &lt;typename T &gt; <br />bool</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qsksetmetric">qskSetMetric</a></strong>(<a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, const T &amp; metric)</td>
+    </tr>
+    <tr>
+      <td>template &lt;typename T &gt; <br />T</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qskmetric">qskMetric</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, <a href="/docs/classes/classQskSkinHintStatus/">QskSkinHintStatus</a> * status =nullptr)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qsksetcolor">qskSetColor</a></strong>(<a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, const <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, const QVariant &amp; color)</td>
+    </tr>
+    <tr>
+      <td>template &lt;typename T &gt; <br />bool</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qsksetcolor">qskSetColor</a></strong>(<a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, const <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, const T &amp; color)</td>
+    </tr>
+    <tr>
+      <td>template &lt;typename T &gt; <br />T</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qskcolor">qskColor</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, <a href="/docs/classes/classQskSkinHintStatus/">QskSkinHintStatus</a> * status =nullptr)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qsktriggerupdates">qskTriggerUpdates</a></strong>(<a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, <a href="/docs/classes/classQskControl/">QskControl</a> * control)</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskAspect/">QskAspect</a></td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qsksubstitutedaspect">qskSubstitutedAspect</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect)</td>
+    </tr>
+    <tr>
+      <td>QskMargins</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-qskeffectivepadding">qskEffectivePadding</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, <a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, const QSizeF &amp; size, bool inner)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const <a href="/docs/classes/classQskSkinHintStatus/">QskSkinHintStatus</a> &amp; status)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="defines">Defines</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#define-debug_map">DEBUG_MAP</a></strong></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#define-debug_animator">DEBUG_ANIMATOR</a></strong></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskSkinnable_8cpp/#define-debug_state">DEBUG_STATE</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskiscontrol">function qskIsControl</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskIsControl</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsktypednullvalue">function qskTypedNullValue</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QVariant</span> <span class="n">qskTypedNullValue</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVariant</span> <span class="o">&amp;</span> <span class="n">value</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksetflag">function qskSetFlag</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskSetFlag</span><span class="p">(</span>
+    <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">flag</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskflag">function qskFlag</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">int</span> <span class="n">qskFlag</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">QskSkinHintStatus</span> <span class="o">*</span> <span class="n">status</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksetmetric">function qskSetMetric</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskSetMetric</span><span class="p">(</span>
+    <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QVariant</span> <span class="o">&amp;</span> <span class="n">metric</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksetmetric-1">function qskSetMetric</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskSetMetric</span><span class="p">(</span>
+    <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">metric</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskmetric">function qskMetric</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">T</span> <span class="n">qskMetric</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">QskSkinHintStatus</span> <span class="o">*</span> <span class="n">status</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksetcolor">function qskSetColor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskSetColor</span><span class="p">(</span>
+    <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QVariant</span> <span class="o">&amp;</span> <span class="n">color</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksetcolor-1">function qskSetColor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskSetColor</span><span class="p">(</span>
+    <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">color</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskcolor">function qskColor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">T</span> <span class="n">qskColor</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">QskSkinHintStatus</span> <span class="o">*</span> <span class="n">status</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsktriggerupdates">function qskTriggerUpdates</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskTriggerUpdates</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">QskControl</span> <span class="o">*</span> <span class="n">control</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksubstitutedaspect">function qskSubstitutedAspect</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="n">qskSubstitutedAspect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskeffectivepadding">function qskEffectivePadding</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QskMargins</span> <span class="n">qskEffectivePadding</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">inner</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskSkinHintStatus</span> <span class="o">&amp;</span> <span class="n">status</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="macro-documentation">Macro Documentation</h2>
+
+<h3 id="define-debug_map">define DEBUG_MAP</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define DEBUG_MAP 0
+</span></code></pre></div></div>
+
+<h3 id="define-debug_animator">define DEBUG_ANIMATOR</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define DEBUG_ANIMATOR 0
+</span></code></pre></div></div>
+
+<h3 id="define-debug_state">define DEBUG_STATE</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define DEBUG_STATE 0
+</span></code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSkinnable.h"
+</span>
+<span class="cp">#include "QskAnimationHint.h"
+#include "QskArcMetrics.h"
+#include "QskAspect.h"
+#include "QskColorFilter.h"
+#include "QskControl.h"
+#include "QskHintAnimator.h"
+#include "QskMargins.h"
+#include "QskSetup.h"
+#include "QskSkin.h"
+#include "QskSkinHintTable.h"
+#include "QskSkinTransition.h"
+#include "QskSkinlet.h"
+#include "QskWindow.h"
+</span>
+<span class="cp">#include "QskBoxShapeMetrics.h"
+#include "QskBoxBorderMetrics.h"
+#include "QskBoxBorderColors.h"
+#include "QskGradient.h"
+</span>
+<span class="cp">#include &lt;qfont.h&gt;
+#include &lt;map&gt;
+</span>
+<span class="cp">#define DEBUG_MAP 0
+#define DEBUG_ANIMATOR 0
+#define DEBUG_STATE 0
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskIsControl</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 7, 0 )
+</span>    <span class="k">return</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">metaObject</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">inherits</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">QskControl</span><span class="o">::</span><span class="n">staticMetaObject</span> <span class="p">);</span>
+<span class="cp">#else
+</span>    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">metaObject</span><span class="p">();</span>
+        <span class="n">mo</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="n">mo</span> <span class="o">=</span> <span class="n">mo</span><span class="o">-&gt;</span><span class="n">superClass</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">mo</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">QskControl</span><span class="o">::</span><span class="n">staticMetaObject</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="cp">#endif
+</span><span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QVariant</span> <span class="nf">qskTypedNullValue</span><span class="p">(</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 0, 0 )
+</span>    <span class="k">const</span> <span class="k">auto</span> <span class="n">vType</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QMetaType</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">userType</span><span class="p">()</span> <span class="p">);</span>
+<span class="cp">#else
+</span>    <span class="k">const</span> <span class="k">auto</span> <span class="n">vType</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">userType</span><span class="p">();</span>
+<span class="cp">#endif
+</span>
+    <span class="k">return</span> <span class="n">QVariant</span><span class="p">(</span> <span class="n">vType</span><span class="p">,</span> <span class="nb">nullptr</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskSetFlag</span><span class="p">(</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">setSkinHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Flag</span><span class="p">,</span> <span class="n">QVariant</span><span class="p">(</span> <span class="n">flag</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">int</span> <span class="nf">qskFlag</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">effectiveSkinHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Flag</span><span class="p">,</span> <span class="n">status</span> <span class="p">).</span><span class="n">toInt</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskSetMetric</span><span class="p">(</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">metric</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">setSkinHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Metric</span><span class="p">,</span> <span class="n">metric</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskSetMetric</span><span class="p">(</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">metric</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">metric</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">T</span> <span class="nf">qskMetric</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">effectiveSkinHint</span><span class="p">(</span>
+        <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Metric</span><span class="p">,</span> <span class="n">status</span> <span class="p">).</span><span class="n">value</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskSetColor</span><span class="p">(</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">setSkinHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Color</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskSetColor</span><span class="p">(</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetColor</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">color</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">T</span> <span class="nf">qskColor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">effectiveSkinHint</span><span class="p">(</span>
+        <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Color</span><span class="p">,</span> <span class="n">status</span> <span class="p">).</span><span class="n">value</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskTriggerUpdates</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskControl</span><span class="o">*</span> <span class="n">control</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/*
+        To put the hint into effect we have to call the usual suspects:
+
+            - resetImplicitSize
+            - polish
+            - update
+
+        The following code decides about these calls based on type/primitive
+        of the aspect. It can be expected, that it results in more calls
+        than what would be mandatory and in rare cases we might even miss necessary
+        calls. This has to be fixed by doing the call manually in the specific
+        controls.
+     */</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">control</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">aspect</span><span class="p">.</span><span class="n">isAnimator</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">maybeLayout</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">switch</span><span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">type</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">A</span> <span class="o">=</span> <span class="n">QskAspect</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="n">A</span><span class="o">::</span><span class="n">Metric</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">metricPrimitive</span><span class="p">()</span> <span class="o">!=</span> <span class="n">A</span><span class="o">::</span><span class="n">Position</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">control</span><span class="o">-&gt;</span><span class="n">resetImplicitSize</span><span class="p">();</span>
+                <span class="n">maybeLayout</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">case</span> <span class="n">A</span><span class="o">::</span><span class="n">Color</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">case</span> <span class="n">A</span><span class="o">::</span><span class="n">Flag</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">switch</span><span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">flagPrimitive</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">case</span> <span class="n">A</span><span class="o">::</span><span class="n">GraphicRole</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">A</span><span class="o">::</span><span class="n">FontRole</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="n">A</span><span class="o">::</span><span class="n">Alignment</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="n">maybeLayout</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nl">default:</span>
+                <span class="p">{</span>
+                    <span class="n">control</span><span class="o">-&gt;</span><span class="n">resetImplicitSize</span><span class="p">();</span>
+                    <span class="n">maybeLayout</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">control</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span> <span class="c1">// always</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">maybeLayout</span> <span class="o">&amp;&amp;</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">hasChildItems</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">polishOnResize</span><span class="p">()</span> <span class="o">||</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">autoLayoutChildren</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">control</span><span class="o">-&gt;</span><span class="n">polish</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QskAspect</span> <span class="nf">qskSubstitutedAspect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">hasStates</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskSkinnable::(re)setSkinHint: setting hints with states "</span>
+                      <span class="s">"is discouraged - use QskSkinTableEditor if you are "</span>
+                      <span class="s">"sure, that you need this."</span><span class="p">;</span>
+
+        <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskAspect:"</span> <span class="o">&lt;&lt;</span> <span class="n">aspect</span><span class="p">.</span><span class="n">stateless</span><span class="p">()</span>
+                   <span class="o">&lt;&lt;</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">skinStatesAsPrintable</span><span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">states</span><span class="p">()</span> <span class="p">);</span>
+
+<span class="c">#if 0
+        aspect.clearStates();
+#endif
+</span>    <span class="p">}</span>
+
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setSubControl</span><span class="p">(</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">effectiveSubcontrol</span><span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">subControl</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">aspect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskSkinnable</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="o">~</span><span class="n">PrivateData</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">hasLocalSkinlet</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">skinlet</span> <span class="o">&amp;&amp;</span> <span class="n">skinlet</span><span class="o">-&gt;</span><span class="n">isOwnedBySkinnable</span><span class="p">()</span> <span class="p">)</span>
+                <span class="k">delete</span> <span class="n">skinlet</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">delete</span> <span class="n">subcontrolProxies</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">QskSkinHintTable</span> <span class="n">hintTable</span><span class="p">;</span>
+    <span class="n">QskHintAnimatorTable</span> <span class="n">animators</span><span class="p">;</span>
+
+    <span class="k">typedef</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="o">&gt;</span> <span class="n">ProxyMap</span><span class="p">;</span>
+    <span class="n">ProxyMap</span><span class="o">*</span> <span class="n">subcontrolProxies</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">QskSkinlet</span><span class="o">*</span> <span class="n">skinlet</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">skinStates</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">hasLocalSkinlet</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskSkinnable</span><span class="o">::</span><span class="n">QskSkinnable</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinnable</span><span class="o">::~</span><span class="n">QskSkinnable</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setSkinlet</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinlet</span><span class="o">*</span> <span class="n">skinlet</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">skinlet</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinlet</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">skinlet</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// now we don't depend on global skin changes anymore</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasLocalSkinlet</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinlet</span> <span class="o">&amp;&amp;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinlet</span><span class="o">-&gt;</span><span class="n">isOwnedBySkinnable</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">delete</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinlet</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinlet</span> <span class="o">=</span> <span class="n">skinlet</span><span class="p">;</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasLocalSkinlet</span> <span class="o">=</span> <span class="p">(</span> <span class="n">skinlet</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">owningControl</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">control</span><span class="o">-&gt;</span><span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">control</span><span class="o">-&gt;</span><span class="n">polish</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemHasContents</span> <span class="p">)</span>
+            <span class="n">control</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QskSkinlet</span><span class="o">*</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">skinlet</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasLocalSkinlet</span> <span class="o">?</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinlet</span> <span class="o">:</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QskSkinlet</span><span class="o">*</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">effectiveSkinlet</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinlet</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinlet</span> <span class="o">=</span> <span class="n">effectiveSkin</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">skinlet</span><span class="p">(</span> <span class="n">metaObject</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasLocalSkinlet</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinlet</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setSubcontrolProxy</span><span class="p">(</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">proxy</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Control</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span> <span class="c1">// nonsense, we ignore this</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">proxy</span> <span class="o">==</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Control</span> <span class="o">||</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">proxy</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">resetSubcontrolProxy</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">subcontrolProxies</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">subcontrolProxies</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PrivateData</span><span class="o">::</span><span class="n">ProxyMap</span><span class="p">();</span>
+
+    <span class="p">(</span> <span class="o">*</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">subcontrolProxies</span> <span class="p">)[</span> <span class="n">subControl</span> <span class="p">]</span> <span class="o">=</span> <span class="n">proxy</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetSubcontrolProxy</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subcontrol</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">proxies</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">subcontrolProxies</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">proxies</span><span class="o">-&gt;</span><span class="n">find</span><span class="p">(</span> <span class="n">subcontrol</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">proxies</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">proxies</span><span class="o">-&gt;</span><span class="n">erase</span><span class="p">(</span> <span class="n">it</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">proxies</span><span class="o">-&gt;</span><span class="n">empty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">delete</span> <span class="n">proxies</span><span class="p">;</span>
+                <span class="n">proxies</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">subcontrolProxy</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">proxies</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">subcontrolProxies</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">proxies</span><span class="o">-&gt;</span><span class="n">find</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">proxies</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Control</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinHintTable</span><span class="o">&amp;</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">hintTable</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QskSkinHintTable</span><span class="o">&amp;</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">hintTable</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setFlagHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetFlag</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">flag</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">flagHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveSkinHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">).</span><span class="n">toInt</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setAlignmentHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetFlag</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Alignment</span><span class="p">,</span> <span class="n">alignment</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetAlignmentHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">resetFlagHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Alignment</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setColor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetColor</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setColor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">GlobalColor</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetColor</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QColor</span><span class="p">(</span> <span class="n">color</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setColor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QRgb</span> <span class="n">rgb</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetColor</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QColor</span><span class="o">::</span><span class="n">fromRgba</span><span class="p">(</span> <span class="n">rgb</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QColor</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">color</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskColor</span><span class="o">&lt;</span> <span class="n">QColor</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setMetric</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">metric</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">metric</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">metric</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskMetric</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setStrutSizeHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">width</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">StrutSize</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setStrutSizeHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">StrutSize</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetStrutSizeHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">resetMetric</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">StrutSize</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">strutSizeHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskMetric</span><span class="o">&lt;</span> <span class="n">QSizeF</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">StrutSize</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setMarginHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">margins</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Margin</span><span class="p">,</span> <span class="n">QskMargins</span><span class="p">(</span> <span class="n">margins</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setMarginHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QMarginsF</span><span class="o">&amp;</span> <span class="n">margins</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Margin</span><span class="p">,</span> <span class="n">QskMargins</span><span class="p">(</span> <span class="n">margins</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetMarginHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">resetMetric</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Margin</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QMarginsF</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">marginHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskMetric</span><span class="o">&lt;</span> <span class="n">QskMargins</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Margin</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setPaddingHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">padding</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Padding</span><span class="p">,</span> <span class="n">QskMargins</span><span class="p">(</span> <span class="n">padding</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setPaddingHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QMarginsF</span><span class="o">&amp;</span> <span class="n">padding</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Padding</span><span class="p">,</span> <span class="n">QskMargins</span><span class="p">(</span> <span class="n">padding</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetPaddingHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">resetMetric</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Padding</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QMarginsF</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">paddingHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskMetric</span><span class="o">&lt;</span> <span class="n">QskMargins</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Padding</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setGradientHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">gradient</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetColor</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">gradient</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGradient</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">gradientHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskColor</span><span class="o">&lt;</span> <span class="n">QskGradient</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setBoxShapeHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">shape</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Shape</span><span class="p">,</span> <span class="n">shape</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetBoxShapeHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">resetMetric</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Shape</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxShapeMetrics</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">boxShapeHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskMetric</span><span class="o">&lt;</span> <span class="n">QskBoxShapeMetrics</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Shape</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setBoxBorderMetricsHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderMetrics</span><span class="o">&amp;</span> <span class="n">border</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Border</span><span class="p">,</span> <span class="n">border</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetBoxBorderMetricsHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">resetMetric</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Border</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxBorderMetrics</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">boxBorderMetricsHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskMetric</span><span class="o">&lt;</span> <span class="n">QskBoxBorderMetrics</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Border</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setBoxBorderColorsHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxBorderColors</span><span class="o">&amp;</span> <span class="n">colors</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetColor</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Border</span><span class="p">,</span> <span class="n">colors</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetBoxBorderColorsHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">resetColor</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Border</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxBorderColors</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">boxBorderColorsHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskColor</span><span class="o">&lt;</span> <span class="n">QskBoxBorderColors</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Border</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setArcMetricsHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskArcMetrics</span><span class="o">&amp;</span> <span class="n">arc</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Shape</span><span class="p">,</span> <span class="n">arc</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetArcMetricsHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">resetMetric</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Shape</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskArcMetrics</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">arcMetricsHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskMetric</span><span class="o">&lt;</span> <span class="n">QskArcMetrics</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Shape</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setSpacingHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">spacing</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetMetric</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Spacing</span><span class="p">,</span> <span class="n">spacing</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetSpacingHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">resetMetric</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Spacing</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">spacingHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskMetric</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Spacing</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setFontRoleHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="kt">int</span> <span class="n">role</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetFlag</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">FontRole</span><span class="p">,</span> <span class="n">role</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetFontRoleHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">resetFlagHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">FontRole</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">fontRoleHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskFlag</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">FontRole</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QFont</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">effectiveFont</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveSkin</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">font</span><span class="p">(</span> <span class="n">fontRoleHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setGraphicRoleHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="kt">int</span> <span class="n">role</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetFlag</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">GraphicRole</span><span class="p">,</span> <span class="n">role</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetGraphicRoleHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">resetFlagHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">GraphicRole</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">graphicRoleHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskFlag</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">GraphicRole</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskColorFilter</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">effectiveGraphicFilter</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setSubControl</span><span class="p">(</span> <span class="n">effectiveSubcontrol</span><span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">subControl</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setPlacement</span><span class="p">(</span> <span class="n">effectivePlacement</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">aspect</span> <span class="o">=</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">GraphicRole</span><span class="p">;</span>
+
+    <span class="n">QskSkinHintStatus</span> <span class="n">status</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">storedHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">skinStates</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">status</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">status</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// we need to know about how the aspect gets resolved</span>
+        <span class="c1">// before checking for animators</span>
+
+        <span class="n">aspect</span><span class="p">.</span><span class="n">setSubControl</span><span class="p">(</span> <span class="n">status</span><span class="p">.</span><span class="n">aspect</span><span class="p">.</span><span class="n">subControl</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">aspect</span><span class="p">.</span><span class="n">isAnimator</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">v</span> <span class="o">=</span> <span class="n">animatedValue</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="nb">nullptr</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">v</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="n">QskColorFilter</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">v</span><span class="p">.</span><span class="n">value</span><span class="o">&lt;</span> <span class="n">QskColorFilter</span> <span class="o">&gt;</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">owningControl</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">animatedGraphicFilter</span><span class="p">(</span>
+                <span class="n">control</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">(),</span> <span class="n">hint</span><span class="p">.</span><span class="n">toInt</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">v</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="n">QskColorFilter</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="cm">/*
+                    As it is hard to find out which controls depend
+                    on the animated graphic filters we reschedule
+                    our updates here.
+                 */</span>
+                <span class="n">control</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+                <span class="k">return</span> <span class="n">v</span><span class="p">.</span><span class="n">value</span><span class="o">&lt;</span> <span class="n">QskColorFilter</span> <span class="o">&gt;</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">effectiveSkin</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">graphicFilter</span><span class="p">(</span> <span class="n">hint</span><span class="p">.</span><span class="n">toInt</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setAnimationHint</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskAnimationHint</span> <span class="n">hint</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setSubControl</span><span class="p">(</span> <span class="n">effectiveSubcontrol</span><span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">subControl</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">.</span><span class="n">setAnimation</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">hint</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskAnimationHint</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">animationHint</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setAnimator</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">effectiveSkinHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">status</span> <span class="p">).</span><span class="n">value</span><span class="o">&lt;</span> <span class="n">QskAnimationHint</span> <span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskAnimationHint</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">effectiveAnimation</span><span class="p">(</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Type</span> <span class="n">type</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+<span class="c">#if 0
+    // TODO ...
+    subControl = effectiveSubcontrol( aspect.subControl() );
+#endif
+</span>
+    <span class="k">auto</span> <span class="n">aspect</span> <span class="o">=</span> <span class="n">subControl</span> <span class="o">|</span> <span class="n">type</span> <span class="o">|</span> <span class="n">states</span><span class="p">;</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setAnimator</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="n">QskAnimationHint</span> <span class="n">hint</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">.</span><span class="n">resolvedAnimator</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">hint</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">a</span><span class="p">.</span><span class="n">isAnimator</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">status</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">status</span><span class="o">-&gt;</span><span class="n">source</span> <span class="o">=</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">Skinnable</span><span class="p">;</span>
+            <span class="n">status</span><span class="o">-&gt;</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">skin</span> <span class="o">=</span> <span class="n">effectiveSkin</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">skin</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">().</span><span class="n">resolvedAnimator</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">hint</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">a</span><span class="p">.</span><span class="n">isAnimator</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">status</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">status</span><span class="o">-&gt;</span><span class="n">source</span> <span class="o">=</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">Skin</span><span class="p">;</span>
+                <span class="n">status</span><span class="o">-&gt;</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">status</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">status</span><span class="o">-&gt;</span><span class="n">source</span> <span class="o">=</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">NoSource</span><span class="p">;</span>
+        <span class="n">status</span><span class="o">-&gt;</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">QskAspect</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setSkinHint</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">hint</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">aspect</span> <span class="o">=</span> <span class="n">qskSubstitutedAspect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">.</span><span class="n">setHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">hint</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qskTriggerUpdates</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">owningControl</span><span class="p">()</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">resetSkinHint</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">aspect</span> <span class="o">=</span> <span class="n">qskSubstitutedAspect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">.</span><span class="n">removeHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qskTriggerUpdates</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">owningControl</span><span class="p">()</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">effectiveSkinHint</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setSubControl</span><span class="p">(</span> <span class="n">effectiveSubcontrol</span><span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">subControl</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setPlacement</span><span class="p">(</span> <span class="n">effectivePlacement</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">isAnimator</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">storedHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">v</span> <span class="o">=</span> <span class="n">animatedValue</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">v</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">aspect</span><span class="p">.</span><span class="n">hasStates</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">aspect</span><span class="p">.</span><span class="n">setStates</span><span class="p">(</span> <span class="n">skinStates</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">storedHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">status</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinHintStatus</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">hintStatus</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QskSkinHintStatus</span> <span class="n">status</span><span class="p">;</span>
+
+    <span class="p">(</span> <span class="kt">void</span> <span class="p">)</span> <span class="n">effectiveSkinHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">status</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">QVariant</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">animatedValue</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QVariant</span> <span class="n">v</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">aspect</span><span class="p">.</span><span class="n">hasStates</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            The local animators were invented to be stateless
+            and we never have an aspect with a state here.
+            But that might change ...
+         */</span>
+
+        <span class="n">v</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animators</span><span class="p">.</span><span class="n">currentValue</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">v</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">isRunning</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+            <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">.</span><span class="n">hasHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+               Next we check for values from the skin. Those
+               animators are usually from global skin/color changes
+               and are state aware
+             */</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">owningControl</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">aspect</span><span class="p">.</span><span class="n">hasStates</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="n">aspect</span><span class="p">.</span><span class="n">setStates</span><span class="p">(</span> <span class="n">skinStates</span><span class="p">()</span> <span class="p">);</span>
+
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">;</span>
+
+                <span class="n">Q_FOREVER</span>
+                <span class="p">{</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="n">QskSkinTransition</span><span class="o">::</span><span class="n">animatedHint</span><span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">(),</span> <span class="n">aspect</span> <span class="p">);</span>
+
+                    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">v</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">topState</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">.</span><span class="n">topState</span><span class="p">()</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">aspect</span><span class="p">.</span><span class="n">clearState</span><span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">topState</span><span class="p">()</span> <span class="p">);</span>
+                            <span class="k">continue</span><span class="p">;</span>
+                        <span class="p">}</span>
+
+                        <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">placement</span><span class="p">()</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="c1">// clear the placement bits and restart</span>
+                            <span class="n">aspect</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+                            <span class="n">aspect</span><span class="p">.</span><span class="n">setPlacement</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">NoPlacement</span> <span class="p">);</span>
+
+                            <span class="k">continue</span><span class="p">;</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">status</span> <span class="o">&amp;&amp;</span> <span class="n">v</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">status</span><span class="o">-&gt;</span><span class="n">source</span> <span class="o">=</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">Animator</span><span class="p">;</span>
+        <span class="n">status</span><span class="o">-&gt;</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">v</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">storedHint</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskSkinHintStatus</span><span class="o">*</span> <span class="n">status</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">skin</span> <span class="o">=</span> <span class="n">effectiveSkin</span><span class="p">();</span>
+
+    <span class="c1">// clearing all state bits not being handled from the skin</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">clearStates</span><span class="p">(</span> <span class="o">~</span><span class="n">skin</span><span class="o">-&gt;</span><span class="n">stateMask</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">QskAspect</span> <span class="n">resolvedAspect</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">localTable</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">localTable</span><span class="p">.</span><span class="n">hasHints</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">localTable</span><span class="p">.</span><span class="n">hasStates</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// we don't need to clear the state bits stepwise</span>
+            <span class="n">a</span><span class="p">.</span><span class="n">clearStates</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">*</span> <span class="n">value</span> <span class="o">=</span> <span class="n">localTable</span><span class="p">.</span><span class="n">resolvedHint</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">resolvedAspect</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">status</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">status</span><span class="o">-&gt;</span><span class="n">source</span> <span class="o">=</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">Skinnable</span><span class="p">;</span>
+                <span class="n">status</span><span class="o">-&gt;</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">resolvedAspect</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="o">*</span><span class="n">value</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// next we try the hints from the skin</span>
+
+    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">skinTable</span> <span class="o">=</span> <span class="n">skin</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">skinTable</span><span class="p">.</span><span class="n">hasHints</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="n">QVariant</span><span class="o">*</span> <span class="n">value</span> <span class="o">=</span> <span class="n">skinTable</span><span class="p">.</span><span class="n">resolvedHint</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">resolvedAspect</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">value</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">status</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">status</span><span class="o">-&gt;</span><span class="n">source</span> <span class="o">=</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">Skin</span><span class="p">;</span>
+                <span class="n">status</span><span class="o">-&gt;</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">resolvedAspect</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="o">*</span><span class="n">value</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">subControl</span><span class="p">()</span> <span class="o">!=</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Control</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// trying to resolve something from the skin default settings</span>
+
+            <span class="n">aspect</span><span class="p">.</span><span class="n">setSubControl</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Control</span> <span class="p">);</span>
+            <span class="n">aspect</span><span class="p">.</span><span class="n">clearStates</span><span class="p">();</span>
+
+            <span class="n">value</span> <span class="o">=</span> <span class="n">skinTable</span><span class="p">.</span><span class="n">resolvedHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">resolvedAspect</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">value</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">status</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">status</span><span class="o">-&gt;</span><span class="n">source</span> <span class="o">=</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">Skin</span><span class="p">;</span>
+                    <span class="n">status</span><span class="o">-&gt;</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">resolvedAspect</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="k">return</span> <span class="o">*</span><span class="n">value</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">status</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">status</span><span class="o">-&gt;</span><span class="n">source</span> <span class="o">=</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">NoSource</span><span class="p">;</span>
+        <span class="n">status</span><span class="o">-&gt;</span><span class="n">aspect</span> <span class="o">=</span> <span class="n">QskAspect</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">static</span> <span class="n">QVariant</span> <span class="n">hintInvalid</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">hintInvalid</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">hasSkinState</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">state</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span> <span class="o">&amp;</span> <span class="n">state</span> <span class="p">)</span> <span class="o">==</span> <span class="n">state</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">skinStates</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">skinStatesAsPrintable</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">skinStatesAsPrintable</span><span class="p">(</span> <span class="n">skinStates</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">skinStatesAsPrintable</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QString</span> <span class="n">tmp</span><span class="p">;</span>
+
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">tmp</span> <span class="p">);</span>
+    <span class="n">qskDebugStates</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="n">metaObject</span><span class="p">(),</span> <span class="n">states</span> <span class="p">);</span>
+
+    <span class="c1">// we should find a better way</span>
+    <span class="k">static</span> <span class="n">QByteArray</span> <span class="n">bytes</span><span class="p">[</span> <span class="mi">10</span> <span class="p">];</span>
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">counter</span> <span class="o">=</span> <span class="p">(</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span>
+
+    <span class="n">bytes</span><span class="p">[</span> <span class="n">counter</span> <span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">.</span><span class="n">toUtf8</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">bytes</span><span class="p">[</span> <span class="n">counter</span> <span class="p">].</span><span class="n">constData</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QskMargins</span> <span class="nf">qskEffectivePadding</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">inner</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">shape</span> <span class="o">=</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">boxShapeHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">).</span><span class="n">toAbsolute</span><span class="p">(</span> <span class="n">size</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">borderMetrics</span> <span class="o">=</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">boxBorderMetricsHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">left</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">shape</span><span class="p">.</span><span class="n">radius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopLeftCorner</span> <span class="p">).</span><span class="n">width</span><span class="p">(),</span>
+        <span class="n">shape</span><span class="p">.</span><span class="n">radius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomLeftCorner</span> <span class="p">).</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">top</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">shape</span><span class="p">.</span><span class="n">radius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopLeftCorner</span> <span class="p">).</span><span class="n">height</span><span class="p">(),</span>
+        <span class="n">shape</span><span class="p">.</span><span class="n">radius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopRightCorner</span> <span class="p">).</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">right</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">shape</span><span class="p">.</span><span class="n">radius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopRightCorner</span> <span class="p">).</span><span class="n">width</span><span class="p">(),</span>
+        <span class="n">shape</span><span class="p">.</span><span class="n">radius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomRightCorner</span> <span class="p">).</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">shape</span><span class="p">.</span><span class="n">radius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomLeftCorner</span> <span class="p">).</span><span class="n">height</span><span class="p">(),</span>
+        <span class="n">shape</span><span class="p">.</span><span class="n">radius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomRightCorner</span> <span class="p">).</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">QskMargins</span> <span class="n">padding</span><span class="p">(</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="p">);</span>
+
+    <span class="c1">// half of the border goes to the inner side</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">borderMargins</span> <span class="o">=</span> <span class="n">borderMetrics</span><span class="p">.</span><span class="n">toAbsolute</span><span class="p">(</span> <span class="n">size</span> <span class="p">).</span><span class="n">widths</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">inner</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">padding</span> <span class="o">-=</span> <span class="n">borderMargins</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="c1">// not correct, but to get things started. TODO ...</span>
+        <span class="n">padding</span> <span class="o">+=</span> <span class="n">borderMargins</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// sin 45° ceiled : 0.70710678;</span>
+    <span class="n">padding</span> <span class="o">*=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="mf">0.70710678</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">padding</span><span class="p">.</span><span class="n">expandedTo</span><span class="p">(</span> <span class="n">skinnable</span><span class="o">-&gt;</span><span class="n">paddingHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QMarginsF</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">innerPadding</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">outerBoxSize</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskEffectivePadding</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">outerBoxSize</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">innerBoxSize</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">outerBoxSize</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">pd</span> <span class="o">=</span> <span class="n">qskEffectivePadding</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">outerBoxSize</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">outerBoxSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">-</span> <span class="n">pd</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span>
+        <span class="n">outerBoxSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="n">pd</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">innerBox</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">outerBox</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">pd</span> <span class="o">=</span> <span class="n">qskEffectivePadding</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">outerBox</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">outerBox</span><span class="p">.</span><span class="n">marginsRemoved</span><span class="p">(</span> <span class="n">pd</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">outerBoxSize</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">innerBoxSize</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">pd</span> <span class="o">=</span> <span class="n">qskEffectivePadding</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">innerBoxSize</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="c1">// since Qt 5.14 we would have QSizeF::grownBy !</span>
+    <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">innerBoxSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">+</span> <span class="n">pd</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span>
+        <span class="n">innerBoxSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">+</span> <span class="n">pd</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">outerBox</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">innerBox</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">m</span> <span class="o">=</span> <span class="n">qskEffectivePadding</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">innerBox</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">innerBox</span><span class="p">.</span><span class="n">marginsAdded</span><span class="p">(</span> <span class="n">m</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveSkinlet</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">subControlRect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">subControlContentsRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">innerBox</span><span class="p">(</span> <span class="n">subControl</span><span class="p">,</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">subControl</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">isTransitionAccepted</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">Q_UNUSED</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span>
+
+    <span class="cm">/*
+        Usually we only need smooth transitions, when state changes
+        happen while the skinnable is visible. There are few exceptions
+        like QskPopup::Closed, that is used to slide/fade in.
+     */</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">owningControl</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">isInitiallyPainted</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">startTransition</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">QskAnimationHint</span> <span class="n">animationHint</span><span class="p">,</span> <span class="n">QVariant</span> <span class="n">from</span><span class="p">,</span> <span class="n">QVariant</span> <span class="n">to</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setSubControl</span><span class="p">(</span> <span class="n">effectiveSubcontrol</span><span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">subControl</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">startHintTransition</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">animationHint</span><span class="p">,</span> <span class="n">from</span><span class="p">,</span> <span class="n">to</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">startHintTransition</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="n">QskAnimationHint</span> <span class="n">animationHint</span><span class="p">,</span> <span class="n">QVariant</span> <span class="n">from</span><span class="p">,</span> <span class="n">QVariant</span> <span class="n">to</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">animationHint</span><span class="p">.</span><span class="n">duration</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="o">||</span> <span class="p">(</span> <span class="n">from</span> <span class="o">==</span> <span class="n">to</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">owningControl</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="o">!</span><span class="n">isTransitionAccepted</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="cm">/*
+        We might be invalid for one of the values, when an aspect
+        has not been defined for all states ( f.e. metrics are expected
+        to fallback to 0.0 ). In this case we create a default one.
+     */</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">from</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">from</span> <span class="o">=</span> <span class="n">qskTypedNullValue</span><span class="p">(</span> <span class="n">to</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">to</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">to</span> <span class="o">=</span> <span class="n">qskTypedNullValue</span><span class="p">(</span> <span class="n">from</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">from</span><span class="p">.</span><span class="n">userType</span><span class="p">()</span> <span class="o">!=</span> <span class="n">to</span><span class="p">.</span><span class="n">userType</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">flagPrimitive</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">GraphicRole</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">skin</span> <span class="o">=</span> <span class="n">effectiveSkin</span><span class="p">();</span>
+
+        <span class="n">from</span><span class="p">.</span><span class="n">setValue</span><span class="p">(</span> <span class="n">skin</span><span class="o">-&gt;</span><span class="n">graphicFilter</span><span class="p">(</span> <span class="n">from</span><span class="p">.</span><span class="n">toInt</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="n">to</span><span class="p">.</span><span class="n">setValue</span><span class="p">(</span> <span class="n">skin</span><span class="o">-&gt;</span><span class="n">graphicFilter</span><span class="p">(</span> <span class="n">to</span><span class="p">.</span><span class="n">toInt</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">aspect</span><span class="p">.</span><span class="n">clearStates</span><span class="p">();</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setAnimator</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setPlacement</span><span class="p">(</span> <span class="n">effectivePlacement</span><span class="p">()</span> <span class="p">);</span>
+
+<span class="cp">#if DEBUG_ANIMATOR
+</span>    <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">aspect</span> <span class="o">&lt;&lt;</span> <span class="n">animationHint</span><span class="p">.</span><span class="n">duration</span><span class="p">;</span>
+<span class="cp">#endif
+</span>
+    <span class="k">auto</span> <span class="n">animator</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animators</span><span class="p">.</span><span class="n">animator</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">animator</span> <span class="o">&amp;&amp;</span> <span class="n">animator</span><span class="o">-&gt;</span><span class="n">isRunning</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">from</span> <span class="o">=</span> <span class="n">animator</span><span class="o">-&gt;</span><span class="n">currentValue</span><span class="p">();</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animators</span><span class="p">.</span><span class="n">start</span><span class="p">(</span> <span class="n">control</span><span class="p">,</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">animationHint</span><span class="p">,</span> <span class="n">from</span><span class="p">,</span> <span class="n">to</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">stateFlag</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">newState</span> <span class="o">=</span> <span class="n">on</span>
+        <span class="o">?</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span> <span class="o">|</span> <span class="n">stateFlag</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">stateFlag</span> <span class="p">);</span>
+
+    <span class="n">setSkinStates</span><span class="p">(</span> <span class="n">newState</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">replaceSkinStates</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">newStates</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span> <span class="o">=</span> <span class="n">newStates</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">addSkinStates</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setSkinStates</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span> <span class="o">|</span> <span class="n">states</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">clearSkinStates</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">states</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setSkinStates</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">states</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">setSkinStates</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">newStates</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span> <span class="o">==</span> <span class="n">newStates</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">owningControl</span><span class="p">();</span>
+
+<span class="cp">#if DEBUG_STATE
+</span>    <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">":"</span>
+        <span class="o">&lt;&lt;</span> <span class="n">skinStateAsPrintable</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinState</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">"-&gt;"</span>
+        <span class="o">&lt;&lt;</span> <span class="n">skinStateAsPrintable</span><span class="p">(</span> <span class="n">newState</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">skin</span> <span class="o">=</span> <span class="n">effectiveSkin</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">skin</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">skin</span><span class="o">-&gt;</span><span class="n">stateMask</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">newStates</span> <span class="o">&amp;</span> <span class="n">mask</span> <span class="p">)</span> <span class="o">==</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span> <span class="o">&amp;</span> <span class="n">mask</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// the modified bits are not handled by the skin</span>
+
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span> <span class="o">=</span> <span class="n">newStates</span><span class="p">;</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">isTransitionAccepted</span><span class="p">(</span> <span class="n">QskAspect</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">placement</span> <span class="o">=</span> <span class="n">effectivePlacement</span><span class="p">();</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">primitiveCount</span> <span class="o">=</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">primitiveCount</span><span class="p">();</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">subControls</span> <span class="o">=</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">subControls</span><span class="p">();</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">subControl</span> <span class="o">:</span> <span class="n">subControls</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">aspect</span> <span class="o">=</span> <span class="n">subControl</span> <span class="o">|</span> <span class="n">placement</span><span class="p">;</span>
+
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">skinTable</span> <span class="o">=</span> <span class="n">skin</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">();</span>
+
+            <span class="k">for</span> <span class="p">(</span> <span class="n">uint</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">typeCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">type</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Type</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">effectiveAnimation</span><span class="p">(</span> <span class="n">type</span><span class="p">,</span> <span class="n">subControl</span><span class="p">,</span> <span class="n">newStates</span> <span class="p">);</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">hint</span><span class="p">.</span><span class="n">duration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="cm">/*
+                        Starting an animator for all primitives,
+                        that differ between the states
+                     */</span>
+
+                    <span class="k">for</span> <span class="p">(</span> <span class="n">uint</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">primitiveCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">const</span> <span class="k">auto</span> <span class="n">primitive</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Primitive</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+                        <span class="n">aspect</span><span class="p">.</span><span class="n">setPrimitive</span><span class="p">(</span> <span class="n">type</span><span class="p">,</span> <span class="n">primitive</span> <span class="p">);</span>
+
+                        <span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span><span class="p">;</span>
+                        <span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">newStates</span><span class="p">;</span>
+
+                        <span class="kt">bool</span> <span class="n">doTransition</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+                        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hintTable</span><span class="p">.</span><span class="n">hasStates</span><span class="p">()</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="cm">/*
+                                The hints are found by stripping the state bits one by
+                                one until a lookup into the hint table is successful.
+                                So for deciding whether two aspects lead to the same hint
+                                we can stop as soon as the aspects have the same state bits.
+                                This way we can reduce the number of lookups significantly
+                                for skinnables with many state bits.
+
+                             */</span>
+                            <span class="n">doTransition</span> <span class="o">=</span> <span class="o">!</span><span class="n">skinTable</span><span class="p">.</span><span class="n">isResolutionMatching</span><span class="p">(</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span> <span class="p">);</span>
+                        <span class="p">}</span>
+
+                        <span class="k">if</span> <span class="p">(</span> <span class="n">doTransition</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">startHintTransition</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">hint</span><span class="p">,</span>
+                                <span class="n">storedHint</span><span class="p">(</span> <span class="n">a1</span> <span class="p">),</span> <span class="n">storedHint</span><span class="p">(</span> <span class="n">a2</span> <span class="p">)</span> <span class="p">);</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinStates</span> <span class="o">=</span> <span class="n">newStates</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemHasContents</span> <span class="p">)</span>
+        <span class="n">control</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskSkin</span><span class="o">*</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">effectiveSkin</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinlet</span> <span class="p">)</span>
+        <span class="n">skin</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">skinlet</span><span class="o">-&gt;</span><span class="n">skin</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">skin</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">owningControl</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">window</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskWindow</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">skin</span> <span class="o">=</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">skin</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">skin</span> <span class="o">?</span> <span class="n">skin</span> <span class="o">:</span> <span class="n">qskSetup</span><span class="o">-&gt;</span><span class="n">skin</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">effectivePlacement</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">NoPlacement</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">updateNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parentNode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">effectiveSkinlet</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">updateNode</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">parentNode</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">effectiveSubcontrol</span><span class="p">(</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">proxies</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">subcontrolProxies</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">proxies</span><span class="o">-&gt;</span><span class="n">find</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">proxies</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">substitutedSubcontrol</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">substitutedSubcontrol</span><span class="p">(</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// derived classes might want to redirect a sub-control</span>
+    <span class="k">return</span> <span class="n">subControl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskControl</span><span class="o">*</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">controlCast</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskIsControl</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span>
+        <span class="o">?</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskControl</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="o">:</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QskControl</span><span class="o">*</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">controlCast</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskIsControl</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span>
+        <span class="o">?</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskControl</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span> <span class="o">:</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">debug</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">qskDebugAspect</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="n">metaObject</span><span class="p">(),</span> <span class="n">aspect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">debug</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">state</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">qskDebugStates</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="n">metaObject</span><span class="p">(),</span> <span class="n">state</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">debug</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">qskDebugAspect</span><span class="p">(</span> <span class="n">qDebug</span><span class="p">(),</span> <span class="n">metaObject</span><span class="p">(),</span> <span class="n">aspect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinnable</span><span class="o">::</span><span class="n">debug</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">state</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">qskDebugStates</span><span class="p">(</span> <span class="n">qDebug</span><span class="p">(),</span> <span class="n">metaObject</span><span class="p">(),</span> <span class="n">state</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="cp">#include &lt;qdebug.h&gt;
+</span>
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskSkinHintStatus</span><span class="o">&amp;</span> <span class="n">status</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+
+    <span class="k">switch</span><span class="p">(</span> <span class="n">status</span><span class="p">.</span><span class="n">source</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">Skinnable</span><span class="p">:</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"Skinnable"</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">Skin</span><span class="p">:</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"Skin"</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">QskSkinHintStatus</span><span class="o">::</span><span class="n">Animator</span><span class="p">:</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"Animator"</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="nl">default:</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"None"</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">": "</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">aspect</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

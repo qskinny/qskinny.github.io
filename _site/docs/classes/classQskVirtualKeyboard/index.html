@@ -1,0 +1,268 @@
+<h1 id="qskvirtualkeyboard">QskVirtualKeyboard</h1>
+
+<p>Inherits from QskBox</p>
+
+<h2 id="public-types">Public Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#enum-mode">Mode</a></strong> { CurrentMode = -1, LowercaseMode, UppercaseMode, SpecialCharacterMode, ModeCount}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-signals">Public Signals</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#signal-modechanged">modeChanged</a></strong>(Mode )</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#signal-keyselected">keySelected</a></strong>(int keyCode)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#function-qskvirtualkeyboard">QskVirtualKeyboard</a></strong>(QQuickItem * parent =nullptr)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#function-~qskvirtualkeyboard">~QskVirtualKeyboard</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#function-setmode">setMode</a></strong>(Mode mode)</td>
+    </tr>
+    <tr>
+      <td>Mode</td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#function-mode">mode</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#function-updatelocale">updateLocale</a></strong>(const QLocale &amp; locale)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#function-haskey">hasKey</a></strong>(int keyCode) const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#function-updatelayout">updateLayout</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>QSizeF</td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#function-layoutsizehint">layoutSizeHint</a></strong>(Qt::SizeHint which, const QSizeF &amp; constraint) const override</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#function-substitutedsubcontrol">substitutedSubcontrol</a></strong>(<a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl) const override</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-attributes">Public Attributes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#variable-panel">Panel</a></strong></td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#variable-buttonpanel">ButtonPanel</a></strong></td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskVirtualKeyboard/#variable-buttontext">ButtonText</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+
+<h3 id="enum-mode">enum Mode</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CurrentMode</td>
+      <td>-1</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>LowercaseMode</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>UppercaseMode</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>SpecialCharacterMode</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>ModeCount</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-signals-documentation">Public Signals Documentation</h2>
+
+<h3 id="signal-modechanged">signal modeChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">modeChanged</span><span class="p">(</span>
+    <span class="n">Mode</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="signal-keyselected">signal keySelected</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">keySelected</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">keyCode</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskvirtualkeyboard">function QskVirtualKeyboard</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskVirtualKeyboard</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskvirtualkeyboard-1">function ~QskVirtualKeyboard</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskVirtualKeyboard</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-setmode">function setMode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setMode</span><span class="p">(</span>
+    <span class="n">Mode</span> <span class="n">mode</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-mode">function mode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Mode</span> <span class="n">mode</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-updatelocale">function updateLocale</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">updateLocale</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QLocale</span> <span class="o">&amp;</span> <span class="n">locale</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-haskey">function hasKey</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">hasKey</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">keyCode</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-updatelayout">function updateLayout</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">updateLayout</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-layoutsizehint">function layoutSizeHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span>
+<span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-substitutedsubcontrol">function substitutedSubcontrol</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">substitutedSubcontrol</span><span class="p">(</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+
+<h3 id="variable-panel">variable Panel</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">Panel</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="variable-buttonpanel">variable ButtonPanel</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">ButtonPanel</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="variable-buttontext">variable ButtonText</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">ButtonText</span><span class="p">;</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:27 CEST</p>

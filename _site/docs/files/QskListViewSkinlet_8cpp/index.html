@@ -1,0 +1,530 @@
+<h1 id="controlsqsklistviewskinletcpp">controls/QskListViewSkinlet.cpp</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskListViewNode/">QskListViewNode</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskListViewSkinlet.h"
+#include "QskListView.h"
+</span>
+<span class="cp">#include "QskColorFilter.h"
+#include "QskGraphic.h"
+#include "QskSGNode.h"
+</span>
+<span class="cp">#include &lt;qmath.h&gt;
+#include &lt;qsgnode.h&gt;
+#include &lt;qsgsimplerectnode.h&gt;
+#include &lt;qtransform.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskListViewNode</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QSGTransformNode</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="kr">inline</span> <span class="n">QskListViewNode</span><span class="p">(</span> <span class="kt">int</span> <span class="n">columnCount</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">m_columnCount</span><span class="p">(</span> <span class="n">columnCount</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">m_rowMin</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">m_rowMax</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_backgroundNode</span><span class="p">.</span><span class="n">setFlag</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">OwnedByParent</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="n">appendChildNode</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_backgroundNode</span> <span class="p">);</span>
+
+        <span class="n">m_foregroundNode</span><span class="p">.</span><span class="n">setFlag</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">OwnedByParent</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="n">appendChildNode</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_foregroundNode</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">backgroundNode</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="o">&amp;</span><span class="n">m_backgroundNode</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">foregroundNode</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="o">&amp;</span><span class="n">m_foregroundNode</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">resetRows</span><span class="p">(</span> <span class="kt">int</span> <span class="n">rowMin</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rowMax</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_rowMin</span> <span class="o">=</span> <span class="n">rowMin</span><span class="p">;</span>
+        <span class="n">m_rowMax</span> <span class="o">=</span> <span class="n">rowMax</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">int</span> <span class="n">rowMin</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">m_rowMin</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">int</span> <span class="n">rowMax</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">m_rowMax</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">intersects</span><span class="p">(</span> <span class="kt">int</span> <span class="n">rowMin</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rowMax</span> <span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span> <span class="n">rowMin</span> <span class="o">&lt;=</span> <span class="n">m_rowMax</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">rowMax</span> <span class="o">&gt;=</span> <span class="n">m_rowMin</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">int</span> <span class="n">nodeCount</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span> <span class="n">m_rowMin</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">?</span> <span class="p">(</span> <span class="n">m_rowMax</span> <span class="o">-</span> <span class="n">m_rowMin</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="n">m_columnCount</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">int</span> <span class="n">columnCount</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">m_columnCount</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">invalidate</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">m_rowMin</span> <span class="o">=</span> <span class="n">m_rowMax</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">int</span> <span class="n">m_columnCount</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">m_rowMin</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">m_rowMax</span><span class="p">;</span>
+
+    <span class="n">QSGNode</span> <span class="n">m_backgroundNode</span><span class="p">;</span>
+    <span class="n">QSGNode</span> <span class="n">m_foregroundNode</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskListViewSkinlet</span><span class="o">::</span><span class="n">QskListViewSkinlet</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">skin</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskListViewSkinlet</span><span class="o">::~</span><span class="n">QskListViewSkinlet</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskListViewSkinlet</span><span class="o">::</span><span class="n">updateContentsNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskScrollView</span><span class="o">*</span> <span class="n">scrollView</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">listView</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">scrollView</span> <span class="p">);</span>
+
+    <span class="k">auto</span><span class="o">*</span> <span class="n">listViewNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskListViewNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">node</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">listViewNode</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">listViewNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskListViewNode</span><span class="p">(</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">columnCount</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">QTransform</span> <span class="n">transform</span><span class="p">;</span>
+    <span class="n">transform</span><span class="p">.</span><span class="n">translate</span><span class="p">(</span> <span class="o">-</span><span class="n">listView</span><span class="o">-&gt;</span><span class="n">scrollPos</span><span class="p">().</span><span class="n">x</span><span class="p">(),</span> <span class="o">-</span><span class="n">listView</span><span class="o">-&gt;</span><span class="n">scrollPos</span><span class="p">().</span><span class="n">y</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">listViewNode</span><span class="o">-&gt;</span><span class="n">setMatrix</span><span class="p">(</span> <span class="n">transform</span> <span class="p">);</span>
+
+    <span class="n">updateBackgroundNodes</span><span class="p">(</span> <span class="n">listView</span><span class="p">,</span> <span class="n">listViewNode</span> <span class="p">);</span>
+    <span class="n">updateForegroundNodes</span><span class="p">(</span> <span class="n">listView</span><span class="p">,</span> <span class="n">listViewNode</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">listViewNode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskListViewSkinlet</span><span class="o">::</span><span class="n">updateBackgroundNodes</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span> <span class="n">listView</span><span class="p">,</span> <span class="n">QskListViewNode</span><span class="o">*</span> <span class="n">listViewNode</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">backgroundNode</span> <span class="o">=</span> <span class="n">listViewNode</span><span class="o">-&gt;</span><span class="n">backgroundNode</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">cellHeight</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">rowHeight</span><span class="p">();</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">viewRect</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">viewContentsRect</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="n">scrolledPos</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">scrollPos</span><span class="p">();</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">rowMin</span> <span class="o">=</span> <span class="n">qFloor</span><span class="p">(</span> <span class="n">scrolledPos</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">/</span> <span class="n">cellHeight</span> <span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">rowMax</span> <span class="o">=</span> <span class="n">qCeil</span><span class="p">(</span> <span class="p">(</span> <span class="n">scrolledPos</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">+</span> <span class="n">viewRect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="o">/</span> <span class="n">cellHeight</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">rowMax</span> <span class="o">&gt;=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">rowCount</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">rowMax</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">rowCount</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">rowSelected</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">selectedRow</span><span class="p">();</span>
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">viewRect</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">+</span> <span class="n">scrolledPos</span><span class="p">.</span><span class="n">x</span><span class="p">();</span>
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">viewRect</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+
+    <span class="k">auto</span><span class="o">*</span> <span class="n">rowNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGSimpleRectNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">backgroundNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">alternatingRowColors</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+<span class="cp">#if 1
+</span>        <span class="cm">/*
+            Cell might be better for regular cells, while ( Cell | AlternateColor )
+            could be used for the alternate color TODO ...
+         */</span>
+<span class="cp">#endif
+</span>        <span class="k">const</span> <span class="k">auto</span> <span class="n">color</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">color</span><span class="p">(</span> <span class="n">QskListView</span><span class="o">::</span><span class="n">Cell</span> <span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">rowMin</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;=</span> <span class="n">rowMax</span><span class="p">;</span> <span class="n">row</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">row</span> <span class="o">%</span> <span class="mi">2</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">rowNode</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">rowNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSGSimpleRectNode</span><span class="p">();</span>
+                    <span class="n">backgroundNode</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">rowNode</span> <span class="p">);</span>
+                <span class="p">}</span>
+
+                <span class="n">rowNode</span><span class="o">-&gt;</span><span class="n">setRect</span><span class="p">(</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">row</span> <span class="o">*</span> <span class="n">cellHeight</span><span class="p">,</span> <span class="n">viewRect</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">cellHeight</span> <span class="p">);</span>
+                <span class="n">rowNode</span><span class="o">-&gt;</span><span class="n">setColor</span><span class="p">(</span> <span class="n">color</span> <span class="p">);</span>
+
+                <span class="n">rowNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGSimpleRectNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">rowNode</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">()</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">rowSelected</span> <span class="o">&gt;=</span> <span class="n">rowMin</span> <span class="o">&amp;&amp;</span> <span class="n">rowSelected</span> <span class="o">&lt;=</span> <span class="n">rowMax</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">QColor</span> <span class="n">color</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">color</span><span class="p">(</span> <span class="n">QskListView</span><span class="o">::</span><span class="n">CellSelected</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">rowNode</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">rowNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSGSimpleRectNode</span><span class="p">();</span>
+            <span class="n">backgroundNode</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">rowNode</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">rowNode</span><span class="o">-&gt;</span><span class="n">setRect</span><span class="p">(</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">rowSelected</span> <span class="o">*</span> <span class="n">cellHeight</span><span class="p">,</span> <span class="n">viewRect</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">cellHeight</span> <span class="p">);</span>
+        <span class="n">rowNode</span><span class="o">-&gt;</span><span class="n">setColor</span><span class="p">(</span> <span class="n">color</span> <span class="p">);</span>
+
+        <span class="n">rowNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGSimpleRectNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">rowNode</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">nextNode</span> <span class="o">=</span> <span class="n">rowNode</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span> <span class="n">nextNode</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QSGNode</span><span class="o">*</span> <span class="n">tmpNode</span> <span class="o">=</span> <span class="n">nextNode</span><span class="p">;</span>
+        <span class="n">nextNode</span> <span class="o">=</span> <span class="n">nextNode</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">();</span>
+        <span class="k">delete</span> <span class="n">tmpNode</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskListViewSkinlet</span><span class="o">::</span><span class="n">updateForegroundNodes</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span> <span class="n">listView</span><span class="p">,</span> <span class="n">QskListViewNode</span><span class="o">*</span> <span class="n">listViewNode</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">parentNode</span> <span class="o">=</span> <span class="n">listViewNode</span><span class="o">-&gt;</span><span class="n">foregroundNode</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">rowCount</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">removeAllChildNodes</span><span class="p">();</span>
+        <span class="n">listViewNode</span><span class="o">-&gt;</span><span class="n">invalidate</span><span class="p">();</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">margins</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">paddingHint</span><span class="p">(</span> <span class="n">QskListView</span><span class="o">::</span><span class="n">Cell</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">cr</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">viewContentsRect</span><span class="p">();</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">scrolledPos</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">scrollPos</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">rowMin</span> <span class="o">=</span> <span class="n">qFloor</span><span class="p">(</span> <span class="n">scrolledPos</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">/</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">rowHeight</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">rowMax</span> <span class="o">=</span> <span class="n">rowMin</span> <span class="o">+</span> <span class="n">qCeil</span><span class="p">(</span> <span class="n">cr</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">/</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">rowHeight</span><span class="p">()</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">rowMax</span> <span class="o">&gt;=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">rowCount</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">rowMax</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">rowCount</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="cp">#if 1
+</span>    <span class="c1">// should be optimized for visible columns only</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">colMin</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">colMax</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+<span class="cp">#endif
+</span>
+    <span class="kt">bool</span> <span class="n">forwards</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">listViewNode</span><span class="o">-&gt;</span><span class="n">intersects</span><span class="p">(</span> <span class="n">rowMin</span><span class="p">,</span> <span class="n">rowMax</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            We try to avoid reallcations when scrolling, by reusing
+            the nodes of the cells leaving the viewport for those becoming visible.
+         */</span>
+
+        <span class="n">forwards</span> <span class="o">=</span> <span class="p">(</span> <span class="n">rowMin</span> <span class="o">&gt;=</span> <span class="n">listViewNode</span><span class="o">-&gt;</span><span class="n">rowMin</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">forwards</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// usually scrolling down</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">listViewNode</span><span class="o">-&gt;</span><span class="n">rowMin</span><span class="p">();</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">rowMin</span><span class="p">;</span> <span class="n">row</span><span class="o">++</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">columnCount</span><span class="p">();</span> <span class="n">col</span><span class="o">++</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">childNode</span> <span class="o">=</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">();</span>
+                    <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">removeChildNode</span><span class="p">(</span> <span class="n">childNode</span> <span class="p">);</span>
+                    <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">childNode</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="c1">// usually scrolling up</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">rowMax</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">listViewNode</span><span class="o">-&gt;</span><span class="n">rowMax</span><span class="p">();</span> <span class="n">row</span><span class="o">++</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">columnCount</span><span class="p">();</span> <span class="n">col</span><span class="o">++</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">childNode</span> <span class="o">=</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">lastChild</span><span class="p">();</span>
+                    <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">removeChildNode</span><span class="p">(</span> <span class="n">childNode</span> <span class="p">);</span>
+                    <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">prependChildNode</span><span class="p">(</span> <span class="n">childNode</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">updateVisibleForegroundNodes</span><span class="p">(</span> <span class="n">listView</span><span class="p">,</span> <span class="n">listViewNode</span><span class="p">,</span>
+        <span class="n">rowMin</span><span class="p">,</span> <span class="n">rowMax</span><span class="p">,</span> <span class="n">colMin</span><span class="p">,</span> <span class="n">colMax</span><span class="p">,</span> <span class="n">margins</span><span class="p">,</span> <span class="n">forwards</span> <span class="p">);</span>
+
+    <span class="c1">// finally putting the nodes into their position</span>
+    <span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">rowHeight</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">rowHeight</span><span class="p">();</span>
+    <span class="n">qreal</span> <span class="n">y</span> <span class="o">=</span> <span class="n">cr</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">+</span> <span class="n">rowMin</span> <span class="o">*</span> <span class="n">rowHeight</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">rowMin</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;=</span> <span class="n">rowMax</span><span class="p">;</span> <span class="n">row</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qreal</span> <span class="n">x</span> <span class="o">=</span> <span class="n">cr</span><span class="p">.</span><span class="n">left</span><span class="p">();</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">col</span> <span class="o">=</span> <span class="n">colMin</span><span class="p">;</span> <span class="n">col</span> <span class="o">&lt;=</span> <span class="n">colMax</span><span class="p">;</span> <span class="n">col</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">TransformNodeType</span> <span class="p">);</span>
+            <span class="k">auto</span> <span class="n">transformNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">node</span> <span class="p">);</span>
+
+            <span class="n">QTransform</span> <span class="n">transform</span><span class="p">;</span>
+            <span class="n">transform</span><span class="p">.</span><span class="n">translate</span><span class="p">(</span> <span class="n">x</span> <span class="o">+</span> <span class="n">margins</span><span class="p">.</span><span class="n">left</span><span class="p">(),</span> <span class="n">y</span> <span class="o">+</span> <span class="n">margins</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="n">transformNode</span><span class="o">-&gt;</span><span class="n">setMatrix</span><span class="p">(</span> <span class="n">transform</span> <span class="p">);</span>
+
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">();</span>
+            <span class="n">x</span> <span class="o">+=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">columnWidth</span><span class="p">(</span> <span class="n">col</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">y</span> <span class="o">+=</span> <span class="n">rowHeight</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">listViewNode</span><span class="o">-&gt;</span><span class="n">resetRows</span><span class="p">(</span> <span class="n">rowMin</span><span class="p">,</span> <span class="n">rowMax</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskListViewSkinlet</span><span class="o">::</span><span class="n">updateVisibleForegroundNodes</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span> <span class="n">listView</span><span class="p">,</span> <span class="n">QskListViewNode</span><span class="o">*</span> <span class="n">listViewNode</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">rowMin</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rowMax</span><span class="p">,</span> <span class="kt">int</span> <span class="n">colMin</span><span class="p">,</span> <span class="kt">int</span> <span class="n">colMax</span><span class="p">,</span> <span class="k">const</span> <span class="n">QMarginsF</span><span class="o">&amp;</span> <span class="n">margins</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">forward</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">parentNode</span> <span class="o">=</span> <span class="n">listViewNode</span><span class="o">-&gt;</span><span class="n">foregroundNode</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">rowCount</span> <span class="o">=</span> <span class="n">rowMax</span> <span class="o">-</span> <span class="n">rowMin</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">colCount</span> <span class="o">=</span> <span class="n">colMax</span> <span class="o">-</span> <span class="n">colMin</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">obsoleteNodesCount</span> <span class="o">=</span> <span class="n">listViewNode</span><span class="o">-&gt;</span><span class="n">nodeCount</span><span class="p">()</span> <span class="o">-</span> <span class="n">rowCount</span> <span class="o">*</span> <span class="n">colCount</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">forward</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">obsoleteNodesCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+            <span class="k">delete</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">lastChild</span><span class="p">();</span>
+
+        <span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">();</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">rowMin</span><span class="p">;</span> <span class="n">row</span> <span class="o">&lt;=</span> <span class="n">rowMax</span><span class="p">;</span> <span class="n">row</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">rowHeight</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span> <span class="n">margins</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">+</span> <span class="n">margins</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">col</span> <span class="o">&lt;</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">columnCount</span><span class="p">();</span> <span class="n">col</span><span class="o">++</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">columnWidth</span><span class="p">(</span> <span class="n">col</span> <span class="p">)</span> <span class="o">-</span> <span class="p">(</span> <span class="n">margins</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">+</span> <span class="n">margins</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="p">);</span>
+
+                <span class="n">node</span> <span class="o">=</span> <span class="n">updateForegroundNode</span><span class="p">(</span> <span class="n">listView</span><span class="p">,</span>
+                    <span class="n">parentNode</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">node</span> <span class="p">),</span>
+                    <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">),</span> <span class="n">forward</span> <span class="p">);</span>
+
+                <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">obsoleteNodesCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+            <span class="k">delete</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">();</span>
+
+        <span class="k">auto</span><span class="o">*</span> <span class="n">node</span> <span class="o">=</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">lastChild</span><span class="p">();</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">rowMax</span><span class="p">;</span> <span class="n">row</span> <span class="o">&gt;=</span> <span class="n">rowMin</span><span class="p">;</span> <span class="n">row</span><span class="o">--</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">rowHeight</span><span class="p">()</span> <span class="o">-</span> <span class="p">(</span> <span class="n">margins</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">+</span> <span class="n">margins</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">col</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">col</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">col</span><span class="o">--</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">columnWidth</span><span class="p">(</span> <span class="n">col</span> <span class="p">)</span> <span class="o">-</span> <span class="p">(</span> <span class="n">margins</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">+</span> <span class="n">margins</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="p">);</span>
+
+                <span class="n">node</span> <span class="o">=</span> <span class="n">updateForegroundNode</span><span class="p">(</span> <span class="n">listView</span><span class="p">,</span>
+                    <span class="n">parentNode</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">node</span> <span class="p">),</span>
+                    <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">),</span> <span class="n">forward</span> <span class="p">);</span>
+
+                <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">previousSibling</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QSGTransformNode</span><span class="o">*</span> <span class="n">QskListViewSkinlet</span><span class="o">::</span><span class="n">updateForegroundNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span> <span class="n">listView</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parentNode</span><span class="p">,</span> <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="n">cellNode</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">col</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">forward</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">cellRect</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="cm">/*
+        Text nodes already have a transform root node - to avoid inserting extra
+        transform nodes, the code below becomes a bit more complicated.
+     */</span>
+    <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="n">newCellNode</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">cellNode</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">cellNode</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">TransformNodeType</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QSGNode</span><span class="o">*</span> <span class="n">oldNode</span> <span class="o">=</span> <span class="n">cellNode</span><span class="p">;</span>
+
+        <span class="k">auto</span> <span class="n">newNode</span> <span class="o">=</span> <span class="n">updateCellNode</span><span class="p">(</span> <span class="n">listView</span><span class="p">,</span> <span class="n">oldNode</span><span class="p">,</span> <span class="n">cellRect</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">TransformNodeType</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">newCellNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">newNode</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">newCellNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSGTransformNode</span><span class="p">();</span>
+                <span class="n">newCellNode</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">newNode</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">QSGNode</span><span class="o">*</span> <span class="n">oldNode</span> <span class="o">=</span> <span class="n">cellNode</span> <span class="o">?</span> <span class="n">cellNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">()</span> <span class="o">:</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="k">auto</span> <span class="n">newNode</span> <span class="o">=</span> <span class="n">updateCellNode</span><span class="p">(</span> <span class="n">listView</span><span class="p">,</span> <span class="n">oldNode</span><span class="p">,</span> <span class="n">cellRect</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">TransformNodeType</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">newCellNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">newNode</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">cellNode</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">newCellNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSGTransformNode</span><span class="p">();</span>
+                    <span class="n">newCellNode</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">newNode</span> <span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span> <span class="o">!=</span> <span class="n">oldNode</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">delete</span> <span class="n">cellNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">();</span>
+                        <span class="n">cellNode</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">newNode</span> <span class="p">);</span>
+
+                        <span class="n">newCellNode</span> <span class="o">=</span> <span class="n">cellNode</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">newCellNode</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">newCellNode</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSGTransformNode</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">cellNode</span> <span class="o">!=</span> <span class="n">newCellNode</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">cellNode</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">insertChildNodeAfter</span><span class="p">(</span> <span class="n">newCellNode</span><span class="p">,</span> <span class="n">cellNode</span> <span class="p">);</span>
+            <span class="k">delete</span> <span class="n">cellNode</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">forward</span> <span class="p">)</span>
+                <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">newCellNode</span> <span class="p">);</span>
+            <span class="k">else</span>
+                <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">prependChildNode</span><span class="p">(</span> <span class="n">newCellNode</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">newCellNode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskListViewSkinlet</span><span class="o">::</span><span class="n">updateCellNode</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span> <span class="n">listView</span><span class="p">,</span>
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">contentNode</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">col</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">QskSGNode</span><span class="p">;</span>
+
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">newNode</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+<span class="cp">#if 1
+</span>    <span class="cm">/*
+        Alignments, text options etc are user definable attributes and need
+        to be adjustable - at least individually for each column - from the
+        public API of QskListView TODO ...
+     */</span>
+<span class="cp">#endif
+</span>    <span class="k">const</span> <span class="k">auto</span> <span class="n">alignment</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">alignmentHint</span><span class="p">(</span>
+        <span class="n">QskListView</span><span class="o">::</span><span class="n">Cell</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignVCenter</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignLeft</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">value</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">valueAt</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="n">QskGraphic</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">nodeRole</span><span class="p">(</span> <span class="n">contentNode</span> <span class="p">)</span> <span class="o">==</span> <span class="n">GraphicRole</span> <span class="p">)</span>
+            <span class="n">newNode</span> <span class="o">=</span> <span class="n">contentNode</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">colorFilter</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">graphicFilterAt</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="p">);</span>
+
+        <span class="n">newNode</span> <span class="o">=</span> <span class="n">updateGraphicNode</span><span class="p">(</span> <span class="n">listView</span><span class="p">,</span> <span class="n">newNode</span><span class="p">,</span>
+            <span class="n">value</span><span class="p">.</span><span class="n">value</span><span class="o">&lt;</span> <span class="n">QskGraphic</span> <span class="o">&gt;</span><span class="p">(),</span> <span class="n">colorFilter</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">alignment</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span> <span class="p">)</span>
+            <span class="n">setNodeRole</span><span class="p">(</span> <span class="n">newNode</span><span class="p">,</span> <span class="n">GraphicRole</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="n">QString</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">nodeRole</span><span class="p">(</span> <span class="n">contentNode</span> <span class="p">)</span> <span class="o">==</span> <span class="n">TextRole</span> <span class="p">)</span>
+            <span class="n">newNode</span> <span class="o">=</span> <span class="n">contentNode</span><span class="p">;</span>
+
+        <span class="k">auto</span> <span class="n">subControl</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">textSubControlAt</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="p">);</span>
+
+        <span class="n">newNode</span> <span class="o">=</span> <span class="n">updateTextNode</span><span class="p">(</span> <span class="n">listView</span><span class="p">,</span> <span class="n">newNode</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">alignment</span><span class="p">,</span>
+            <span class="n">value</span><span class="p">.</span><span class="n">toString</span><span class="p">(),</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">(),</span> <span class="n">subControl</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">newNode</span> <span class="p">)</span>
+            <span class="n">setNodeRole</span><span class="p">(</span> <span class="n">newNode</span><span class="p">,</span> <span class="n">TextRole</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskListViewSkinlet: got unsupported QVariant type"</span> <span class="o">&lt;&lt;</span> <span class="n">value</span><span class="p">.</span><span class="n">typeName</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">newNode</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskListViewSkinlet</span><span class="o">::</span><span class="n">sizeHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">listView</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">;</span> <span class="c1">// shouldn't we return something ???</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MaximumSize</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">preferredWidthFromColumns</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">scrollableSize</span><span class="p">().</span><span class="n">width</span><span class="p">();</span>
+            <span class="n">w</span> <span class="o">+=</span> <span class="n">listView</span><span class="o">-&gt;</span><span class="n">metric</span><span class="p">(</span> <span class="n">QskScrollView</span><span class="o">::</span><span class="n">VerticalScrollBar</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Size</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskListViewSkinlet.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

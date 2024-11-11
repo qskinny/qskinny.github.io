@@ -1,0 +1,630 @@
+<h1 id="inputpanelqskinputpanelcpp">inputpanel/QskInputPanel.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QQuickItem *</td>
+      <td><strong><a href="/docs/files/QskInputPanel_8cpp/#function-qskreceiveritem">qskReceiverItem</a></strong>(const QskInputPanel * panel)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskInputPanel_8cpp/#function-qskuseprediction">qskUsePrediction</a></strong>(Qt::InputMethodHints hints)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskInputPanel_8cpp/#function-qsksendtext">qskSendText</a></strong>(QQuickItem * receiver, const QString &amp; text, bool isFinal)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskInputPanel_8cpp/#function-qsksendreplacetext">qskSendReplaceText</a></strong>(QQuickItem * receiver, const QString &amp; text)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskInputPanel_8cpp/#function-qsksendkey">qskSendKey</a></strong>(QQuickItem * receiver, int key)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskreceiveritem">function qskReceiverItem</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">qskReceiverItem</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskInputPanel</span> <span class="o">*</span> <span class="n">panel</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskuseprediction">function qskUsePrediction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskUsePrediction</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="n">hints</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksendtext">function qskSendText</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskSendText</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">receiver</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">isFinal</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksendreplacetext">function qskSendReplaceText</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskSendReplaceText</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">receiver</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksendkey">function qskSendKey</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskSendKey</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">receiver</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">key</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskInputPanel.h"
+#include "QskInputContext.h"
+#include "QskTextPredictor.h"
+</span>
+<span class="cp">#include &lt;qpointer.h&gt;
+#include &lt;qtextformat.h&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="nf">qskReceiverItem</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskInputPanel</span><span class="o">*</span> <span class="n">panel</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">panel</span><span class="o">-&gt;</span><span class="n">inputProxy</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">item</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">panel</span><span class="o">-&gt;</span><span class="n">inputItem</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskUsePrediction</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="n">hints</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">constexpr</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="n">mask</span> <span class="o">=</span>
+        <span class="n">Qt</span><span class="o">::</span><span class="n">ImhNoPredictiveText</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImhExclusiveInputMask</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImhHiddenText</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span> <span class="n">hints</span> <span class="o">&amp;</span> <span class="n">mask</span> <span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskSendText</span><span class="p">(</span>
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">isFinal</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isFinal</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QInputMethodEvent</span> <span class="n">event</span><span class="p">;</span>
+
+        <span class="cm">/*
+            QQuickTextInput is buggy when receiving empty commit strings.
+            We need to send a wrong replaceLength to work around it.
+            See QTBUG: 68874
+         */</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">text</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">event</span><span class="p">.</span><span class="n">setCommitString</span><span class="p">(</span> <span class="n">text</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span>
+        <span class="k">else</span>
+            <span class="n">event</span><span class="p">.</span><span class="n">setCommitString</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+
+        <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">QTextCharFormat</span> <span class="n">format</span><span class="p">;</span>
+        <span class="n">format</span><span class="p">.</span><span class="n">setFontUnderline</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+        <span class="k">const</span> <span class="n">QInputMethodEvent</span><span class="o">::</span><span class="n">Attribute</span> <span class="n">attribute</span><span class="p">(</span>
+            <span class="n">QInputMethodEvent</span><span class="o">::</span><span class="n">TextFormat</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">(),</span> <span class="n">format</span> <span class="p">);</span>
+
+        <span class="n">QInputMethodEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">text</span><span class="p">,</span> <span class="p">{</span> <span class="n">attribute</span> <span class="p">}</span> <span class="p">);</span>
+
+        <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskSendReplaceText</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">QInputMethodEvent</span><span class="o">::</span><span class="n">Attribute</span> <span class="n">attribute</span><span class="p">(</span>
+        <span class="n">QInputMethodEvent</span><span class="o">::</span><span class="n">Selection</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">32767</span><span class="p">,</span> <span class="n">QVariant</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">QInputMethodEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">QString</span><span class="p">(),</span> <span class="p">{</span> <span class="n">attribute</span> <span class="p">}</span> <span class="p">);</span>
+    <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+
+    <span class="n">qskSendText</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskSendKey</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="kt">int</span> <span class="n">key</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">receiver</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">QKeyEvent</span> <span class="n">keyPress</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">KeyPress</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoModifier</span> <span class="p">);</span>
+    <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">keyPress</span> <span class="p">);</span>
+
+    <span class="n">QKeyEvent</span> <span class="n">keyRelease</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">KeyRelease</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoModifier</span> <span class="p">);</span>
+    <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">keyRelease</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">KeyProcessor</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="k">struct</span> <span class="nc">Result</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">key</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+            <span class="n">QString</span> <span class="n">text</span><span class="p">;</span>
+            <span class="kt">bool</span> <span class="n">isFinal</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">};</span>
+
+        <span class="n">Result</span> <span class="n">processKey</span><span class="p">(</span>
+            <span class="kt">int</span> <span class="n">key</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="n">inputHints</span><span class="p">,</span>
+            <span class="n">QskTextPredictor</span><span class="o">*</span> <span class="n">predictor</span><span class="p">,</span> <span class="kt">int</span> <span class="n">spaceLeft</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Result</span> <span class="n">result</span><span class="p">;</span>
+
+            <span class="c1">// First we have to handle the control keys</span>
+
+            <span class="k">switch</span> <span class="p">(</span> <span class="n">key</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Backspace</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Muhenkan</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">predictor</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_preedit</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">m_preedit</span><span class="p">.</span><span class="n">chop</span><span class="p">(</span> <span class="mi">1</span> <span class="p">);</span>
+
+                            <span class="n">result</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">m_preedit</span><span class="p">;</span>
+                            <span class="n">result</span><span class="p">.</span><span class="n">isFinal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+                            <span class="n">predictor</span><span class="o">-&gt;</span><span class="n">request</span><span class="p">(</span> <span class="n">m_preedit</span> <span class="p">);</span>
+
+                            <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+
+                    <span class="n">result</span><span class="p">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Backspace</span><span class="p">;</span>
+                    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Return</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">predictor</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_preedit</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="k">if</span> <span class="p">(</span> <span class="n">spaceLeft</span> <span class="p">)</span>
+                            <span class="p">{</span>
+                                <span class="n">result</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">m_preedit</span><span class="p">.</span><span class="n">left</span><span class="p">(</span> <span class="n">spaceLeft</span> <span class="p">);</span>
+                                <span class="n">result</span><span class="p">.</span><span class="n">isFinal</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                            <span class="p">}</span>
+
+                            <span class="n">reset</span><span class="p">();</span>
+
+                            <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+
+                    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">inputHints</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImhMultiLine</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">result</span><span class="p">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Return</span><span class="p">;</span>
+                        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+                    <span class="p">}</span>
+
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Space</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">predictor</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_preedit</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">spaceLeft</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">m_preedit</span> <span class="o">+=</span> <span class="n">keyString</span><span class="p">(</span> <span class="n">key</span> <span class="p">);</span>
+                            <span class="n">m_preedit</span> <span class="o">=</span> <span class="n">m_preedit</span><span class="p">.</span><span class="n">left</span><span class="p">(</span> <span class="n">spaceLeft</span> <span class="p">);</span>
+
+                            <span class="n">result</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">m_preedit</span><span class="p">;</span>
+                            <span class="n">result</span><span class="p">.</span><span class="n">isFinal</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+                            <span class="n">reset</span><span class="p">();</span>
+
+                            <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Left</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Right</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Escape</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="n">result</span><span class="p">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="p">;</span>
+                    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">const</span> <span class="n">QString</span> <span class="n">text</span> <span class="o">=</span> <span class="n">keyString</span><span class="p">(</span> <span class="n">key</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">predictor</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">m_preedit</span> <span class="o">+=</span> <span class="n">text</span><span class="p">;</span>
+
+                <span class="n">predictor</span><span class="o">-&gt;</span><span class="n">request</span><span class="p">(</span> <span class="n">m_preedit</span> <span class="p">);</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">predictor</span><span class="o">-&gt;</span><span class="n">candidateCount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">result</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">m_preedit</span><span class="p">;</span>
+                    <span class="n">result</span><span class="p">.</span><span class="n">isFinal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">result</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">m_preedit</span><span class="p">.</span><span class="n">left</span><span class="p">(</span> <span class="n">spaceLeft</span> <span class="p">);</span>
+                    <span class="n">result</span><span class="p">.</span><span class="n">isFinal</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+                    <span class="n">m_preedit</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">result</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">;</span>
+                <span class="n">result</span><span class="p">.</span><span class="n">isFinal</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">m_preedit</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="kr">inline</span> <span class="n">QString</span> <span class="n">keyString</span><span class="p">(</span> <span class="kt">int</span> <span class="n">keyCode</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="c1">// Special case entry codes here, else default to the symbol</span>
+            <span class="k">switch</span> <span class="p">(</span> <span class="n">keyCode</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Shift</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_CapsLock</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Mode_switch</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Backspace</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Muhenkan</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">QString</span><span class="p">();</span>
+
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Return</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Kanji</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">QChar</span><span class="p">(</span> <span class="n">QChar</span><span class="o">::</span><span class="n">CarriageReturn</span> <span class="p">);</span>
+
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Space</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">QChar</span><span class="p">(</span> <span class="n">QChar</span><span class="o">::</span><span class="n">Space</span> <span class="p">);</span>
+
+                <span class="nl">default:</span>
+                    <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">QChar</span><span class="p">(</span> <span class="n">keyCode</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">QString</span> <span class="n">m_preedit</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskInputPanel</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">KeyProcessor</span> <span class="n">keyProcessor</span><span class="p">;</span>
+    <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QQuickItem</span> <span class="o">&gt;</span> <span class="n">inputItem</span><span class="p">;</span>
+
+    <span class="n">QLocale</span> <span class="n">predictorLocale</span><span class="p">;</span>
+    <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskTextPredictor</span> <span class="o">&gt;</span> <span class="n">predictor</span><span class="p">;</span>
+
+    <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="n">inputHints</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">hasPredictorLocale</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskInputPanel</span><span class="o">::</span><span class="n">QskInputPanel</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setAutoLayoutChildren</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Constrained</span> <span class="p">);</span>
+
+    <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">keySelected</span><span class="p">,</span>
+        <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">commitKey</span> <span class="p">);</span>
+
+    <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">predictiveTextSelected</span><span class="p">,</span>
+        <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">commitPredictiveText</span> <span class="p">);</span>
+
+    <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskControl</span><span class="o">::</span><span class="n">localeChanged</span><span class="p">,</span>
+        <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">updateLocale</span> <span class="p">);</span>
+
+    <span class="n">updateLocale</span><span class="p">(</span> <span class="n">locale</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskInputPanel</span><span class="o">::~</span><span class="n">QskInputPanel</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">attachInputItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">disconnect</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QObject</span><span class="o">::</span><span class="n">destroyed</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">inputItemDestroyed</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span><span class="o">-&gt;</span><span class="n">reset</span><span class="p">();</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">keyProcessor</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputHints</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span><span class="p">();</span>
+
+        <span class="n">attachItem</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+
+        <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQueries</span> <span class="n">queries</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImQueryAll</span><span class="p">;</span>
+        <span class="n">queries</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">Qt</span><span class="o">::</span><span class="n">ImEnabled</span><span class="p">;</span>
+
+        <span class="n">updateInputPanel</span><span class="p">(</span> <span class="n">queries</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">inputProxy</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                Hiding the cursor in item. We use postEvent
+                so that everything on the item is done,
+                when receiving the event.
+             */</span>
+            <span class="k">const</span> <span class="n">QInputMethodEvent</span><span class="o">::</span><span class="n">Attribute</span> <span class="n">attribute</span><span class="p">(</span>
+                <span class="n">QInputMethodEvent</span><span class="o">::</span><span class="n">Cursor</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">QVariant</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">postEvent</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span>
+                <span class="k">new</span> <span class="n">QInputMethodEvent</span><span class="p">(</span> <span class="n">QString</span><span class="p">(),</span> <span class="p">{</span> <span class="n">attribute</span> <span class="p">}</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">connect</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QObject</span><span class="o">::</span><span class="n">destroyed</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">inputItemDestroyed</span><span class="p">,</span>
+            <span class="n">Qt</span><span class="o">::</span><span class="n">UniqueConnection</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">attachItem</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">updateInputPanel</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQueries</span> <span class="n">queries</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">QInputMethodQueryEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">queries</span> <span class="p">);</span>
+    <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">queries</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImHints</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputHints</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="o">&gt;</span><span class="p">(</span>
+            <span class="n">event</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImHints</span> <span class="p">).</span><span class="n">toInt</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="n">setPredictionEnabled</span><span class="p">(</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span> <span class="o">&amp;&amp;</span> <span class="n">qskUsePrediction</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputHints</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">queries</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImPreferredLanguage</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">setLocale</span><span class="p">(</span> <span class="n">event</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImPreferredLanguage</span> <span class="p">).</span><span class="n">toLocale</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 7, 0 )
+</span>    <span class="k">if</span> <span class="p">(</span> <span class="n">queries</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImInputItemClipRectangle</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            Could be used to move the panel,
+            so that it does not hide the item.
+         */</span>
+    <span class="p">}</span>
+<span class="cp">#endif
+</span><span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">updateLocale</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="n">locale</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPredictorLocale</span> <span class="o">||</span> <span class="n">locale</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictorLocale</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPredictorLocale</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictorLocale</span> <span class="o">=</span> <span class="n">locale</span><span class="p">;</span>
+
+        <span class="n">resetPredictor</span><span class="p">(</span> <span class="n">locale</span> <span class="p">);</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">keyProcessor</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">resetPredictor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="n">locale</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">predictor</span> <span class="o">=</span> <span class="n">QskInputContext</span><span class="o">::</span><span class="n">instance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">textPredictor</span><span class="p">(</span> <span class="n">locale</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">predictor</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">delete</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span><span class="o">-&gt;</span><span class="n">disconnect</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span> <span class="o">=</span> <span class="n">predictor</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">predictor</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">predictor</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">predictor</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+        <span class="n">connect</span><span class="p">(</span> <span class="n">predictor</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTextPredictor</span><span class="o">::</span><span class="n">predictionChanged</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskInputPanel</span><span class="o">::</span><span class="n">updatePrediction</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">setPredictionEnabled</span><span class="p">(</span>
+        <span class="n">predictor</span> <span class="o">&amp;&amp;</span> <span class="n">qskUsePrediction</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputHints</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">commitPredictiveText</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QString</span> <span class="n">text</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span><span class="o">-&gt;</span><span class="n">candidate</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span><span class="o">-&gt;</span><span class="n">reset</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">keyProcessor</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+
+    <span class="n">setPrediction</span><span class="p">(</span> <span class="n">QStringList</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">qskSendText</span><span class="p">(</span> <span class="n">qskReceiverItem</span><span class="p">(</span> <span class="k">this</span> <span class="p">),</span> <span class="n">text</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">updatePrediction</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span> <span class="p">)</span>
+        <span class="n">setPrediction</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span><span class="o">-&gt;</span><span class="n">candidates</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">inputProxy</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">inputItem</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">setPrompt</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">setPredictionEnabled</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">setPrediction</span><span class="p">(</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">alignment</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="cm">/*
+        When we have an input proxy, we don't care if
+        the input item becomes hidden
+     */</span>
+
+    <span class="k">return</span> <span class="n">inputProxy</span><span class="p">()</span> <span class="o">?</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignVCenter</span> <span class="o">:</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignBottom</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskInputPanel</span><span class="o">::</span><span class="n">commitKey</span><span class="p">(</span> <span class="kt">int</span> <span class="n">key</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">spaceLeft</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputHints</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImhMultiLine</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QInputMethodQueryEvent</span> <span class="n">event1</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImMaximumTextLength</span> <span class="p">);</span>
+        <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event1</span> <span class="p">);</span>
+
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">maxChars</span> <span class="o">=</span> <span class="n">event1</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImMaximumTextLength</span> <span class="p">).</span><span class="n">toInt</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">maxChars</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">QInputMethodQueryEvent</span> <span class="n">event2</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImSurroundingText</span> <span class="p">);</span>
+            <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">qskReceiverItem</span><span class="p">(</span> <span class="k">this</span> <span class="p">),</span> <span class="o">&amp;</span><span class="n">event2</span> <span class="p">);</span>
+
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">text</span> <span class="o">=</span> <span class="n">event2</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImSurroundingText</span> <span class="p">).</span><span class="n">toString</span><span class="p">();</span>
+            <span class="n">spaceLeft</span> <span class="o">=</span> <span class="n">maxChars</span> <span class="o">-</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">QskTextPredictor</span><span class="o">*</span> <span class="n">predictor</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskUsePrediction</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputHints</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">predictor</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">predictor</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">result</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">keyProcessor</span><span class="p">.</span><span class="n">processKey</span><span class="p">(</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputHints</span><span class="p">,</span> <span class="n">predictor</span><span class="p">,</span> <span class="n">spaceLeft</span> <span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">result</span><span class="p">.</span><span class="n">key</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">result</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">qskSendText</span><span class="p">(</span> <span class="n">qskReceiverItem</span><span class="p">(</span> <span class="k">this</span> <span class="p">),</span>
+                    <span class="n">result</span><span class="p">.</span><span class="n">text</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">isFinal</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Return</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">proxy</span> <span class="o">=</span> <span class="n">inputProxy</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// using input method query instead</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">value</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span> <span class="s">"text"</span> <span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="n">QString</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">qskSendReplaceText</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span><span class="p">,</span> <span class="n">value</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="n">qskSendKey</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">key</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Escape</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">qskSendKey</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">inputItem</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">key</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="n">qskSendKey</span><span class="p">(</span> <span class="n">qskReceiverItem</span><span class="p">(</span> <span class="k">this</span> <span class="p">),</span> <span class="n">result</span><span class="p">.</span><span class="n">key</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskInputPanel.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

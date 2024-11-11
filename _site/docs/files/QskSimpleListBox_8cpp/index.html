@@ -1,0 +1,330 @@
+<h1 id="controlsqsksimplelistboxcpp">controls/QskSimpleListBox.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/files/QskSimpleListBox_8cpp/#function-qskmaxwidth">qskMaxWidth</a></strong>(const QFont &amp; font, const QStringList &amp; list)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskmaxwidth">function qskMaxWidth</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">qskMaxWidth</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QFont</span> <span class="o">&amp;</span> <span class="n">font</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QStringList</span> <span class="o">&amp;</span> <span class="n">list</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSimpleListBox.h"
+#include "QskAspect.h"
+#include "QskFunctions.h"
+</span>
+<span class="cp">#include &lt;qfontmetrics.h&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="nf">qskMaxWidth</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="n">font</span><span class="p">,</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="n">list</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QFontMetricsF</span> <span class="n">fm</span><span class="p">(</span> <span class="n">font</span> <span class="p">);</span>
+
+    <span class="n">qreal</span> <span class="n">max</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="n">qskHorizontalAdvance</span><span class="p">(</span> <span class="n">fm</span><span class="p">,</span> <span class="n">list</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="n">max</span> <span class="p">)</span>
+            <span class="n">max</span> <span class="o">=</span> <span class="n">w</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">max</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskSimpleListBox</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">()</span>
+        <span class="o">:</span> <span class="n">maxTextWidth</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">columnWidthHint</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="c1">// one column at the moment only</span>
+    <span class="n">qreal</span> <span class="n">maxTextWidth</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">columnWidthHint</span><span class="p">;</span>
+
+    <span class="n">QStringList</span> <span class="n">entries</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">QskSimpleListBox</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Inherited</span><span class="o">::</span><span class="n">selectedRowChanged</span><span class="p">,</span>
+        <span class="k">this</span><span class="p">,</span> <span class="p">[</span> <span class="k">this</span> <span class="p">](</span> <span class="kt">int</span> <span class="n">row</span> <span class="p">)</span> <span class="p">{</span> <span class="n">Q_EMIT</span> <span class="n">selectedEntryChanged</span><span class="p">(</span> <span class="n">entryAt</span><span class="p">(</span> <span class="n">row</span> <span class="p">)</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSimpleListBox</span><span class="o">::~</span><span class="n">QskSimpleListBox</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">entryAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">row</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">[</span> <span class="n">row</span> <span class="p">];</span>
+
+    <span class="k">return</span> <span class="n">QString</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">valueAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">col</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">col</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">row</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">[</span> <span class="n">row</span> <span class="p">];</span>
+
+    <span class="k">return</span> <span class="n">QVariant</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">setColumnWidthHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">column</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">width</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnWidthHint</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnWidthHint</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">width</span><span class="p">,</span> <span class="n">qreal</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnWidthHint</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnWidthHint</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="o">=</span> <span class="n">qskMaxWidth</span><span class="p">(</span> <span class="n">effectiveFont</span><span class="p">(</span> <span class="n">Text</span> <span class="p">),</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span> <span class="p">);</span>
+
+        <span class="n">updateScrollableSize</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">columnWidthHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">column</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">column</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnWidthHint</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">insert</span><span class="p">(</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="n">list</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">list</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnWidthHint</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">w</span> <span class="o">=</span> <span class="n">qskMaxWidth</span><span class="p">(</span> <span class="n">effectiveFont</span><span class="p">(</span> <span class="n">Text</span> <span class="p">),</span> <span class="n">list</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="o">=</span> <span class="n">w</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span> <span class="o">+=</span> <span class="n">list</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="c1">// is there no better way ???</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">list</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">index</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">list</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">propagateEntries</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">setEntries</span><span class="p">(</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="n">entries</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">entries</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnWidthHint</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="n">insert</span><span class="p">(</span> <span class="n">entries</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QStringList</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">entries</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">insert</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnWidthHint</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">w</span> <span class="o">=</span> <span class="n">qskHorizontalAdvance</span><span class="p">(</span> <span class="n">effectiveFont</span><span class="p">(</span> <span class="n">Cell</span> <span class="p">),</span> <span class="n">text</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="o">=</span> <span class="n">w</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">append</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">text</span> <span class="p">);</span>
+
+    <span class="n">propagateEntries</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">removeAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">entries</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnWidthHint</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">w</span> <span class="o">=</span> <span class="n">qskHorizontalAdvance</span><span class="p">(</span> <span class="n">effectiveFont</span><span class="p">(</span> <span class="n">Cell</span> <span class="p">),</span> <span class="n">entries</span><span class="p">[</span> <span class="n">index</span> <span class="p">]</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">w</span> <span class="o">&gt;=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="o">=</span> <span class="n">qskMaxWidth</span><span class="p">(</span> <span class="n">effectiveFont</span><span class="p">(</span> <span class="n">Text</span> <span class="p">),</span> <span class="n">entries</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">entries</span><span class="p">.</span><span class="n">removeAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">propagateEntries</span><span class="p">();</span>
+
+    <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">selectedRow</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">row</span> <span class="o">==</span> <span class="n">index</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">qMin</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">row</span> <span class="o">!=</span> <span class="n">selectedRow</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">setSelectedRow</span><span class="p">(</span> <span class="n">row</span> <span class="p">);</span>
+        <span class="k">else</span>
+            <span class="n">Q_EMIT</span> <span class="n">selectedRowChanged</span><span class="p">(</span> <span class="n">row</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">removeBulk</span><span class="p">(</span> <span class="kt">int</span> <span class="n">from</span><span class="p">,</span> <span class="kt">int</span> <span class="n">to</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">from</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="n">from</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">to</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">to</span> <span class="o">&gt;=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="n">to</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">to</span> <span class="o">&lt;</span> <span class="n">from</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">to</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">from</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span> <span class="p">)</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">removeAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnWidthHint</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="o">=</span> <span class="n">qskMaxWidth</span><span class="p">(</span> <span class="n">effectiveFont</span><span class="p">(</span> <span class="n">Text</span> <span class="p">),</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span> <span class="p">);</span>
+
+    <span class="n">propagateEntries</span><span class="p">();</span>
+
+    <span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">selectedRow</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">row</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">from</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// nothing to do</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">row</span> <span class="o">&lt;=</span> <span class="n">to</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// we might end up here with the same row TODO ...</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="n">qMin</span><span class="p">(</span> <span class="n">from</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">row</span> <span class="o">-=</span> <span class="p">(</span> <span class="n">to</span> <span class="o">-</span> <span class="n">from</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">row</span> <span class="o">!=</span> <span class="n">selectedRow</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setSelectedRow</span><span class="p">(</span> <span class="n">row</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">clear</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">columnWidthHint</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="n">propagateEntries</span><span class="p">();</span>
+    <span class="n">setSelectedRow</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">propagateEntries</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="cp">#if 1
+</span>    <span class="c1">// when removing we might have lost the selected row -&gt; what to do then ?</span>
+<span class="cp">#endif
+</span>    <span class="n">updateScrollableSize</span><span class="p">();</span>
+    <span class="n">update</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">entriesChanged</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">rowCount</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">columnCount</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">columnWidth</span><span class="p">(</span> <span class="kt">int</span> <span class="n">col</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">col</span> <span class="o">&gt;=</span> <span class="n">columnCount</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">padding</span> <span class="o">=</span> <span class="n">paddingHint</span><span class="p">(</span> <span class="n">Cell</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">maxTextWidth</span> <span class="o">+</span> <span class="n">padding</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">+</span> <span class="n">padding</span><span class="p">.</span><span class="n">right</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">rowHeight</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">padding</span> <span class="o">=</span> <span class="n">paddingHint</span><span class="p">(</span> <span class="n">Cell</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">QFontMetricsF</span> <span class="n">fm</span><span class="p">(</span> <span class="n">effectiveFont</span><span class="p">(</span> <span class="n">Text</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">fm</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">+</span> <span class="n">padding</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">+</span> <span class="n">padding</span><span class="p">.</span><span class="n">bottom</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskSimpleListBox.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,132 @@
+<h1 id="controlsqskskinh">controls/QskSkin.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskSkin/">QskSkin</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_SKIN_H
+#define QSK_SKIN_H
+</span>
+<span class="cp">#include "QskAspect.h"
+</span>
+<span class="cp">#include &lt;qcolor.h&gt;
+#include &lt;qobject.h&gt;
+</span>
+<span class="cp">#include &lt;memory&gt;
+#include &lt;type_traits&gt;
+#include &lt;unordered_map&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskControl</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskSkinlet</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QskColorFilter</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskGraphic</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskGraphicProvider</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QskSkinHintTable</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QVariant</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskSkin</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QObject</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">SkinFontRole</span>
+    <span class="p">{</span>
+        <span class="n">DefaultFont</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+
+        <span class="n">TinyFont</span><span class="p">,</span>
+        <span class="n">SmallFont</span><span class="p">,</span>
+        <span class="n">MediumFont</span><span class="p">,</span>
+        <span class="n">LargeFont</span><span class="p">,</span>
+        <span class="n">HugeFont</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">SkinFontRole</span> <span class="p">)</span>
+
+    <span class="n">QskSkin</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskSkin</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">Control</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Skinlet</span> <span class="p">&gt;</span>
+    <span class="kt">void</span> <span class="n">declareSkinlet</span><span class="p">();</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">resetColors</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">accent</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setSkinHint</span><span class="p">(</span> <span class="n">QskAspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">hint</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">skinHint</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setGraphicFilter</span><span class="p">(</span> <span class="kt">int</span> <span class="n">graphicRole</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetGraphicFilter</span><span class="p">(</span> <span class="kt">int</span> <span class="n">graphicRole</span> <span class="p">);</span>
+    <span class="n">QskColorFilter</span> <span class="n">graphicFilter</span><span class="p">(</span> <span class="kt">int</span> <span class="n">graphicRole</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setFont</span><span class="p">(</span> <span class="kt">int</span> <span class="n">fontRole</span><span class="p">,</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetFont</span><span class="p">(</span> <span class="kt">int</span> <span class="n">fontRole</span> <span class="p">);</span>
+    <span class="n">QFont</span> <span class="n">font</span><span class="p">(</span> <span class="kt">int</span> <span class="n">fontRole</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setupFonts</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">family</span><span class="p">,</span>
+        <span class="kt">int</span> <span class="n">weight</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">italic</span> <span class="o">=</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="k">virtual</span> <span class="n">QskGraphic</span> <span class="n">symbol</span><span class="p">(</span> <span class="kt">int</span> <span class="n">symbolType</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">addGraphicProvider</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span><span class="p">,</span> <span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="p">);</span>
+    <span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="n">graphicProvider</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">hasGraphicProvider</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="k">const</span> <span class="kt">int</span><span class="o">*</span> <span class="n">dialogButtonLayout</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setStateMask</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="p">);</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">stateMask</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QskSkinlet</span><span class="o">*</span> <span class="n">skinlet</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QskSkinHintTable</span><span class="o">&amp;</span> <span class="n">hintTable</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QskSkinHintTable</span><span class="o">&amp;</span> <span class="n">hintTable</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QFont</span> <span class="o">&gt;&amp;</span> <span class="n">fonts</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskColorFilter</span> <span class="o">&gt;&amp;</span> <span class="n">graphicFilters</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">declareSkinlet</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">controlMetaObject</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">skinMetaObject</span> <span class="p">);</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">Control</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">Skinlet</span> <span class="p">&gt;</span>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskSkin</span><span class="o">::</span><span class="n">declareSkinlet</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Q_STATIC_ASSERT</span><span class="p">(</span> <span class="p">(</span> <span class="n">std</span><span class="o">::</span><span class="n">is_base_of</span><span class="o">&lt;</span> <span class="n">QskControl</span><span class="p">,</span> <span class="n">Control</span> <span class="o">&gt;::</span><span class="n">value</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">Q_STATIC_ASSERT</span><span class="p">(</span> <span class="p">(</span> <span class="n">std</span><span class="o">::</span><span class="n">is_base_of</span><span class="o">&lt;</span> <span class="n">QskSkinlet</span><span class="p">,</span> <span class="n">Skinlet</span> <span class="o">&gt;::</span><span class="n">value</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">declareSkinlet</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">Control</span><span class="o">::</span><span class="n">staticMetaObject</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Skinlet</span><span class="o">::</span><span class="n">staticMetaObject</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

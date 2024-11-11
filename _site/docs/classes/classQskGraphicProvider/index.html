@@ -1,0 +1,132 @@
+<h1 id="qskgraphicprovider">QskGraphicProvider</h1>
+
+<p>Inherits from QObject</p>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskGraphicProvider/#function-qskgraphicprovider">QskGraphicProvider</a></strong>(QObject * parent =nullptr)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskGraphicProvider/#function-~qskgraphicprovider">~QskGraphicProvider</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphicProvider/#function-setcachesize">setCacheSize</a></strong>(int size)</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskGraphicProvider/#function-cachesize">cacheSize</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphicProvider/#function-clearcache">clearCache</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> *</td>
+      <td><strong><a href="/docs/classes/classQskGraphicProvider/#function-requestgraphic">requestGraphic</a></strong>(const QString &amp; id) const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>virtual const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> *</td>
+      <td><strong><a href="/docs/classes/classQskGraphicProvider/#function-loadgraphic">loadGraphic</a></strong>(const QString &amp; id) const =0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-attributes">Protected Attributes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>std::unique_ptr&lt; PrivateData &gt;</td>
+      <td><strong><a href="/docs/classes/classQskGraphicProvider/#variable-m_data">m_data</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskgraphicprovider">function QskGraphicProvider</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGraphicProvider</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskgraphicprovider-1">function ~QskGraphicProvider</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskGraphicProvider</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-setcachesize">function setCacheSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setCacheSize</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">size</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-cachesize">function cacheSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">cacheSize</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-clearcache">function clearCache</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">clearCache</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-requestgraphic">function requestGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">*</span> <span class="n">requestGraphic</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">id</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-loadgraphic">function loadGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">*</span> <span class="n">loadGraphic</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">id</span>
+<span class="p">)</span> <span class="k">const</span> <span class="o">=</span><span class="mi">0</span>
+</code></pre></div></div>
+
+<h2 id="protected-attributes-documentation">Protected Attributes Documentation</h2>
+
+<h3 id="variable-m_data">variable m_data</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:28 CEST</p>

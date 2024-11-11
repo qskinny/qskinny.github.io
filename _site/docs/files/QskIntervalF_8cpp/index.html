@@ -1,0 +1,297 @@
+<h1 id="commonqskintervalfcpp">common/QskIntervalF.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskIntervalF_8cpp/#function-qskregisterintervalf">qskRegisterIntervalF</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>QskIntervalF</td>
+      <td><strong><a href="/docs/files/QskIntervalF_8cpp/#function-qskinterpolated">qskInterpolated</a></strong>(const QskIntervalF &amp; intv1, const QskIntervalF &amp; intv2, qreal progress)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskIntervalF_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskIntervalF &amp; interval)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskregisterintervalf">function qskRegisterIntervalF</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskRegisterIntervalF</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinterpolated">function qskInterpolated</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="n">qskInterpolated</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">intv1</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">intv2</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">progress</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">interval</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskIntervalF.h"
+#include "QskFunctions.h"
+</span>
+<span class="cp">#include &lt;qvariant.h&gt;
+#include &lt;algorithm&gt;
+</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskRegisterIntervalF</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">qRegisterMetaType</span><span class="o">&lt;</span> <span class="n">QskIntervalF</span> <span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">Q_CONSTRUCTOR_FUNCTION</span><span class="p">(</span> <span class="n">qskRegisterIntervalF</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QskIntervalF</span> <span class="nf">qskInterpolated</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">intv1</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">intv2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">lowerBound</span> <span class="o">=</span> <span class="n">intv1</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">()</span>
+        <span class="o">+</span> <span class="n">progress</span> <span class="o">*</span> <span class="p">(</span> <span class="n">intv2</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">()</span> <span class="o">-</span> <span class="n">intv1</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">upperBound</span> <span class="o">=</span> <span class="n">intv1</span><span class="p">.</span><span class="n">upperBound</span><span class="p">()</span>
+        <span class="o">+</span> <span class="n">progress</span> <span class="o">*</span> <span class="p">(</span> <span class="n">intv2</span><span class="p">.</span><span class="n">upperBound</span><span class="p">()</span> <span class="o">-</span> <span class="n">intv1</span><span class="p">.</span><span class="n">upperBound</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">QskIntervalF</span><span class="p">(</span> <span class="n">lowerBound</span><span class="p">,</span> <span class="n">upperBound</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskIntervalF</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">interpolated</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskInterpolated</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">progress</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">interpolate</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">intv1</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">intv2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">qskInterpolated</span><span class="p">(</span> <span class="n">intv1</span><span class="p">,</span> <span class="n">intv2</span><span class="p">,</span> <span class="n">progress</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">unite</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_lowerBound</span> <span class="o">&lt;</span> <span class="n">m_lowerBound</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">m_lowerBound</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_lowerBound</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_upperBound</span> <span class="o">&gt;</span> <span class="n">m_upperBound</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">m_upperBound</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_upperBound</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_lowerBound</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_lowerBound</span><span class="p">;</span>
+            <span class="n">m_upperBound</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_upperBound</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskIntervalF</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">united</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">min</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span> <span class="n">m_lowerBound</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">m_lowerBound</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">max</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">(</span> <span class="n">m_upperBound</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">m_upperBound</span> <span class="p">);</span>
+
+            <span class="k">return</span> <span class="n">QskIntervalF</span><span class="p">(</span> <span class="n">min</span><span class="p">,</span> <span class="n">max</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">other</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskIntervalF</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">intersected</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">other</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">other</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_lowerBound</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_lowerBound</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_upperBound</span> <span class="o">&lt;</span> <span class="n">other</span><span class="p">.</span><span class="n">m_lowerBound</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">QskIntervalF</span><span class="p">();</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">max</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span> <span class="n">m_upperBound</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">m_upperBound</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="n">QskIntervalF</span><span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_lowerBound</span><span class="p">,</span> <span class="n">max</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_upperBound</span> <span class="o">&lt;</span> <span class="n">m_lowerBound</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="n">QskIntervalF</span><span class="p">();</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">max</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span> <span class="n">m_upperBound</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">m_upperBound</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="n">QskIntervalF</span><span class="p">(</span> <span class="n">m_lowerBound</span><span class="p">,</span> <span class="n">max</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">intersects</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isValid</span><span class="p">()</span> <span class="o">||</span> <span class="o">!</span><span class="n">other</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_lowerBound</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_lowerBound</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_upperBound</span> <span class="o">&gt;=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_lowerBound</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">m_lowerBound</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_upperBound</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">extend</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_lowerBound</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+        <span class="n">m_upperBound</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">m_lowerBound</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_lowerBound</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="n">m_upperBound</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_upperBound</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskIntervalF</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">extended</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QskIntervalF</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">value</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">lower</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">m_lowerBound</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">upper</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">m_upperBound</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">QskIntervalF</span><span class="p">(</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">spanFromLowerBound</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_lowerBound</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+        <span class="n">m_upperBound</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">m_lowerBound</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_lowerBound</span> <span class="o">&gt;</span> <span class="n">m_upperBound</span> <span class="p">)</span>
+            <span class="n">m_upperBound</span> <span class="o">=</span> <span class="n">m_lowerBound</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">spanFromUpperBound</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_lowerBound</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+        <span class="n">m_upperBound</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">m_upperBound</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_lowerBound</span> <span class="o">&gt;</span> <span class="n">m_upperBound</span> <span class="p">)</span>
+            <span class="n">m_lowerBound</span> <span class="o">=</span> <span class="n">m_upperBound</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">fuzzyContains</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">m_lowerBound</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">m_lowerBound</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">m_upperBound</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">m_upperBound</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">fuzzyContains</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">interval</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isValid</span><span class="p">()</span> <span class="o">||</span> <span class="o">!</span><span class="n">interval</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">interval</span><span class="p">.</span><span class="n">m_lowerBound</span> <span class="o">&lt;</span> <span class="n">m_lowerBound</span> <span class="p">)</span>
+        <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">interval</span><span class="p">.</span><span class="n">m_lowerBound</span><span class="p">,</span> <span class="n">m_lowerBound</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">interval</span><span class="p">.</span><span class="n">m_upperBound</span> <span class="o">&gt;</span> <span class="n">m_upperBound</span> <span class="p">)</span>
+        <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">interval</span><span class="p">.</span><span class="n">m_upperBound</span><span class="p">,</span> <span class="n">m_upperBound</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">fuzzyIsBoundary</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">m_lowerBound</span> <span class="p">)</span>
+        <span class="o">||</span> <span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">m_upperBound</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="cp">#include &lt;qdebug.h&gt;
+</span>
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">interval</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskIntervalF("</span>
+        <span class="o">&lt;&lt;</span> <span class="n">interval</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">","</span> <span class="o">&lt;&lt;</span> <span class="n">interval</span><span class="p">.</span><span class="n">upperBound</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">")"</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">debug</span><span class="p">.</span><span class="n">space</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="cp">#include "moc_QskIntervalF.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,749 @@
+<h1 id="controlsqsktabbarcpp">controls/QskTabBar.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Qt::Orientation</td>
+      <td><strong><a href="/docs/files/QskTabBar_8cpp/#function-qskorientation">qskOrientation</a></strong>(int position)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskTabBar_8cpp/#function-qsktransposesizepolicy">qskTransposeSizePolicy</a></strong>(<a href="/docs/classes/classQskControl/">QskControl</a> * control)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskorientation">function qskOrientation</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">qskOrientation</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">position</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsktransposesizepolicy">function qskTransposeSizePolicy</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskTransposeSizePolicy</span><span class="p">(</span>
+    <span class="n">QskControl</span> <span class="o">*</span> <span class="n">control</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskTabBar.h"
+#include "QskAspect.h"
+#include "QskScrollBox.h"
+#include "QskLinearBox.h"
+#include "QskTabButton.h"
+#include "QskTextOptions.h"
+#include "QskAnimationHint.h"
+#include "QskQuick.h"
+</span>
+<span class="cp">#include &lt;qquickwindow.h&gt;
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskTabBar</span><span class="p">,</span> <span class="n">Panel</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="nf">qskOrientation</span><span class="p">(</span> <span class="kt">int</span> <span class="n">position</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">position</span> <span class="o">==</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Top</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">position</span> <span class="o">==</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Bottom</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskTransposeSizePolicy</span><span class="p">(</span> <span class="n">QskControl</span><span class="o">*</span> <span class="n">control</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">control</span><span class="o">-&gt;</span><span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">sizePolicy</span><span class="p">().</span><span class="n">transposed</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">ButtonBox</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskLinearBox</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskLinearBox</span><span class="p">;</span>
+
+      <span class="nl">public:</span>
+        <span class="n">ButtonBox</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">QskLinearBox</span><span class="p">(</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setObjectName</span><span class="p">(</span> <span class="n">QStringLiteral</span><span class="p">(</span> <span class="s">"QskTabBarLayoutBox"</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">setExtraSpacingAt</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RightEdge</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomEdge</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">restack</span><span class="p">(</span> <span class="kt">int</span> <span class="n">currentIndex</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                We can't simply reorder the buttons as the focus tab chain depends on it.
+                Again we have some QML only API ( QQuickKeyNavigationAttached ),
+                that is useless for C++, but nothing like QWidget::setTabOrder.
+                Maybe it makes sense to implement our own navigation in
+                QskControl::keyPressEvent.
+             */</span>
+
+            <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">elementCount</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">itemAtIndex</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="n">button</span><span class="o">-&gt;</span><span class="n">setZ</span><span class="p">(</span> <span class="n">i</span> <span class="o">==</span> <span class="n">currentIndex</span> <span class="o">?</span> <span class="mf">0.001</span> <span class="o">:</span> <span class="mf">0.0</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">ScrollBox</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskScrollBox</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskScrollBox</span><span class="p">;</span>
+
+      <span class="nl">public:</span>
+        <span class="n">ScrollBox</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">QskScrollBox</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setPolishOnResize</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+            <span class="n">setWheelEnabled</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+            <span class="n">enableAutoTranslation</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+            <span class="n">setFocusPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoFocus</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ScrollBox</span><span class="o">::</span><span class="n">scrollPosChanged</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskControl</span><span class="o">::</span><span class="n">focusIndicatorRectChanged</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">QRectF</span> <span class="n">focusIndicatorClipRect</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">clipRect</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">window</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">focusItem</span> <span class="o">=</span> <span class="n">window</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">activeFocusItem</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">const</span> <span class="k">auto</span> <span class="n">itemRect</span> <span class="o">=</span> <span class="n">mapRectFromItem</span><span class="p">(</span>
+                        <span class="n">focusItem</span><span class="p">,</span> <span class="n">focusItem</span><span class="o">-&gt;</span><span class="n">boundingRect</span><span class="p">()</span> <span class="p">);</span>
+
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">intersects</span><span class="p">(</span> <span class="n">itemRect</span> <span class="p">)</span> <span class="p">)</span>
+                        <span class="k">return</span> <span class="n">QRectF</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">QskAnimationHint</span> <span class="n">flickHint</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">tabBar</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskTabBar</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">parentItem</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="n">tabBar</span><span class="o">-&gt;</span><span class="n">effectiveAnimation</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Metric</span><span class="p">,</span>
+                    <span class="n">QskTabBar</span><span class="o">::</span><span class="n">Panel</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">NoState</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="c1">// should be a skin hint TODO ...</span>
+            <span class="k">return</span> <span class="n">QskAnimationHint</span><span class="p">(</span> <span class="mi">200</span><span class="p">,</span> <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">OutCubic</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">QRectF</span> <span class="n">viewContentsRect</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">layoutRect</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setFlickableOrientations</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+                <span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Ignored</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">MinimumExpanding</span> <span class="p">);</span>
+            <span class="k">else</span>
+                <span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">MinimumExpanding</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Ignored</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">ensureItemVisible</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsAncestorOf</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">mapFromItem</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">QPointF</span><span class="p">()</span> <span class="p">);</span>
+                <span class="n">ensureVisible</span><span class="p">(</span> <span class="n">QRectF</span><span class="p">(</span> <span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">(),</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">QRectF</span> <span class="n">clipRect</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">clipRect</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">qskControlCast</span><span class="p">(</span> <span class="n">parentItem</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="n">r</span> <span class="o">+=</span> <span class="n">control</span><span class="o">-&gt;</span><span class="n">paddingHint</span><span class="p">(</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+
+            <span class="cm">/*
+                Often the current tab button grows beyond the bounding rectangle
+                of the tab bar, so that it looks like being on top of the tab page
+                border. So we only want to clip in scroll direction.
+                Note: std::numeric_limits&lt; int &gt;::max() does not work - guess
+                some overflow somewhere ...
+             */</span>
+            <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">expanded</span> <span class="o">=</span> <span class="mf">0.90</span> <span class="o">*</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;::</span><span class="n">max</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">flickableOrientations</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">r</span><span class="p">.</span><span class="n">setTop</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">expanded</span> <span class="p">);</span>
+                <span class="n">r</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">expanded</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">r</span><span class="p">.</span><span class="n">setLeft</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">expanded</span> <span class="p">);</span>
+                <span class="n">r</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">expanded</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">protected:</span>
+
+        <span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LayoutRequest</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">resetImplicitSize</span><span class="p">();</span>
+                <span class="n">polish</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">updateLayout</span><span class="p">()</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">box</span> <span class="o">=</span> <span class="n">buttonBox</span><span class="p">();</span>
+
+            <span class="k">auto</span> <span class="n">boxSize</span> <span class="o">=</span> <span class="n">viewContentsRect</span><span class="p">().</span><span class="n">size</span><span class="p">();</span>
+            <span class="n">boxSize</span> <span class="o">=</span> <span class="n">qskConstrainedItemSize</span><span class="p">(</span> <span class="n">box</span><span class="p">,</span> <span class="n">boxSize</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">box</span> <span class="o">=</span> <span class="n">buttonBox</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">box</span><span class="o">-&gt;</span><span class="n">setSize</span><span class="p">(</span> <span class="n">boxSize</span> <span class="p">);</span>
+
+            <span class="n">enableAutoTranslation</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+            <span class="n">setScrollableSize</span><span class="p">(</span> <span class="n">boxSize</span> <span class="p">);</span>
+            <span class="n">setScrollPos</span><span class="p">(</span> <span class="n">scrollPos</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="n">enableAutoTranslation</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+            <span class="n">translateButtonBox</span><span class="p">();</span>
+
+            <span class="n">setClip</span><span class="p">(</span> <span class="n">width</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">||</span> <span class="n">height</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">boxSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">buttonBox</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">sizeConstraint</span><span class="p">(</span> <span class="n">which</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MinimumSize</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sizePolicy</span><span class="p">().</span><span class="n">horizontalPolicy</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">ShrinkFlag</span> <span class="p">)</span>
+                    <span class="n">hint</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sizePolicy</span><span class="p">().</span><span class="n">verticalPolicy</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">ShrinkFlag</span> <span class="p">)</span>
+                    <span class="n">hint</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+
+        <span class="kr">inline</span> <span class="n">QskLinearBox</span><span class="o">*</span> <span class="n">buttonBox</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="n">QskLinearBox</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">childItems</span><span class="p">().</span><span class="n">first</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">enableAutoTranslation</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskScrollBox</span><span class="o">::</span><span class="n">scrollPosChanged</span><span class="p">,</span>
+                    <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ScrollBox</span><span class="o">::</span><span class="n">translateButtonBox</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">disconnect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskScrollBox</span><span class="o">::</span><span class="n">scrollPosChanged</span><span class="p">,</span>
+                    <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ScrollBox</span><span class="o">::</span><span class="n">translateButtonBox</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">translateButtonBox</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">box</span> <span class="o">=</span> <span class="n">buttonBox</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">QPointF</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">viewContentsRect</span><span class="p">().</span><span class="n">topLeft</span><span class="p">()</span> <span class="o">-</span> <span class="n">scrollPos</span><span class="p">();</span>
+                <span class="n">box</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span> <span class="n">pos</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskTabBar</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Position</span> <span class="n">position</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">position</span><span class="p">(</span> <span class="n">position</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">connectButton</span><span class="p">(</span> <span class="n">QskTabButton</span><span class="o">*</span> <span class="n">button</span><span class="p">,</span> <span class="n">QskTabBar</span><span class="o">*</span> <span class="n">tabBar</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">connect</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTabButton</span><span class="o">::</span><span class="n">toggled</span><span class="p">,</span>
+                <span class="n">tabBar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTabBar</span><span class="o">::</span><span class="n">adjustCurrentIndex</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">UniqueConnection</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">disconnect</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTabButton</span><span class="o">::</span><span class="n">toggled</span><span class="p">,</span>
+                <span class="n">tabBar</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTabBar</span><span class="o">::</span><span class="n">adjustCurrentIndex</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">ScrollBox</span><span class="o">*</span> <span class="n">scrollBox</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="n">ButtonBox</span><span class="o">*</span> <span class="n">buttonBox</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">currentIndex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="n">QskTextOptions</span> <span class="n">textOptions</span><span class="p">;</span>
+    <span class="n">uint</span> <span class="n">position</span> <span class="o">:</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskTabBar</span><span class="o">::</span><span class="n">QskTabBar</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskTabBar</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Top</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskTabBar</span><span class="o">::</span><span class="n">QskTabBar</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Position</span> <span class="n">position</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">(</span> <span class="n">position</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setAutoLayoutChildren</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">orientation</span> <span class="o">=</span> <span class="n">qskOrientation</span><span class="p">(</span> <span class="n">position</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Preferred</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Preferred</span> <span class="p">);</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollBox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ScrollBox</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollBox</span><span class="o">-&gt;</span><span class="n">setOrientation</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">);</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ButtonBox</span><span class="p">(</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollBox</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setSpacing</span><span class="p">(</span> <span class="n">spacingHint</span><span class="p">(</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">Panel</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Maximum</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Maximum</span> <span class="p">);</span>
+
+    <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTabBar</span><span class="o">::</span><span class="n">currentIndexChanged</span><span class="p">,</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ButtonBox</span><span class="o">::</span><span class="n">restack</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">QueuedConnection</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTabBar</span><span class="o">::~</span><span class="n">QskTabBar</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">setTabPosition</span><span class="p">(</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Position</span> <span class="n">position</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">position</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">position</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">position</span> <span class="o">=</span> <span class="n">position</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">orientation</span> <span class="o">=</span> <span class="n">qskOrientation</span><span class="p">(</span> <span class="n">position</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qskTransposeSizePolicy</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setOrientation</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">);</span>
+        <span class="n">qskTransposeSizePolicy</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">);</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollBox</span><span class="o">-&gt;</span><span class="n">setOrientation</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="n">buttonAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">tabPositionChanged</span><span class="p">(</span> <span class="n">position</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Qsk</span><span class="o">::</span><span class="n">Position</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">tabPosition</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Position</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">position</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">orientation</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskOrientation</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">position</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">setAutoScrollFocusedButton</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollBox</span><span class="o">-&gt;</span><span class="n">autoScrollFocusItem</span><span class="p">()</span> <span class="o">!=</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollBox</span><span class="o">-&gt;</span><span class="n">setAutoScrollFocusedItem</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+        <span class="n">Q_EMIT</span> <span class="n">autoScrollFocusedButtonChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">autoScrollFocusButton</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollBox</span><span class="o">-&gt;</span><span class="n">autoScrollFocusItem</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">setAutoFitTabs</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">orientation</span> <span class="o">=</span> <span class="n">qskOrientation</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">position</span> <span class="p">);</span>
+    <span class="kt">int</span> <span class="n">policy</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">sizePolicy</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">policy</span> <span class="o">&amp;</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">GrowFlag</span> <span class="p">)</span> <span class="o">!=</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+            <span class="n">policy</span> <span class="o">|=</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">GrowFlag</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">policy</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">GrowFlag</span><span class="p">;</span>
+
+        <span class="c1">// we need operators for QskSizePolicy::Policy: TODO ...</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setSizePolicy</span><span class="p">(</span>
+            <span class="n">orientation</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Policy</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">policy</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="n">polish</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">autoFitTabsChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">autoFitTabs</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">policy</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">sizePolicy</span><span class="p">(</span> <span class="n">orientation</span><span class="p">()</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="n">policy</span> <span class="o">&amp;</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">GrowFlag</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">setTextOptions</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">options</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// we should consider text options being something for</span>
+        <span class="c1">// QskControl - maybe added to the propagation system ???</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span> <span class="o">=</span> <span class="n">options</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">textOptionsChanged</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+            <span class="n">buttonAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">setTextOptions</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskTextOptions</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">textOptions</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">addTab</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">insertTab</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">insertTab</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">insertTab</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="k">new</span> <span class="n">QskTabButton</span><span class="p">(</span> <span class="n">text</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">addTab</span><span class="p">(</span> <span class="n">QskTabButton</span><span class="o">*</span> <span class="n">button</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">insertTab</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">button</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">insertTab</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">QskTabButton</span><span class="o">*</span> <span class="n">button</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">buttonBox</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">elementCount</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">elementCount</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isComponentComplete</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">button</span><span class="o">-&gt;</span><span class="n">setChecked</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">insertItem</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">button</span> <span class="p">);</span>
+    <span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">restack</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">()</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span> <span class="p">)</span>
+        <span class="n">button</span><span class="o">-&gt;</span><span class="n">setTextOptions</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textOptions</span> <span class="p">);</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">connectButton</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="n">connect</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskAbstractButton</span><span class="o">::</span><span class="n">clicked</span><span class="p">,</span>
+        <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTabBar</span><span class="o">::</span><span class="n">handleButtonClick</span> <span class="p">);</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">countChanged</span><span class="p">(</span> <span class="n">count</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">index</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">removeTab</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">itemAtIndex</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">delete</span> <span class="n">item</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Q_EMIT</span> <span class="n">countChanged</span><span class="p">(</span> <span class="n">count</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span><span class="o">--</span><span class="p">;</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">countChanged</span><span class="p">(</span> <span class="n">count</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">Q_EMIT</span> <span class="n">currentIndexChanged</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">QskTabButton</span><span class="o">*</span> <span class="n">nextButton</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">nextIndex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">buttonAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">button</span> <span class="o">&amp;&amp;</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">isEnabled</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">nextButton</span> <span class="o">=</span> <span class="n">button</span><span class="p">;</span>
+                <span class="n">nextIndex</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">nextButton</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">buttonAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">button</span> <span class="o">&amp;&amp;</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">isEnabled</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">nextButton</span> <span class="o">=</span> <span class="n">button</span><span class="p">;</span>
+                    <span class="n">nextIndex</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">nextButton</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">connectButton</span><span class="p">(</span> <span class="n">nextButton</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+            <span class="n">nextButton</span><span class="o">-&gt;</span><span class="n">setChecked</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">connectButton</span><span class="p">(</span> <span class="n">nextButton</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="o">=</span> <span class="n">nextIndex</span><span class="p">;</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">countChanged</span><span class="p">(</span> <span class="n">count</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">Q_EMIT</span> <span class="n">currentIndexChanged</span><span class="p">(</span> <span class="n">nextIndex</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">clear</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">autoDelete</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">currentIndex</span><span class="p">();</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">clear</span><span class="p">(</span> <span class="n">autoDelete</span> <span class="p">);</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">countChanged</span><span class="p">(</span> <span class="n">count</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">currentIndexChanged</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">isTabEnabled</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">buttonAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">button</span> <span class="o">?</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">isEnabled</span><span class="p">()</span> <span class="o">:</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">setTabEnabled</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">enabled</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">buttonAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// what happens, when it is the current button ???</span>
+        <span class="n">button</span><span class="o">-&gt;</span><span class="n">setEnabled</span><span class="p">(</span> <span class="n">enabled</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">setCurrentIndex</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">isComponentComplete</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">buttonAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">button</span> <span class="o">&amp;&amp;</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">isEnabled</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">button</span><span class="o">-&gt;</span><span class="n">isChecked</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">button</span><span class="o">-&gt;</span><span class="n">setChecked</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="o">=</span> <span class="n">index</span><span class="p">;</span>
+            <span class="n">Q_EMIT</span> <span class="n">currentIndexChanged</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">currentIndex</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">count</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">elementCount</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskTabButton</span><span class="o">*</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">buttonAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">position</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="n">QskTabButton</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">itemAtIndex</span><span class="p">(</span> <span class="n">position</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QskTabButton</span><span class="o">*</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">buttonAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">position</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">that</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QskTabBar</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">that</span><span class="o">-&gt;</span><span class="n">buttonAt</span><span class="p">(</span> <span class="n">position</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTabButton</span><span class="o">*</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">currentButton</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">buttonAt</span><span class="p">(</span> <span class="n">currentIndex</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QskTabButton</span><span class="o">*</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">currentButton</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">buttonAt</span><span class="p">(</span> <span class="n">currentIndex</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">currentButtonText</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">buttonTextAt</span><span class="p">(</span> <span class="n">currentIndex</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">buttonTextAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">buttonAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">QString</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">indexOf</span><span class="p">(</span> <span class="n">QskTabButton</span><span class="o">*</span> <span class="n">button</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">indexOf</span><span class="p">(</span> <span class="n">button</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">ensureButtonVisible</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTabButton</span><span class="o">*</span> <span class="n">button</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">scrollBox</span><span class="o">-&gt;</span><span class="n">ensureItemVisible</span><span class="p">(</span> <span class="n">button</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">componentComplete</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">componentComplete</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">count</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">buttonAt</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">isEnabled</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">button</span><span class="o">-&gt;</span><span class="n">isChecked</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">button</span><span class="o">-&gt;</span><span class="n">setChecked</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">adjustCurrentIndex</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">buttonAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">isChecked</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="o">=</span> <span class="n">index</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">currentIndexChanged</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">handleButtonClick</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">qobject_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskTabButton</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">sender</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">index</span> <span class="o">=</span> <span class="n">indexOf</span><span class="p">(</span> <span class="n">button</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="n">Q_EMIT</span> <span class="n">buttonClicked</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">substitutedSubcontrol</span><span class="p">(</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskBox</span><span class="o">::</span><span class="n">Panel</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">Panel</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">substitutedSubcontrol</span><span class="p">(</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="n">QskTabBar</span><span class="o">::</span><span class="n">effectivePlacement</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">position</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Left</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Left</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Right</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Right</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Top</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Top</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">Bottom</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Bottom</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">NoPlacement</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskTabBar.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

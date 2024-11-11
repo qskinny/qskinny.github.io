@@ -1,0 +1,143 @@
+<h1 id="dialogsqskselectionsubwindowcpp">dialogs/QskSelectionSubWindow.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSelectionSubWindow.h"
+#include "QskLinearBox.h"
+#include "QskSimpleListBox.h"
+#include "QskTextLabel.h"
+</span>
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">TextLabel</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskTextLabel</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">TextLabel</span><span class="p">(</span> <span class="n">QskSelectionSubWindow</span><span class="o">*</span> <span class="n">subWindow</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setObjectName</span><span class="p">(</span> <span class="n">QStringLiteral</span><span class="p">(</span> <span class="s">"QskSelectionSubWindowTextLabel"</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Preferred</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Constrained</span> <span class="p">);</span>
+
+            <span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignLeft</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignTop</span> <span class="p">);</span>
+            <span class="n">setWrapMode</span><span class="p">(</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">WordWrap</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTextLabel</span><span class="o">::</span><span class="n">textChanged</span><span class="p">,</span>
+                <span class="n">subWindow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">infoTextChanged</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTextLabel</span><span class="o">::</span><span class="n">textOptionsChanged</span><span class="p">,</span>
+                <span class="n">subWindow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">infoTextOptionsChanged</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">ListBox</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskSimpleListBox</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">ListBox</span><span class="p">(</span> <span class="n">QskSelectionSubWindow</span><span class="o">*</span> <span class="n">subWindow</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setObjectName</span><span class="p">(</span> <span class="n">QStringLiteral</span><span class="p">(</span> <span class="s">"QskSelectionSubWindowListBox"</span> <span class="p">)</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">selectedRowChanged</span><span class="p">,</span>
+                <span class="n">subWindow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">selectedRowChanged</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">selectedEntryChanged</span><span class="p">,</span>
+                <span class="n">subWindow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">selectedEntryChanged</span> <span class="p">);</span>
+
+            <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">entriesChanged</span><span class="p">,</span>
+                <span class="n">subWindow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">entriesChanged</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskSelectionSubWindow</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskTextLabel</span><span class="o">*</span> <span class="n">textLabel</span><span class="p">;</span>
+    <span class="n">QskSimpleListBox</span><span class="o">*</span> <span class="n">listBox</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">QskSelectionSubWindow</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="n">PrivateData</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TextLabel</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span><span class="o">-&gt;</span><span class="n">setVisible</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">listBox</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListBox</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+<span class="cp">#if 1
+</span>    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">listBox</span><span class="o">-&gt;</span><span class="n">setPreferredSize</span><span class="p">(</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">500</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+    <span class="k">auto</span> <span class="n">box</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QskLinearBox</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">);</span>
+    <span class="n">box</span><span class="o">-&gt;</span><span class="n">setSpacing</span><span class="p">(</span> <span class="mi">10</span> <span class="p">);</span> <span class="c1">// hint</span>
+    <span class="n">box</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span> <span class="p">);</span>
+    <span class="n">box</span><span class="o">-&gt;</span><span class="n">addItem</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">listBox</span> <span class="p">);</span>
+    <span class="n">box</span><span class="o">-&gt;</span><span class="n">setStretchFactor</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span> <span class="p">);</span>
+
+    <span class="n">setContentItem</span><span class="p">(</span> <span class="n">box</span> <span class="p">);</span>
+    <span class="n">setDialogActions</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Ok</span> <span class="o">|</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Cancel</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSelectionSubWindow</span><span class="o">::~</span><span class="n">QskSelectionSubWindow</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">setInfoText</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span><span class="o">-&gt;</span><span class="n">setText</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span><span class="o">-&gt;</span><span class="n">setVisible</span><span class="p">(</span> <span class="o">!</span><span class="n">text</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">infoText</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">setInfoTextOptions</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">options</span> <span class="o">!=</span> <span class="n">infoTextOptions</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span><span class="o">-&gt;</span><span class="n">setTextOptions</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+        <span class="n">Q_EMIT</span> <span class="n">infoTextOptionsChanged</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskTextOptions</span> <span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">infoTextOptions</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textLabel</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">setEntries</span><span class="p">(</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="n">entries</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">listBox</span><span class="o">-&gt;</span><span class="n">setEntries</span><span class="p">(</span> <span class="n">entries</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QStringList</span> <span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">entries</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">listBox</span><span class="o">-&gt;</span><span class="n">entries</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">setSelectedRow</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">listBox</span><span class="o">-&gt;</span><span class="n">setSelectedRow</span><span class="p">(</span> <span class="n">row</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">selectedRow</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">listBox</span><span class="o">-&gt;</span><span class="n">selectedRow</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskSelectionSubWindow</span><span class="o">::</span><span class="n">selectedEntry</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">listBox</span><span class="o">-&gt;</span><span class="n">selectedEntry</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskSelectionSubWindow.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

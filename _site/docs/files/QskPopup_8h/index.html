@@ -1,0 +1,143 @@
+<h1 id="controlsqskpopuph">controls/QskPopup.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskPopup/">QskPopup</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_POPUP_H
+#define QSK_POPUP_H 1
+</span>
+<span class="cp">#include "QskControl.h"
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskPopup</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskControl</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">open</span> <span class="n">READ</span> <span class="n">isOpen</span> <span class="n">WRITE</span> <span class="n">setOpen</span> <span class="n">NOTIFY</span> <span class="n">openChanged</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">modal</span> <span class="n">READ</span> <span class="n">isModal</span> <span class="n">WRITE</span> <span class="n">setModal</span> <span class="n">NOTIFY</span> <span class="n">modalChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">overlay</span> <span class="n">READ</span> <span class="n">hasOverlay</span>
+        <span class="n">WRITE</span> <span class="n">setOverlay</span> <span class="n">RESET</span> <span class="n">resetOverlay</span> <span class="n">NOTIFY</span> <span class="n">overlayChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">faderEffect</span> <span class="n">READ</span> <span class="n">hasFaderEffect</span>
+        <span class="n">WRITE</span> <span class="n">setFaderEffect</span> <span class="n">NOTIFY</span> <span class="n">faderEffectChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">uint</span> <span class="n">priority</span> <span class="n">READ</span> <span class="n">priority</span> <span class="n">WRITE</span> <span class="n">setPriority</span> <span class="n">NOTIFY</span> <span class="n">priorityChanged</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskControl</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QSK_SUBCONTROLS</span><span class="p">(</span> <span class="n">Overlay</span> <span class="p">)</span>
+    <span class="n">QSK_STATES</span><span class="p">(</span> <span class="n">Closed</span> <span class="p">)</span>
+
+    <span class="k">enum</span> <span class="n">PopupFlag</span>
+    <span class="p">{</span>
+        <span class="n">DeleteOnClose</span>       <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">CloseOnPressOutside</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">PopupFlag</span> <span class="p">)</span>
+    <span class="n">Q_DECLARE_FLAGS</span><span class="p">(</span> <span class="n">PopupFlags</span><span class="p">,</span> <span class="n">PopupFlag</span> <span class="p">)</span>
+
+    <span class="n">QskPopup</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskPopup</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setPopupFlags</span><span class="p">(</span> <span class="n">PopupFlags</span> <span class="p">);</span>
+    <span class="n">PopupFlags</span> <span class="n">popupFlags</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setPopupFlag</span><span class="p">(</span> <span class="n">PopupFlag</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">testPopupFlag</span><span class="p">(</span> <span class="n">PopupFlag</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setModal</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">isModal</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setOverlay</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetOverlay</span><span class="p">();</span>
+    <span class="kt">bool</span> <span class="n">hasOverlay</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="c1">// allows for stacking orders based on priorities</span>
+    <span class="kt">void</span> <span class="n">setPriority</span><span class="p">(</span> <span class="n">uint</span> <span class="p">);</span>
+    <span class="n">uint</span> <span class="n">priority</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setFaderEffect</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">hasFaderEffect</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QskAspect</span> <span class="n">faderAspect</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setFaderAspect</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="p">);</span>
+
+    <span class="k">virtual</span> <span class="n">QRectF</span> <span class="n">overlayRect</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">isOpen</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isFading</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="k">public</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">open</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">close</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">setOpen</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">opened</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">closed</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">openChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">fadingChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">modalChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">overlayChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">priorityChanged</span><span class="p">(</span> <span class="n">uint</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">faderEffectChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">void</span> <span class="n">aboutToShow</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">focusInEvent</span><span class="p">(</span> <span class="n">QFocusEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">focusOutEvent</span><span class="p">(</span> <span class="n">QFocusEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">windowChangeEvent</span><span class="p">(</span> <span class="n">QskWindowChangeEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChange</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">focusSuccessor</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isTransitionAccepted</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">grabFocus</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">show</span><span class="p">()</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">hide</span><span class="p">()</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setVisible</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">updateInputGrabber</span><span class="p">();</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Q_DECLARE_OPERATORS_FOR_FLAGS</span><span class="p">(</span> <span class="n">QskPopup</span><span class="o">::</span><span class="n">PopupFlags</span> <span class="p">)</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

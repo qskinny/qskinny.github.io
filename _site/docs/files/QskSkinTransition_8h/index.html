@@ -1,0 +1,78 @@
+<h1 id="controlsqskskintransitionh">controls/QskSkinTransition.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskSkinTransition/">QskSkinTransition</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#ifndef QSK_SKIN_TRANSITION_H
+#define QSK_SKIN_TRANSITION_H
+</span>
+<span class="cp">#include "QskAnimationHint.h"
+#include "QskAspect.h"
+</span>
+<span class="k">class</span> <span class="nc">QskSkin</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QQuickWindow</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QVariant</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskSkinTransition</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">Type</span>
+    <span class="p">{</span>
+        <span class="n">Color</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">Metric</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+
+        <span class="n">AllTypes</span> <span class="o">=</span> <span class="n">Color</span> <span class="o">|</span> <span class="n">Metric</span>
+    <span class="p">};</span>
+
+    <span class="n">QskSkinTransition</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">QskSkinTransition</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">setSourceSkin</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="p">);</span>
+    <span class="n">QskSkin</span><span class="o">*</span> <span class="n">sourceSkin</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setTargetSkin</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="p">);</span>
+    <span class="n">QskSkin</span><span class="o">*</span> <span class="n">targetSkin</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setAnimation</span><span class="p">(</span> <span class="n">QskAnimationHint</span> <span class="p">);</span>
+    <span class="n">QskAnimationHint</span> <span class="n">animation</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setMask</span><span class="p">(</span> <span class="n">Type</span> <span class="p">);</span>
+    <span class="n">Type</span> <span class="n">mask</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">process</span><span class="p">();</span>
+
+    <span class="k">static</span> <span class="kt">bool</span> <span class="n">isRunning</span><span class="p">();</span>
+    <span class="k">static</span> <span class="n">QVariant</span> <span class="n">animatedHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span><span class="p">,</span> <span class="n">QskAspect</span> <span class="p">);</span>
+    <span class="k">static</span> <span class="n">QVariant</span> <span class="n">animatedGraphicFilter</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span><span class="p">,</span> <span class="kt">int</span> <span class="n">graphicRole</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">updateSkin</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span><span class="p">,</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QskSkin</span><span class="o">*</span> <span class="n">m_skins</span><span class="p">[</span> <span class="mi">2</span> <span class="p">];</span>
+    <span class="n">QskAnimationHint</span> <span class="n">m_animationHint</span><span class="p">;</span>
+    <span class="n">Type</span> <span class="n">m_mask</span> <span class="o">:</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

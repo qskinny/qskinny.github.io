@@ -1,0 +1,270 @@
+<h1 id="commonqskmetafunctionh">common/QskMetaFunction.h</h1>
+
+<h2 id="namespaces">Namespaces</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong><a href="/docs/namespaces/namespaceQskMetaFunctionTraits/">QskMetaFunctionTraits</a></strong></td>
+    </tr>
+    <tr>
+      <td><strong><a href="/docs/namespaces/namespaceQtPrivate/">QtPrivate</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskMetaFunction/">QskMetaFunction</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_META_FUNCTION_H
+#define QSK_META_FUNCTION_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+</span>
+<span class="cp">#include &lt;qmetatype.h&gt;
+#include &lt;qobject.h&gt;
+</span>
+<span class="k">namespace</span> <span class="n">QskMetaFunctionTraits</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">QtPrivate</span><span class="p">;</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+    <span class="k">using</span> <span class="n">IsMemberFunction</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span>
+        <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">IsPointerToMemberFunction</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span> <span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+    <span class="k">using</span> <span class="n">IsFunctorOrStaticFunction</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span>
+        <span class="o">!</span><span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">IsPointerToMemberFunction</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span> <span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+    <span class="k">using</span> <span class="n">IsFunctor</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span>
+        <span class="o">!</span><span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">IsPointerToMemberFunction</span>
+        <span class="o">&amp;&amp;</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">ArgumentCount</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span> <span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+    <span class="k">using</span> <span class="n">IsStaticFunction</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span>
+        <span class="o">!</span><span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">IsPointerToMemberFunction</span>
+        <span class="o">&amp;&amp;</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">ArgumentCount</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span> <span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="n">IsMemberFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="o">&gt;</span>
+    <span class="k">constexpr</span> <span class="kr">inline</span> <span class="kt">int</span> <span class="n">argumentCount</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">Traits</span> <span class="o">=</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">Traits</span><span class="o">::</span><span class="n">ArgumentCount</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="n">IsStaticFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="o">&gt;</span>
+    <span class="k">constexpr</span> <span class="kr">inline</span> <span class="kt">int</span> <span class="n">argumentCount</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">Traits</span> <span class="o">=</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">Traits</span><span class="o">::</span><span class="n">ArgumentCount</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="n">IsFunctor</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="o">&gt;</span>
+    <span class="k">constexpr</span> <span class="kr">inline</span> <span class="kt">int</span> <span class="n">argumentCount</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">Traits</span> <span class="o">=</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="k">decltype</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">T</span><span class="o">::</span><span class="k">operator</span><span class="p">()</span> <span class="p">)</span> <span class="o">&gt;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">Traits</span><span class="o">::</span><span class="n">ArgumentCount</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">i</span> <span class="p">&gt;</span>
+    <span class="k">constexpr</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">argumentCount</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;</span><span class="p">(),</span> <span class="kt">int</span> <span class="o">&gt;::</span><span class="n">type</span> <span class="n">argumentType</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">UnknownType</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">IsMemberFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="o">&gt;</span>
+    <span class="k">constexpr</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">argumentCount</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;</span><span class="p">(),</span> <span class="kt">int</span> <span class="o">&gt;::</span><span class="n">type</span> <span class="n">argumentType</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">ConnectionTypes</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">Arguments</span> <span class="o">&gt;::</span><span class="n">types</span><span class="p">()[</span> <span class="n">i</span> <span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">IsStaticFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="o">&gt;</span>
+    <span class="k">constexpr</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">argumentCount</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;</span><span class="p">(),</span> <span class="kt">int</span> <span class="o">&gt;::</span><span class="n">type</span> <span class="n">argumentType</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">ConnectionTypes</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">Arguments</span> <span class="o">&gt;::</span><span class="n">types</span><span class="p">()[</span> <span class="n">i</span> <span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">IsFunctor</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="o">&gt;</span>
+    <span class="k">constexpr</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">argumentCount</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;</span><span class="p">(),</span> <span class="kt">int</span> <span class="o">&gt;::</span><span class="n">type</span> <span class="n">argumentType</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">Traits</span> <span class="o">=</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="k">decltype</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">T</span><span class="o">::</span><span class="k">operator</span><span class="p">()</span> <span class="p">)</span> <span class="o">&gt;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">ConnectionTypes</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="n">Traits</span><span class="o">::</span><span class="n">Arguments</span> <span class="o">&gt;::</span><span class="n">types</span><span class="p">()[</span> <span class="n">i</span> <span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskMetaFunction</span>
+<span class="p">{</span>
+    <span class="n">Q_GADGET</span>
+
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">Type</span>
+    <span class="p">{</span>
+        <span class="n">Invalid</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+
+        <span class="c1">// a non static method of class</span>
+        <span class="n">MemberFunction</span><span class="p">,</span>
+
+        <span class="c1">// a static function, or static method of a class</span>
+        <span class="n">StaticFunction</span><span class="p">,</span>
+
+        <span class="c1">// a functor or lambda</span>
+        <span class="n">Functor</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">Type</span> <span class="p">)</span>
+
+    <span class="n">QskMetaFunction</span><span class="p">();</span>
+
+    <span class="n">QskMetaFunction</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="n">QskMetaFunction</span><span class="p">(</span> <span class="n">QskMetaFunction</span><span class="o">&amp;&amp;</span> <span class="p">);</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsMemberFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="o">&gt;</span>
+    <span class="n">QskMetaFunction</span><span class="p">(</span> <span class="n">T</span> <span class="p">);</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsFunctor</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="o">&gt;</span>
+    <span class="n">QskMetaFunction</span><span class="p">(</span> <span class="n">T</span> <span class="p">);</span>
+
+    <span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsStaticFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="o">&gt;</span>
+    <span class="n">QskMetaFunction</span><span class="p">(</span> <span class="n">T</span> <span class="p">);</span>
+
+    <span class="o">~</span><span class="n">QskMetaFunction</span><span class="p">();</span>
+
+    <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span> <span class="n">QskMetaFunction</span><span class="o">&amp;&amp;</span> <span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">explicit</span> <span class="k">operator</span> <span class="kt">bool</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">returnType</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">size_t</span> <span class="n">parameterCount</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">int</span><span class="o">*</span> <span class="n">parameterTypes</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">invoke</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span> <span class="n">args</span><span class="p">[],</span>
+        <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span> <span class="p">);</span>
+
+    <span class="n">Type</span> <span class="n">functionType</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">isNull</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="k">class</span> <span class="nc">FunctionCall</span><span class="p">;</span>
+    <span class="n">FunctionCall</span><span class="o">*</span> <span class="n">functionCall</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">protected:</span>
+    <span class="n">QskMetaFunction</span><span class="p">(</span> <span class="n">FunctionCall</span><span class="o">*</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="n">FunctionCall</span><span class="o">*</span> <span class="n">m_functionCall</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="kt">bool</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="k">operator</span><span class="o">!=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskMetaFunction</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span> <span class="o">==</span> <span class="n">other</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="k">operator</span> <span class="nf">bool</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="n">isNull</span><span class="p">();</span>
+<span class="err">}</span>
+
+<span class="kr">inline</span> <span class="kt">bool</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">isNull</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_functionCall</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">FunctionCall</span><span class="o">*</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">functionCall</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_functionCall</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "QskMetaFunction.hpp"
+</span>
+<span class="kr">inline</span> <span class="k">const</span> <span class="kt">int</span><span class="o">*</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">parameterTypes</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_functionCall</span> <span class="o">?</span> <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">parameterTypes</span><span class="p">()</span> <span class="o">:</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsMemberFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">QskMetaFunction</span><span class="p">(</span> <span class="n">T</span> <span class="n">function</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">QtPrivate</span><span class="p">;</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">QskMetaFunctionCall</span><span class="p">;</span>
+
+    <span class="k">using</span> <span class="n">Traits</span> <span class="o">=</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Argc</span> <span class="o">=</span> <span class="n">Traits</span><span class="o">::</span><span class="n">ArgumentCount</span><span class="p">;</span>
+    <span class="k">using</span> <span class="n">Args</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">List_Left</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="n">Traits</span><span class="o">::</span><span class="n">Arguments</span><span class="p">,</span> <span class="n">Argc</span> <span class="o">&gt;::</span><span class="n">Value</span><span class="p">;</span>
+
+    <span class="n">m_functionCall</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MemberFunctionCall</span><span class="o">&lt;</span> <span class="n">T</span><span class="p">,</span> <span class="n">Args</span><span class="p">,</span> <span class="kt">void</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">function</span> <span class="p">);</span>
+    <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">setParameterTypes</span><span class="p">(</span>
+        <span class="n">ConnectionTypes</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="n">Traits</span><span class="o">::</span><span class="n">Arguments</span> <span class="o">&gt;::</span><span class="n">types</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsFunctor</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">QskMetaFunction</span><span class="p">(</span> <span class="n">T</span> <span class="n">functor</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">QtPrivate</span><span class="p">;</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">QskMetaFunctionCall</span><span class="p">;</span>
+
+    <span class="k">using</span> <span class="n">Traits</span> <span class="o">=</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="k">decltype</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">T</span><span class="o">::</span><span class="k">operator</span><span class="p">()</span> <span class="p">)</span> <span class="o">&gt;</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Argc</span> <span class="o">=</span> <span class="n">Traits</span><span class="o">::</span><span class="n">ArgumentCount</span><span class="p">;</span>
+    <span class="k">using</span> <span class="n">Args</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">List_Left</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="n">Traits</span><span class="o">::</span><span class="n">Arguments</span><span class="p">,</span> <span class="n">Argc</span> <span class="o">&gt;::</span><span class="n">Value</span><span class="p">;</span>
+
+    <span class="n">m_functionCall</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FunctorFunctionCall</span><span class="o">&lt;</span> <span class="n">T</span><span class="p">,</span> <span class="n">Argc</span><span class="p">,</span> <span class="n">Args</span><span class="p">,</span> <span class="kt">void</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">functor</span> <span class="p">);</span>
+    <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">setParameterTypes</span><span class="p">(</span>
+        <span class="n">ConnectionTypes</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="n">Traits</span><span class="o">::</span><span class="n">Arguments</span> <span class="o">&gt;::</span><span class="n">types</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsStaticFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span><span class="o">*</span> <span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="n">QskMetaFunction</span><span class="o">::</span><span class="n">QskMetaFunction</span><span class="p">(</span> <span class="n">T</span> <span class="n">function</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">QtPrivate</span><span class="p">;</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">QskMetaFunctionCall</span><span class="p">;</span>
+
+    <span class="k">using</span> <span class="n">Traits</span> <span class="o">=</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">Argc</span> <span class="o">=</span> <span class="n">Traits</span><span class="o">::</span><span class="n">ArgumentCount</span><span class="p">;</span>
+    <span class="k">using</span> <span class="n">Args</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">List_Left</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="n">Traits</span><span class="o">::</span><span class="n">Arguments</span><span class="p">,</span> <span class="n">Argc</span> <span class="o">&gt;::</span><span class="n">Value</span><span class="p">;</span>
+
+    <span class="n">m_functionCall</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StaticFunctionCall</span><span class="o">&lt;</span> <span class="n">T</span><span class="p">,</span> <span class="n">Args</span><span class="p">,</span> <span class="kt">void</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">function</span> <span class="p">);</span>
+    <span class="n">m_functionCall</span><span class="o">-&gt;</span><span class="n">setParameterTypes</span><span class="p">(</span>
+        <span class="n">ConnectionTypes</span><span class="o">&lt;</span> <span class="k">typename</span> <span class="n">Traits</span><span class="o">::</span><span class="n">Arguments</span> <span class="o">&gt;::</span><span class="n">types</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskMetaFunction</span> <span class="p">)</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,95 @@
+<h1 id="qskmetafunctiontraits">QskMetaFunctionTraits</h1>
+
+<h2 id="types">Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>template &lt;typename T &gt; <br />using typename std::enable_if&lt; FunctionPointer&lt; T &gt;::IsPointerToMemberFunction, std::true_type &gt;::type</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskMetaFunctionTraits/#using-ismemberfunction">IsMemberFunction</a></strong></td>
+    </tr>
+    <tr>
+      <td>template &lt;typename T &gt; <br />using typename std::enable_if&lt; !FunctionPointer&lt; T &gt;::IsPointerToMemberFunction, std::true_type &gt;::type</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskMetaFunctionTraits/#using-isfunctororstaticfunction">IsFunctorOrStaticFunction</a></strong></td>
+    </tr>
+    <tr>
+      <td>template &lt;typename T &gt; <br />using typename std::enable_if&lt; !FunctionPointer&lt; T &gt;::IsPointerToMemberFunction &amp;&amp;FunctionPointer&lt; T &gt;::ArgumentCount==-1, std::true_type &gt;::type</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskMetaFunctionTraits/#using-isfunctor">IsFunctor</a></strong></td>
+    </tr>
+    <tr>
+      <td>template &lt;typename T &gt; <br />using typename std::enable_if&lt; !FunctionPointer&lt; T &gt;::IsPointerToMemberFunction &amp;&amp;FunctionPointer&lt; T &gt;::ArgumentCount &gt;=0, std::true_type &gt;::type</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskMetaFunctionTraits/#using-isstaticfunction">IsStaticFunction</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>template &lt;typename T ,IsMemberFunction&lt; T &gt; *  =nullptr&gt; <br />constexpr int</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskMetaFunctionTraits/#function-argumentcount">argumentCount</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>constexpr int ::type</td>
+      <td><strong><a href="/docs/namespaces/namespaceQskMetaFunctionTraits/#function-argumenttype">argumentType</a></strong>()</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="types-documentation">Types Documentation</h2>
+
+<h3 id="using-ismemberfunction">using IsMemberFunction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">using</span> <span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsMemberFunction</span> <span class="o">=</span> <span class="k">typedef</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">IsPointerToMemberFunction</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span> <span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="using-isfunctororstaticfunction">using IsFunctorOrStaticFunction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">using</span> <span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsFunctorOrStaticFunction</span> <span class="o">=</span> <span class="k">typedef</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span> <span class="o">!</span><span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">IsPointerToMemberFunction</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span> <span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="using-isfunctor">using IsFunctor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">using</span> <span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsFunctor</span> <span class="o">=</span> <span class="k">typedef</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span> <span class="o">!</span><span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">IsPointerToMemberFunction</span> <span class="o">&amp;&amp;</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">ArgumentCount</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span> <span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="using-isstaticfunction">using IsStaticFunction</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">&gt;</span>
+<span class="k">using</span> <span class="n">QskMetaFunctionTraits</span><span class="o">::</span><span class="n">IsStaticFunction</span> <span class="o">=</span> <span class="k">typedef</span> <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_if</span><span class="o">&lt;</span> <span class="o">!</span><span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">IsPointerToMemberFunction</span> <span class="o">&amp;&amp;</span> <span class="n">FunctionPointer</span><span class="o">&lt;</span> <span class="n">T</span> <span class="o">&gt;::</span><span class="n">ArgumentCount</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">true_type</span> <span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-argumentcount">function argumentCount</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span> <span class="p">,</span>
+<span class="n">IsMemberFunction</span><span class="o">&lt;</span> <span class="n">T</span> <span class="p">&gt;</span> <span class="o">*</span>  <span class="o">=</span><span class="nb">nullptr</span><span class="o">&gt;</span>
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">argumentCount</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-argumenttype">function argumentType</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">constexpr</span> <span class="kt">int</span> <span class="o">::</span><span class="n">type</span> <span class="n">argumentType</span><span class="p">()</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

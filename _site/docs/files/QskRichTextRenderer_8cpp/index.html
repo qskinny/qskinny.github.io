@@ -1,0 +1,302 @@
+<h1 id="nodesqskrichtextrenderercpp">nodes/QskRichTextRenderer.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskRichTextRenderer.h"
+#include "QskTextColors.h"
+#include "QskTextOptions.h"
+</span>
+<span class="cp">#include &lt;qglobalstatic.h&gt;
+#include &lt;qmutex.h&gt;
+#include &lt;qthread.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QQuickWindow</span><span class="p">;</span>
+
+
+<span class="cp">#include &lt;private/qquicktext_p.h&gt;
+#include &lt;private/qquicktext_p_p.h&gt;
+</span>
+
+<span class="c1">// Since Qt 5.7 QQuickTextNode is public and could be used TODO ...</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">TextItem</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QQuickText</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">TextItem</span><span class="p">()</span>
+        <span class="p">{</span>
+<span class="cp">#if 1
+</span>            <span class="cm">/*
+               QQuickTextPrivate::ExtraData::ExtraData is not exported with MSVC, so we
+               preallocate it by setting/unsetting the bottom padding
+             */</span>
+            <span class="n">setBottomPadding</span><span class="p">(</span> <span class="mi">1</span> <span class="p">);</span>
+            <span class="n">setBottomPadding</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+            <span class="c1">// fonts are supposed to be defined in the application skin and we</span>
+            <span class="c1">// probably don't want to have them scaled</span>
+            <span class="n">setFontSizeMode</span><span class="p">(</span> <span class="n">QQuickText</span><span class="o">::</span><span class="n">FixedSize</span> <span class="p">);</span>
+
+<span class="c">#if 0
+            setAntialiasing( true );
+            setRenderType( QQuickText::QtRendering );
+            setPadding( 0 );
+
+            setMinimumPixelSize();
+            setMinimumPointSize();
+
+            // also something, that should be defined in an application skin
+            setLineHeightMode( ... );
+            setLineHeight();
+#endif
+</span>        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setGeometry</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">QQuickTextPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 2, 0 )
+</span>            <span class="n">d</span><span class="o">-&gt;</span><span class="n">heightValidFlag</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="n">d</span><span class="o">-&gt;</span><span class="n">widthValidFlag</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="cp">#else
+</span>            <span class="n">d</span><span class="o">-&gt;</span><span class="n">heightValid</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="n">d</span><span class="o">-&gt;</span><span class="n">widthValid</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="cp">#endif
+</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">!=</span> <span class="n">rect</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">!=</span> <span class="n">rect</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">x</span><span class="p">();</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">y</span><span class="p">();</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">dirty</span><span class="p">(</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">Position</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">!=</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">!=</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">dirty</span><span class="p">(</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">Size</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setHAlign</span><span class="p">(</span> <span class="p">(</span> <span class="n">QQuickText</span><span class="o">::</span><span class="n">HAlignment</span> <span class="p">)(</span> <span class="kt">int</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x0f</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">setVAlign</span><span class="p">(</span> <span class="p">(</span> <span class="n">QQuickText</span><span class="o">::</span><span class="n">VAlignment</span> <span class="p">)(</span> <span class="kt">int</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xf0</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setOptions</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// what about Qt::TextShowMnemonic ???</span>
+            <span class="n">setTextFormat</span><span class="p">(</span> <span class="p">(</span> <span class="n">QQuickText</span><span class="o">::</span><span class="n">TextFormat</span> <span class="p">)</span> <span class="n">options</span><span class="p">.</span><span class="n">format</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">setElideMode</span><span class="p">(</span> <span class="p">(</span> <span class="n">QQuickText</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="p">)</span> <span class="n">options</span><span class="p">.</span><span class="n">elideMode</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">setMaximumLineCount</span><span class="p">(</span> <span class="n">options</span><span class="p">.</span><span class="n">maximumLineCount</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">setWrapMode</span><span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QQuickText</span><span class="o">::</span><span class="n">WrapMode</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">options</span><span class="p">.</span><span class="n">wrapMode</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">begin</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">classBegin</span><span class="p">();</span>
+            <span class="n">QQuickTextPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">updateOnComponentComplete</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">end</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">componentComplete</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">setText</span><span class="p">(</span> <span class="n">QString</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">QRectF</span> <span class="n">layedOutTextRect</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">that</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">TextItem</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+            <span class="k">return</span> <span class="n">QQuickTextPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">that</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">layedOutTextRect</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">updateTextNode</span><span class="p">(</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parentNode</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">refWindow</span><span class="p">(</span> <span class="n">window</span> <span class="p">);</span>
+
+            <span class="k">while</span> <span class="p">(</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">()</span> <span class="p">)</span>
+                <span class="k">delete</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">();</span>
+
+            <span class="k">auto</span> <span class="n">node</span> <span class="o">=</span> <span class="n">QQuickText</span><span class="o">::</span><span class="n">updatePaintNode</span><span class="p">(</span> <span class="nb">nullptr</span><span class="p">,</span> <span class="nb">nullptr</span> <span class="p">);</span>
+            <span class="n">node</span><span class="o">-&gt;</span><span class="n">reparentChildNodesTo</span><span class="p">(</span> <span class="n">parentNode</span> <span class="p">);</span>
+            <span class="k">delete</span> <span class="n">node</span><span class="p">;</span>
+
+            <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">derefWindow</span><span class="p">();</span>
+        <span class="p">}</span>
+
+      <span class="nl">protected:</span>
+        <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updatePaintNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span><span class="p">,</span> <span class="n">UpdatePaintNodeData</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+            <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">TextItemMap</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="o">~</span><span class="n">TextItemMap</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">qDeleteAll</span><span class="p">(</span> <span class="n">m_hash</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">TextItem</span><span class="o">*</span> <span class="n">item</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="kr">thread</span> <span class="o">=</span> <span class="n">QThread</span><span class="o">::</span><span class="n">currentThread</span><span class="p">();</span>
+
+            <span class="n">QMutexLocker</span> <span class="n">locker</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_mutex</span> <span class="p">);</span>
+
+            <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_hash</span><span class="p">.</span><span class="n">constFind</span><span class="p">(</span> <span class="kr">thread</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">==</span> <span class="n">m_hash</span><span class="p">.</span><span class="n">constEnd</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">auto</span> <span class="n">textItem</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TextItem</span><span class="p">();</span>
+                <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="kr">thread</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QThread</span><span class="o">::</span><span class="n">finished</span><span class="p">,</span>
+                    <span class="n">textItem</span><span class="p">,</span> <span class="p">[</span> <span class="k">this</span><span class="p">,</span> <span class="kr">thread</span> <span class="p">]</span> <span class="p">{</span> <span class="n">removeItem</span><span class="p">(</span> <span class="kr">thread</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+                <span class="n">m_hash</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="kr">thread</span><span class="p">,</span> <span class="n">textItem</span> <span class="p">);</span>
+                <span class="k">return</span> <span class="n">textItem</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="kt">void</span> <span class="n">removeItem</span><span class="p">(</span> <span class="k">const</span> <span class="n">QThread</span><span class="o">*</span> <span class="kr">thread</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">textItem</span> <span class="o">=</span> <span class="n">m_hash</span><span class="p">.</span><span class="n">take</span><span class="p">(</span> <span class="kr">thread</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">textItem</span> <span class="p">)</span>
+                <span class="n">textItem</span><span class="o">-&gt;</span><span class="n">deleteLater</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">QMutex</span> <span class="n">m_mutex</span><span class="p">;</span>
+        <span class="n">QHash</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QThread</span><span class="o">*</span><span class="p">,</span> <span class="n">TextItem</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">m_hash</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="cm">/*
+    size requests and rendering might be from different threads and we
+    better use different items as we might end up in events internally
+    being sent, that leads to crashes because of it
+ */</span>
+<span class="n">Q_GLOBAL_STATIC</span><span class="p">(</span> <span class="n">TextItemMap</span><span class="p">,</span> <span class="n">qskTextItemMap</span> <span class="p">)</span>
+
+<span class="n">QSizeF</span> <span class="n">QskRichTextRenderer</span><span class="o">::</span><span class="n">textSize</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="n">font</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">textItem</span> <span class="o">=</span> <span class="o">*</span><span class="n">qskTextItemMap</span><span class="o">-&gt;</span><span class="n">item</span><span class="p">();</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setFont</span><span class="p">(</span> <span class="n">font</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setOptions</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setText</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="n">sz</span><span class="p">(</span> <span class="n">textItem</span><span class="p">.</span><span class="n">implicitWidth</span><span class="p">(),</span> <span class="n">textItem</span><span class="p">.</span><span class="n">implicitHeight</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">sz</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskRichTextRenderer</span><span class="o">::</span><span class="n">textRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="n">font</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">textItem</span> <span class="o">=</span> <span class="o">*</span><span class="n">qskTextItemMap</span><span class="o">-&gt;</span><span class="n">item</span><span class="p">();</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setFont</span><span class="p">(</span> <span class="n">font</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setOptions</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setText</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">textItem</span><span class="p">.</span><span class="n">layedOutTextRect</span><span class="p">();</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">rect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskRichTextRenderer</span><span class="o">::</span><span class="n">updateNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="n">font</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">TextStyle</span> <span class="n">style</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskTextColors</span><span class="o">&amp;</span> <span class="n">colors</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// are we killing internal caches of QQuickText, when always using</span>
+    <span class="c1">// the same item for the creation the text nodes. TODO ...</span>
+
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">textItem</span> <span class="o">=</span> <span class="o">*</span><span class="n">qskTextItemMap</span><span class="o">-&gt;</span><span class="n">item</span><span class="p">();</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setGeometry</span><span class="p">(</span> <span class="n">rect</span> <span class="p">);</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setBottomPadding</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setTopPadding</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setFont</span><span class="p">(</span> <span class="n">font</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setOptions</span><span class="p">(</span> <span class="n">options</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setAlignment</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">);</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setColor</span><span class="p">(</span> <span class="n">colors</span><span class="p">.</span><span class="n">textColor</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setStyle</span><span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QQuickText</span><span class="o">::</span><span class="n">TextStyle</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">style</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setStyleColor</span><span class="p">(</span> <span class="n">colors</span><span class="p">.</span><span class="n">styleColor</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setLinkColor</span><span class="p">(</span> <span class="n">colors</span><span class="p">.</span><span class="n">linkColor</span> <span class="p">);</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">setText</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignVCenter</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            We need to have a stable algo for rounding the text base line,
+            so that texts don't start wobbling, when processing transitions
+            between margins/paddings. We manipulate the layout code
+            by adding some padding, so that the position of base line
+            gets always floored.
+         */</span>
+        <span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">QQuickTextPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">textItem</span> <span class="p">);</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">layedOutTextRect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">+</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">lineHeightOffset</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="n">h</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">h</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="p">)</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">extra</span><span class="o">-&gt;</span><span class="n">bottomPadding</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="k">else</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">extra</span><span class="o">-&gt;</span><span class="n">topPadding</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">textItem</span><span class="p">.</span><span class="n">updateTextNode</span><span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">window</span><span class="p">(),</span> <span class="n">node</span> <span class="p">);</span>
+    <span class="n">textItem</span><span class="p">.</span><span class="n">reset</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

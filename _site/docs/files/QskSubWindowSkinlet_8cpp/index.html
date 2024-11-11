@@ -1,0 +1,195 @@
+<h1 id="controlsqsksubwindowskinletcpp">controls/QskSubWindowSkinlet.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSubWindowSkinlet.h"
+#include "QskSubWindow.h"
+</span>
+<span class="cp">#include "QskAspect.h"
+#include "QskBoxBorderMetrics.h"
+#include "QskGraphic.h"
+#include "QskTextOptions.h"
+</span>
+<span class="cp">#include &lt;qfontmetrics.h&gt;
+</span>
+<span class="n">QskSubWindowSkinlet</span><span class="o">::</span><span class="n">QskSubWindowSkinlet</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">skin</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">appendNodeRoles</span><span class="p">(</span> <span class="p">{</span> <span class="n">PanelRole</span><span class="p">,</span> <span class="n">TitleBarRole</span><span class="p">,</span> <span class="n">SymbolRole</span><span class="p">,</span> <span class="n">TitleRole</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSubWindowSkinlet</span><span class="o">::~</span><span class="n">QskSubWindowSkinlet</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+<span class="n">QRectF</span> <span class="n">QskSubWindowSkinlet</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">subWindow</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskSubWindow</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">Panel</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">contentsRect</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">TitleBarPanel</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">titleBarRect</span><span class="p">(</span> <span class="n">subWindow</span><span class="p">,</span> <span class="n">contentsRect</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">TitleBarSymbol</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">symbolRect</span><span class="p">(</span> <span class="n">subWindow</span><span class="p">,</span> <span class="n">contentsRect</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">TitleBarText</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">titleRect</span><span class="p">(</span> <span class="n">subWindow</span><span class="p">,</span> <span class="n">contentsRect</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskSubWindowSkinlet</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">QskSubWindow</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">subWindow</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskSubWindow</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">nodeRole</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">PanelRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">updateBoxNode</span><span class="p">(</span> <span class="n">subWindow</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">Q</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">TitleBarRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">decorations</span> <span class="o">=</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">decorations</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">decorations</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBar</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="n">updateBoxNode</span><span class="p">(</span> <span class="n">subWindow</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBarPanel</span> <span class="p">);</span>
+
+            <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">SymbolRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">decorations</span> <span class="o">=</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">decorations</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">decorations</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBar</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">decorations</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="o">::</span><span class="n">Symbol</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="n">updateGraphicNode</span><span class="p">(</span> <span class="n">subWindow</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span>
+                    <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">windowIcon</span><span class="p">(),</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBarSymbol</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">TitleRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">decorations</span> <span class="o">=</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">decorations</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">decorations</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBar</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">decorations</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="o">::</span><span class="n">Title</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="n">updateTextNode</span><span class="p">(</span> <span class="n">subWindow</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">windowTitle</span><span class="p">(),</span>
+                    <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">windowTitleTextOptions</span><span class="p">(),</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBarText</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskSubWindowSkinlet</span><span class="o">::</span><span class="n">titleBarRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSubWindow</span><span class="o">*</span> <span class="n">subWindow</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">border</span> <span class="o">=</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">boxBorderMetricsHint</span><span class="p">(</span> <span class="n">QskSubWindow</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+
+    <span class="n">QRectF</span> <span class="n">r</span> <span class="o">=</span> <span class="n">contentsRect</span><span class="p">.</span><span class="n">marginsRemoved</span><span class="p">(</span> <span class="n">border</span><span class="p">.</span><span class="n">widths</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">r</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">titleBarHeight</span><span class="p">(</span> <span class="n">subWindow</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskSubWindowSkinlet</span><span class="o">::</span><span class="n">titleBarHeight</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSubWindow</span><span class="o">*</span> <span class="n">subWindow</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">QskSubWindow</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">decorations</span> <span class="o">=</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">decorations</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">decorations</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBar</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">height</span> <span class="o">=</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">strutSizeHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBarPanel</span> <span class="p">).</span><span class="n">height</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">decorations</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="o">::</span><span class="n">Title</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">padding</span> <span class="o">=</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">paddingHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBarPanel</span> <span class="p">);</span>
+        <span class="k">const</span> <span class="n">QFontMetricsF</span> <span class="n">fm</span><span class="p">(</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">effectiveFont</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBarText</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">fm</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">+</span> <span class="n">padding</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">+</span> <span class="n">padding</span><span class="p">.</span><span class="n">bottom</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">h</span> <span class="o">&gt;</span> <span class="n">height</span> <span class="p">)</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="n">h</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">height</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskSubWindowSkinlet</span><span class="o">::</span><span class="n">symbolRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSubWindow</span><span class="o">*</span> <span class="n">subWindow</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">QskSubWindow</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">hasDecoration</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Symbol</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QRectF</span><span class="p">();</span>
+
+    <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">subControlContentsRect</span><span class="p">(</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBarPanel</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">rect</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">symbol</span> <span class="o">=</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">windowIcon</span><span class="p">();</span>
+
+        <span class="kt">int</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">symbol</span><span class="p">.</span><span class="n">isNull</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">symbol</span><span class="p">.</span><span class="n">widthForHeight</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="n">rect</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">w</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">rect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskSubWindowSkinlet</span><span class="o">::</span><span class="n">titleRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSubWindow</span><span class="o">*</span> <span class="n">subWindow</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">QskSubWindow</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">hasDecoration</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">Title</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QRectF</span><span class="p">();</span>
+
+    <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">subControlContentsRect</span><span class="p">(</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBarPanel</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">rect</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">symbolRect</span> <span class="o">=</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">subWindow</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBarSymbol</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">symbolRect</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">spacing</span> <span class="o">=</span> <span class="n">subWindow</span><span class="o">-&gt;</span><span class="n">spacingHint</span><span class="p">(</span> <span class="n">Q</span><span class="o">::</span><span class="n">TitleBarPanel</span> <span class="p">);</span>
+            <span class="n">rect</span><span class="p">.</span><span class="n">setX</span><span class="p">(</span> <span class="n">symbolRect</span><span class="p">.</span><span class="n">right</span><span class="p">()</span> <span class="o">+</span> <span class="n">spacing</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+<span class="c">#if 0
+        const QFontMetricsF fm( subWindow-&gt;effectiveFont( Q::TitleBarText ) );
+        rect.setHeight( fm.height() ); // TitleBarText | Alignment
+#endif
+</span>    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">rect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskSubWindowSkinlet.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

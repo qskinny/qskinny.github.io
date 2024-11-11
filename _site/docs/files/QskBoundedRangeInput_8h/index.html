@@ -1,0 +1,96 @@
+<h1 id="controlsqskboundedrangeinputh">controls/QskBoundedRangeInput.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskBoundedRangeInput/">QskBoundedRangeInput</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_BOUNDED_RANGE_INPUT_H
+#define QSK_BOUNDED_RANGE_INPUT_H
+</span>
+<span class="cp">#include "QskBoundedInput.h"
+#include "QskIntervalF.h"
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskBoundedRangeInput</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskBoundedInput</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">lowerValue</span> <span class="n">READ</span> <span class="n">lowerValue</span>
+        <span class="n">WRITE</span> <span class="n">setLowerValue</span> <span class="n">NOTIFY</span> <span class="n">lowerValueChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">upperValue</span> <span class="n">READ</span> <span class="n">upperValue</span>
+        <span class="n">WRITE</span> <span class="n">setUpperValue</span> <span class="n">NOTIFY</span> <span class="n">upperValueChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QskIntervalF</span> <span class="n">range</span> <span class="n">READ</span> <span class="n">range</span> <span class="n">WRITE</span> <span class="n">setRange</span>
+        <span class="n">RESET</span> <span class="n">resetRange</span> <span class="n">NOTIFY</span> <span class="n">rangeChanged</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskBoundedInput</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QskBoundedRangeInput</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="n">QskBoundedRangeInput</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskBoundedRangeInput</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setRange</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">lowerValue</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">upperValue</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetRange</span><span class="p">();</span>
+
+    <span class="n">QskIntervalF</span> <span class="n">range</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">lowerValue</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">upperValue</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="c1">// [0.0, 1.0]</span>
+    <span class="n">qreal</span> <span class="n">lowerValueAsRatio</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">upperValueAsRatio</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="k">public</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">setRange</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setLowerValue</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setUpperValue</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setLowerValueAsRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setUpperValueAsRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">rangeChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">lowerValueChanged</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">upperValueChanged</span><span class="p">(</span> <span class="n">qreal</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="k">virtual</span> <span class="n">QskIntervalF</span> <span class="n">fixupRange</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">alignInput</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">setRangeInternal</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">adjustValue</span><span class="p">();</span>
+
+    <span class="n">QskIntervalF</span> <span class="n">m_range</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,501 @@
+<h1 id="qsksubwindow">QskSubWindow</h1>
+
+<p>Inherits from QskPopup</p>
+
+<p>Inherited by <a href="/docs/classes/classQskDialogSubWindow/">QskDialogSubWindow</a></p>
+
+<h2 id="public-types">Public Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#enum-decoration">Decoration</a></strong> { NoDecoration = 0, TitleBar = 1 « 0, Title = 1 « 1, Symbol = 1 « 2}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-signals">Public Signals</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#signal-decorationschanged">decorationsChanged</a></strong>(Decorations )</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#signal-windowtitlechanged">windowTitleChanged</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#signal-windowtitletextoptionschanged">windowTitleTextOptionsChanged</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#signal-windowiconchanged">windowIconChanged</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#signal-windowiconsourcechanged">windowIconSourceChanged</a></strong>()</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-qsksubwindow">QskSubWindow</a></strong>(QQuickItem * parent =nullptr)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-~qsksubwindow">~QskSubWindow</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setdecorations">setDecorations</a></strong>(Decorations decorations)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-resetdecorations">resetDecorations</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>Decorations</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-decorations">decorations</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setdecoration">setDecoration</a></strong>(Decoration decoration, bool on =true)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-hasdecoration">hasDecoration</a></strong>(Decoration decoration) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setwindowtitletextoptions">setWindowTitleTextOptions</a></strong>(const QskTextOptions &amp; options)</td>
+    </tr>
+    <tr>
+      <td>QskTextOptions</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-windowtitletextoptions">windowTitleTextOptions</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setwindowtitle">setWindowTitle</a></strong>(const QString &amp; title)</td>
+    </tr>
+    <tr>
+      <td>QString</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-windowtitle">windowTitle</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setwindowiconsource">setWindowIconSource</a></strong>(const QString &amp; url)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setwindowiconsource">setWindowIconSource</a></strong>(const QUrl &amp; url)</td>
+    </tr>
+    <tr>
+      <td>QUrl</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-windowiconsource">windowIconSource</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-setwindowicon">setWindowIcon</a></strong>(const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; graphic)</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a></td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-windowicon">windowIcon</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-haswindowicon">hasWindowIcon</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>QRectF</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-titlebarrect">titleBarRect</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>QRectF</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-layoutrectforsize">layoutRectForSize</a></strong>(const QSizeF &amp; size) const override</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-event">event</a></strong>(QEvent * event) override</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-updatelayout">updateLayout</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>QSizeF</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-layoutsizehint">layoutSizeHint</a></strong>(Qt::SizeHint which, const QSizeF &amp; constraint) const override</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#function-itemchange">itemChange</a></strong>(QQuickItem::ItemChange change, const QQuickItem::ItemChangeData &amp; value) override</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-properties">Public Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Decorations</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#property-decorations">decorations</a></strong></td>
+    </tr>
+    <tr>
+      <td>QString</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#property-windowtitle">windowTitle</a></strong></td>
+    </tr>
+    <tr>
+      <td>QskTextOptions</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#property-windowtitletextoptions">windowTitleTextOptions</a></strong></td>
+    </tr>
+    <tr>
+      <td>QUrl</td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#property-windowiconsource">windowIconSource</a></strong></td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a></td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#property-windowicon">windowIcon</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-attributes">Public Attributes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#variable-panel">Panel</a></strong></td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#variable-titlebarpanel">TitleBarPanel</a></strong></td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#variable-titlebarsymbol">TitleBarSymbol</a></strong></td>
+    </tr>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a></td>
+      <td><strong><a href="/docs/classes/classQskSubWindow/#variable-titlebartext">TitleBarText</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+
+<h3 id="enum-decoration">enum Decoration</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NoDecoration</td>
+      <td>0</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>TitleBar</td>
+      <td>1 « 0</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Title</td>
+      <td>1 « 1</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Symbol</td>
+      <td>1 « 2</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-signals-documentation">Public Signals Documentation</h2>
+
+<h3 id="signal-decorationschanged">signal decorationsChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">decorationsChanged</span><span class="p">(</span>
+    <span class="n">Decorations</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="signal-windowtitlechanged">signal windowTitleChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">windowTitleChanged</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="signal-windowtitletextoptionschanged">signal windowTitleTextOptionsChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">windowTitleTextOptionsChanged</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="signal-windowiconchanged">signal windowIconChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">windowIconChanged</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="signal-windowiconsourcechanged">signal windowIconSourceChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">windowIconSourceChanged</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qsksubwindow">function QskSubWindow</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskSubWindow</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksubwindow-1">function ~QskSubWindow</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskSubWindow</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-setdecorations">function setDecorations</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setDecorations</span><span class="p">(</span>
+    <span class="n">Decorations</span> <span class="n">decorations</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-resetdecorations">function resetDecorations</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetDecorations</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-decorations">function decorations</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Decorations</span> <span class="n">decorations</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setdecoration">function setDecoration</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setDecoration</span><span class="p">(</span>
+    <span class="n">Decoration</span> <span class="n">decoration</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span><span class="nb">true</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-hasdecoration">function hasDecoration</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">hasDecoration</span><span class="p">(</span>
+    <span class="n">Decoration</span> <span class="n">decoration</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setwindowtitletextoptions">function setWindowTitleTextOptions</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowTitleTextOptions</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span> <span class="o">&amp;</span> <span class="n">options</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-windowtitletextoptions">function windowTitleTextOptions</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskTextOptions</span> <span class="n">windowTitleTextOptions</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setwindowtitle">function setWindowTitle</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowTitle</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">title</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-windowtitle">function windowTitle</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QString</span> <span class="n">windowTitle</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setwindowiconsource">function setWindowIconSource</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowIconSource</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">url</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-setwindowiconsource-1">function setWindowIconSource</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowIconSource</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QUrl</span> <span class="o">&amp;</span> <span class="n">url</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-windowiconsource">function windowIconSource</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QUrl</span> <span class="n">windowIconSource</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setwindowicon">function setWindowIcon</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindowIcon</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="n">graphic</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-windowicon">function windowIcon</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGraphic</span> <span class="n">windowIcon</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-haswindowicon">function hasWindowIcon</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">hasWindowIcon</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-titlebarrect">function titleBarRect</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">titleBarRect</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-layoutrectforsize">function layoutRectForSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">layoutRectForSize</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span>
+<span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-event">function event</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">event</span><span class="p">(</span>
+    <span class="n">QEvent</span> <span class="o">*</span> <span class="n">event</span>
+<span class="p">)</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-updatelayout">function updateLayout</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">updateLayout</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-layoutsizehint">function layoutSizeHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">layoutSizeHint</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span>
+<span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-itemchange">function itemChange</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">itemChange</span><span class="p">(</span>
+    <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChange</span> <span class="n">change</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemChangeData</span> <span class="o">&amp;</span> <span class="n">value</span>
+<span class="p">)</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h2 id="public-property-documentation">Public Property Documentation</h2>
+
+<h3 id="property-decorations">property decorations</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Decorations</span> <span class="n">decorations</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="property-windowtitle">property windowTitle</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QString</span> <span class="n">windowTitle</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="property-windowtitletextoptions">property windowTitleTextOptions</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskTextOptions</span> <span class="n">windowTitleTextOptions</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="property-windowiconsource">property windowIconSource</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QUrl</span> <span class="n">windowIconSource</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="property-windowicon">property windowIcon</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGraphic</span> <span class="n">windowIcon</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+
+<h3 id="variable-panel">variable Panel</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">Panel</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="variable-titlebarpanel">variable TitleBarPanel</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">TitleBarPanel</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="variable-titlebarsymbol">variable TitleBarSymbol</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">TitleBarSymbol</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="variable-titlebartext">variable TitleBarText</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">TitleBarText</span><span class="p">;</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:27 CEST</p>

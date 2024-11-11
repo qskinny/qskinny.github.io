@@ -1,0 +1,237 @@
+<h1 id="controlsqskpushbuttonskinletcpp">controls/QskPushButtonSkinlet.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskPushButtonSkinlet.h"
+#include "QskPushButton.h"
+</span>
+<span class="cp">#include "QskGraphic.h"
+#include "QskTextOptions.h"
+</span>
+<span class="cp">#include &lt;qfontmetrics.h&gt;
+#include &lt;qmath.h&gt;
+</span>
+<span class="n">QskPushButtonSkinlet</span><span class="o">::</span><span class="n">QskPushButtonSkinlet</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">skin</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setNodeRoles</span><span class="p">(</span> <span class="p">{</span> <span class="n">PanelRole</span><span class="p">,</span> <span class="n">GraphicRole</span><span class="p">,</span> <span class="n">TextRole</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskPushButtonSkinlet</span><span class="o">::~</span><span class="n">QskPushButtonSkinlet</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+<span class="n">QRectF</span> <span class="n">QskPushButtonSkinlet</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Text</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">textRect</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="n">contentsRect</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Graphic</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">graphicRect</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="n">contentsRect</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Panel</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">contentsRect</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskPushButtonSkinlet</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">nodeRole</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">PanelRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">updateBoxNode</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">case</span> <span class="n">TextRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">updateTextNode</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">case</span> <span class="n">GraphicRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">updateGraphicNode</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span>
+                <span class="n">button</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">(),</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Graphic</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskPushButtonSkinlet</span><span class="o">::</span><span class="n">textRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">button</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// buttonShift -&gt; TODO</span>
+
+    <span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">subControlContentsRect</span><span class="p">(</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">hasGraphic</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// in case of having text + graphic we put the text at the bottom</span>
+
+        <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">QFontMetricsF</span><span class="p">(</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">effectiveFont</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Text</span> <span class="p">)</span> <span class="p">).</span><span class="n">height</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">r</span><span class="p">.</span><span class="n">setTop</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="n">h</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskPushButtonSkinlet</span><span class="o">::</span><span class="n">graphicRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">button</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="c1">// buttonShift -&gt; TODO</span>
+
+    <span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">subControlContentsRect</span><span class="p">(</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">button</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">textRect</span> <span class="o">=</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Text</span> <span class="p">);</span>
+        <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">textRect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">+</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">spacingHint</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">r</span><span class="p">.</span><span class="n">setBottom</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="n">h</span> <span class="p">);</span>
+        <span class="k">else</span>
+            <span class="n">r</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="mi">0</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">maxSize</span> <span class="o">=</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">graphicSourceSize</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">maxSize</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">maxSize</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// limiting the size by graphicSize</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">maxW</span> <span class="o">=</span> <span class="n">maxSize</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">maxH</span> <span class="o">=</span> <span class="n">maxSize</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">maxW</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="o">&amp;&amp;</span> <span class="n">maxW</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">r</span><span class="p">.</span><span class="n">setX</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">center</span><span class="p">().</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">maxW</span> <span class="p">);</span>
+            <span class="n">r</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">maxW</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">maxH</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="o">&amp;&amp;</span> <span class="n">maxH</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">r</span><span class="p">.</span><span class="n">setY</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">center</span><span class="p">().</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">maxH</span> <span class="p">);</span>
+            <span class="n">r</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">maxH</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">().</span><span class="n">defaultSize</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">||</span> <span class="n">sz</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// inner rectangle according to the aspect ratio</span>
+
+        <span class="k">const</span> <span class="kt">double</span> <span class="n">scaleFactor</span> <span class="o">=</span>
+            <span class="n">qMin</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="n">sz</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">r</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">/</span> <span class="n">sz</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="c1">// early aligning to avoid pointless operations, that finally will</span>
+        <span class="c1">// have no effect, when drawing to an integer based paint device</span>
+
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">w</span> <span class="o">=</span> <span class="n">qFloor</span><span class="p">(</span> <span class="n">scaleFactor</span> <span class="o">*</span> <span class="n">sz</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">h</span> <span class="o">=</span> <span class="n">qFloor</span><span class="p">(</span> <span class="n">scaleFactor</span> <span class="o">*</span> <span class="n">sz</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">qFloor</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">center</span><span class="p">().</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">w</span> <span class="p">);</span>
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">qFloor</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">center</span><span class="p">().</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">h</span> <span class="p">);</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">QRectF</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskPushButtonSkinlet</span><span class="o">::</span><span class="n">updateTextNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">button</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Text</span> <span class="p">).</span><span class="n">toAlignedRect</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">QFontMetricsF</span> <span class="n">fm</span><span class="p">(</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">effectiveFont</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Text</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">button</span><span class="o">-&gt;</span><span class="n">clip</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">fm</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">alignment</span> <span class="o">=</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">alignmentHint</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Text</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignCenter</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">QskSkinlet</span><span class="o">::</span><span class="n">updateTextNode</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">alignment</span><span class="p">,</span>
+        <span class="n">button</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">(),</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">(),</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskPushButtonSkinlet</span><span class="o">::</span><span class="n">sizeHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="n">QSizeF</span> <span class="n">size</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QFontMetricsF</span> <span class="n">fm</span><span class="p">(</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">font</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">button</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// in elide mode we might want to ignore the text width ???</span>
+
+        <span class="n">size</span> <span class="o">+=</span> <span class="n">fm</span><span class="p">.</span><span class="n">size</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextShowMnemonic</span><span class="p">,</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">hasGraphic</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">graphicSourceSize</span><span class="p">();</span>
+
+        <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="n">sz</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+        <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">sz</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="o">||</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">graphic</span> <span class="o">=</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">graphic</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">graphic</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="c1">// strutSizeHint( Graphic ) ???</span>
+                    <span class="n">h</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">fm</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">w</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">.</span><span class="n">widthForHeight</span><span class="p">(</span> <span class="n">h</span> <span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">h</span> <span class="o">=</span> <span class="n">graphic</span><span class="p">.</span><span class="n">heightForWidth</span><span class="p">(</span> <span class="n">w</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">padding</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">;</span> <span class="c1">// paddingHint( Graphic ) ???</span>
+
+        <span class="n">size</span><span class="p">.</span><span class="n">rheight</span><span class="p">()</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">padding</span> <span class="o">+</span> <span class="n">h</span><span class="p">;</span>
+        <span class="n">size</span><span class="p">.</span><span class="n">rwidth</span><span class="p">()</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">w</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">size</span> <span class="o">=</span> <span class="n">size</span><span class="p">.</span><span class="n">expandedTo</span><span class="p">(</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">strutSizeHint</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Panel</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">outerBoxSize</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">::</span><span class="n">Panel</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">size</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskPushButtonSkinlet.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

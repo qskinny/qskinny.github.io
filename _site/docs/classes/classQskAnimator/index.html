@@ -1,0 +1,257 @@
+<h1 id="qskanimator">QskAnimator</h1>
+
+<p>Inherited by <a href="/docs/classes/classQskFlickAnimator/">QskFlickAnimator</a>, <a href="/docs/classes/classQskStackBoxAnimator/">QskStackBoxAnimator</a>, <a href="/docs/classes/classQskVariantAnimator/">QskVariantAnimator</a></p>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-qskanimator">QskAnimator</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>virtual</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-~qskanimator">~QskAnimator</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>QQuickWindow *</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-window">window</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-setwindow">setWindow</a></strong>(QQuickWindow * window)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-seteasingcurve">setEasingCurve</a></strong>(QEasingCurve::Type type)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-seteasingcurve">setEasingCurve</a></strong>(const QEasingCurve &amp; easingCurve)</td>
+    </tr>
+    <tr>
+      <td>const QEasingCurve &amp;</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-easingcurve">easingCurve</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-setautorepeat">setAutoRepeat</a></strong>(bool on)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-autorepeat">autoRepeat</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-setduration">setDuration</a></strong>(int ms)</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-duration">duration</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-isrunning">isRunning</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>qint64</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-elapsed">elapsed</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-start">start</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-stop">stop</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-update">update</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>QMetaObject::Connection</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-addcleanuphandler">addCleanupHandler</a></strong>(QObject * receiver, const char * method, Qt::ConnectionType type =Qt::AutoConnection)</td>
+    </tr>
+    <tr>
+      <td>QMetaObject::Connection</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-addadvancehandler">addAdvanceHandler</a></strong>(QObject * receiver, const char * method, Qt::ConnectionType type =Qt::AutoConnection)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-debugstatistics">debugStatistics</a></strong>(QDebug debug)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-setup">setup</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-advance">advance</a></strong>(qreal value) =0</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskAnimator/#function-done">done</a></strong>()</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskanimator">function QskAnimator</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskAnimator</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskanimator-1">function ~QskAnimator</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="o">~</span><span class="n">QskAnimator</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-window">function window</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QQuickWindow</span> <span class="o">*</span> <span class="n">window</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setwindow">function setWindow</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setWindow</span><span class="p">(</span>
+    <span class="n">QQuickWindow</span> <span class="o">*</span> <span class="n">window</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-seteasingcurve">function setEasingCurve</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setEasingCurve</span><span class="p">(</span>
+    <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">Type</span> <span class="n">type</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-seteasingcurve-1">function setEasingCurve</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setEasingCurve</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QEasingCurve</span> <span class="o">&amp;</span> <span class="n">easingCurve</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-easingcurve">function easingCurve</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">QEasingCurve</span> <span class="o">&amp;</span> <span class="n">easingCurve</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setautorepeat">function setAutoRepeat</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setAutoRepeat</span><span class="p">(</span>
+    <span class="kt">bool</span> <span class="n">on</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-autorepeat">function autoRepeat</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">bool</span> <span class="n">autoRepeat</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setduration">function setDuration</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setDuration</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">ms</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-duration">function duration</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">int</span> <span class="n">duration</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-isrunning">function isRunning</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">bool</span> <span class="n">isRunning</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-elapsed">function elapsed</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qint64</span> <span class="n">elapsed</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-start">function start</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">start</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-stop">function stop</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">stop</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-update">function update</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">update</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-addcleanuphandler">function addCleanupHandler</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">Connection</span> <span class="n">addCleanupHandler</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">receiver</span><span class="p">,</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">method</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">type</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-addadvancehandler">function addAdvanceHandler</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">Connection</span> <span class="n">addAdvanceHandler</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">receiver</span><span class="p">,</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">method</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ConnectionType</span> <span class="n">type</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-debugstatistics">function debugStatistics</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">debugStatistics</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-setup">function setup</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">setup</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-advance">function advance</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">advance</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span> <span class="o">=</span><span class="mi">0</span>
+</code></pre></div></div>
+
+<h3 id="function-done">function done</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">done</span><span class="p">()</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,266 @@
+<h1 id="nodesqsktexturerenderercpp">nodes/QskTextureRenderer.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>uint</td>
+      <td><strong><a href="/docs/files/QskTextureRenderer_8cpp/#function-qskcreatetextureopengl">qskCreateTextureOpenGL</a></strong>(const QSize &amp; size, QskTextureRenderer::PaintHelper * helper)</td>
+    </tr>
+    <tr>
+      <td>uint</td>
+      <td><strong><a href="/docs/files/QskTextureRenderer_8cpp/#function-qskcreatetextureraster">qskCreateTextureRaster</a></strong>(const QSize &amp; size, QskTextureRenderer::PaintHelper * helper)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskcreatetextureopengl">function qskCreateTextureOpenGL</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">uint</span> <span class="n">qskCreateTextureOpenGL</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSize</span> <span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span>
+    <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">PaintHelper</span> <span class="o">*</span> <span class="n">helper</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskcreatetextureraster">function qskCreateTextureRaster</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">uint</span> <span class="n">qskCreateTextureRaster</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSize</span> <span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span>
+    <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">PaintHelper</span> <span class="o">*</span> <span class="n">helper</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskTextureRenderer.h"
+#include "QskColorFilter.h"
+#include "QskGraphic.h"
+#include "QskSetup.h"
+</span>
+<span class="cp">#include &lt;qopenglcontext.h&gt;
+#include &lt;qopenglextrafunctions.h&gt;
+#include &lt;qopenglframebufferobject.h&gt;
+#include &lt;qopenglfunctions.h&gt;
+#include &lt;qopenglpaintdevice.h&gt;
+#include &lt;qopengltexture.h&gt;
+</span>
+<span class="cp">#include &lt;qimage.h&gt;
+#include &lt;qpainter.h&gt;
+</span>
+<span class="cp">#include &lt;qquickwindow.h&gt;
+#include &lt;qsgtexture.h&gt;
+</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 0, 0 )
+</span>    <span class="cp">#include &lt;qsgtexture_platform.h&gt;
+#endif
+</span>
+<span class="k">static</span> <span class="n">uint</span> <span class="nf">qskCreateTextureOpenGL</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span> <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">PaintHelper</span><span class="o">*</span> <span class="n">helper</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">width</span> <span class="o">=</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">height</span> <span class="o">=</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+    <span class="n">QOpenGLFramebufferObjectFormat</span> <span class="n">format1</span><span class="p">;</span>
+    <span class="n">format1</span><span class="p">.</span><span class="n">setAttachment</span><span class="p">(</span> <span class="n">QOpenGLFramebufferObject</span><span class="o">::</span><span class="n">CombinedDepthStencil</span> <span class="p">);</span>
+
+    <span class="c1">// ### TODO: get samples from window instead</span>
+    <span class="n">format1</span><span class="p">.</span><span class="n">setSamples</span><span class="p">(</span> <span class="n">QOpenGLContext</span><span class="o">::</span><span class="n">currentContext</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">format</span><span class="p">().</span><span class="n">samples</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">QOpenGLFramebufferObject</span> <span class="n">multisampledFbo</span><span class="p">(</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">format1</span> <span class="p">);</span>
+
+    <span class="n">QOpenGLPaintDevice</span> <span class="n">pd</span><span class="p">(</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="p">);</span>
+    <span class="n">pd</span><span class="p">.</span><span class="n">setPaintFlipped</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="p">{</span>
+        <span class="n">QPainter</span> <span class="n">painter</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">pd</span> <span class="p">);</span>
+
+        <span class="n">painter</span><span class="p">.</span><span class="n">setCompositionMode</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">::</span><span class="n">CompositionMode_Source</span> <span class="p">);</span>
+        <span class="n">painter</span><span class="p">.</span><span class="n">fillRect</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">transparent</span> <span class="p">);</span>
+        <span class="n">painter</span><span class="p">.</span><span class="n">setCompositionMode</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">::</span><span class="n">CompositionMode_SourceOver</span> <span class="p">);</span>
+
+        <span class="n">helper</span><span class="o">-&gt;</span><span class="n">paint</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">painter</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+
+<span class="cp">#if 1
+</span>        <span class="k">if</span> <span class="p">(</span> <span class="n">format1</span><span class="p">.</span><span class="n">samples</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                Multisampling in the window surface might get lost
+                as a side effect of rendering to the FBO.
+                weired, needs to be investigated more
+             */</span>
+            <span class="n">painter</span><span class="p">.</span><span class="n">setRenderHint</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">::</span><span class="n">Antialiasing</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="p">}</span>
+<span class="cp">#endif
+</span>    <span class="p">}</span>
+
+    <span class="n">QOpenGLFramebufferObjectFormat</span> <span class="n">format2</span><span class="p">;</span>
+    <span class="n">format2</span><span class="p">.</span><span class="n">setAttachment</span><span class="p">(</span> <span class="n">QOpenGLFramebufferObject</span><span class="o">::</span><span class="n">NoAttachment</span> <span class="p">);</span>
+
+    <span class="n">QOpenGLFramebufferObject</span> <span class="n">fbo</span><span class="p">(</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">format2</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QRect</span> <span class="n">fboRect</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="p">);</span>
+
+    <span class="n">QOpenGLFramebufferObject</span><span class="o">::</span><span class="n">blitFramebuffer</span><span class="p">(</span>
+        <span class="o">&amp;</span><span class="n">fbo</span><span class="p">,</span> <span class="n">fboRect</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">multisampledFbo</span><span class="p">,</span> <span class="n">fboRect</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">fbo</span><span class="p">.</span><span class="n">takeTexture</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">uint</span> <span class="nf">qskCreateTextureRaster</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span> <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">PaintHelper</span><span class="o">*</span> <span class="n">helper</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QImage</span> <span class="n">image</span><span class="p">(</span> <span class="n">size</span><span class="p">,</span> <span class="n">QImage</span><span class="o">::</span><span class="n">Format_RGBA8888_Premultiplied</span> <span class="p">);</span>
+    <span class="n">image</span><span class="p">.</span><span class="n">fill</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">transparent</span> <span class="p">);</span>
+
+    <span class="p">{</span>
+        <span class="n">QPainter</span> <span class="n">painter</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">image</span> <span class="p">);</span>
+        <span class="n">helper</span><span class="o">-&gt;</span><span class="n">paint</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">painter</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">target</span> <span class="o">=</span> <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">Target2D</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">context</span> <span class="o">=</span> <span class="n">QOpenGLContext</span><span class="o">::</span><span class="n">currentContext</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">context</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">f</span> <span class="o">=</span> <span class="o">*</span><span class="n">context</span><span class="o">-&gt;</span><span class="n">functions</span><span class="p">();</span>
+
+    <span class="n">GLint</span> <span class="n">oldTexture</span><span class="p">;</span> <span class="c1">// we can't rely on having OpenGL Direct State Access</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">glGetIntegerv</span><span class="p">(</span> <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">BindingTarget2D</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">oldTexture</span> <span class="p">);</span>
+
+    <span class="n">GLuint</span> <span class="n">textureId</span><span class="p">;</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">glGenTextures</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">textureId</span> <span class="p">);</span>
+
+    <span class="n">f</span><span class="p">.</span><span class="n">glBindTexture</span><span class="p">(</span> <span class="n">target</span><span class="p">,</span> <span class="n">textureId</span> <span class="p">);</span>
+
+    <span class="n">f</span><span class="p">.</span><span class="n">glTexParameteri</span><span class="p">(</span> <span class="n">target</span><span class="p">,</span> <span class="n">GL_TEXTURE_MIN_FILTER</span><span class="p">,</span> <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">Nearest</span> <span class="p">);</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">glTexParameteri</span><span class="p">(</span> <span class="n">target</span><span class="p">,</span> <span class="n">GL_TEXTURE_MAG_FILTER</span><span class="p">,</span> <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">Nearest</span> <span class="p">);</span>
+
+    <span class="n">f</span><span class="p">.</span><span class="n">glTexParameteri</span><span class="p">(</span> <span class="n">target</span><span class="p">,</span> <span class="n">GL_TEXTURE_WRAP_S</span><span class="p">,</span> <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">ClampToEdge</span> <span class="p">);</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">glTexParameteri</span><span class="p">(</span> <span class="n">target</span><span class="p">,</span> <span class="n">GL_TEXTURE_WRAP_T</span><span class="p">,</span> <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">ClampToEdge</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">hasFeature</span><span class="p">(</span> <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">ImmutableStorage</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span><span class="o">&amp;</span> <span class="n">ef</span> <span class="o">=</span> <span class="o">*</span><span class="n">context</span><span class="o">-&gt;</span><span class="n">extraFunctions</span><span class="p">();</span>
+        <span class="n">ef</span><span class="p">.</span><span class="n">glTexStorage2D</span><span class="p">(</span> <span class="n">target</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">RGBA8_UNorm</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">image</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="n">f</span><span class="p">.</span><span class="n">glTexSubImage2D</span><span class="p">(</span> <span class="n">target</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">image</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span>
+            <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">RGBA</span><span class="p">,</span> <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">UInt8</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">constBits</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">f</span><span class="p">.</span><span class="n">glTexImage2D</span><span class="p">(</span> <span class="n">target</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">RGBA8_UNorm</span><span class="p">,</span>
+            <span class="n">image</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">image</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">RGBA</span><span class="p">,</span> <span class="n">QOpenGLTexture</span><span class="o">::</span><span class="n">UInt8</span><span class="p">,</span> <span class="n">image</span><span class="p">.</span><span class="n">constBits</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">f</span><span class="p">.</span><span class="n">glBindTexture</span><span class="p">(</span> <span class="n">target</span><span class="p">,</span> <span class="n">oldTexture</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">textureId</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QSGTexture</span><span class="o">*</span> <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">textureFromId</span><span class="p">(</span>
+    <span class="n">QQuickWindow</span><span class="o">*</span> <span class="n">window</span><span class="p">,</span> <span class="n">uint</span> <span class="n">textureId</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">flags</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QQuickWindow</span><span class="o">::</span><span class="n">CreateTextureOptions</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="n">QQuickWindow</span><span class="o">::</span><span class="n">TextureHasAlphaChannel</span> <span class="o">|</span> <span class="n">QQuickWindow</span><span class="o">::</span><span class="n">TextureOwnsGLTexture</span> <span class="p">);</span>
+
+    <span class="n">QSGTexture</span><span class="o">*</span> <span class="n">texture</span><span class="p">;</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 0, 0 )
+</span>
+    <span class="n">texture</span> <span class="o">=</span> <span class="n">QNativeInterface</span><span class="o">::</span><span class="n">QSGOpenGLTexture</span><span class="o">::</span><span class="n">fromNative</span><span class="p">(</span>
+        <span class="n">textureId</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">flags</span> <span class="p">);</span>
+
+<span class="cp">#elif QT_VERSION &gt;= QT_VERSION_CHECK( 5, 14, 0 )
+</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">nativeLayout</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// VkImageLayout in case of Vulkan</span>
+
+    <span class="n">texture</span> <span class="o">=</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">createTextureFromNativeObject</span><span class="p">(</span>
+        <span class="n">QQuickWindow</span><span class="o">::</span><span class="n">NativeObjectTexture</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">textureId</span><span class="p">,</span> <span class="n">nativeLayout</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">flags</span> <span class="p">);</span>
+
+<span class="cp">#else
+</span>
+    <span class="n">texture</span> <span class="o">=</span> <span class="n">window</span><span class="o">-&gt;</span><span class="n">createTextureFromId</span><span class="p">(</span> <span class="n">textureId</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">flags</span> <span class="p">);</span>
+
+<span class="cp">#endif
+</span>
+    <span class="k">return</span> <span class="n">texture</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">PaintHelper</span><span class="o">::~</span><span class="n">PaintHelper</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">uint</span> <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">createTexture</span><span class="p">(</span>
+    <span class="n">RenderMode</span> <span class="n">renderMode</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span> <span class="n">PaintHelper</span><span class="o">*</span> <span class="n">helper</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 0, 0 )
+</span>    <span class="c1">// Qt6.0.0 is buggy when using FBOs. So let's disable it for the moment TODO ...</span>
+    <span class="n">renderMode</span> <span class="o">=</span> <span class="n">Raster</span><span class="p">;</span>
+<span class="cp">#endif
+</span>    <span class="k">if</span> <span class="p">(</span> <span class="n">renderMode</span> <span class="o">==</span> <span class="n">AutoDetect</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">qskSetup</span><span class="o">-&gt;</span><span class="n">testItemUpdateFlag</span><span class="p">(</span> <span class="n">QskQuickItem</span><span class="o">::</span><span class="n">PreferRasterForTextures</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">renderMode</span> <span class="o">=</span> <span class="n">Raster</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">renderMode</span> <span class="o">=</span> <span class="n">OpenGL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">renderMode</span> <span class="o">==</span> <span class="n">Raster</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">qskCreateTextureRaster</span><span class="p">(</span> <span class="n">size</span><span class="p">,</span> <span class="n">helper</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">qskCreateTextureOpenGL</span><span class="p">(</span> <span class="n">size</span><span class="p">,</span> <span class="n">helper</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">uint</span> <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">createTextureFromGraphic</span><span class="p">(</span>
+    <span class="n">RenderMode</span> <span class="n">renderMode</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">graphic</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">colorFilter</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">AspectRatioMode</span> <span class="n">aspectRatioMode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">PaintHelper</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskTextureRenderer</span><span class="o">::</span><span class="n">PaintHelper</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">PaintHelper</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">graphic</span><span class="p">,</span>
+                <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">filter</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AspectRatioMode</span> <span class="n">aspectRatioMode</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_graphic</span><span class="p">(</span> <span class="n">graphic</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_filter</span><span class="p">(</span> <span class="n">filter</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_aspectRatioMode</span><span class="p">(</span> <span class="n">aspectRatioMode</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">paint</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">*</span> <span class="n">painter</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">QRect</span> <span class="n">rect</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">m_graphic</span><span class="p">.</span><span class="n">render</span><span class="p">(</span> <span class="n">painter</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">m_filter</span><span class="p">,</span> <span class="n">m_aspectRatioMode</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span> <span class="n">m_graphic</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">m_filter</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AspectRatioMode</span> <span class="n">m_aspectRatioMode</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="n">PaintHelper</span> <span class="n">helper</span><span class="p">(</span> <span class="n">graphic</span><span class="p">,</span> <span class="n">colorFilter</span><span class="p">,</span> <span class="n">aspectRatioMode</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">createTexture</span><span class="p">(</span> <span class="n">renderMode</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">helper</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

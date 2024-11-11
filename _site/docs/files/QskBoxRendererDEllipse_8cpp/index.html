@@ -1,0 +1,637 @@
+<h1 id="nodesqskboxrendererdellipsecpp">nodes/QskBoxRendererDEllipse.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskBoxRenderer.h"
+#include "QskBoxRendererColorMap.h"
+#include "QskGradient.h"
+#include "QskVertex.h"
+</span>
+<span class="cp">#include &lt;qmath.h&gt;
+</span>
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">QskVertex</span><span class="p">;</span>
+
+    <span class="k">class</span> <span class="nc">ContourLine</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setLine</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">x1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">y1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">value1</span><span class="p">,</span>
+            <span class="n">qreal</span> <span class="n">x2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">y2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">value2</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">p1</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x1</span><span class="p">;</span>
+            <span class="n">p1</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y1</span><span class="p">;</span>
+            <span class="n">p1</span><span class="p">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">value1</span><span class="p">;</span>
+
+            <span class="n">p2</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x2</span><span class="p">;</span>
+            <span class="n">p2</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y2</span><span class="p">;</span>
+            <span class="n">p2</span><span class="p">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">value2</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">QPointF</span> <span class="n">pointAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">r</span> <span class="o">=</span> <span class="p">(</span> <span class="n">value</span> <span class="o">-</span> <span class="n">p1</span><span class="p">.</span><span class="n">v</span> <span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="n">p2</span><span class="p">.</span><span class="n">v</span> <span class="o">-</span> <span class="n">p1</span><span class="p">.</span><span class="n">v</span> <span class="p">);</span>
+            <span class="k">return</span> <span class="n">QPointF</span><span class="p">(</span> <span class="n">p1</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span> <span class="n">p2</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">p1</span><span class="p">.</span><span class="n">x</span> <span class="p">),</span> <span class="n">p1</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span> <span class="n">p2</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">p1</span><span class="p">.</span><span class="n">y</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">struct</span>
+        <span class="p">{</span>
+            <span class="n">qreal</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="p">;</span>
+        <span class="p">}</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">ValueCurve</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">ValueCurve</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Metrics</span><span class="o">&amp;</span> <span class="n">m</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                The slopes of the value line and those for the fill lines.
+             */</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">mv</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span> <span class="n">m</span><span class="p">.</span><span class="n">innerQuad</span><span class="p">.</span><span class="n">width</span> <span class="o">/</span> <span class="n">m</span><span class="p">.</span><span class="n">innerQuad</span><span class="p">.</span><span class="n">height</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">md</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">innerQuad</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="n">m</span><span class="p">.</span><span class="n">innerQuad</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+
+            <span class="cm">/*
+                first we find the point, where the tangent line
+                with the slope of md touches the top left border
+                of the ellipse around the top left corner point
+             */</span>
+
+            <span class="n">qreal</span> <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">;</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">corner</span><span class="p">[</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopLeftCorner</span> <span class="p">];</span>
+
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">k</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerY</span> <span class="o">/</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerX</span> <span class="o">*</span> <span class="n">md</span><span class="p">;</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">u</span> <span class="o">=</span> <span class="o">::</span><span class="n">sqrt</span><span class="p">(</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="n">k</span> <span class="p">);</span>
+
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerX</span> <span class="o">/</span> <span class="n">u</span><span class="p">;</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">dy</span> <span class="o">=</span> <span class="o">::</span><span class="n">sqrt</span><span class="p">(</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span> <span class="n">u</span> <span class="o">*</span> <span class="n">u</span> <span class="p">)</span> <span class="p">)</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerY</span><span class="p">;</span>
+
+                <span class="n">xt</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerX</span> <span class="o">-</span> <span class="n">dx</span><span class="p">;</span>
+                <span class="n">yt</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerY</span> <span class="o">-</span> <span class="n">dy</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="cm">/*
+                the cutting point between the tangent and the diagonal of the
+                fill rectangle is the origin of our line, where we iterate
+                the values along.
+             */</span>
+
+            <span class="n">qreal</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">;</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">r</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">innerQuad</span><span class="p">;</span>
+
+                <span class="n">left</span> <span class="o">=</span> <span class="p">(</span> <span class="n">yt</span> <span class="o">-</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span> <span class="o">-</span> <span class="n">mv</span> <span class="o">*</span> <span class="n">xt</span> <span class="o">+</span> <span class="n">md</span> <span class="o">*</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span> <span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="n">md</span> <span class="o">-</span> <span class="n">mv</span> <span class="p">);</span>
+
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">left</span> <span class="o">-</span> <span class="n">r</span><span class="p">.</span><span class="n">left</span><span class="p">;</span>
+
+                <span class="n">top</span> <span class="o">=</span> <span class="n">r</span><span class="p">.</span><span class="n">top</span> <span class="o">+</span> <span class="n">md</span> <span class="o">*</span> <span class="n">dx</span><span class="p">;</span>
+                <span class="n">right</span> <span class="o">=</span> <span class="n">r</span><span class="p">.</span><span class="n">right</span> <span class="o">-</span> <span class="n">dx</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="cm">/*
+                Finally we can precalculate the coefficients needed for
+                evaluating points in valueAt.
+             */</span>
+
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">k</span> <span class="o">=</span> <span class="n">mv</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">mv</span><span class="p">;</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">r</span> <span class="o">=</span> <span class="n">top</span> <span class="o">+</span> <span class="n">left</span> <span class="o">/</span> <span class="n">mv</span><span class="p">;</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">;</span>
+
+                <span class="n">m_coeff_0</span> <span class="o">=</span> <span class="p">(</span> <span class="n">r</span> <span class="o">/</span> <span class="n">k</span> <span class="o">-</span> <span class="n">left</span> <span class="p">)</span> <span class="o">/</span> <span class="n">w</span><span class="p">;</span>
+                <span class="n">m_coeff_y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span> <span class="n">k</span> <span class="o">*</span> <span class="n">w</span> <span class="p">);</span>
+                <span class="n">m_coeff_x</span> <span class="o">=</span> <span class="o">-</span><span class="n">mv</span> <span class="o">*</span> <span class="n">m_coeff_y</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">valueAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">x</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">y</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="c1">// The value, where the perpendicular runs through x,y</span>
+
+            <span class="k">return</span> <span class="n">m_coeff_0</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">m_coeff_x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">m_coeff_y</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="n">qreal</span> <span class="n">m_coeff_0</span><span class="p">,</span> <span class="n">m_coeff_x</span><span class="p">,</span> <span class="n">m_coeff_y</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">ContourIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">ContourIterator</span><span class="p">()</span>
+            <span class="o">:</span> <span class="n">m_clockwise</span><span class="p">(</span> <span class="nb">true</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_isLeading</span><span class="p">(</span> <span class="nb">true</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_isDone</span><span class="p">(</span> <span class="nb">false</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">setup</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Metrics</span><span class="o">&amp;</span> <span class="n">metrics</span><span class="p">,</span>
+            <span class="kt">bool</span> <span class="n">isLeading</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">clockwise</span><span class="p">,</span>
+            <span class="n">qreal</span> <span class="n">cos</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">cosStep</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">sin</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">sinStep</span><span class="p">,</span>
+            <span class="n">qreal</span> <span class="n">x1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">y1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">v1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">x2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">y2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">v2</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_cos</span> <span class="o">=</span> <span class="n">cos</span><span class="p">;</span>
+            <span class="n">m_sin</span> <span class="o">=</span> <span class="n">sin</span><span class="p">;</span>
+
+            <span class="n">m_cosStep</span> <span class="o">=</span> <span class="n">cosStep</span><span class="p">;</span>
+            <span class="n">m_sinStep</span> <span class="o">=</span> <span class="n">sinStep</span><span class="p">;</span>
+
+            <span class="n">m_stepInv1</span> <span class="o">=</span> <span class="n">m_sinStep</span> <span class="o">/</span> <span class="n">m_cosStep</span><span class="p">;</span>
+            <span class="n">m_stepInv2</span> <span class="o">=</span> <span class="n">m_cosStep</span> <span class="o">+</span> <span class="n">m_sinStep</span> <span class="o">*</span> <span class="n">m_stepInv1</span><span class="p">;</span>
+
+            <span class="n">m_contourLine</span><span class="p">.</span><span class="n">setLine</span><span class="p">(</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">v2</span> <span class="p">);</span>
+
+            <span class="n">m_clockwise</span> <span class="o">=</span> <span class="n">clockwise</span><span class="p">;</span>
+            <span class="n">m_isLeading</span> <span class="o">=</span> <span class="n">isLeading</span><span class="p">;</span>
+            <span class="n">m_isDone</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+            <span class="n">m_corner</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopLeftCorner</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">clockwise</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">x2</span> <span class="o">&gt;=</span> <span class="n">metrics</span><span class="p">.</span><span class="n">corner</span><span class="p">[</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopRightCorner</span> <span class="p">].</span><span class="n">centerX</span> <span class="p">)</span>
+                    <span class="n">setCorner</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopRightCorner</span><span class="p">,</span> <span class="n">metrics</span> <span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">y2</span> <span class="o">&gt;=</span> <span class="n">metrics</span><span class="p">.</span><span class="n">corner</span><span class="p">[</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomLeftCorner</span> <span class="p">].</span><span class="n">centerY</span> <span class="p">)</span>
+                    <span class="n">setCorner</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomLeftCorner</span><span class="p">,</span> <span class="n">metrics</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">isClockwise</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_clockwise</span><span class="p">;</span> <span class="p">}</span>
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">isDone</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_isDone</span><span class="p">;</span> <span class="p">}</span>
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_contourLine</span><span class="p">.</span><span class="n">p2</span><span class="p">.</span><span class="n">v</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="k">const</span> <span class="n">ContourLine</span><span class="o">&amp;</span> <span class="n">contourLine</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_contourLine</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">advance</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Metrics</span><span class="o">&amp;</span> <span class="n">metrics</span><span class="p">,</span> <span class="k">const</span> <span class="n">ValueCurve</span><span class="o">&amp;</span> <span class="n">curve</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_isDone</span> <span class="p">)</span>
+                <span class="k">return</span><span class="p">;</span>
+
+            <span class="k">using</span> <span class="k">namespace</span> <span class="n">Qt</span><span class="p">;</span>
+
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">corners</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">.</span><span class="n">corner</span><span class="p">;</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">corners</span><span class="p">[</span> <span class="n">m_corner</span> <span class="p">];</span>
+
+            <span class="n">m_contourLine</span><span class="p">.</span><span class="n">p1</span> <span class="o">=</span> <span class="n">m_contourLine</span><span class="p">.</span><span class="n">p2</span><span class="p">;</span>
+
+            <span class="k">auto</span><span class="o">&amp;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">m_contourLine</span><span class="p">.</span><span class="n">p2</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_clockwise</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">switch</span> <span class="p">(</span> <span class="n">m_corner</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">case</span> <span class="n">TopLeftCorner</span><span class="p">:</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span> <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerX</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">corners</span><span class="p">[</span> <span class="n">TopRightCorner</span> <span class="p">].</span><span class="n">centerX</span><span class="p">;</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">.</span><span class="n">innerQuad</span><span class="p">.</span><span class="n">top</span><span class="p">;</span>
+
+                            <span class="n">setCorner</span><span class="p">(</span> <span class="n">TopRightCorner</span><span class="p">,</span> <span class="n">metrics</span> <span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="k">else</span>
+                        <span class="p">{</span>
+                            <span class="n">decrement</span><span class="p">();</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerX</span> <span class="o">-</span> <span class="n">m_cos</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerX</span><span class="p">;</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerY</span> <span class="o">-</span> <span class="n">m_sin</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerY</span><span class="p">;</span>
+
+                            <span class="k">if</span> <span class="p">(</span> <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">corners</span><span class="p">[</span> <span class="n">TopRightCorner</span> <span class="p">].</span><span class="n">centerX</span> <span class="p">)</span>
+                                <span class="n">setCorner</span><span class="p">(</span> <span class="n">TopRightCorner</span><span class="p">,</span> <span class="n">metrics</span> <span class="p">);</span>
+                        <span class="p">}</span>
+
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="k">case</span> <span class="n">TopRightCorner</span><span class="p">:</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerY</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">.</span><span class="n">innerQuad</span><span class="p">.</span><span class="n">right</span><span class="p">;</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">corners</span><span class="p">[</span> <span class="n">BottomRightCorner</span> <span class="p">].</span><span class="n">centerY</span><span class="p">;</span>
+
+                            <span class="n">setCorner</span><span class="p">(</span> <span class="n">BottomRightCorner</span><span class="p">,</span> <span class="n">metrics</span> <span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="k">else</span>
+                        <span class="p">{</span>
+                            <span class="n">increment</span><span class="p">();</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerX</span> <span class="o">+</span> <span class="n">m_cos</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerX</span><span class="p">;</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerY</span> <span class="o">-</span> <span class="n">m_sin</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerY</span><span class="p">;</span>
+
+                            <span class="k">if</span> <span class="p">(</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="n">corners</span><span class="p">[</span> <span class="n">BottomRightCorner</span> <span class="p">].</span><span class="n">centerY</span> <span class="p">)</span>
+                                <span class="n">setCorner</span><span class="p">(</span> <span class="n">BottomRightCorner</span><span class="p">,</span> <span class="n">metrics</span> <span class="p">);</span>
+                        <span class="p">}</span>
+
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="k">case</span> <span class="n">BottomRightCorner</span><span class="p">:</span>
+                    <span class="p">{</span>
+                        <span class="c1">// we are bottom/right</span>
+                        <span class="n">increment</span><span class="p">();</span>
+
+                        <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerX</span> <span class="o">+</span> <span class="n">m_cos</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerX</span><span class="p">;</span>
+                        <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerY</span> <span class="o">+</span> <span class="n">m_sin</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerY</span><span class="p">;</span>
+
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="nl">default:</span>
+                    <span class="p">{</span>
+                        <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">switch</span> <span class="p">(</span> <span class="n">m_corner</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">case</span> <span class="n">TopLeftCorner</span><span class="p">:</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerY</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">.</span><span class="n">innerQuad</span><span class="p">.</span><span class="n">left</span><span class="p">;</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">corners</span><span class="p">[</span> <span class="n">BottomLeftCorner</span> <span class="p">].</span><span class="n">centerY</span><span class="p">;</span>
+
+                            <span class="n">setCorner</span><span class="p">(</span> <span class="n">BottomLeftCorner</span><span class="p">,</span> <span class="n">metrics</span> <span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="k">else</span>
+                        <span class="p">{</span>
+                            <span class="n">increment</span><span class="p">();</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerX</span> <span class="o">-</span> <span class="n">m_cos</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerX</span><span class="p">;</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerY</span> <span class="o">-</span> <span class="n">m_sin</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerY</span><span class="p">;</span>
+
+                            <span class="k">if</span> <span class="p">(</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="n">corners</span><span class="p">[</span> <span class="n">BottomLeftCorner</span> <span class="p">].</span><span class="n">centerY</span> <span class="p">)</span>
+                                <span class="n">setCorner</span><span class="p">(</span> <span class="n">BottomLeftCorner</span><span class="p">,</span> <span class="n">metrics</span> <span class="p">);</span>
+                        <span class="p">}</span>
+
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="k">case</span> <span class="n">BottomLeftCorner</span><span class="p">:</span>
+                    <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span> <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerX</span> <span class="p">)</span>
+                        <span class="p">{</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">corners</span><span class="p">[</span> <span class="n">BottomRightCorner</span> <span class="p">].</span><span class="n">centerX</span><span class="p">;</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">.</span><span class="n">innerQuad</span><span class="p">.</span><span class="n">bottom</span><span class="p">;</span>
+
+                            <span class="n">setCorner</span><span class="p">(</span> <span class="n">BottomRightCorner</span><span class="p">,</span> <span class="n">metrics</span> <span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="k">else</span>
+                        <span class="p">{</span>
+                            <span class="n">increment</span><span class="p">();</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerX</span> <span class="o">-</span> <span class="n">m_cos</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerX</span><span class="p">;</span>
+                            <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerY</span> <span class="o">+</span> <span class="n">m_sin</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerY</span><span class="p">;</span>
+
+                            <span class="k">if</span> <span class="p">(</span> <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">corners</span><span class="p">[</span> <span class="n">BottomRightCorner</span> <span class="p">].</span><span class="n">centerX</span> <span class="p">)</span>
+                                <span class="n">setCorner</span><span class="p">(</span> <span class="n">BottomRightCorner</span><span class="p">,</span> <span class="n">metrics</span> <span class="p">);</span>
+                        <span class="p">}</span>
+
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="k">case</span> <span class="n">BottomRightCorner</span><span class="p">:</span>
+                    <span class="p">{</span>
+                        <span class="n">increment</span><span class="p">();</span>
+
+                        <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerX</span> <span class="o">+</span> <span class="n">m_cos</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerX</span><span class="p">;</span>
+                        <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerY</span> <span class="o">+</span> <span class="n">m_sin</span> <span class="o">*</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerY</span><span class="p">;</span>
+
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="nl">default:</span>
+                    <span class="p">{</span>
+                        <span class="n">Q_ASSERT</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="n">p</span><span class="p">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">curve</span><span class="p">.</span><span class="n">valueAt</span><span class="p">(</span> <span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">p</span><span class="p">.</span><span class="n">v</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">p</span><span class="p">.</span><span class="n">v</span> <span class="o">&lt;</span> <span class="n">m_contourLine</span><span class="p">.</span><span class="n">p1</span><span class="p">.</span><span class="n">v</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">m_contourLine</span><span class="p">.</span><span class="n">p1</span><span class="p">;</span>
+                <span class="n">m_isDone</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="k">static</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">m_eps</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">;</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setCorner</span><span class="p">(</span>
+            <span class="n">Qt</span><span class="o">::</span><span class="n">Corner</span> <span class="n">corner</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Metrics</span><span class="o">&amp;</span> <span class="n">metrics</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_corner</span> <span class="o">=</span> <span class="n">corner</span><span class="p">;</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">.</span><span class="n">corner</span><span class="p">[</span> <span class="n">corner</span> <span class="p">];</span>
+
+            <span class="k">const</span> <span class="kt">double</span> <span class="n">angleStep</span> <span class="o">=</span> <span class="n">M_PI_2</span> <span class="o">/</span> <span class="n">c</span><span class="p">.</span><span class="n">stepCount</span><span class="p">;</span>
+
+            <span class="n">m_cosStep</span> <span class="o">=</span> <span class="n">qFastCos</span><span class="p">(</span> <span class="n">angleStep</span> <span class="p">);</span>
+            <span class="n">m_sinStep</span> <span class="o">=</span> <span class="n">qFastSin</span><span class="p">(</span> <span class="n">angleStep</span> <span class="p">);</span>
+            <span class="n">m_stepInv1</span> <span class="o">=</span> <span class="n">m_sinStep</span> <span class="o">/</span> <span class="n">m_cosStep</span><span class="p">;</span>
+            <span class="n">m_stepInv2</span> <span class="o">=</span> <span class="n">m_cosStep</span> <span class="o">+</span> <span class="n">m_sinStep</span> <span class="o">*</span> <span class="n">m_stepInv1</span><span class="p">;</span>
+
+            <span class="kt">bool</span> <span class="n">horizontal</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">corner</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopRightCorner</span> <span class="o">||</span> <span class="n">corner</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomLeftCorner</span> <span class="p">)</span>
+                <span class="n">horizontal</span> <span class="o">=</span> <span class="o">!</span><span class="n">m_clockwise</span><span class="p">;</span>
+            <span class="k">else</span>
+                <span class="n">horizontal</span> <span class="o">=</span> <span class="n">m_clockwise</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">horizontal</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">m_cos</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+                <span class="n">m_sin</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+                <span class="n">m_sinStep</span> <span class="o">=</span> <span class="o">-</span><span class="n">m_sinStep</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">m_cos</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+                <span class="n">m_sin</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">increment</span><span class="p">()</span>
+        <span class="p">{</span>
+<span class="c">#if 0
+            /*
+                We are running into this assertions when closing the filling
+                at the bottom right corner for rectangles with small width/height
+                ratio. Seems to be no problem, but has to be understood. TODO ...
+             */
+
+            Q_ASSERT( m_sinStep &lt; 0.0 || m_cos &lt; 1.0 );
+            Q_ASSERT( m_sinStep &gt; 0.0 || m_cos &gt; 0.0 );
+#endif
+</span>
+            <span class="k">const</span> <span class="kt">double</span> <span class="n">cos0</span> <span class="o">=</span> <span class="n">m_cos</span><span class="p">;</span>
+
+            <span class="n">m_cos</span> <span class="o">=</span> <span class="n">m_cos</span> <span class="o">*</span> <span class="n">m_cosStep</span> <span class="o">+</span> <span class="n">m_sin</span> <span class="o">*</span> <span class="n">m_sinStep</span><span class="p">;</span>
+            <span class="n">m_sin</span> <span class="o">=</span> <span class="n">m_sin</span> <span class="o">*</span> <span class="n">m_cosStep</span> <span class="o">-</span> <span class="n">cos0</span> <span class="o">*</span> <span class="n">m_sinStep</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_sinStep</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">m_cos</span> <span class="o">&lt;</span> <span class="n">m_eps</span> <span class="p">)</span>
+                    <span class="n">m_cos</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">m_sin</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">m_eps</span> <span class="p">)</span>
+                    <span class="n">m_sin</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">m_cos</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">m_eps</span> <span class="p">)</span>
+                    <span class="n">m_cos</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">m_sin</span> <span class="o">&lt;</span> <span class="n">m_eps</span> <span class="p">)</span>
+                    <span class="n">m_sin</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">decrement</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">m_cos</span> <span class="o">=</span> <span class="p">(</span> <span class="n">m_cos</span> <span class="o">-</span> <span class="n">m_stepInv1</span> <span class="o">*</span> <span class="n">m_sin</span> <span class="p">)</span> <span class="o">/</span> <span class="n">m_stepInv2</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">std</span><span class="o">::</span><span class="n">abs</span><span class="p">(</span> <span class="n">m_cos</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="n">m_eps</span> <span class="p">)</span>
+                <span class="n">m_cos</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+            <span class="n">m_sin</span> <span class="o">=</span> <span class="n">m_sin</span> <span class="o">/</span> <span class="n">m_cosStep</span> <span class="o">+</span> <span class="n">m_stepInv1</span> <span class="o">*</span> <span class="n">m_cos</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">std</span><span class="o">::</span><span class="n">abs</span><span class="p">(</span> <span class="n">m_sin</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="n">m_eps</span> <span class="p">)</span>
+                <span class="n">m_sin</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">bool</span> <span class="n">m_clockwise</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">m_isLeading</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">m_isDone</span><span class="p">;</span>
+
+        <span class="n">qreal</span> <span class="n">m_cos</span><span class="p">,</span> <span class="n">m_cosStep</span><span class="p">;</span>
+        <span class="n">qreal</span> <span class="n">m_sin</span><span class="p">,</span> <span class="n">m_sinStep</span><span class="p">;</span>
+        <span class="n">qreal</span> <span class="n">m_stepInv1</span><span class="p">,</span> <span class="n">m_stepInv2</span><span class="p">;</span>
+
+        <span class="n">ContourLine</span> <span class="n">m_contourLine</span><span class="p">;</span>
+        <span class="n">Qt</span><span class="o">::</span><span class="n">Corner</span> <span class="n">m_corner</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">OutlineIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">OutlineIterator</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Metrics</span><span class="o">&amp;</span> <span class="n">metrics</span><span class="p">,</span>
+                <span class="k">const</span> <span class="n">ValueCurve</span><span class="o">&amp;</span> <span class="n">curve</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">clockwise</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_metrics</span><span class="p">(</span> <span class="n">metrics</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_curve</span><span class="p">(</span> <span class="n">curve</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">.</span><span class="n">corner</span><span class="p">[</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopLeftCorner</span> <span class="p">];</span>
+
+<span class="cp">#if 1
+</span>            <span class="c1">// This does not need to be done twice !!!</span>
+<span class="cp">#endif
+</span>            <span class="k">const</span> <span class="kt">double</span> <span class="n">angleStep</span> <span class="o">=</span> <span class="n">M_PI_2</span> <span class="o">/</span> <span class="n">c</span><span class="p">.</span><span class="n">stepCount</span><span class="p">;</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">cosStep</span> <span class="o">=</span> <span class="n">qFastCos</span><span class="p">(</span> <span class="n">angleStep</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">sinStep</span> <span class="o">=</span> <span class="n">qFastSin</span><span class="p">(</span> <span class="n">angleStep</span> <span class="p">);</span>
+
+            <span class="cm">/*
+                Initialize the iterators to start with the
+                minimal value, what is somewhere around the top left corner
+                when having a gradient going from top/left to bottom/right.
+             */</span>
+            <span class="n">qreal</span> <span class="n">cos1</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+            <span class="n">qreal</span> <span class="n">sin1</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+
+            <span class="n">qreal</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerX</span><span class="p">;</span>
+            <span class="n">qreal</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">.</span><span class="n">innerQuad</span><span class="p">.</span><span class="n">top</span><span class="p">;</span>
+            <span class="n">qreal</span> <span class="n">v1</span> <span class="o">=</span> <span class="n">m_curve</span><span class="p">.</span><span class="n">valueAt</span><span class="p">(</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="p">);</span>
+
+            <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;;</span> <span class="n">step</span><span class="o">++</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">cos2</span> <span class="o">=</span> <span class="n">cos1</span> <span class="o">*</span> <span class="n">cosStep</span> <span class="o">+</span> <span class="n">sin1</span> <span class="o">*</span> <span class="n">sinStep</span><span class="p">;</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">sin2</span> <span class="o">=</span> <span class="n">sin1</span> <span class="o">*</span> <span class="n">cosStep</span> <span class="o">-</span> <span class="n">cos1</span> <span class="o">*</span> <span class="n">sinStep</span><span class="p">;</span>
+
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerX</span> <span class="o">-</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerX</span> <span class="o">*</span> <span class="n">cos2</span><span class="p">;</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">centerY</span> <span class="o">-</span> <span class="n">c</span><span class="p">.</span><span class="n">radiusInnerY</span> <span class="o">*</span> <span class="n">sin2</span><span class="p">;</span>
+                <span class="k">const</span> <span class="n">qreal</span> <span class="n">v2</span> <span class="o">=</span> <span class="n">m_curve</span><span class="p">.</span><span class="n">valueAt</span><span class="p">(</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="p">);</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">v2</span> <span class="o">&gt;=</span> <span class="n">v1</span> <span class="o">||</span> <span class="n">step</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">.</span><span class="n">stepCount</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">clockwise</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">setup</span><span class="p">(</span> <span class="n">metrics</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span>
+                            <span class="n">cos1</span><span class="p">,</span> <span class="n">cosStep</span><span class="p">,</span> <span class="n">sin1</span><span class="p">,</span> <span class="n">sinStep</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">v1</span> <span class="p">);</span>
+
+                        <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">setup</span><span class="p">(</span> <span class="n">metrics</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span>
+                            <span class="n">cos2</span><span class="p">,</span> <span class="n">cosStep</span><span class="p">,</span> <span class="n">sin2</span><span class="p">,</span> <span class="n">sinStep</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">v2</span> <span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span>
+                    <span class="p">{</span>
+                        <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">setup</span><span class="p">(</span> <span class="n">metrics</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span>
+                            <span class="n">cos2</span><span class="p">,</span> <span class="n">cosStep</span><span class="p">,</span> <span class="n">sin2</span><span class="p">,</span> <span class="n">sinStep</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">v2</span> <span class="p">);</span>
+
+                        <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">setup</span><span class="p">(</span> <span class="n">metrics</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span>
+                            <span class="n">cos1</span><span class="p">,</span> <span class="n">cosStep</span><span class="p">,</span> <span class="n">sin1</span><span class="p">,</span> <span class="n">sinStep</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">v1</span> <span class="p">);</span>
+                    <span class="p">}</span>
+
+                    <span class="k">while</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_iterator</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">isDone</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+                        <span class="p">(</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">value</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">value</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">advance</span><span class="p">(</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">m_curve</span> <span class="p">);</span>
+                    <span class="p">}</span>
+
+                    <span class="k">return</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="n">cos1</span> <span class="o">=</span> <span class="n">cos2</span><span class="p">;</span>
+                <span class="n">sin1</span> <span class="o">=</span> <span class="n">sin2</span><span class="p">;</span>
+
+                <span class="n">x1</span> <span class="o">=</span> <span class="n">x2</span><span class="p">;</span>
+                <span class="n">y1</span> <span class="o">=</span> <span class="n">y2</span><span class="p">;</span>
+                <span class="n">v1</span> <span class="o">=</span> <span class="n">v2</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">advance</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">advance</span><span class="p">(</span> <span class="n">m_metrics</span><span class="p">,</span> <span class="n">m_curve</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">isDone</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="cm">/*
+                    adjusting the counter vertex until its top value is above
+                    the value of the border. Then our value is between
+                    the values of the counter vertex and we find out counter
+                    border point by cutting the counter vertex.
+                 */</span>
+
+                <span class="k">while</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_iterator</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">isDone</span><span class="p">()</span> <span class="o">&amp;&amp;</span>
+                    <span class="p">(</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">value</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">value</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">advance</span><span class="p">(</span> <span class="n">m_metrics</span><span class="p">,</span> <span class="n">m_curve</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">isDone</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">isDone</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">value</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setLineAt</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span><span class="p">,</span> <span class="n">Color</span> <span class="n">color</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">contourLine1</span> <span class="o">=</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">contourLine</span><span class="p">();</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">contourLine2</span> <span class="o">=</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">contourLine</span><span class="p">();</span>
+
+            <span class="k">const</span> <span class="n">QPointF</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">contourLine1</span><span class="p">.</span><span class="n">pointAt</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="n">QPointF</span> <span class="n">cPos</span> <span class="o">=</span> <span class="n">contourLine2</span><span class="p">.</span><span class="n">pointAt</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">isClockwise</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">setLine</span><span class="p">(</span> <span class="n">cPos</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">cPos</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">color</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+            <span class="k">else</span>
+                <span class="n">setLine</span><span class="p">(</span> <span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">cPos</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">cPos</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">color</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setLine</span><span class="p">(</span> <span class="n">Color</span> <span class="n">color</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">contourLine1</span> <span class="o">=</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">contourLine</span><span class="p">();</span>
+            <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">contourLine2</span> <span class="o">=</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">1</span> <span class="p">].</span><span class="n">contourLine</span><span class="p">();</span>
+
+            <span class="k">const</span> <span class="n">QPointF</span> <span class="n">cPos</span> <span class="o">=</span> <span class="n">contourLine2</span><span class="p">.</span><span class="n">pointAt</span><span class="p">(</span> <span class="n">contourLine1</span><span class="p">.</span><span class="n">p2</span><span class="p">.</span><span class="n">v</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">0</span> <span class="p">].</span><span class="n">isClockwise</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">setLine</span><span class="p">(</span> <span class="n">cPos</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">cPos</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">contourLine1</span><span class="p">.</span><span class="n">p2</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">contourLine1</span><span class="p">.</span><span class="n">p2</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+            <span class="k">else</span>
+                <span class="n">setLine</span><span class="p">(</span> <span class="n">contourLine1</span><span class="p">.</span><span class="n">p2</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">contourLine1</span><span class="p">.</span><span class="n">p2</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">cPos</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">cPos</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">color</span><span class="p">,</span> <span class="n">line</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setLine</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">x1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">y1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">x2</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">y2</span><span class="p">,</span>
+            <span class="n">Color</span> <span class="n">color</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">line</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Metrics</span><span class="o">&amp;</span> <span class="n">m_metrics</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">ValueCurve</span><span class="o">&amp;</span> <span class="n">m_curve</span><span class="p">;</span>
+
+        <span class="cm">/*
+            The first iterator for running along the left or right
+            half of the ellipse. The other one is for finding the
+            corresponing point at the other side. */</span>
+
+        <span class="n">ContourIterator</span> <span class="n">m_iterator</span><span class="p">[</span> <span class="mi">2</span> <span class="p">];</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">DRectellipseIterator</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">DRectellipseIterator</span><span class="p">(</span>
+                <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Metrics</span><span class="o">&amp;</span> <span class="n">metrics</span><span class="p">,</span> <span class="k">const</span> <span class="n">ValueCurve</span><span class="o">&amp;</span> <span class="n">curve</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">m_left</span><span class="p">(</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="nb">false</span> <span class="p">)</span>
+            <span class="p">,</span> <span class="n">m_right</span><span class="p">(</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">curve</span><span class="p">,</span> <span class="nb">true</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_next</span> <span class="o">=</span> <span class="p">(</span> <span class="n">m_left</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">m_right</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="p">)</span> <span class="o">?</span> <span class="o">&amp;</span><span class="n">m_left</span> <span class="o">:</span> <span class="o">&amp;</span><span class="n">m_right</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ColorIterator</span> <span class="p">&gt;</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setGradientLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">ColorIterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_next</span><span class="o">-&gt;</span><span class="n">setLineAt</span><span class="p">(</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span><span class="p">(),</span> <span class="n">it</span><span class="p">.</span><span class="n">color</span><span class="p">(),</span> <span class="n">line</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">template</span><span class="o">&lt;</span> <span class="k">class</span> <span class="nc">ColorIterator</span> <span class="p">&gt;</span>
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setContourLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">ColorIterator</span><span class="o">&amp;</span> <span class="n">it</span><span class="p">,</span> <span class="n">ColoredLine</span><span class="o">*</span> <span class="n">line</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_next</span><span class="o">-&gt;</span><span class="n">setLine</span><span class="p">(</span> <span class="n">it</span><span class="p">.</span><span class="n">colorAt</span><span class="p">(</span> <span class="n">m_next</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">()</span> <span class="p">),</span> <span class="n">line</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">value</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_next</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">advance</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">m_next</span><span class="o">-&gt;</span><span class="n">advance</span><span class="p">();</span>
+            <span class="n">m_next</span> <span class="o">=</span> <span class="p">(</span> <span class="n">m_left</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">m_right</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="p">)</span> <span class="o">?</span> <span class="o">&amp;</span><span class="n">m_left</span> <span class="o">:</span> <span class="o">&amp;</span><span class="n">m_right</span><span class="p">;</span>
+
+            <span class="k">return</span> <span class="o">!</span><span class="n">m_next</span><span class="o">-&gt;</span><span class="n">isDone</span><span class="p">();</span>
+        <span class="p">}</span>
+
+      <span class="nl">private:</span>
+        <span class="n">OutlineIterator</span> <span class="n">m_left</span><span class="p">,</span> <span class="n">m_right</span><span class="p">;</span>
+        <span class="n">OutlineIterator</span><span class="o">*</span> <span class="n">m_next</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">renderDiagonalFill</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskBoxRenderer</span><span class="o">::</span><span class="n">Metrics</span><span class="o">&amp;</span> <span class="n">metrics</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">gradient</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fillLineCount</span><span class="p">,</span> <span class="n">QskVertex</span><span class="o">::</span><span class="n">ColoredLine</span><span class="o">*</span> <span class="n">lines</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">ValueCurve</span> <span class="n">curve</span><span class="p">(</span> <span class="n">metrics</span> <span class="p">);</span>
+
+    <span class="n">DRectellipseIterator</span> <span class="n">it</span><span class="p">(</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">curve</span> <span class="p">);</span>
+    <span class="k">auto</span> <span class="n">line</span> <span class="o">=</span> <span class="n">QskVertex</span><span class="o">::</span><span class="n">fillOrdered</span><span class="p">(</span> <span class="n">it</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">lines</span> <span class="p">);</span>
+
+    <span class="cm">/*
+        There are a couple of reasons, why less points have been rendered
+        than expected: f.e the positions of the gradient lines are
+        calculated from a diagonal, where the start/endpoints
+        might be a little outside of the contour.
+
+        As effects like this one are hard to precalculate we simply
+        insert dummy lines to match the allocated memory.
+     */</span>
+
+    <span class="k">while</span> <span class="p">(</span> <span class="n">line</span> <span class="o">-</span> <span class="n">lines</span> <span class="o">&lt;</span> <span class="n">fillLineCount</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">line</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span> <span class="o">-</span><span class="mi">1</span> <span class="p">];</span>
+        <span class="n">line</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

@@ -1,0 +1,458 @@
+<h1 id="layoutsqskstackboxcpp">layouts/QskStackBox.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskStackBox.h"
+#include "QskStackBoxAnimator.h"
+#include "QskEvent.h"
+#include "QskQuick.h"
+</span>
+<span class="cp">#include &lt;QPointer&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskStackBox</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">items</span><span class="p">;</span>
+    <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QskStackBoxAnimator</span> <span class="o">&gt;</span> <span class="n">animator</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">currentIndex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">defaultAlignment</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignLeft</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignVCenter</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskStackBox</span><span class="o">::</span><span class="n">QskStackBox</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskStackBox</span><span class="p">(</span> <span class="nb">false</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskStackBox</span><span class="o">::</span><span class="n">QskStackBox</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">autoAddChildren</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskIndexedLayoutBox</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setAutoAddChildren</span><span class="p">(</span> <span class="n">autoAddChildren</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskStackBox</span><span class="o">::~</span><span class="n">QskStackBox</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">setDefaultAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">alignment</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">defaultAlignment</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">defaultAlignment</span> <span class="o">=</span> <span class="n">alignment</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">defaultAlignmentChanged</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">);</span>
+
+        <span class="n">polish</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">defaultAlignment</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">defaultAlignment</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">setAnimator</span><span class="p">(</span> <span class="n">QskStackBoxAnimator</span><span class="o">*</span> <span class="n">animator</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animator</span> <span class="o">==</span> <span class="n">animator</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animator</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animator</span><span class="o">-&gt;</span><span class="n">stop</span><span class="p">();</span>
+        <span class="k">delete</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animator</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">animator</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">animator</span><span class="o">-&gt;</span><span class="n">stop</span><span class="p">();</span>
+        <span class="n">animator</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animator</span> <span class="o">=</span> <span class="n">animator</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QskStackBoxAnimator</span><span class="o">*</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">animator</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animator</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskStackBoxAnimator</span><span class="o">*</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">animator</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animator</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskStackBoxAnimator</span><span class="o">*</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">effectiveAnimator</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animator</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">animator</span><span class="p">;</span>
+
+    <span class="c1">// getting an animation from the skin. TODO ...</span>
+
+    <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">itemCount</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">count</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">itemAtIndex</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">indexOf</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">parentItem</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">currentItem</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">itemAtIndex</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">currentIndex</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">setCurrentIndex</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">itemCount</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// hide the current item</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="c1">// stop and complete the running transition</span>
+    <span class="k">auto</span> <span class="n">animator</span> <span class="o">=</span> <span class="n">effectiveAnimator</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">animator</span> <span class="p">)</span>
+        <span class="n">animator</span><span class="o">-&gt;</span><span class="n">stop</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">window</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">isVisible</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">isInitiallyPainted</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">animator</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// start the animation</span>
+        <span class="n">animator</span><span class="o">-&gt;</span><span class="n">setStartIndex</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">);</span>
+        <span class="n">animator</span><span class="o">-&gt;</span><span class="n">setEndIndex</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+        <span class="n">animator</span><span class="o">-&gt;</span><span class="n">setWindow</span><span class="p">(</span> <span class="n">window</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">animator</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">item1</span> <span class="o">=</span> <span class="n">itemAtIndex</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">);</span>
+        <span class="k">auto</span> <span class="n">item2</span> <span class="o">=</span> <span class="n">itemAtIndex</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item1</span> <span class="p">)</span>
+            <span class="n">item1</span><span class="o">-&gt;</span><span class="n">setVisible</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item2</span> <span class="p">)</span>
+            <span class="n">item2</span><span class="o">-&gt;</span><span class="n">setVisible</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="o">=</span> <span class="n">index</span><span class="p">;</span>
+    <span class="n">polish</span><span class="p">();</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">currentIndexChanged</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">setCurrentItem</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setCurrentIndex</span><span class="p">(</span> <span class="n">indexOf</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">addItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">insertItem</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">item</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">addItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">insertItem</span><span class="p">(</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">alignment</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">insertItem</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">item</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">reparentItem</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsTransparentForPositioner</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// giving a warning, or ignoring the insert ???</span>
+        <span class="n">qskSetTransparentForPositioner</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">doAppend</span> <span class="o">=</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">itemCount</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">parentItem</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">oldIndex</span> <span class="o">=</span> <span class="n">indexOf</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">oldIndex</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// the item had been inserted before</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">index</span> <span class="o">==</span> <span class="n">oldIndex</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">doAppend</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">oldIndex</span> <span class="o">==</span> <span class="n">itemCount</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// already in place</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">removeAt</span><span class="p">(</span> <span class="n">oldIndex</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">doAppend</span> <span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">itemCount</span><span class="p">();</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">item</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">oldCurrentIndex</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">item</span><span class="o">-&gt;</span><span class="n">setVisible</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">item</span><span class="o">-&gt;</span><span class="n">setVisible</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">oldCurrentIndex</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">currentIndexChanged</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">);</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">insertItem</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">qskControlCast</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">control</span><span class="o">-&gt;</span><span class="n">setLayoutAlignmentHint</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">);</span>
+
+    <span class="n">insertItem</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="n">item</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">removeAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">removeItemInternal</span><span class="p">(</span> <span class="n">index</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">removeItemInternal</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">unparent</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">count</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">unparent</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">[</span> <span class="n">index</span> <span class="p">]</span> <span class="p">)</span>
+            <span class="n">unparentItem</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">removeAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">currentIndex</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="n">currentIndex</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">currentIndex</span><span class="o">--</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">currentIndex</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">currentIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">currentIndex</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">[</span> <span class="n">currentIndex</span> <span class="p">]</span><span class="o">-&gt;</span><span class="n">setVisible</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">currentIndexChanged</span><span class="p">(</span> <span class="n">currentIndex</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">removeItem</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">removeAt</span><span class="p">(</span> <span class="n">indexOf</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">autoAddItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">removeAt</span><span class="p">(</span> <span class="n">indexOf</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">autoRemoveItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">removeItemInternal</span><span class="p">(</span> <span class="n">indexOf</span><span class="p">(</span> <span class="n">item</span> <span class="p">),</span> <span class="nb">false</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">clear</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">autoDelete</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">:</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">autoDelete</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="k">delete</span> <span class="n">item</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">item</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">currentIndexChanged</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">geometryForItemAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">layoutRect</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">index</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">alignment</span> <span class="o">=</span> <span class="n">qskLayoutAlignmentHint</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">alignment</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="n">alignment</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">defaultAlignment</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="n">qskConstrainedItemRect</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">alignment</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QRectF</span><span class="p">(</span> <span class="n">r</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">r</span><span class="p">.</span><span class="n">y</span><span class="p">(),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">updateLayout</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">maybeUnresized</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+<span class="cp">#if 1
+</span>    <span class="c1">// what about QskControl::LayoutOutWhenHidden</span>
+<span class="cp">#endif
+</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">index</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">geometryForItemAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+        <span class="n">qskSetItemGeometry</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">[</span> <span class="n">index</span> <span class="p">],</span> <span class="n">rect</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">layoutSizeHint</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MaximumSize</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+
+    <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">:</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            We ignore the retainSizeWhenVisible flag and include all
+            invisible items. Maybe we should offer a flag to control this ?
+         */</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">policy</span> <span class="o">=</span> <span class="n">qskSizePolicy</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="o">&amp;&amp;</span> <span class="n">policy</span><span class="p">.</span><span class="n">isConstrained</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">qskSizeConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">);</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">h</span><span class="p">,</span> <span class="n">hint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="o">&amp;&amp;</span> <span class="n">policy</span><span class="p">.</span><span class="n">isConstrained</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">qskSizeConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">);</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">hint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="n">qskSizeConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="n">w</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">hint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">h</span><span class="p">,</span> <span class="n">hint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// minimum layout hint needs to be cached TODO ...</span>
+    <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LayoutRequest</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">resetImplicitSize</span><span class="p">();</span>
+            <span class="n">polish</span><span class="p">();</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">ContentsRectChange</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">QskEvent</span><span class="o">::</span><span class="n">GeometryChange</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">polish</span><span class="p">();</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskStackBox</span><span class="o">::</span><span class="n">dump</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">debug</span> <span class="o">=</span> <span class="n">qDebug</span><span class="p">();</span>
+
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">constraint</span> <span class="o">=</span> <span class="n">sizeConstraint</span><span class="p">();</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"QskStackBox"</span>
+          <span class="o">&lt;&lt;</span> <span class="s">" w:"</span> <span class="o">&lt;&lt;</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">" h:"</span> <span class="o">&lt;&lt;</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">.</span><span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"  "</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="s">": "</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">constraint</span> <span class="o">=</span> <span class="n">qskSizeConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">);</span>
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">metaObject</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">()</span>
+              <span class="o">&lt;&lt;</span> <span class="s">" w:"</span> <span class="o">&lt;&lt;</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">" h:"</span> <span class="o">&lt;&lt;</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">i</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">currentIndex</span> <span class="p">)</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">" [X]"</span><span class="p">;</span>
+
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskStackBox.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

@@ -1,0 +1,268 @@
+<h1 id="commonqskboxshapemetricscpp">common/QskBoxShapeMetrics.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskBoxShapeMetrics_8cpp/#function-qskregisterboxshapemetrics">qskRegisterBoxShapeMetrics</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>QSizeF</td>
+      <td><strong><a href="/docs/files/QskBoxShapeMetrics_8cpp/#function-qskinterpolatedsize">qskInterpolatedSize</a></strong>(const QSizeF &amp; from, const QSizeF &amp; to, qreal ratio)</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/files/QskBoxShapeMetrics_8cpp/#function-qskabsoluted">qskAbsoluted</a></strong>(qreal length, qreal percentage)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskBoxShapeMetrics_8cpp/#function-qsksetradius">qskSetRadius</a></strong>(qreal rx, qreal ry, QSizeF &amp; radius)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskBoxShapeMetrics_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskBoxShapeMetrics &amp; metrics)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskregisterboxshapemetrics">function qskRegisterBoxShapeMetrics</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskRegisterBoxShapeMetrics</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinterpolatedsize">function qskInterpolatedSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QSizeF</span> <span class="n">qskInterpolatedSize</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">ratio</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskabsoluted">function qskAbsoluted</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">qskAbsoluted</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">length</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">percentage</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksetradius">function qskSetRadius</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskSetRadius</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">rx</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">ry</span><span class="p">,</span>
+    <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">radius</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span> <span class="o">&amp;</span> <span class="n">metrics</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskBoxShapeMetrics.h"
+</span>
+<span class="cp">#include &lt;qhashfunctions.h&gt;
+#include &lt;qvariant.h&gt;
+</span>
+<span class="cp">#include &lt;algorithm&gt;
+</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskRegisterBoxShapeMetrics</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">qRegisterMetaType</span><span class="o">&lt;</span> <span class="n">QskBoxShapeMetrics</span> <span class="o">&gt;</span><span class="p">();</span>
+
+    <span class="n">QMetaType</span><span class="o">::</span><span class="n">registerConverter</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskBoxShapeMetrics</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="p">[](</span> <span class="kt">int</span> <span class="n">radius</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">QskBoxShapeMetrics</span><span class="p">(</span> <span class="n">radius</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+    <span class="n">QMetaType</span><span class="o">::</span><span class="n">registerConverter</span><span class="o">&lt;</span> <span class="n">qreal</span><span class="p">,</span> <span class="n">QskBoxShapeMetrics</span> <span class="o">&gt;</span><span class="p">(</span>
+        <span class="p">[](</span> <span class="n">qreal</span> <span class="n">radius</span> <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">QskBoxShapeMetrics</span><span class="p">(</span> <span class="n">radius</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Q_CONSTRUCTOR_FUNCTION</span><span class="p">(</span> <span class="n">qskRegisterBoxShapeMetrics</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QSizeF</span> <span class="nf">qskInterpolatedSize</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">from</span> <span class="o">+</span> <span class="p">(</span> <span class="n">to</span> <span class="o">-</span> <span class="n">from</span> <span class="p">)</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">qreal</span> <span class="nf">qskAbsoluted</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">length</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">percentage</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// 100% means -&gt; 0.5 of length</span>
+    <span class="n">percentage</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">percentage</span><span class="p">,</span> <span class="mf">100.0</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">percentage</span> <span class="o">/</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">length</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskSetRadius</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">rx</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ry</span><span class="p">,</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">radius</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">radius</span><span class="p">.</span><span class="n">rwidth</span><span class="p">()</span> <span class="o">=</span> <span class="p">(</span> <span class="n">rx</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="o">?</span> <span class="n">rx</span> <span class="o">:</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="n">radius</span><span class="p">.</span><span class="n">rheight</span><span class="p">()</span> <span class="o">=</span> <span class="p">(</span> <span class="n">ry</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="o">?</span> <span class="n">ry</span> <span class="o">:</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxShapeMetrics</span><span class="o">::</span><span class="n">setRadius</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">topLeftX</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">topLeftY</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">topRightX</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">topRightY</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">bottomLeftX</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">bottomLeftY</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">bottomRightX</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">bottomRightY</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">qskSetRadius</span><span class="p">(</span> <span class="n">topLeftX</span><span class="p">,</span> <span class="n">topLeftY</span><span class="p">,</span> <span class="n">m_radii</span><span class="p">[</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopLeftCorner</span> <span class="p">]</span> <span class="p">);</span>
+    <span class="n">qskSetRadius</span><span class="p">(</span> <span class="n">topRightX</span><span class="p">,</span> <span class="n">topRightY</span><span class="p">,</span> <span class="n">m_radii</span><span class="p">[</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopRightCorner</span> <span class="p">]</span> <span class="p">);</span>
+    <span class="n">qskSetRadius</span><span class="p">(</span> <span class="n">bottomLeftX</span><span class="p">,</span> <span class="n">bottomLeftY</span><span class="p">,</span> <span class="n">m_radii</span><span class="p">[</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomLeftCorner</span> <span class="p">]</span> <span class="p">);</span>
+    <span class="n">qskSetRadius</span><span class="p">(</span> <span class="n">bottomRightX</span><span class="p">,</span> <span class="n">bottomRightY</span><span class="p">,</span> <span class="n">m_radii</span><span class="p">[</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomRightCorner</span> <span class="p">]</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxShapeMetrics</span><span class="o">::</span><span class="n">setRadius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Corner</span> <span class="n">corner</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">radiusX</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">radiusY</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">corner</span> <span class="o">&gt;=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopLeftCorner</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">corner</span> <span class="o">&lt;=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomRightCorner</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">qskSetRadius</span><span class="p">(</span> <span class="n">radiusX</span><span class="p">,</span> <span class="n">radiusY</span><span class="p">,</span> <span class="n">m_radii</span><span class="p">[</span> <span class="n">corner</span> <span class="p">]</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxShapeMetrics</span><span class="o">::</span><span class="n">setTopLeft</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">radius</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">setRadius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopLeftCorner</span><span class="p">,</span> <span class="n">radius</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxShapeMetrics</span><span class="o">::</span><span class="n">setTopRight</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">radius</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">setRadius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopRightCorner</span><span class="p">,</span> <span class="n">radius</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxShapeMetrics</span><span class="o">::</span><span class="n">setBottomLeft</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">radius</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">setRadius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomLeftCorner</span><span class="p">,</span> <span class="n">radius</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoxShapeMetrics</span><span class="o">::</span><span class="n">setBottomRight</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">radius</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">setRadius</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomRightCorner</span><span class="p">,</span> <span class="n">radius</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxShapeMetrics</span> <span class="n">QskBoxShapeMetrics</span><span class="o">::</span><span class="n">toAbsolute</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_sizeMode</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RelativeSize</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+
+    <span class="n">QskBoxShapeMetrics</span> <span class="n">absoluted</span> <span class="o">=</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+            <span class="n">absoluted</span><span class="p">.</span><span class="n">m_radii</span><span class="p">[</span> <span class="n">i</span> <span class="p">]</span> <span class="o">=</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span><span class="o">&amp;</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">absoluted</span><span class="p">.</span><span class="n">m_radii</span><span class="p">[</span> <span class="n">i</span> <span class="p">];</span>
+
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">rx</span> <span class="o">=</span> <span class="n">qskAbsoluted</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">radius</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">ry</span> <span class="o">=</span> <span class="n">qskAbsoluted</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">(),</span> <span class="n">radius</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+            <span class="k">switch</span> <span class="p">(</span> <span class="n">m_aspectRatioMode</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">IgnoreAspectRatio</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="n">radius</span><span class="p">.</span><span class="n">rwidth</span><span class="p">()</span> <span class="o">=</span> <span class="n">rx</span><span class="p">;</span>
+                    <span class="n">radius</span><span class="p">.</span><span class="n">rheight</span><span class="p">()</span> <span class="o">=</span> <span class="n">ry</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">KeepAspectRatio</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="n">radius</span><span class="p">.</span><span class="n">rwidth</span><span class="p">()</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span> <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span> <span class="p">);</span>
+                    <span class="n">radius</span><span class="p">.</span><span class="n">rheight</span><span class="p">()</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span> <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span> <span class="p">);</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">KeepAspectRatioByExpanding</span><span class="p">:</span>
+                <span class="p">{</span>
+                    <span class="n">radius</span><span class="p">.</span><span class="n">rwidth</span><span class="p">()</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">(</span> <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span> <span class="p">);</span>
+                    <span class="n">radius</span><span class="p">.</span><span class="n">rheight</span><span class="p">()</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">max</span><span class="p">(</span> <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span> <span class="p">);</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">absoluted</span><span class="p">.</span><span class="n">m_sizeMode</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AbsoluteSize</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">absoluted</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskBoxShapeMetrics</span> <span class="n">QskBoxShapeMetrics</span><span class="o">::</span><span class="n">interpolated</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="c1">// what about m_aspectRatioMode != to.m_aspectRatioMode ???</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="o">*</span><span class="k">this</span> <span class="o">==</span> <span class="n">to</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">m_sizeMode</span> <span class="o">!=</span> <span class="n">to</span><span class="p">.</span><span class="n">m_sizeMode</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">to</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">QskBoxShapeMetrics</span><span class="p">(</span>
+        <span class="n">qskInterpolatedSize</span><span class="p">(</span> <span class="n">m_radii</span><span class="p">[</span> <span class="mi">0</span> <span class="p">],</span> <span class="n">to</span><span class="p">.</span><span class="n">m_radii</span><span class="p">[</span> <span class="mi">0</span> <span class="p">],</span> <span class="n">ratio</span> <span class="p">),</span>
+        <span class="n">qskInterpolatedSize</span><span class="p">(</span> <span class="n">m_radii</span><span class="p">[</span> <span class="mi">1</span> <span class="p">],</span> <span class="n">to</span><span class="p">.</span><span class="n">m_radii</span><span class="p">[</span> <span class="mi">1</span> <span class="p">],</span> <span class="n">ratio</span> <span class="p">),</span>
+        <span class="n">qskInterpolatedSize</span><span class="p">(</span> <span class="n">m_radii</span><span class="p">[</span> <span class="mi">2</span> <span class="p">],</span> <span class="n">to</span><span class="p">.</span><span class="n">m_radii</span><span class="p">[</span> <span class="mi">2</span> <span class="p">],</span> <span class="n">ratio</span> <span class="p">),</span>
+        <span class="n">qskInterpolatedSize</span><span class="p">(</span> <span class="n">m_radii</span><span class="p">[</span> <span class="mi">3</span> <span class="p">],</span> <span class="n">to</span><span class="p">.</span><span class="n">m_radii</span><span class="p">[</span> <span class="mi">3</span> <span class="p">],</span> <span class="n">ratio</span> <span class="p">),</span>
+        <span class="n">to</span><span class="p">.</span><span class="n">m_sizeMode</span><span class="p">,</span> <span class="n">to</span><span class="p">.</span><span class="n">m_aspectRatioMode</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskBoxShapeMetrics</span><span class="o">::</span><span class="n">interpolate</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">from</span><span class="p">.</span><span class="n">interpolated</span><span class="p">(</span> <span class="n">to</span><span class="p">,</span> <span class="n">progress</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">uint</span> <span class="n">QskBoxShapeMetrics</span><span class="o">::</span><span class="n">hash</span><span class="p">(</span> <span class="n">uint</span> <span class="n">seed</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">uint</span> <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_sizeMode</span> <span class="p">),</span> <span class="n">seed</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">qHashBits</span><span class="p">(</span> <span class="n">m_radii</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span> <span class="n">m_radii</span> <span class="p">),</span> <span class="n">hash</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="cp">#include &lt;qdebug.h&gt;
+</span>
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskBoxShapeMetrics</span><span class="o">&amp;</span> <span class="n">metrics</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"BoxShape"</span> <span class="o">&lt;&lt;</span> <span class="sc">'('</span><span class="p">;</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="n">metrics</span><span class="p">.</span><span class="n">sizeMode</span><span class="p">();</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TopLeftCorner</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">BottomRightCorner</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">QSizeF</span> <span class="n">r</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">.</span><span class="n">radius</span><span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Corner</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"("</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">','</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">")"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">')'</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="cp">#include "moc_QskBoxShapeMetrics.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

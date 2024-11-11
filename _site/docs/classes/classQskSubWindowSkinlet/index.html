@@ -1,0 +1,136 @@
+<h1 id="qsksubwindowskinlet">QskSubWindowSkinlet</h1>
+
+<p>Inherits from QskPopupSkinlet</p>
+
+<h2 id="public-types">Public Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskSubWindowSkinlet/#enum-noderole">NodeRole</a></strong> { PanelRole = QskPopupSkinlet::OverlayRole + 1, TitleBarRole, SymbolRole, TitleRole}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Q_INVOKABLE</td>
+      <td><strong><a href="/docs/classes/classQskSubWindowSkinlet/#function-qsksubwindowskinlet">QskSubWindowSkinlet</a></strong>(QskSkin * skin =nullptr)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskSubWindowSkinlet/#function-~qsksubwindowskinlet">~QskSubWindowSkinlet</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>QRectF</td>
+      <td><strong><a href="/docs/classes/classQskSubWindowSkinlet/#function-subcontrolrect">subControlRect</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, const QRectF &amp; contentsRect, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl) const override</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSubWindowSkinlet/#function-updatesubnode">updateSubNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, quint8 nodeRole, QSGNode * node) const override</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+
+<h3 id="enum-noderole">enum NodeRole</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PanelRole</td>
+      <td>QskPopupSkinlet::OverlayRole + 1</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>TitleBarRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>SymbolRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>TitleRole</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qsksubwindowskinlet">function QskSubWindowSkinlet</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="n">QskSubWindowSkinlet</span><span class="p">(</span>
+    <span class="n">QskSkin</span> <span class="o">*</span> <span class="n">skin</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksubwindowskinlet-1">function ~QskSubWindowSkinlet</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskSubWindowSkinlet</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-subcontrolrect">function subControlRect</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">subControlRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">contentsRect</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-updatesubnode">function updateSubNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateSubNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span>
+<span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:27 CEST</p>

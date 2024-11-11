@@ -1,0 +1,123 @@
+<h1 id="controlsqskgesturecpp">controls/QskGesture.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskGesture.h"
+</span>
+<span class="n">QskGesture</span><span class="o">::</span><span class="n">QskGesture</span><span class="p">(</span> <span class="n">Type</span> <span class="n">type</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_type</span><span class="p">(</span> <span class="n">type</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_state</span><span class="p">(</span> <span class="n">NoGesture</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskGesture</span><span class="o">::~</span><span class="n">QskGesture</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGesture</span><span class="o">::</span><span class="n">setState</span><span class="p">(</span> <span class="n">State</span> <span class="n">state</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_state</span> <span class="o">=</span> <span class="n">state</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskTapGesture</span><span class="o">::</span><span class="n">QskTapGesture</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">QskGesture</span><span class="p">(</span> <span class="n">Tap</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskTapGesture</span><span class="o">::~</span><span class="n">QskTapGesture</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTapGesture</span><span class="o">::</span><span class="n">setPosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">position</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_position</span> <span class="o">=</span> <span class="n">position</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskTapAndHoldGesture</span><span class="o">::</span><span class="n">QskTapAndHoldGesture</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">QskGesture</span><span class="p">(</span> <span class="n">TapAndHold</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_timeout</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskTapAndHoldGesture</span><span class="o">::~</span><span class="n">QskTapAndHoldGesture</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTapAndHoldGesture</span><span class="o">::</span><span class="n">setPosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">position</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_position</span> <span class="o">=</span> <span class="n">position</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTapAndHoldGesture</span><span class="o">::</span><span class="n">setTimeout</span><span class="p">(</span> <span class="kt">int</span> <span class="n">timeout</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_timeout</span> <span class="o">=</span> <span class="n">timeout</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskPanGesture</span><span class="o">::</span><span class="n">QskPanGesture</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">QskGesture</span><span class="p">(</span> <span class="n">Pan</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_angle</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_velocity</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskPanGesture</span><span class="o">::~</span><span class="n">QskPanGesture</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPanGesture</span><span class="o">::</span><span class="n">setVelocity</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_velocity</span> <span class="o">=</span> <span class="n">velocity</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPanGesture</span><span class="o">::</span><span class="n">setAngle</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">degrees</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_angle</span> <span class="o">=</span> <span class="n">degrees</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPanGesture</span><span class="o">::</span><span class="n">setOrigin</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">pos</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_origin</span> <span class="o">=</span> <span class="n">pos</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPanGesture</span><span class="o">::</span><span class="n">setLastPosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">pos</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_lastPosition</span> <span class="o">=</span> <span class="n">pos</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPanGesture</span><span class="o">::</span><span class="n">setPosition</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPointF</span><span class="o">&amp;</span> <span class="n">pos</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_position</span> <span class="o">=</span> <span class="n">pos</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskSwipeGesture</span><span class="o">::</span><span class="n">QskSwipeGesture</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">QskGesture</span><span class="p">(</span> <span class="n">Swipe</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_velocity</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_angle</span><span class="p">(</span> <span class="mf">0.0</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskSwipeGesture</span><span class="o">::~</span><span class="n">QskSwipeGesture</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSwipeGesture</span><span class="o">::</span><span class="n">setVelocity</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">velocity</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_velocity</span> <span class="o">=</span> <span class="n">velocity</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSwipeGesture</span><span class="o">::</span><span class="n">setAngle</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">angle</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_angle</span> <span class="o">=</span> <span class="n">angle</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskGesture.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,79 @@
+<h1 id="nodesqsktexturerendererh">nodes/QskTextureRenderer.h</h1>
+
+<h2 id="namespaces">Namespaces</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong><a href="/docs/namespaces/namespaceQskTextureRenderer/">QskTextureRenderer</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_TEXTURE_RENDERER_H
+#define QSK_TEXTURE_RENDERER_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include &lt;qnamespace.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskGraphic</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskColorFilter</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QPainter</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QSize</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QSGTexture</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QQuickWindow</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="n">QskTextureRenderer</span>
+<span class="p">{</span>
+    <span class="cm">/*
+        Raster usually provides a better antialiasing and is less buggy,
+        while OpenGL might be faster - depending on the content that has
+        to be painted.
+
+        Since Qt 5.10 X11 is back and could be an interesting option
+        with good quality and hardware accelerated performance. TODO ...
+     */</span>
+    <span class="k">enum</span> <span class="n">RenderMode</span>
+    <span class="p">{</span>
+        <span class="n">AutoDetect</span><span class="p">,</span> <span class="c1">// depends on QskSetup::controlFlags()</span>
+
+        <span class="n">Raster</span><span class="p">,</span>
+        <span class="n">OpenGL</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">PaintHelper</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="k">virtual</span> <span class="o">~</span><span class="n">PaintHelper</span><span class="p">();</span>
+        <span class="k">virtual</span> <span class="kt">void</span> <span class="n">paint</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="n">QSK_EXPORT</span> <span class="n">uint</span> <span class="n">createTexture</span><span class="p">(</span> <span class="n">RenderMode</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">PaintHelper</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="n">QSK_EXPORT</span> <span class="n">uint</span> <span class="n">createTextureFromGraphic</span><span class="p">(</span>
+        <span class="n">RenderMode</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AspectRatioMode</span> <span class="p">);</span>
+
+    <span class="n">QSK_EXPORT</span> <span class="n">QSGTexture</span><span class="o">*</span> <span class="n">textureFromId</span><span class="p">(</span>
+        <span class="n">QQuickWindow</span><span class="o">*</span><span class="p">,</span> <span class="n">uint</span> <span class="n">textureId</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

@@ -1,0 +1,106 @@
+<h1 id="inputpanelqskinputpanelboxh">inputpanel/QskInputPanelBox.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskInputPanelBox/">QskInputPanelBox</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_INPUT_PANEL_BOX_H
+#define QSK_INPUT_PANEL_BOX_H
+</span>
+<span class="cp">#include "QskBox.h"
+</span>
+<span class="k">class</span> <span class="nc">QskInputEngine</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QString</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QLocale</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskInputPanelBox</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskBox</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskBox</span><span class="p">;</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">PanelHints</span> <span class="n">panelHints</span> <span class="n">READ</span> <span class="n">panelHints</span>
+        <span class="n">WRITE</span> <span class="n">setPanelHints</span> <span class="n">NOTIFY</span> <span class="n">panelHintsChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QString</span> <span class="n">inputPrompt</span> <span class="n">READ</span> <span class="n">inputPrompt</span>
+        <span class="n">WRITE</span> <span class="n">setInputPrompt</span> <span class="n">NOTIFY</span> <span class="n">inputPromptChanged</span> <span class="p">)</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QSK_SUBCONTROLS</span><span class="p">(</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">ProxyPanel</span><span class="p">,</span> <span class="n">ProxyText</span> <span class="p">)</span>
+
+    <span class="k">enum</span> <span class="n">PanelHint</span>
+    <span class="p">{</span>
+        <span class="n">InputProxy</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">Prediction</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">PanelHint</span> <span class="p">)</span>
+    <span class="n">Q_DECLARE_FLAGS</span><span class="p">(</span> <span class="n">PanelHints</span><span class="p">,</span> <span class="n">PanelHint</span> <span class="p">)</span>
+
+    <span class="n">QskInputPanelBox</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskInputPanelBox</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">attachInputItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">);</span>
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">attachedInputItem</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setPanelHint</span><span class="p">(</span> <span class="n">PanelHint</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setPanelHints</span><span class="p">(</span> <span class="n">PanelHints</span> <span class="p">);</span>
+    <span class="n">PanelHints</span> <span class="n">panelHints</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">inputProxy</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QString</span> <span class="n">inputPrompt</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">panelHintsChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">inputPromptChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">keySelected</span><span class="p">(</span> <span class="kt">int</span> <span class="n">keyCode</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">predictiveTextSelected</span><span class="p">(</span> <span class="kt">int</span> <span class="p">);</span>
+
+  <span class="k">public</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">setInputPrompt</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setPrediction</span><span class="p">(</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">void</span> <span class="n">keyPressEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">substitutedSubcontrol</span><span class="p">(</span>
+        <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Q_DECLARE_OPERATORS_FOR_FLAGS</span><span class="p">(</span> <span class="n">QskInputPanelBox</span><span class="o">::</span><span class="n">PanelHints</span> <span class="p">)</span>
+<span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskInputPanelBox</span><span class="o">::</span><span class="n">PanelHints</span> <span class="p">)</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

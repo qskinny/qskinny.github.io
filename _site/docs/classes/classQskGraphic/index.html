@@ -1,0 +1,725 @@
+<h1 id="qskgraphic">QskGraphic</h1>
+
+<p>A paint device for scalable graphics.  <a href="#detailed-description">More…</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">#include &lt;QskGraphic.h&gt;</code></p>
+
+<p>Inherits from QPaintDevice</p>
+
+<h2 id="public-types">Public Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#enum-renderhint">RenderHint</a></strong> { RenderPensUnscaled = 0x1}</td>
+    </tr>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#enum-commandtype">CommandType</a></strong> { VectorData = 1 « 0, RasterData = 1 « 1, Transformation = 1 « 2}</td>
+    </tr>
+    <tr>
+      <td>typedef QFlags&lt; RenderHint &gt;</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#typedef-renderhints">RenderHints</a></strong></td>
+    </tr>
+    <tr>
+      <td>typedef QFlags&lt; CommandType &gt;</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#typedef-commandtypes">CommandTypes</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-qskgraphic">QskGraphic</a></strong>()</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-qskgraphic">QskGraphic</a></strong>(const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; other)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-qskgraphic">QskGraphic</a></strong>(<a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp;&amp; other)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-~qskgraphic">~QskGraphic</a></strong>() override</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp;</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator=">operator=</a></strong>(const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; other)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp;</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator=">operator=</a></strong>(<a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp;&amp; other)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator==">operator==</a></strong>(const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; other) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-operator!=">operator!=</a></strong>(const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; other) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-reset">reset</a></strong>()</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-isnull">isNull</a></strong>() const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-isempty">isEmpty</a></strong>() const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>CommandTypes</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-commandtypes">commandTypes</a></strong>() const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-render">render</a></strong>(QPainter * painter) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-render">render</a></strong>(QPainter * painter, const QskColorFilter &amp; colorFilter, QTransform * initialTransform =nullptr) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-render">render</a></strong>(QPainter * painter, const QSizeF &amp; size, Qt::AspectRatioMode aspectRatioMode =Qt::IgnoreAspectRatio) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-render">render</a></strong>(QPainter * painter, const QPointF &amp; pos, Qt::Alignment alignment =Qt::AlignTop</td>
+      <td>Qt::AlignLeft) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-render">render</a></strong>(QPainter * painter, const QRectF &amp; rect, Qt::AspectRatioMode aspectRatioMode =Qt::IgnoreAspectRatio) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-render">render</a></strong>(QPainter * painter, const QRectF &amp; rect, const QskColorFilter &amp; colorFilter, Qt::AspectRatioMode aspectRatioMode =Qt::IgnoreAspectRatio) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QPixmap</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-topixmap">toPixmap</a></strong>(qreal devicePixelRatio =0.0) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QPixmap</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-topixmap">toPixmap</a></strong>(const QSize &amp; size, Qt::AspectRatioMode aspectRatioMode =Qt::IgnoreAspectRatio, qreal devicePixelRatio =0.0) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QImage</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-toimage">toImage</a></strong>(qreal devicePixelRatio =0.0) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QImage</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-toimage">toImage</a></strong>(const QSize &amp; size, Qt::AspectRatioMode aspectRatioMode =Qt::IgnoreAspectRatio, qreal devicePixelRatio =0.0) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QRectF</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-scaledboundingrect">scaledBoundingRect</a></strong>(qreal sx, qreal sy) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QRectF</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-boundingrect">boundingRect</a></strong>() const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QRectF</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-controlpointrect">controlPointRect</a></strong>() const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>const QVector&lt; QskPainterCommand &gt; &amp;</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-commands">commands</a></strong>() const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-setcommands">setCommands</a></strong>(const QVector&lt; QskPainterCommand &gt; &amp; commands)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-setdefaultsize">setDefaultSize</a></strong>(const QSizeF &amp; size)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QSizeF</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-defaultsize">defaultSize</a></strong>() const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-heightforwidth">heightForWidth</a></strong>(qreal width) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-widthforheight">widthForHeight</a></strong>(qreal height) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-setrenderhint">setRenderHint</a></strong>(RenderHint hint, bool on =true)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-testrenderhint">testRenderHint</a></strong>(RenderHint hint) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>RenderHints</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-renderhints">renderHints</a></strong>() const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>QPaintEngine *</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-paintengine">paintEngine</a></strong>() const override</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-metric">metric</a></strong>(PaintDeviceMetric metric) const override</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>quint64</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-modificationid">modificationId</a></strong>() const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>uint</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-hash">hash</a></strong>(uint seed) const</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a></td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-fromimage">fromImage</a></strong>(const QImage &amp; image)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a></td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-frompixmap">fromPixmap</a></strong>(const QPixmap &amp; pixmap)</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskGraphic/">QskGraphic</a></td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-frompixmapasimage">fromPixmapAsImage</a></strong>(const QPixmap &amp; pixmap)</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>virtual QSize</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-sizemetrics">sizeMetrics</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-drawpath">drawPath</a></strong>(const QPainterPath &amp; path)</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-drawpixmap">drawPixmap</a></strong>(const QRectF &amp; rect, const QPixmap &amp; pixmap, const QRectF &amp; subRect)</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-drawimage">drawImage</a></strong>(const QRectF &amp; rect, const QImage &amp; image, const QRectF &amp; subRect, Qt::ImageConversionFlags flags)</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#function-updatestate">updateState</a></strong>(const QPaintEngineState &amp; state)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="friends">Friends</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskGraphic/#friend-qskgraphicpaintengine">QskGraphicPaintEngine</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="detailed-description">Detailed Description</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">QskGraphic</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>A paint device for scalable graphics.</p>
+
+<p><a href="/docs/classes/classQskGraphic/">QskGraphic</a> is the representation of a graphic that is tailored for scalability. Like QPicture it will be initialized by QPainter operations and can be replayed later to any target paint device. It can be stored and loaded from disk using the operators from QskGraphicIO. Together with QSvgRenderer it can be used to implement a simple SVG compiler.</p>
+
+<p><a href="/docs/classes/classQskGraphic/">QskGraphic</a> maps all scalable drawing primitives to a QPainterPath and stores them together with the painter state changes ( pen, brush, transformation … ) in a list of QskPainterCommand. For being a complete QPaintDevice it also stores pixmaps or images, what is somehow against the idea of the class, because these objects can’t be scaled without a loss in quality.</p>
+
+<p>The main issue about scaling a <a href="/docs/classes/classQskGraphic/">QskGraphic</a> object are the pens used for drawing the outlines of the painter paths. While non cosmetic pens ( QPen::isCosmetic() ) are scaled with the same ratio as the path, cosmetic pens have a fixed width. A graphic might have paths with different pens - cosmetic and non-cosmetic.</p>
+
+<p><a href="/docs/classes/classQskGraphic/">QskGraphic</a> caches 2 different rectangles:</p>
+
+<ul>
+  <li>control point rectangle</li>
+</ul>
+
+<p>The control point rectangle is the bounding rectangle of all control point rectangles of the painter paths, or the target rectangle of the pixmaps/images.</p>
+<ul>
+  <li>bounding rectangle</li>
+</ul>
+
+<p>The bounding rectangle extends the control point rectangle by what is needed for rendering the outline with an unscaled pen.
+Because the offset for drawing the outline depends on the shape of the painter path ( the peak of a triangle is different than the flat side ) scaling with a fixed aspect ratio always needs to be calculated from the control point rectangle.</p>
+
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+
+<h3 id="enum-renderhint">enum RenderHint</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>RenderPensUnscaled</td>
+      <td>0x1</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="enum-commandtype">enum CommandType</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>VectorData</td>
+      <td>1 « 0</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>RasterData</td>
+      <td>1 « 1</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Transformation</td>
+      <td>1 « 2</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="typedef-renderhints">typedef RenderHints</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="n">QFlags</span><span class="o">&lt;</span> <span class="n">RenderHint</span> <span class="o">&gt;</span> <span class="n">QskGraphic</span><span class="o">::</span><span class="n">RenderHints</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="typedef-commandtypes">typedef CommandTypes</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="n">QFlags</span><span class="o">&lt;</span> <span class="n">CommandType</span> <span class="o">&gt;</span> <span class="n">QskGraphic</span><span class="o">::</span><span class="n">CommandTypes</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskgraphic">function QskGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGraphic</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskgraphic-1">function QskGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGraphic</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskgraphic-2">function QskGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGraphic</span><span class="p">(</span>
+    <span class="n">QskGraphic</span> <span class="o">&amp;&amp;</span> <span class="n">other</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskgraphic-3">function ~QskGraphic</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskGraphic</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator=</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-1">function operator=</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span>
+    <span class="n">QskGraphic</span> <span class="o">&amp;&amp;</span> <span class="n">other</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-2">function operator==</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-3">function operator!=</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="n">other</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-reset">function reset</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-isnull">function isNull</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isNull</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-isempty">function isEmpty</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isEmpty</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-commandtypes">function commandTypes</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CommandTypes</span> <span class="n">commandTypes</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-render">function render</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">render</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-render-1">function render</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">render</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span> <span class="o">&amp;</span> <span class="n">colorFilter</span><span class="p">,</span>
+    <span class="n">QTransform</span> <span class="o">*</span> <span class="n">initialTransform</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-render-2">function render</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">render</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">AspectRatioMode</span> <span class="n">aspectRatioMode</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">IgnoreAspectRatio</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-render-3">function render</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">render</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="o">&amp;</span> <span class="n">pos</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">AlignTop</span><span class="o">|</span><span class="n">Qt</span><span class="o">::</span><span class="n">AlignLeft</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-render-4">function render</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">render</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">AspectRatioMode</span> <span class="n">aspectRatioMode</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">IgnoreAspectRatio</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-render-5">function render</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">render</span><span class="p">(</span>
+    <span class="n">QPainter</span> <span class="o">*</span> <span class="n">painter</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span> <span class="o">&amp;</span> <span class="n">colorFilter</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">AspectRatioMode</span> <span class="n">aspectRatioMode</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">IgnoreAspectRatio</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-topixmap">function toPixmap</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QPixmap</span> <span class="n">toPixmap</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">devicePixelRatio</span> <span class="o">=</span><span class="mf">0.0</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-topixmap-1">function toPixmap</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QPixmap</span> <span class="n">toPixmap</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSize</span> <span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">AspectRatioMode</span> <span class="n">aspectRatioMode</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">IgnoreAspectRatio</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">devicePixelRatio</span> <span class="o">=</span><span class="mf">0.0</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-toimage">function toImage</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QImage</span> <span class="n">toImage</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">devicePixelRatio</span> <span class="o">=</span><span class="mf">0.0</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-toimage-1">function toImage</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QImage</span> <span class="n">toImage</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSize</span> <span class="o">&amp;</span> <span class="n">size</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">AspectRatioMode</span> <span class="n">aspectRatioMode</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">IgnoreAspectRatio</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">devicePixelRatio</span> <span class="o">=</span><span class="mf">0.0</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-scaledboundingrect">function scaledBoundingRect</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">scaledBoundingRect</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">sx</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">sy</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-boundingrect">function boundingRect</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">boundingRect</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-controlpointrect">function controlPointRect</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">controlPointRect</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-commands">function commands</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QskPainterCommand</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">commands</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setcommands">function setCommands</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setCommands</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QskPainterCommand</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">commands</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-setdefaultsize">function setDefaultSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setDefaultSize</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">size</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-defaultsize">function defaultSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">defaultSize</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-heightforwidth">function heightForWidth</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">heightForWidth</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">width</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-widthforheight">function widthForHeight</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">widthForHeight</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">height</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setrenderhint">function setRenderHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setRenderHint</span><span class="p">(</span>
+    <span class="n">RenderHint</span> <span class="n">hint</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">on</span> <span class="o">=</span><span class="nb">true</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-testrenderhint">function testRenderHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">testRenderHint</span><span class="p">(</span>
+    <span class="n">RenderHint</span> <span class="n">hint</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-renderhints">function renderHints</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">RenderHints</span> <span class="n">renderHints</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-paintengine">function paintEngine</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QPaintEngine</span> <span class="o">*</span> <span class="n">paintEngine</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-metric">function metric</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">metric</span><span class="p">(</span>
+    <span class="n">PaintDeviceMetric</span> <span class="n">metric</span>
+<span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-modificationid">function modificationId</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">quint64</span> <span class="n">modificationId</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-hash">function hash</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">uint</span> <span class="n">hash</span><span class="p">(</span>
+    <span class="n">uint</span> <span class="n">seed</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-fromimage">function fromImage</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QskGraphic</span> <span class="n">fromImage</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QImage</span> <span class="o">&amp;</span> <span class="n">image</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-frompixmap">function fromPixmap</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QskGraphic</span> <span class="n">fromPixmap</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPixmap</span> <span class="o">&amp;</span> <span class="n">pixmap</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-frompixmapasimage">function fromPixmapAsImage</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QskGraphic</span> <span class="n">fromPixmapAsImage</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPixmap</span> <span class="o">&amp;</span> <span class="n">pixmap</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-sizemetrics">function sizeMetrics</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QSize</span> <span class="n">sizeMetrics</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-drawpath">function drawPath</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">drawPath</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPainterPath</span> <span class="o">&amp;</span> <span class="n">path</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-drawpixmap">function drawPixmap</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">drawPixmap</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QPixmap</span> <span class="o">&amp;</span> <span class="n">pixmap</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">subRect</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-drawimage">function drawImage</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">drawImage</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QImage</span> <span class="o">&amp;</span> <span class="n">image</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">subRect</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">ImageConversionFlags</span> <span class="n">flags</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updatestate">function updateState</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">updateState</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QPaintEngineState</span> <span class="o">&amp;</span> <span class="n">state</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="friends-1">Friends</h2>
+
+<h3 id="friend-qskgraphicpaintengine">friend QskGraphicPaintEngine</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">friend</span> <span class="k">class</span> <span class="nf">QskGraphicPaintEngine</span><span class="p">(</span>
+    <span class="n">QskGraphicPaintEngine</span> 
+<span class="p">);</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,132 @@
+<h1 id="commonqsktextoptionscpp">common/QskTextOptions.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>uint</td>
+      <td><strong><a href="/docs/files/QskTextOptions_8cpp/#function-qhash">qHash</a></strong>(const QskTextOptions &amp; options, uint seed)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskTextOptions_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskTextOptions &amp; options)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qhash">function qHash</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">uint</span> <span class="n">qHash</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span> <span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span>
+    <span class="n">uint</span> <span class="n">seed</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span> <span class="o">&amp;</span> <span class="n">options</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskTextOptions.h"
+#include &lt;qtextdocument.h&gt;
+</span>
+<span class="kt">int</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">textFlags</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_wrapMode</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">NoWrap</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="c1">// flags |= Qt::TextSingleLine;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">WordWrap</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">flags</span> <span class="o">|=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextWordWrap</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">WrapAnywhere</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">flags</span> <span class="o">|=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextWrapAnywhere</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">Wrap</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="c1">// ???</span>
+            <span class="n">flags</span> <span class="o">|=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextWrapAnywhere</span><span class="p">;</span>
+            <span class="n">flags</span> <span class="o">|=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextWordWrap</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">flags</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskTextOptions</span><span class="o">::</span><span class="n">TextFormat</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">effectiveFormat</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">text</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">PlainText</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_format</span> <span class="o">==</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">AutoText</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">Qt</span><span class="o">::</span><span class="n">mightBeRichText</span><span class="p">(</span> <span class="n">text</span> <span class="p">)</span> <span class="o">?</span> <span class="n">StyledText</span> <span class="o">:</span> <span class="n">PlainText</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">m_format</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">uint</span> <span class="n">qHash</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span> <span class="n">uint</span> <span class="n">seed</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">uint</span> <span class="n">hash</span><span class="p">;</span>
+
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="n">options</span><span class="p">.</span><span class="n">maximumLineCount</span><span class="p">(),</span> <span class="n">seed</span> <span class="p">);</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="n">options</span><span class="p">.</span><span class="n">fontSizeMode</span><span class="p">(),</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="n">options</span><span class="p">.</span><span class="n">wrapMode</span><span class="p">(),</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="n">options</span><span class="p">.</span><span class="n">format</span><span class="p">(),</span> <span class="n">hash</span> <span class="p">);</span>
+    <span class="n">hash</span> <span class="o">=</span> <span class="n">qHash</span><span class="p">(</span> <span class="n">options</span><span class="p">.</span><span class="n">elideMode</span><span class="p">(),</span> <span class="n">hash</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">hash</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="cp">#include &lt;qdebug.h&gt;
+</span>
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"TextOptions"</span> <span class="o">&lt;&lt;</span> <span class="sc">'('</span><span class="p">;</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="n">options</span><span class="p">.</span><span class="n">format</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">","</span> <span class="o">&lt;&lt;</span> <span class="n">options</span><span class="p">.</span><span class="n">elideMode</span><span class="p">()</span>
+          <span class="o">&lt;&lt;</span> <span class="n">options</span><span class="p">.</span><span class="n">fontSizeMode</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">options</span><span class="p">.</span><span class="n">wrapMode</span><span class="p">()</span>
+          <span class="o">&lt;&lt;</span> <span class="s">","</span> <span class="o">&lt;&lt;</span> <span class="n">options</span><span class="p">.</span><span class="n">maximumLineCount</span><span class="p">();</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">')'</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="cp">#include "moc_QskTextOptions.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,206 @@
+<h1 id="controlsqskvariantanimatorcpp">controls/QskVariantAnimator.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskVariantAnimator_8cpp/#function-qskregisterinterpolator">qskRegisterInterpolator</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>QVariant</td>
+      <td><strong><a href="/docs/files/QskVariantAnimator_8cpp/#function-qskinterpolate">qskInterpolate</a></strong>(void(*)() interpolator, const QVariant &amp; from, const QVariant &amp; to, qreal progress)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="defines">Defines</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskVariantAnimator_8cpp/#define-emit">emit</a></strong></td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskVariantAnimator_8cpp/#define-qsk_decl_insane">QSK_DECL_INSANE</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskregisterinterpolator">function qskRegisterInterpolator</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskRegisterInterpolator</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinterpolate">function qskInterpolate</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QVariant</span> <span class="n">qskInterpolate</span><span class="p">(</span>
+    <span class="kt">void</span><span class="p">(</span><span class="o">*</span><span class="p">)()</span> <span class="n">interpolator</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QVariant</span> <span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QVariant</span> <span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">progress</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="macro-documentation">Macro Documentation</h2>
+
+<h3 id="define-emit">define emit</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define emit 
+</span></code></pre></div></div>
+
+<h3 id="define-qsk_decl_insane">define QSK_DECL_INSANE</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define QSK_DECL_INSANE 
+</span></code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskVariantAnimator.h"
+#include "QskBoxBorderColors.h"
+#include "QskBoxBorderMetrics.h"
+#include "QskBoxShapeMetrics.h"
+#include "QskColorFilter.h"
+#include "QskGradient.h"
+#include "QskMargins.h"
+#include "QskIntervalF.h"
+#include "QskTextColors.h"
+</span>
+<span class="c1">// Even if we don't use the standard Qt animation system we</span>
+<span class="c1">// use its registry of interpolators: why adding our own ...</span>
+
+<span class="cp">#include &lt;qvariantanimation.h&gt;
+</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 2, 0 )
+</span>    <span class="cp">#ifndef emit
+</span>        <span class="c1">// qvariantanimation_p.h needs it</span>
+        <span class="cp">#define emit
+</span>    <span class="cp">#endif
+#endif
+</span>
+<span class="cp">#include &lt;private/qvariantanimation_p.h&gt;
+</span>
+
+<span class="cp">#if 1
+</span><span class="k">static</span> <span class="kt">void</span> <span class="nf">qskRegisterInterpolator</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">qRegisterAnimationInterpolator</span><span class="o">&lt;</span> <span class="n">QskColorFilter</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QskColorFilter</span><span class="o">::</span><span class="n">interpolate</span> <span class="p">);</span>
+    <span class="n">qRegisterAnimationInterpolator</span><span class="o">&lt;</span> <span class="n">QskIntervalF</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">interpolate</span> <span class="p">);</span>
+    <span class="n">qRegisterAnimationInterpolator</span><span class="o">&lt;</span> <span class="n">QskMargins</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QskMargins</span><span class="o">::</span><span class="n">interpolate</span> <span class="p">);</span>
+    <span class="n">qRegisterAnimationInterpolator</span><span class="o">&lt;</span> <span class="n">QskGradient</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">interpolate</span> <span class="p">);</span>
+    <span class="n">qRegisterAnimationInterpolator</span><span class="o">&lt;</span> <span class="n">QskBoxShapeMetrics</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QskBoxShapeMetrics</span><span class="o">::</span><span class="n">interpolate</span> <span class="p">);</span>
+    <span class="n">qRegisterAnimationInterpolator</span><span class="o">&lt;</span> <span class="n">QskBoxBorderMetrics</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QskBoxBorderMetrics</span><span class="o">::</span><span class="n">interpolate</span> <span class="p">);</span>
+    <span class="n">qRegisterAnimationInterpolator</span><span class="o">&lt;</span> <span class="n">QskBoxBorderColors</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QskBoxBorderColors</span><span class="o">::</span><span class="n">interpolate</span> <span class="p">);</span>
+    <span class="n">qRegisterAnimationInterpolator</span><span class="o">&lt;</span> <span class="n">QskTextColors</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">QskTextColors</span><span class="o">::</span><span class="n">interpolate</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Q_CONSTRUCTOR_FUNCTION</span><span class="p">(</span> <span class="n">qskRegisterInterpolator</span> <span class="p">)</span>
+<span class="cp">#endif
+</span>
+<span class="cp">#if defined( Q_CC_CLANG )
+#if __has_feature( address_sanitizer )
+#define QSK_DECL_INSANE __attribute__( ( no_sanitize( "undefined" ) ) )
+#endif
+#endif
+</span>
+<span class="cp">#if !defined( QSK_DECL_INSANE )
+#define QSK_DECL_INSANE
+#endif
+</span>
+<span class="n">QSK_DECL_INSANE</span> <span class="k">static</span> <span class="kr">inline</span> <span class="n">QVariant</span> <span class="nf">qskInterpolate</span><span class="p">(</span>
+    <span class="kt">void</span> <span class="p">(</span> <span class="o">*</span><span class="n">interpolator</span> <span class="p">)(),</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="cp">#if 1
+</span>    <span class="cm">/*
+        how to get rid of the reported runtime error from the clang sanitizer,
+        when calling F( const T&amp;, ... ) as G( const void* ... ); TODO ...
+     */</span>
+<span class="cp">#endif
+</span>
+    <span class="k">auto</span> <span class="n">f</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="n">QVariantAnimation</span><span class="o">::</span><span class="n">Interpolator</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">interpolator</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">(</span> <span class="n">from</span><span class="p">.</span><span class="n">constData</span><span class="p">(),</span> <span class="n">to</span><span class="p">.</span><span class="n">constData</span><span class="p">(),</span> <span class="n">progress</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskVariantAnimator</span><span class="o">::</span><span class="n">QskVariantAnimator</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">m_interpolator</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskVariantAnimator</span><span class="o">::~</span><span class="n">QskVariantAnimator</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskVariantAnimator</span><span class="o">::</span><span class="n">setStartValue</span><span class="p">(</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_startValue</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskVariantAnimator</span><span class="o">::</span><span class="n">setEndValue</span><span class="p">(</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_endValue</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskVariantAnimator</span><span class="o">::</span><span class="n">setCurrentValue</span><span class="p">(</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_currentValue</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskVariantAnimator</span><span class="o">::</span><span class="n">setup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">m_interpolator</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">type</span> <span class="o">=</span> <span class="n">m_startValue</span><span class="p">.</span><span class="n">userType</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">type</span> <span class="o">==</span> <span class="n">m_endValue</span><span class="p">.</span><span class="n">userType</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// all what has been registered by qRegisterAnimationInterpolator</span>
+        <span class="n">m_interpolator</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="kt">void</span> <span class="p">(</span> <span class="o">*</span> <span class="p">)()</span> <span class="o">&gt;</span><span class="p">(</span>
+            <span class="n">QVariantAnimationPrivate</span><span class="o">::</span><span class="n">getInterpolator</span><span class="p">(</span> <span class="n">type</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">m_currentValue</span> <span class="o">=</span> <span class="n">m_interpolator</span> <span class="o">?</span> <span class="n">m_startValue</span> <span class="o">:</span> <span class="n">m_endValue</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskVariantAnimator</span><span class="o">::</span><span class="n">advance</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_interpolator</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyCompare</span><span class="p">(</span> <span class="n">progress</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+
+        <span class="n">m_currentValue</span> <span class="o">=</span> <span class="n">qskInterpolate</span><span class="p">(</span> <span class="n">m_interpolator</span><span class="p">,</span>
+            <span class="n">m_startValue</span><span class="p">,</span> <span class="n">m_endValue</span><span class="p">,</span> <span class="n">progress</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskVariantAnimator</span><span class="o">::</span><span class="n">done</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">m_interpolator</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

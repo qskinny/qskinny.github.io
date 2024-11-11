@@ -1,0 +1,333 @@
+<h1 id="nodesqskplaintextrenderercpp">nodes/QskPlainTextRenderer.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/files/QskPlainTextRenderer_8cpp/#function-qsklayouttext">qskLayoutText</a></strong>(QTextLayout * layout, qreal lineWidth, const QskTextOptions &amp; options)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskPlainTextRenderer_8cpp/#function-qskrendertext">qskRenderText</a></strong>(QQuickItem * item, QSGNode * parentNode, const QTextLayout &amp; layout, qreal baseLine, const QColor &amp; color, QQuickText::TextStyle style, const QColor &amp; styleColor)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="defines">Defines</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskPlainTextRenderer_8cpp/#define-glyphflag">GlyphFlag</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qsklayouttext">function qskLayoutText</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">qreal</span> <span class="n">qskLayoutText</span><span class="p">(</span>
+    <span class="n">QTextLayout</span> <span class="o">*</span> <span class="n">layout</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">lineWidth</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span> <span class="o">&amp;</span> <span class="n">options</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskrendertext">function qskRenderText</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskRenderText</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parentNode</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QTextLayout</span> <span class="o">&amp;</span> <span class="n">layout</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">baseLine</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">color</span><span class="p">,</span>
+    <span class="n">QQuickText</span><span class="o">::</span><span class="n">TextStyle</span> <span class="n">style</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">styleColor</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="macro-documentation">Macro Documentation</h2>
+
+<h3 id="define-glyphflag">define GlyphFlag</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define GlyphFlag static_cast&lt; QSGNode::Flag &gt;( 0x800 )
+</span></code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskPlainTextRenderer.h"
+#include "QskTextColors.h"
+#include "QskTextOptions.h"
+</span>
+<span class="cp">#include &lt;qfontmetrics.h&gt;
+#include &lt;qmath.h&gt;
+#include &lt;qsgnode.h&gt;
+</span>
+
+<span class="cp">#include &lt;private/qsgadaptationlayer_p.h&gt;
+#include &lt;private/qsgcontext_p.h&gt;
+#include &lt;private/qquickitem_p.h&gt;
+</span>
+
+<span class="cp">#define GlyphFlag static_cast&lt; QSGNode::Flag &gt;( 0x800 )
+</span>
+<span class="n">QSizeF</span> <span class="n">QskPlainTextRenderer</span><span class="o">::</span><span class="n">textSize</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="n">font</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// result differs from QQuickText::implicitSizeHint ???</span>
+    <span class="k">return</span> <span class="n">textRect</span><span class="p">(</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="mf">10e6</span><span class="p">,</span> <span class="mf">10e6</span> <span class="p">)</span> <span class="p">).</span><span class="n">size</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskPlainTextRenderer</span><span class="o">::</span><span class="n">textRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="n">font</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">size</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QFontMetricsF</span> <span class="n">fm</span><span class="p">(</span> <span class="n">font</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="n">r</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">fm</span><span class="p">.</span><span class="n">boundingRect</span><span class="p">(</span> <span class="n">r</span><span class="p">,</span> <span class="n">options</span><span class="p">.</span><span class="n">textFlags</span><span class="p">(),</span> <span class="n">text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">qreal</span> <span class="nf">qskLayoutText</span><span class="p">(</span> <span class="n">QTextLayout</span><span class="o">*</span> <span class="n">layout</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">lineWidth</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">layout</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">elideMode</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="n">effectiveElideMode</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">elideMode</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ElideNone</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">options</span><span class="p">.</span><span class="n">maximumLineCount</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">line</span> <span class="o">=</span> <span class="n">layout</span><span class="o">-&gt;</span><span class="n">createLine</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">line</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="n">line</span><span class="p">.</span><span class="n">setPosition</span><span class="p">(</span> <span class="n">QPointF</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">line</span><span class="p">.</span><span class="n">setLineWidth</span><span class="p">(</span> <span class="n">lineWidth</span> <span class="p">);</span>
+
+            <span class="n">y</span> <span class="o">+=</span> <span class="n">line</span><span class="p">.</span><span class="n">leading</span><span class="p">()</span> <span class="o">+</span> <span class="n">line</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">layout</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">();</span>
+
+        <span class="k">auto</span> <span class="n">text</span> <span class="o">=</span> <span class="n">engine</span><span class="o">-&gt;</span><span class="n">elidedText</span><span class="p">(</span>
+            <span class="n">elideMode</span><span class="p">,</span> <span class="n">QFixed</span><span class="o">::</span><span class="n">fromReal</span><span class="p">(</span> <span class="n">lineWidth</span> <span class="p">),</span>
+            <span class="n">Qt</span><span class="o">::</span><span class="n">TextShowMnemonic</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+
+        <span class="c1">// why do we need this padding ???</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">.</span><span class="n">leftJustified</span><span class="p">(</span> <span class="n">engine</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">engine</span><span class="o">-&gt;</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="p">;</span>
+
+        <span class="k">auto</span> <span class="n">line</span> <span class="o">=</span> <span class="n">layout</span><span class="o">-&gt;</span><span class="n">createLine</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">line</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                For some reason the position of the text is wrong,
+                with QTextOption::NoWrap - even if word wrapping
+                for elided text does not make any sense.
+                Needs some debugging of QTextLine::layout_helper, TODO ...
+             */</span>
+            <span class="k">auto</span> <span class="n">option</span> <span class="o">=</span> <span class="n">layout</span><span class="o">-&gt;</span><span class="n">textOption</span><span class="p">();</span>
+            <span class="n">option</span><span class="p">.</span><span class="n">setWrapMode</span><span class="p">(</span> <span class="n">QTextOption</span><span class="o">::</span><span class="n">WrapAnywhere</span> <span class="p">);</span>
+            <span class="n">layout</span><span class="o">-&gt;</span><span class="n">setTextOption</span><span class="p">(</span> <span class="n">option</span> <span class="p">);</span>
+
+            <span class="n">line</span><span class="p">.</span><span class="n">setPosition</span><span class="p">(</span> <span class="n">QPointF</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">line</span><span class="p">.</span><span class="n">setLineWidth</span><span class="p">(</span> <span class="n">lineWidth</span> <span class="p">);</span>
+
+            <span class="n">y</span> <span class="o">+=</span> <span class="n">line</span><span class="p">.</span><span class="n">leading</span><span class="p">()</span> <span class="o">+</span> <span class="n">line</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskRenderText</span><span class="p">(</span>
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parentNode</span><span class="p">,</span> <span class="k">const</span> <span class="n">QTextLayout</span><span class="o">&amp;</span> <span class="n">layout</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">baseLine</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span><span class="p">,</span> <span class="n">QQuickText</span><span class="o">::</span><span class="n">TextStyle</span> <span class="n">style</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">styleColor</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">renderContext</span> <span class="o">=</span> <span class="n">QQuickItemPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">item</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">sceneGraphRenderContext</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">sgContext</span> <span class="o">=</span> <span class="n">renderContext</span><span class="o">-&gt;</span><span class="n">sceneGraphContext</span><span class="p">();</span>
+
+    <span class="c1">// Clear out foreign nodes (e.g. from QskRichTextRenderer)</span>
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="o">=</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">();</span>
+    <span class="k">while</span> <span class="p">(</span> <span class="n">node</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">sibling</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">GlyphFlag</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">removeChildNode</span><span class="p">(</span> <span class="n">node</span> <span class="p">);</span>
+            <span class="k">delete</span> <span class="n">node</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">sibling</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">auto</span> <span class="n">glyphNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGGlyphNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QPointF</span> <span class="n">position</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="n">baseLine</span> <span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">layout</span><span class="p">.</span><span class="n">lineCount</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">glyphRuns</span> <span class="o">=</span> <span class="n">layout</span><span class="p">.</span><span class="n">lineAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">).</span><span class="n">glyphRuns</span><span class="p">();</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">glyphRun</span> <span class="o">:</span> <span class="n">glyphRuns</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">glyphNode</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="kt">bool</span> <span class="n">preferNativeGlyphNode</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// QskTextOptions?</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 0, 0 )
+</span>                <span class="k">constexpr</span> <span class="kt">int</span> <span class="n">renderQuality</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">// QQuickText::DefaultRenderTypeQuality</span>
+                <span class="n">glyphNode</span> <span class="o">=</span> <span class="n">sgContext</span><span class="o">-&gt;</span><span class="n">createGlyphNode</span><span class="p">(</span>
+                    <span class="n">renderContext</span><span class="p">,</span> <span class="n">preferNativeGlyphNode</span><span class="p">,</span> <span class="n">renderQuality</span> <span class="p">);</span>
+<span class="cp">#else
+</span>                <span class="n">glyphNode</span> <span class="o">=</span> <span class="n">sgContext</span><span class="o">-&gt;</span><span class="n">createGlyphNode</span><span class="p">(</span>
+                    <span class="n">renderContext</span><span class="p">,</span> <span class="n">preferNativeGlyphNode</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>                <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">setOwnerElement</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+                <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">setFlags</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">::</span><span class="n">OwnedByParent</span> <span class="o">|</span> <span class="n">GlyphFlag</span> <span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">setStyle</span><span class="p">(</span> <span class="n">style</span> <span class="p">);</span>
+            <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">setColor</span><span class="p">(</span> <span class="n">color</span> <span class="p">);</span>
+            <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">setStyleColor</span><span class="p">(</span> <span class="n">styleColor</span> <span class="p">);</span>
+            <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">setGlyphs</span><span class="p">(</span> <span class="n">position</span><span class="p">,</span> <span class="n">glyphRun</span> <span class="p">);</span>
+            <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">!=</span> <span class="n">parentNode</span> <span class="p">)</span>
+                <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">appendChildNode</span><span class="p">(</span> <span class="n">glyphNode</span> <span class="p">);</span>
+
+            <span class="n">glyphNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGGlyphNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Remove leftover glyphs</span>
+    <span class="k">while</span> <span class="p">(</span> <span class="n">glyphNode</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">sibling</span> <span class="o">=</span> <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">GlyphFlag</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">removeChildNode</span><span class="p">(</span> <span class="n">glyphNode</span> <span class="p">);</span>
+            <span class="k">delete</span> <span class="n">glyphNode</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">glyphNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGGlyphNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">sibling</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPlainTextRenderer</span><span class="o">::</span><span class="n">updateNode</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span> <span class="n">font</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span>
+    <span class="n">Qsk</span><span class="o">::</span><span class="n">TextStyle</span> <span class="n">style</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextColors</span><span class="o">&amp;</span> <span class="n">colors</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QTextOption</span> <span class="n">textOption</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">);</span>
+    <span class="n">textOption</span><span class="p">.</span><span class="n">setWrapMode</span><span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QTextOption</span><span class="o">::</span><span class="n">WrapMode</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">options</span><span class="p">.</span><span class="n">wrapMode</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="n">QString</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">text</span><span class="p">;</span>
+
+<span class="c">#if 0
+    const int pos = tmp.indexOf( QLatin1Char( '\x9c' ) );
+    if ( pos != -1 )
+    {
+        // ST: string termination
+
+        tmp = tmp.mid( 0, pos );
+        tmp.replace( QLatin1Char( '\n' ), QChar::LineSeparator );
+    }
+    else
+#endif
+</span>    <span class="k">if</span> <span class="p">(</span> <span class="n">tmp</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="n">QLatin1Char</span><span class="p">(</span> <span class="sc">'\n'</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">tmp</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span> <span class="n">QLatin1Char</span><span class="p">(</span><span class="sc">'\n'</span><span class="p">),</span> <span class="n">QChar</span><span class="o">::</span><span class="n">LineSeparator</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+
+    <span class="n">QTextLayout</span> <span class="n">layout</span><span class="p">;</span>
+    <span class="n">layout</span><span class="p">.</span><span class="n">setFont</span><span class="p">(</span> <span class="n">font</span> <span class="p">);</span>
+    <span class="n">layout</span><span class="p">.</span><span class="n">setTextOption</span><span class="p">(</span> <span class="n">textOption</span> <span class="p">);</span>
+    <span class="n">layout</span><span class="p">.</span><span class="n">setText</span><span class="p">(</span> <span class="n">tmp</span> <span class="p">);</span>
+
+    <span class="n">layout</span><span class="p">.</span><span class="n">beginLayout</span><span class="p">();</span>
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">textHeight</span> <span class="o">=</span> <span class="n">qskLayoutText</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">layout</span><span class="p">,</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">options</span> <span class="p">);</span>
+    <span class="n">layout</span><span class="p">.</span><span class="n">endLayout</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">QFontMetricsF</span><span class="p">(</span> <span class="n">font</span> <span class="p">).</span><span class="n">ascent</span><span class="p">();</span>
+
+    <span class="n">qreal</span> <span class="n">yBaseline</span> <span class="o">=</span> <span class="n">y0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignVCenter</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">yBaseline</span> <span class="o">+=</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="n">textHeight</span> <span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignBottom</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">yBaseline</span> <span class="o">+=</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="n">textHeight</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">yBaseline</span> <span class="o">!=</span> <span class="n">y0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+            We need to have a stable algo for rounding the text base line,
+            so that texts don't start wobbling, when processing transitions
+            between margins/paddings.
+         */</span>
+
+        <span class="k">const</span> <span class="kt">int</span> <span class="n">bh</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span> <span class="n">layout</span><span class="p">.</span><span class="n">boundingRect</span><span class="p">().</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">yBaseline</span> <span class="o">=</span> <span class="p">(</span> <span class="n">bh</span> <span class="o">%</span> <span class="mi">2</span> <span class="p">)</span> <span class="o">?</span> <span class="n">qFloor</span><span class="p">(</span> <span class="n">yBaseline</span> <span class="p">)</span> <span class="o">:</span> <span class="n">qCeil</span><span class="p">(</span> <span class="n">yBaseline</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">qskRenderText</span><span class="p">(</span>
+        <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">item</span> <span class="p">),</span> <span class="n">node</span><span class="p">,</span> <span class="n">layout</span><span class="p">,</span> <span class="n">yBaseline</span><span class="p">,</span>
+        <span class="n">colors</span><span class="p">.</span><span class="n">textColor</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QQuickText</span><span class="o">::</span><span class="n">TextStyle</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">style</span> <span class="p">),</span>
+        <span class="n">colors</span><span class="p">.</span><span class="n">styleColor</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPlainTextRenderer</span><span class="o">::</span><span class="n">updateNodeColor</span><span class="p">(</span>
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parentNode</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">textColor</span><span class="p">,</span>
+    <span class="n">Qsk</span><span class="o">::</span><span class="n">TextStyle</span> <span class="n">style</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">styleColor</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">glyphNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGGlyphNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">parentNode</span><span class="o">-&gt;</span><span class="n">firstChild</span><span class="p">()</span> <span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span> <span class="n">glyphNode</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">GlyphFlag</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">setColor</span><span class="p">(</span> <span class="n">textColor</span> <span class="p">);</span>
+            <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">setStyle</span><span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QQuickText</span><span class="o">::</span><span class="n">TextStyle</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">style</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">setStyleColor</span><span class="p">(</span> <span class="n">styleColor</span> <span class="p">);</span>
+            <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">update</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="n">glyphNode</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QSGGlyphNode</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">glyphNode</span><span class="o">-&gt;</span><span class="n">nextSibling</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

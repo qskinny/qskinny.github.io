@@ -1,0 +1,266 @@
+<h1 id="controlsqskslidercpp">controls/QskSlider.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSlider.h"
+#include "QskAnimationHint.h"
+#include "QskAspect.h"
+#include "QskIntervalF.h"
+#include "QskEvent.h"
+</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSlider</span><span class="p">,</span> <span class="n">Panel</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSlider</span><span class="p">,</span> <span class="n">Groove</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSlider</span><span class="p">,</span> <span class="n">Fill</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSlider</span><span class="p">,</span> <span class="n">Scale</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskSlider</span><span class="p">,</span> <span class="n">Handle</span> <span class="p">)</span>
+
+<span class="n">QSK_SYSTEM_STATE</span><span class="p">(</span> <span class="n">QskSlider</span><span class="p">,</span> <span class="n">Pressed</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">FirstSystemState</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span> <span class="p">)</span>
+<span class="n">QSK_SYSTEM_STATE</span><span class="p">(</span> <span class="n">QskSlider</span><span class="p">,</span> <span class="n">Minimum</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">LastUserState</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="n">QSK_SYSTEM_STATE</span><span class="p">(</span> <span class="n">QskSlider</span><span class="p">,</span> <span class="n">Maximum</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">LastUserState</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span> <span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">QskSlider</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">pressedValue</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">tracking</span><span class="p">(</span> <span class="nb">true</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">orientation</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="n">QPointF</span> <span class="n">pressedPos</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">pressedValue</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">tracking</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="o">:</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskSlider</span><span class="o">::</span><span class="n">QskSlider</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskSlider</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskSlider</span><span class="o">::</span><span class="n">QskSlider</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setAcceptHoverEvents</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="n">setFocusPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">StrongFocus</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Minimum</span> <span class="p">);</span>
+
+    <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSlider</span><span class="o">::</span><span class="n">boundariesChanged</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSlider</span><span class="o">::</span><span class="n">moveHandle</span> <span class="p">);</span>
+    <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSlider</span><span class="o">::</span><span class="n">valueChanged</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskSlider</span><span class="o">::</span><span class="n">moveHandle</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSlider</span><span class="o">::~</span><span class="n">QskSlider</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">isPressed</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">hasSkinState</span><span class="p">(</span> <span class="n">Pressed</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">setOrientation</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">orientation</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">orientation</span><span class="p">;</span>
+<span class="cp">#if 1
+</span>        <span class="c1">// swapping the size policy: guess this is what a user expects</span>
+        <span class="n">setSizePolicy</span><span class="p">(</span> <span class="n">sizePolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">),</span> <span class="n">sizePolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>        <span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">update</span><span class="p">();</span>
+
+        <span class="n">Q_EMIT</span> <span class="n">orientationChanged</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">orientation</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">effectivePlacement</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Placement</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">setTracking</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">tracking</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">tracking</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">trackingChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">isTracking</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">tracking</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">aboutToShow</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setMetric</span><span class="p">(</span> <span class="n">Handle</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Position</span><span class="p">,</span> <span class="n">valueAsRatio</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">aboutToShow</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">handleSize</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">handleRect</span><span class="p">().</span><span class="n">size</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QRectF</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">handleRect</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">Handle</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">mousePressEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">handleRect</span><span class="p">().</span><span class="n">contains</span><span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">pos</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Case 1: press started in the handle, start sliding</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pressedPos</span> <span class="o">=</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">pos</span><span class="p">();</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pressedValue</span> <span class="o">=</span> <span class="n">value</span><span class="p">();</span>
+        <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">Pressed</span> <span class="p">);</span>
+        <span class="n">Q_EMIT</span> <span class="n">pressedChanged</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">pageSize</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Case 2: pageSize is not used, we're done here</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="c1">// Case 3: pressed outside of the handle, page the scroller in</span>
+        <span class="c1">// the direction of the press requires an auto-repeat behavior</span>
+        <span class="c1">// until the slider reaches the destination, or it simply jumps</span>
+        <span class="c1">// there (configurable)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">mouseMoveEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isPressed</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">mousePos</span> <span class="o">=</span> <span class="n">qskMousePosition</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">r</span> <span class="o">=</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">Scale</span> <span class="p">);</span>
+
+    <span class="n">qreal</span> <span class="n">newValue</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pressedPos</span><span class="p">.</span><span class="n">x</span><span class="p">();</span>
+        <span class="n">newValue</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pressedValue</span> <span class="o">+</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">r</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">*</span> <span class="n">boundaryLength</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pressedPos</span><span class="p">.</span><span class="n">y</span><span class="p">();</span>
+        <span class="n">newValue</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">pressedValue</span> <span class="o">-</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">r</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">*</span> <span class="n">boundaryLength</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">tracking</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">setValue</span><span class="p">(</span> <span class="n">newValue</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">moveHandleTo</span><span class="p">(</span> <span class="n">newValue</span><span class="p">,</span> <span class="n">QskAnimationHint</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">mouseReleaseEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isPressed</span><span class="p">()</span> <span class="p">)</span> <span class="c1">// Page event</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">mousePos</span> <span class="o">=</span> <span class="n">qskMousePosition</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">szHandle</span> <span class="o">=</span> <span class="n">handleSize</span><span class="p">();</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">contentsRect</span><span class="p">();</span>
+
+        <span class="kt">bool</span> <span class="n">up</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="n">szHandle</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="n">rect</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="n">w</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">-</span> <span class="n">w</span> <span class="p">);</span>
+            <span class="n">up</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">valueAsRatio</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="n">szHandle</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+            <span class="k">const</span> <span class="n">qreal</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span> <span class="n">mousePos</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="n">rect</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">-</span> <span class="n">h</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="p">)</span> <span class="o">/</span> <span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="n">h</span> <span class="p">);</span>
+            <span class="n">up</span> <span class="o">=</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">valueAsRatio</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">up</span> <span class="p">)</span>
+            <span class="n">pageUp</span><span class="p">();</span>
+        <span class="k">else</span>
+            <span class="n">pageDown</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">tracking</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">handlePosition</span><span class="p">();</span>
+            <span class="n">setValue</span><span class="p">(</span> <span class="n">valueFromRatio</span><span class="p">(</span> <span class="n">pos</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">Pressed</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="n">Q_EMIT</span> <span class="n">pressedChanged</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">handlePosition</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">metric</span><span class="p">(</span> <span class="n">Handle</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Position</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">moveHandle</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">aspect</span> <span class="o">=</span> <span class="n">Handle</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Metric</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Position</span><span class="p">;</span>
+    <span class="n">moveHandleTo</span><span class="p">(</span> <span class="n">value</span><span class="p">(),</span> <span class="n">animationHint</span><span class="p">(</span> <span class="n">aspect</span> <span class="o">|</span> <span class="n">skinStates</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">moveHandleTo</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskAnimationHint</span><span class="o">&amp;</span> <span class="n">hint</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="n">minimum</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">QskSlider</span><span class="o">::</span><span class="n">Maximum</span><span class="p">,</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="n">maximum</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">aspect</span> <span class="o">=</span> <span class="n">Handle</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Metric</span> <span class="o">|</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Position</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">valueAsRatio</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">hint</span><span class="p">.</span><span class="n">duration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">oldPos</span> <span class="o">=</span> <span class="n">metric</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+        <span class="n">setMetric</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">pos</span> <span class="p">);</span>
+
+        <span class="n">startTransition</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">hint</span><span class="p">,</span> <span class="n">oldPos</span><span class="p">,</span> <span class="n">pos</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">setMetric</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">pos</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">update</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskSlider.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

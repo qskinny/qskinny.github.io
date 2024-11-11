@@ -1,0 +1,138 @@
+<h1 id="graphicqskgraphicprovidercpp">graphic/QskGraphicProvider.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskGraphicProvider.h"
+#include "QskGraphic.h"
+#include "QskSetup.h"
+</span>
+<span class="cp">#include &lt;qmutex.h&gt;
+#include &lt;qcache.h&gt;
+#include &lt;qdebug.h&gt;
+#include &lt;qurl.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskGraphicProvider</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="c1">// caching of graphics</span>
+    <span class="n">QCache</span><span class="o">&lt;</span> <span class="n">QString</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&gt;</span> <span class="n">cache</span><span class="p">;</span>
+    <span class="n">QMutex</span> <span class="n">mutex</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskGraphicProvider</span><span class="o">::</span><span class="n">QskGraphicProvider</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QObject</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicProvider</span><span class="o">::~</span><span class="n">QskGraphicProvider</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicProvider</span><span class="o">::</span><span class="n">setCacheSize</span><span class="p">(</span> <span class="kt">int</span> <span class="n">size</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">size</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">QMutexLocker</span> <span class="n">locker</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">mutex</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">cache</span><span class="p">.</span><span class="n">setMaxCost</span><span class="p">(</span> <span class="n">size</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGraphicProvider</span><span class="o">::</span><span class="n">cacheSize</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QMutexLocker</span> <span class="n">locker</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">mutex</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">cache</span><span class="p">.</span><span class="n">maxCost</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGraphicProvider</span><span class="o">::</span><span class="n">clearCache</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">QMutexLocker</span> <span class="n">locker</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">mutex</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">cache</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QskGraphic</span><span class="o">*</span> <span class="n">QskGraphicProvider</span><span class="o">::</span><span class="n">requestGraphic</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">id</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">*</span> <span class="n">graphic</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="p">{</span>
+        <span class="n">QMutexLocker</span> <span class="n">locker</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">mutex</span> <span class="p">);</span>
+        <span class="n">graphic</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">cache</span><span class="p">.</span><span class="n">object</span><span class="p">(</span> <span class="n">id</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">graphic</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">graphic</span> <span class="o">=</span> <span class="n">loadGraphic</span><span class="p">(</span> <span class="n">id</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">graphic</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskGraphicProvider: can't load"</span> <span class="o">&lt;&lt;</span> <span class="n">id</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="p">{</span>
+            <span class="n">QMutexLocker</span> <span class="n">locker</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">mutex</span> <span class="p">);</span>
+
+            <span class="k">if</span><span class="p">(</span> <span class="k">auto</span> <span class="n">cached</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">cache</span><span class="p">.</span><span class="n">object</span><span class="p">(</span> <span class="n">id</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">delete</span> <span class="n">graphic</span><span class="p">;</span>
+                <span class="n">graphic</span> <span class="o">=</span> <span class="n">cached</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">const</span> <span class="kt">int</span> <span class="n">cost</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// TODO ...</span>
+                <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">cache</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">id</span><span class="p">,</span> <span class="n">graphic</span><span class="p">,</span> <span class="n">cost</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">graphic</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">addGraphicProvider</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span><span class="p">,</span> <span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="n">provider</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">qskSetup</span><span class="o">-&gt;</span><span class="n">addGraphicProvider</span><span class="p">(</span> <span class="n">providerId</span><span class="p">,</span> <span class="n">provider</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphicProvider</span><span class="o">*</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">graphicProvider</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">providerId</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSetup</span><span class="o">-&gt;</span><span class="n">graphicProvider</span><span class="p">(</span> <span class="n">providerId</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphic</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">loadGraphic</span><span class="p">(</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">source</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">loadGraphic</span><span class="p">(</span> <span class="n">QUrl</span><span class="p">(</span> <span class="n">source</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskGraphic</span> <span class="n">Qsk</span><span class="o">::</span><span class="n">loadGraphic</span><span class="p">(</span> <span class="k">const</span> <span class="n">QUrl</span><span class="o">&amp;</span> <span class="n">url</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="n">QskGraphic</span> <span class="n">nullGraphic</span><span class="p">;</span>
+
+    <span class="n">QString</span> <span class="n">imageId</span> <span class="o">=</span> <span class="n">url</span><span class="p">.</span><span class="n">toString</span><span class="p">(</span> <span class="n">QUrl</span><span class="o">::</span><span class="n">RemoveScheme</span> <span class="o">|</span>
+        <span class="n">QUrl</span><span class="o">::</span><span class="n">RemoveAuthority</span> <span class="o">|</span> <span class="n">QUrl</span><span class="o">::</span><span class="n">NormalizePathSegments</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">imageId</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">nullGraphic</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">imageId</span><span class="p">[</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">==</span> <span class="sc">'/'</span> <span class="p">)</span>
+        <span class="n">imageId</span> <span class="o">=</span> <span class="n">imageId</span><span class="p">.</span><span class="n">mid</span><span class="p">(</span> <span class="mi">1</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="n">QString</span> <span class="n">providerId</span> <span class="o">=</span> <span class="n">url</span><span class="p">.</span><span class="n">host</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">QskGraphic</span><span class="o">*</span> <span class="n">graphic</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">provider</span> <span class="o">=</span> <span class="n">qskSetup</span><span class="o">-&gt;</span><span class="n">graphicProvider</span><span class="p">(</span> <span class="n">providerId</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">graphic</span> <span class="o">=</span> <span class="n">provider</span><span class="o">-&gt;</span><span class="n">requestGraphic</span><span class="p">(</span> <span class="n">imageId</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">graphic</span> <span class="o">?</span> <span class="o">*</span><span class="n">graphic</span> <span class="o">:</span> <span class="n">nullGraphic</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

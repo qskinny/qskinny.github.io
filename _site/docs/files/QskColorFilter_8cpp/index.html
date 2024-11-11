@@ -1,0 +1,312 @@
+<h1 id="graphicqskcolorfiltercpp">graphic/QskColorFilter.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QRgb</td>
+      <td><strong><a href="/docs/files/QskColorFilter_8cpp/#function-qsksubstitutedrgb">qskSubstitutedRgb</a></strong>(const QVector&lt; QPair&lt; QRgb, QRgb &gt; &gt; &amp; substitions, QRgb rgba)</td>
+    </tr>
+    <tr>
+      <td>QColor</td>
+      <td><strong><a href="/docs/files/QskColorFilter_8cpp/#function-qsksubstitutedcolor">qskSubstitutedColor</a></strong>(const QVector&lt; QPair&lt; QRgb, QRgb &gt; &gt; &amp; substitions, const QColor &amp; color)</td>
+    </tr>
+    <tr>
+      <td>QBrush</td>
+      <td><strong><a href="/docs/files/QskColorFilter_8cpp/#function-qsksubstitutedbrush">qskSubstitutedBrush</a></strong>(const QVector&lt; QPair&lt; QRgb, QRgb &gt; &gt; &amp; substitions, const QBrush &amp; brush)</td>
+    </tr>
+    <tr>
+      <td>QskColorFilter</td>
+      <td><strong><a href="/docs/files/QskColorFilter_8cpp/#function-qskinterpolatedfilter">qskInterpolatedFilter</a></strong>(const QskColorFilter &amp; from, const QskColorFilter &amp; to, qreal progress)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskColorFilter_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskColorFilter &amp; filter)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qsksubstitutedrgb">function qskSubstitutedRgb</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QRgb</span> <span class="n">qskSubstitutedRgb</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QPair</span><span class="o">&lt;</span> <span class="n">QRgb</span><span class="p">,</span> <span class="n">QRgb</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">substitions</span><span class="p">,</span>
+    <span class="n">QRgb</span> <span class="n">rgba</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksubstitutedcolor">function qskSubstitutedColor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QColor</span> <span class="n">qskSubstitutedColor</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QPair</span><span class="o">&lt;</span> <span class="n">QRgb</span><span class="p">,</span> <span class="n">QRgb</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">substitions</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">color</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qsksubstitutedbrush">function qskSubstitutedBrush</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QBrush</span> <span class="n">qskSubstitutedBrush</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QPair</span><span class="o">&lt;</span> <span class="n">QRgb</span><span class="p">,</span> <span class="n">QRgb</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">substitions</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QBrush</span> <span class="o">&amp;</span> <span class="n">brush</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinterpolatedfilter">function qskInterpolatedFilter</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="n">QskColorFilter</span> <span class="n">qskInterpolatedFilter</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span> <span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span> <span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">progress</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span> <span class="o">&amp;</span> <span class="n">filter</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskColorFilter.h"
+#include "QskRgbValue.h"
+</span>
+<span class="cp">#include &lt;qbrush.h&gt;
+#include &lt;qpen.h&gt;
+#include &lt;qvariant.h&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QRgb</span> <span class="nf">qskSubstitutedRgb</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QPair</span><span class="o">&lt;</span> <span class="n">QRgb</span><span class="p">,</span> <span class="n">QRgb</span> <span class="o">&gt;</span> <span class="o">&gt;&amp;</span> <span class="n">substitions</span><span class="p">,</span> <span class="n">QRgb</span> <span class="n">rgba</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// usually we have 2-3 substitutions, so we can simply iterate</span>
+    <span class="c1">// and don't need to introduce some sort of sorting or search index</span>
+
+    <span class="k">const</span> <span class="n">QRgb</span> <span class="n">rgb</span> <span class="o">=</span> <span class="n">rgba</span> <span class="o">|</span> <span class="n">QskRgb</span><span class="o">::</span><span class="n">AlphaMask</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">s</span> <span class="o">:</span> <span class="n">substitions</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">rgb</span> <span class="o">==</span> <span class="n">s</span><span class="p">.</span><span class="n">first</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span> <span class="n">s</span><span class="p">.</span><span class="n">second</span> <span class="o">&amp;</span> <span class="n">QskRgb</span><span class="o">::</span><span class="n">ColorMask</span> <span class="p">)</span> <span class="o">|</span>
+                <span class="p">(</span> <span class="n">rgba</span> <span class="o">&amp;</span> <span class="n">QskRgb</span><span class="o">::</span><span class="n">AlphaMask</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">rgba</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QColor</span> <span class="nf">qskSubstitutedColor</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QPair</span><span class="o">&lt;</span> <span class="n">QRgb</span><span class="p">,</span> <span class="n">QRgb</span> <span class="o">&gt;</span> <span class="o">&gt;&amp;</span> <span class="n">substitions</span><span class="p">,</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QColor</span><span class="o">::</span><span class="n">fromRgba</span><span class="p">(</span> <span class="n">qskSubstitutedRgb</span><span class="p">(</span> <span class="n">substitions</span><span class="p">,</span> <span class="n">color</span><span class="p">.</span><span class="n">rgba</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QBrush</span> <span class="nf">qskSubstitutedBrush</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">QPair</span><span class="o">&lt;</span> <span class="n">QRgb</span><span class="p">,</span> <span class="n">QRgb</span> <span class="o">&gt;</span> <span class="o">&gt;&amp;</span> <span class="n">substitions</span><span class="p">,</span> <span class="k">const</span> <span class="n">QBrush</span><span class="o">&amp;</span> <span class="n">brush</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QBrush</span> <span class="n">newBrush</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">QGradient</span><span class="o">*</span> <span class="n">gradient</span> <span class="o">=</span> <span class="n">brush</span><span class="p">.</span><span class="n">gradient</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">gradient</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">isModified</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+        <span class="n">QGradientStops</span> <span class="n">stops</span> <span class="o">=</span> <span class="n">gradient</span><span class="o">-&gt;</span><span class="n">stops</span><span class="p">();</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">stop</span> <span class="o">:</span> <span class="n">stops</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">QColor</span> <span class="n">c</span> <span class="o">=</span> <span class="n">qskSubstitutedColor</span><span class="p">(</span> <span class="n">substitions</span><span class="p">,</span> <span class="n">stop</span><span class="p">.</span><span class="n">second</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">stop</span><span class="p">.</span><span class="n">second</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">stop</span><span class="p">.</span><span class="n">second</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+                <span class="n">isModified</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">isModified</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newBrush</span> <span class="o">=</span> <span class="n">brush</span><span class="p">;</span>
+
+            <span class="n">QGradient</span><span class="o">*</span> <span class="n">newGradient</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QGradient</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">newBrush</span><span class="p">.</span><span class="n">gradient</span><span class="p">()</span> <span class="p">);</span>
+            <span class="n">newGradient</span><span class="o">-&gt;</span><span class="n">setStops</span><span class="p">(</span> <span class="n">stops</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">QColor</span> <span class="n">c</span> <span class="o">=</span> <span class="n">qskSubstitutedColor</span><span class="p">(</span> <span class="n">substitions</span><span class="p">,</span> <span class="n">brush</span><span class="p">.</span><span class="n">color</span><span class="p">()</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">brush</span><span class="p">.</span><span class="n">color</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">newBrush</span> <span class="o">=</span> <span class="n">brush</span><span class="p">;</span>
+            <span class="n">newBrush</span><span class="p">.</span><span class="n">setColor</span><span class="p">(</span> <span class="n">c</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">newBrush</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="n">QskColorFilter</span> <span class="nf">qskInterpolatedFilter</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">progress</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">from</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">progress</span> <span class="o">&gt;=</span> <span class="mf">1.0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">to</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">from</span> <span class="o">==</span> <span class="n">to</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">from</span><span class="p">;</span>
+
+    <span class="n">QskColorFilter</span> <span class="n">interpolated</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">pairTo</span> <span class="o">:</span> <span class="n">to</span><span class="p">.</span><span class="n">substitutions</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QRgb</span> <span class="n">rgb</span> <span class="o">=</span> <span class="n">pairTo</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">pairFrom</span> <span class="o">:</span> <span class="n">from</span><span class="p">.</span><span class="n">substitutions</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">pairTo</span><span class="p">.</span><span class="n">first</span> <span class="o">==</span> <span class="n">pairFrom</span><span class="p">.</span><span class="n">first</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">rgb</span> <span class="o">=</span> <span class="n">pairFrom</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">rgb</span> <span class="o">=</span> <span class="n">QskRgb</span><span class="o">::</span><span class="n">interpolated</span><span class="p">(</span> <span class="n">rgb</span><span class="p">,</span> <span class="n">pairTo</span><span class="p">.</span><span class="n">second</span><span class="p">,</span> <span class="n">progress</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">rgb</span> <span class="o">!=</span> <span class="n">pairTo</span><span class="p">.</span><span class="n">first</span> <span class="p">)</span>
+            <span class="n">interpolated</span><span class="p">.</span><span class="n">addColorSubstitution</span><span class="p">(</span> <span class="n">pairTo</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">rgb</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*
+        we might have substitutaions in from for colors we don't
+        have in to. Then the target color is the original color
+        of the substitution in from.
+     */</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">pairFrom</span> <span class="o">:</span> <span class="n">from</span><span class="p">.</span><span class="n">substitutions</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">hasRgb</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">pairTo</span> <span class="o">:</span> <span class="n">to</span><span class="p">.</span><span class="n">substitutions</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">pairTo</span><span class="p">.</span><span class="n">first</span> <span class="o">==</span> <span class="n">pairFrom</span><span class="p">.</span><span class="n">first</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">hasRgb</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">hasRgb</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">rgb</span> <span class="o">=</span> <span class="n">QskRgb</span><span class="o">::</span><span class="n">interpolated</span><span class="p">(</span>
+                <span class="n">pairFrom</span><span class="p">.</span><span class="n">second</span><span class="p">,</span> <span class="n">pairFrom</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">progress</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">rgb</span> <span class="o">!=</span> <span class="n">pairFrom</span><span class="p">.</span><span class="n">first</span> <span class="p">)</span>
+                <span class="n">interpolated</span><span class="p">.</span><span class="n">addColorSubstitution</span><span class="p">(</span> <span class="n">pairFrom</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">rgb</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">interpolated</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskColorFilter</span><span class="o">::</span><span class="n">addColorSubstitution</span><span class="p">(</span> <span class="n">QRgb</span> <span class="n">from</span><span class="p">,</span> <span class="n">QRgb</span> <span class="n">to</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">substitution</span> <span class="o">:</span> <span class="n">m_substitutions</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">substitution</span><span class="p">.</span><span class="n">first</span> <span class="o">==</span> <span class="n">from</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">substitution</span><span class="p">.</span><span class="n">second</span> <span class="o">=</span> <span class="n">to</span><span class="p">;</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">m_substitutions</span> <span class="o">+=</span> <span class="n">qMakePair</span><span class="p">(</span> <span class="n">from</span><span class="p">,</span> <span class="n">to</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskColorFilter</span><span class="o">::</span><span class="n">reset</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">m_substitutions</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QPen</span> <span class="n">QskColorFilter</span><span class="o">::</span><span class="n">substituted</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPen</span><span class="o">&amp;</span> <span class="n">pen</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_substitutions</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">||</span> <span class="n">pen</span><span class="p">.</span><span class="n">style</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoPen</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">pen</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">QBrush</span> <span class="n">newBrush</span> <span class="o">=</span> <span class="n">qskSubstitutedBrush</span><span class="p">(</span> <span class="n">m_substitutions</span><span class="p">,</span> <span class="n">pen</span><span class="p">.</span><span class="n">brush</span><span class="p">()</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">newBrush</span><span class="p">.</span><span class="n">style</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoBrush</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">pen</span><span class="p">;</span>
+
+    <span class="n">QPen</span> <span class="n">newPen</span> <span class="o">=</span> <span class="n">pen</span><span class="p">;</span>
+    <span class="n">newPen</span><span class="p">.</span><span class="n">setBrush</span><span class="p">(</span> <span class="n">newBrush</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">newPen</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QBrush</span> <span class="n">QskColorFilter</span><span class="o">::</span><span class="n">substituted</span><span class="p">(</span> <span class="k">const</span> <span class="n">QBrush</span><span class="o">&amp;</span> <span class="n">brush</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_substitutions</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="o">||</span> <span class="n">brush</span><span class="p">.</span><span class="n">style</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoBrush</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">brush</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">QBrush</span> <span class="n">newBrush</span> <span class="o">=</span> <span class="n">qskSubstitutedBrush</span><span class="p">(</span> <span class="n">m_substitutions</span><span class="p">,</span> <span class="n">brush</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="n">newBrush</span><span class="p">.</span><span class="n">style</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoBrush</span> <span class="p">)</span> <span class="o">?</span> <span class="n">newBrush</span> <span class="o">:</span> <span class="n">brush</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QColor</span> <span class="n">QskColorFilter</span><span class="o">::</span><span class="n">substituted</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="n">color</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSubstitutedColor</span><span class="p">(</span> <span class="n">m_substitutions</span><span class="p">,</span> <span class="n">color</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRgb</span> <span class="n">QskColorFilter</span><span class="o">::</span><span class="n">substituted</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRgb</span><span class="o">&amp;</span> <span class="n">rgb</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskSubstitutedRgb</span><span class="p">(</span> <span class="n">m_substitutions</span><span class="p">,</span> <span class="n">rgb</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskColorFilter</span> <span class="n">QskColorFilter</span><span class="o">::</span><span class="n">interpolated</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskInterpolatedFilter</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">progress</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskColorFilter</span><span class="o">::</span><span class="n">interpolate</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">to</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">progress</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QVariant</span><span class="o">::</span><span class="n">fromValue</span><span class="p">(</span> <span class="n">qskInterpolatedFilter</span><span class="p">(</span> <span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">progress</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="cp">#include &lt;qdebug.h&gt;
+</span>
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskColorFilter</span><span class="o">&amp;</span> <span class="n">filter</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"Filter"</span> <span class="o">&lt;&lt;</span> <span class="sc">'('</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">s</span> <span class="o">:</span> <span class="n">filter</span><span class="p">.</span><span class="n">substitutions</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">'['</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="s">"-&gt;"</span> <span class="o">&lt;&lt;</span> <span class="n">s</span><span class="p">.</span><span class="n">second</span> <span class="o">&lt;&lt;</span> <span class="s">"]"</span><span class="p">;</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">')'</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

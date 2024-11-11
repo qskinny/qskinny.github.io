@@ -1,0 +1,108 @@
+<h1 id="controlsqsksimplelistboxh">controls/QskSimpleListBox.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskSimpleListBox/">QskSimpleListBox</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_LIST_BOX_H
+#define QSK_LIST_BOX_H
+</span>
+<span class="cp">#include "QskListView.h"
+#include &lt;qstringlist.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskSimpleListBox</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskListView</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QStringList</span> <span class="n">entries</span> <span class="n">READ</span> <span class="n">entries</span>
+        <span class="n">WRITE</span> <span class="n">setEntries</span> <span class="n">NOTIFY</span> <span class="n">entriesChanged</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskListView</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QskSimpleListBox</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskSimpleListBox</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setColumnWidthHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">);</span>
+    <span class="n">qreal</span> <span class="n">columnWidthHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">column</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="c1">// not sure if we will keep this, but</span>
+    <span class="c1">// at least it is worth trying to avoid models</span>
+
+    <span class="kt">void</span> <span class="n">insert</span><span class="p">(</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">insert</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">append</span><span class="p">(</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">append</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">removeAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">removeBulk</span><span class="p">(</span> <span class="kt">int</span> <span class="n">from</span><span class="p">,</span> <span class="kt">int</span> <span class="n">to</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">rowCount</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">columnCount</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">columnWidth</span><span class="p">(</span> <span class="kt">int</span> <span class="n">col</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">rowHeight</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="n">QString</span> <span class="n">entryAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QString</span> <span class="n">selectedEntry</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QStringList</span> <span class="n">entries</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QVariant</span> <span class="n">valueAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">col</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="k">final</span><span class="p">;</span>
+
+  <span class="k">public</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">setEntries</span><span class="p">(</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">clear</span><span class="p">();</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">entriesChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">selectedEntryChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">propagateEntries</span><span class="p">();</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">append</span><span class="p">(</span> <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="n">entries</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">insert</span><span class="p">(</span> <span class="n">entries</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">append</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">entry</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">insert</span><span class="p">(</span> <span class="n">entry</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">QString</span> <span class="n">QskSimpleListBox</span><span class="o">::</span><span class="n">selectedEntry</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">entryAt</span><span class="p">(</span> <span class="n">selectedRow</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

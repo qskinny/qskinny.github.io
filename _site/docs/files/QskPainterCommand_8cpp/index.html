@@ -1,0 +1,318 @@
+<h1 id="graphicqskpaintercommandcpp">graphic/QskPainterCommand.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskPainterCommand.h"
+</span>
+<span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">QskPainterCommand</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPainterPath</span><span class="o">&amp;</span> <span class="n">path</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_type</span><span class="p">(</span> <span class="n">Path</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_path</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QPainterPath</span><span class="p">(</span> <span class="n">path</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">QskPainterCommand</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QPixmap</span><span class="o">&amp;</span> <span class="n">pixmap</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">subRect</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_type</span><span class="p">(</span> <span class="n">Pixmap</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_pixmapData</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PixmapData</span><span class="p">();</span>
+    <span class="n">m_pixmapData</span><span class="o">-&gt;</span><span class="n">rect</span> <span class="o">=</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="n">m_pixmapData</span><span class="o">-&gt;</span><span class="n">pixmap</span> <span class="o">=</span> <span class="n">pixmap</span><span class="p">;</span>
+    <span class="n">m_pixmapData</span><span class="o">-&gt;</span><span class="n">subRect</span> <span class="o">=</span> <span class="n">subRect</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">QskPainterCommand</span><span class="p">(</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QImage</span><span class="o">&amp;</span> <span class="n">image</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">subRect</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImageConversionFlags</span> <span class="n">flags</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_type</span><span class="p">(</span> <span class="n">Image</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_imageData</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ImageData</span><span class="p">();</span>
+    <span class="n">m_imageData</span><span class="o">-&gt;</span><span class="n">rect</span> <span class="o">=</span> <span class="n">rect</span><span class="p">;</span>
+    <span class="n">m_imageData</span><span class="o">-&gt;</span><span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">;</span>
+    <span class="n">m_imageData</span><span class="o">-&gt;</span><span class="n">subRect</span> <span class="o">=</span> <span class="n">subRect</span><span class="p">;</span>
+    <span class="n">m_imageData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="n">flags</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">QskPainterCommand</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">StateData</span><span class="o">&amp;</span> <span class="n">data</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_type</span><span class="p">(</span> <span class="n">State</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_stateData</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StateData</span><span class="p">(</span> <span class="n">data</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">QskPainterCommand</span><span class="p">(</span> <span class="k">const</span> <span class="n">QPaintEngineState</span><span class="o">&amp;</span> <span class="n">state</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_type</span><span class="p">(</span> <span class="n">State</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_stateData</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StateData</span><span class="p">();</span>
+
+    <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">state</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyPen</span> <span class="p">)</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">pen</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">pen</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyBrush</span> <span class="p">)</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">brush</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">brush</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyBrushOrigin</span> <span class="p">)</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">brushOrigin</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">brushOrigin</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyFont</span> <span class="p">)</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">font</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">font</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyBackground</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">backgroundMode</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">backgroundMode</span><span class="p">();</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">backgroundBrush</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">backgroundBrush</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyTransform</span> <span class="p">)</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">transform</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">transform</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyClipEnabled</span> <span class="p">)</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">isClipEnabled</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">isClipEnabled</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyClipRegion</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">clipRegion</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">clipRegion</span><span class="p">();</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">clipOperation</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">clipOperation</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyClipPath</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">clipPath</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">clipPath</span><span class="p">();</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">clipOperation</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">clipOperation</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyHints</span> <span class="p">)</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">renderHints</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">renderHints</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyCompositionMode</span> <span class="p">)</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">compositionMode</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">compositionMode</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyOpacity</span> <span class="p">)</span>
+        <span class="n">m_stateData</span><span class="o">-&gt;</span><span class="n">opacity</span> <span class="o">=</span> <span class="n">state</span><span class="p">.</span><span class="n">opacity</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">QskPainterCommand</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskPainterCommand</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">copy</span><span class="p">(</span> <span class="n">other</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskPainterCommand</span><span class="o">::~</span><span class="n">QskPainterCommand</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">reset</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskPainterCommand</span><span class="o">&amp;</span> <span class="n">QskPainterCommand</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskPainterCommand</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">reset</span><span class="p">();</span>
+    <span class="n">copy</span><span class="p">(</span> <span class="n">other</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskPainterCommand</span><span class="o">::</span><span class="k">operator</span><span class="o">==</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskPainterCommand</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_type</span> <span class="o">!=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_type</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span> <span class="n">m_path</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_path</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Pixmap</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span> <span class="n">m_pixmapData</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_pixmapData</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Image</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span> <span class="n">m_imageData</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_imageData</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">State</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="n">StateData</span><span class="o">&amp;</span> <span class="n">sd</span> <span class="o">=</span> <span class="o">*</span><span class="n">m_stateData</span><span class="p">;</span>
+            <span class="k">const</span> <span class="n">StateData</span><span class="o">&amp;</span> <span class="n">osd</span> <span class="o">=</span> <span class="o">*</span><span class="n">other</span><span class="p">.</span><span class="n">m_stateData</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">flags</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyPen</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">pen</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">pen</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyBrush</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">brush</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">brush</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyBrushOrigin</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">brushOrigin</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">brushOrigin</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyFont</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">font</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">font</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyBackground</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">backgroundMode</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">backgroundMode</span> <span class="o">||</span>
+                    <span class="n">sd</span><span class="p">.</span><span class="n">backgroundBrush</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">backgroundBrush</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyTransform</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">transform</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">transform</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyClipEnabled</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">isClipEnabled</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">isClipEnabled</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyClipRegion</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">clipRegion</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">clipRegion</span> <span class="o">||</span>
+                    <span class="n">sd</span><span class="p">.</span><span class="n">clipOperation</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">clipOperation</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyClipPath</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">clipPath</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">clipPath</span> <span class="o">||</span>
+                    <span class="n">sd</span><span class="p">.</span><span class="n">clipOperation</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">clipOperation</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyHints</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">renderHints</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">renderHints</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyCompositionMode</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">compositionMode</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">compositionMode</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">QPaintEngine</span><span class="o">::</span><span class="n">DirtyOpacity</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">sd</span><span class="p">.</span><span class="n">opacity</span> <span class="o">!=</span> <span class="n">osd</span><span class="p">.</span><span class="n">opacity</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">copy</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskPainterCommand</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_type</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_type</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">m_path</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QPainterPath</span><span class="p">(</span> <span class="o">*</span><span class="n">other</span><span class="p">.</span><span class="n">m_path</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Pixmap</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">m_pixmapData</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PixmapData</span><span class="p">(</span> <span class="o">*</span><span class="n">other</span><span class="p">.</span><span class="n">m_pixmapData</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Image</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">m_imageData</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ImageData</span><span class="p">(</span> <span class="o">*</span><span class="n">other</span><span class="p">.</span><span class="n">m_imageData</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">State</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">m_stateData</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StateData</span><span class="p">(</span> <span class="o">*</span><span class="n">other</span><span class="p">.</span><span class="n">m_stateData</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">reset</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">m_type</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">Path</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">delete</span> <span class="n">m_path</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Pixmap</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">delete</span> <span class="n">m_pixmapData</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Image</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">delete</span> <span class="n">m_imageData</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">State</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">delete</span> <span class="n">m_stateData</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">m_type</span> <span class="o">=</span> <span class="n">Invalid</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QPainterPath</span><span class="o">*</span> <span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">path</span><span class="p">()</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_path</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">PixmapData</span><span class="o">*</span> <span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">pixmapData</span><span class="p">()</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_pixmapData</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">ImageData</span><span class="o">*</span> <span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">imageData</span><span class="p">()</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_imageData</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">StateData</span><span class="o">*</span> <span class="n">QskPainterCommand</span><span class="o">::</span><span class="n">stateData</span><span class="p">()</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_stateData</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

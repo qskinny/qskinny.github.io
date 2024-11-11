@@ -1,0 +1,485 @@
+<h1 id="qskskinlet">QskSkinlet</h1>
+
+<p>Describes the rendering interface of a <a href="">QskControl</a>. Change the skinlet to change the appearance of the control using the low-level scene graph API.  <a href="#detailed-description">More…</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">#include &lt;QskSkinlet.h&gt;</code></p>
+
+<p>Inherited by <a href="/docs/classes/classQskBoxSkinlet/">QskBoxSkinlet</a>, <a href="/docs/classes/classQskFocusIndicatorSkinlet/">QskFocusIndicatorSkinlet</a>, <a href="/docs/classes/classQskGraphicLabelSkinlet/">QskGraphicLabelSkinlet</a>, <a href="/docs/classes/classQskPageIndicatorSkinlet/">QskPageIndicatorSkinlet</a>, <a href="/docs/classes/classQskPopupSkinlet/">QskPopupSkinlet</a>, <a href="/docs/classes/classQskProgressBarSkinlet/">QskProgressBarSkinlet</a>, <a href="/docs/classes/classQskPushButtonSkinlet/">QskPushButtonSkinlet</a>, <a href="/docs/classes/classQskScrollViewSkinlet/">QskScrollViewSkinlet</a>, <a href="/docs/classes/classQskSeparatorSkinlet/">QskSeparatorSkinlet</a>, <a href="/docs/classes/classQskSliderSkinlet/">QskSliderSkinlet</a>, <a href="/docs/classes/classQskStatusIndicatorSkinlet/">QskStatusIndicatorSkinlet</a>, <a href="/docs/classes/classQskSubWindowAreaSkinlet/">QskSubWindowAreaSkinlet</a>, <a href="/docs/classes/classQskSwitchButtonSkinlet/">QskSwitchButtonSkinlet</a>, <a href="/docs/classes/classQskTabButtonSkinlet/">QskTabButtonSkinlet</a>, <a href="/docs/classes/classQskTabViewSkinlet/">QskTabViewSkinlet</a>, <a href="/docs/classes/classQskTextInputSkinlet/">QskTextInputSkinlet</a>, <a href="/docs/classes/classQskTextLabelSkinlet/">QskTextLabelSkinlet</a></p>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Q_INVOKABLE</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-qskskinlet">QskSkinlet</a></strong>(QskSkin * skin =nullptr)</td>
+    </tr>
+    <tr>
+      <td>virtual</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-~qskskinlet">~QskSkinlet</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>QskSkin *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-skin">skin</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatenode">updateNode</a></strong>(<a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * parent) const</td>
+    </tr>
+    <tr>
+      <td>virtual QRectF</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-subcontrolrect">subControlRect</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * , const QRectF &amp; , <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> ) const</td>
+    </tr>
+    <tr>
+      <td>virtual QSizeF</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-sizehint">sizeHint</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * , Qt::SizeHint , const QSizeF &amp; ) const</td>
+    </tr>
+    <tr>
+      <td>const QVector&lt; quint8 &gt; &amp;</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-noderoles">nodeRoles</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-setownedbyskinnable">setOwnedBySkinnable</a></strong>(bool on)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-isownedbyskinnable">isOwnedBySkinnable</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updateboxnode">updateBoxNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const QRectF &amp; rect, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl)</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updateboxnode">updateBoxNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const QRectF &amp; rect, const QskGradient &amp; fillGradient, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl)</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatearcnode">updateArcNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const QRectF &amp; rect, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl)</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatearcnode">updateArcNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const QRectF &amp; rect, const QskGradient &amp; fillGradient, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl)</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatearcnode">updateArcNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const QRectF &amp; rect, const QskGradient &amp; fillGradient, const QskArcMetrics &amp; arcMetrics, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl)</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatearcnode">updateArcNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const QRectF &amp; rect, qreal startAngle, qreal spanAngle, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl)</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatearcnode">updateArcNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const QRectF &amp; rect, const QskGradient &amp; fillGradient, qreal startAngle, qreal spanAngle, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl)</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatetextnode">updateTextNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const QRectF &amp; rect, Qt::Alignment alignment, const QString &amp; text, const QskTextOptions &amp; textOptions, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl)</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updategraphicnode">updateGraphicNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; graphic, const QskColorFilter &amp; colorFilter, const QRectF &amp; rect, Qt::Alignment alignment, Qt::Orientations mirrored =Qt::Orientations())</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updategraphicnode">updateGraphicNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; graphic, const QskColorFilter &amp; colorFilter, const QRectF &amp; rect, Qt::Orientations mirrored =Qt::Orientations())</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updateboxclipnode">updateBoxClipNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const QRectF &amp; rect, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-setnoderoles">setNodeRoles</a></strong>(const QVector&lt; quint8 &gt; &amp; nodeRoles)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-appendnoderoles">appendNodeRoles</a></strong>(const QVector&lt; quint8 &gt; &amp; nodeRoles)</td>
+    </tr>
+    <tr>
+      <td>virtual QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatesubnode">updateSubNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * , quint8 nodeRole, QSGNode * ) const</td>
+    </tr>
+    <tr>
+      <td>virtual QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatebackgroundnode">updateBackgroundNode</a></strong>(const <a href="/docs/classes/classQskControl/">QskControl</a> * control, QSGNode * node) const</td>
+    </tr>
+    <tr>
+      <td>virtual QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatedebugnode">updateDebugNode</a></strong>(const <a href="/docs/classes/classQskControl/">QskControl</a> * control, QSGNode * node) const</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updateboxnode">updateBoxNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl) const</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatearcnode">updateArcNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl) const</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatearcnode">updateArcNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, qreal startAngle, qreal spanAngle, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl) const</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updateboxclipnode">updateBoxClipNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl) const</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updatetextnode">updateTextNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const QString &amp; text, const QskTextOptions &amp; textOptions, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subControl) const</td>
+    </tr>
+    <tr>
+      <td>QSGNode *</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-updategraphicnode">updateGraphicNode</a></strong>(const <a href="/docs/classes/classQskSkinnable/">QskSkinnable</a> * skinnable, QSGNode * node, const <a href="/docs/classes/classQskGraphic/">QskGraphic</a> &amp; graphic, <a href="/docs/classes/classQskAspect/#enum-subcontrol">QskAspect::Subcontrol</a> subcontrol, Qt::Orientations mirrored =Qt::Orientations()) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-replacechildnode">replaceChildNode</a></strong>(quint8 nodeRole, QSGNode * parentNode, QSGNode * oldNode, QSGNode * newNode) const</td>
+    </tr>
+    <tr>
+      <td>QSizeF</td>
+      <td><strong><a href="/docs/classes/classQskSkinlet/#function-hintwithoutconstraint">hintWithoutConstraint</a></strong>(const QSizeF &amp; hint, const QSizeF &amp; constraint) const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="detailed-description">Detailed Description</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">QskSkinlet</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Describes the rendering interface of a <a href="">QskControl</a>. Change the skinlet to change the appearance of the control using the low-level scene graph API.</p>
+
+<p><strong>See</strong>: <a href="/docs/classes/classQskSkinnable/#function-effectiveskinlet">QskSkinnable::effectiveSkinlet()</a>, <a href="/docs/classes/classQskSkinnable/#function-setskinlet">QskSkinnable::setSkinlet()</a>, QskSkin::declareSkinlet(), QskSkin::skinlet()</p>
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskskinlet">function QskSkinlet</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_INVOKABLE</span> <span class="n">QskSkinlet</span><span class="p">(</span>
+    <span class="n">QskSkin</span> <span class="o">*</span> <span class="n">skin</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskskinlet-1">function ~QskSkinlet</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="o">~</span><span class="n">QskSkinlet</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-skin">function skin</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskSkin</span> <span class="o">*</span> <span class="n">skin</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-updatenode">function updateNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">updateNode</span><span class="p">(</span>
+    <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parent</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-subcontrolrect">function subControlRect</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">virtual</span> <span class="n">QRectF</span> <span class="n">subControlRect</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> 
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-sizehint">function sizeHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">virtual</span> <span class="n">QSizeF</span> <span class="n">sizeHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> 
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-noderoles">function nodeRoles</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">quint8</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">nodeRoles</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setownedbyskinnable">function setOwnedBySkinnable</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setOwnedBySkinnable</span><span class="p">(</span>
+    <span class="kt">bool</span> <span class="n">on</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-isownedbyskinnable">function isOwnedBySkinnable</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isOwnedBySkinnable</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-updateboxnode">function updateBoxNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateBoxNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updateboxnode-1">function updateBoxNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateBoxNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGradient</span> <span class="o">&amp;</span> <span class="n">fillGradient</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updatearcnode">function updateArcNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateArcNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updatearcnode-1">function updateArcNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateArcNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGradient</span> <span class="o">&amp;</span> <span class="n">fillGradient</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updatearcnode-2">function updateArcNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateArcNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGradient</span> <span class="o">&amp;</span> <span class="n">fillGradient</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskArcMetrics</span> <span class="o">&amp;</span> <span class="n">arcMetrics</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updatearcnode-3">function updateArcNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateArcNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">startAngle</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">spanAngle</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updatearcnode-4">function updateArcNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateArcNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGradient</span> <span class="o">&amp;</span> <span class="n">fillGradient</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">startAngle</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">spanAngle</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updatetextnode">function updateTextNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateTextNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span> <span class="o">&amp;</span> <span class="n">textOptions</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updategraphicnode">function updateGraphicNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateGraphicNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="n">graphic</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span> <span class="o">&amp;</span> <span class="n">colorFilter</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">mirrored</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updategraphicnode-1">function updateGraphicNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateGraphicNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="n">graphic</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span> <span class="o">&amp;</span> <span class="n">colorFilter</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">mirrored</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updateboxclipnode">function updateBoxClipNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateBoxClipNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-setnoderoles">function setNodeRoles</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setNodeRoles</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">quint8</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">nodeRoles</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-appendnoderoles">function appendNodeRoles</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">appendNodeRoles</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">quint8</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">nodeRoles</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-updatesubnode">function updateSubNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">virtual</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateSubNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="p">,</span>
+    <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> 
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-updatebackgroundnode">function updateBackgroundNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateBackgroundNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskControl</span> <span class="o">*</span> <span class="n">control</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-updatedebugnode">function updateDebugNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateDebugNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskControl</span> <span class="o">*</span> <span class="n">control</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-updateboxnode-2">function updateBoxNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateBoxNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-updatearcnode-5">function updateArcNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateArcNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-updatearcnode-6">function updateArcNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateArcNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">startAngle</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">spanAngle</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-updateboxclipnode-1">function updateBoxClipNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateBoxClipNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-updatetextnode-1">function updateTextNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateTextNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskTextOptions</span> <span class="o">&amp;</span> <span class="n">textOptions</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-updategraphicnode-2">function updateGraphicNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSGNode</span> <span class="o">*</span> <span class="n">updateGraphicNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span> <span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">node</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGraphic</span> <span class="o">&amp;</span> <span class="n">graphic</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subcontrol</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">mirrored</span> <span class="o">=</span><span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span><span class="p">()</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-replacechildnode">function replaceChildNode</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">replaceChildNode</span><span class="p">(</span>
+    <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">parentNode</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">oldNode</span><span class="p">,</span>
+    <span class="n">QSGNode</span> <span class="o">*</span> <span class="n">newNode</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-hintwithoutconstraint">function hintWithoutConstraint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">hintWithoutConstraint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">hint</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:28 CEST</p>

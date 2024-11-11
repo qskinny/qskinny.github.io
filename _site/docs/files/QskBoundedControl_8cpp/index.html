@@ -1,0 +1,169 @@
+<h1 id="controlsqskboundedcontrolcpp">controls/QskBoundedControl.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskBoundedControl.h"
+#include "QskFunctions.h"
+#include "QskIntervalF.h"
+</span>
+<span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">QskBoundedControl</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskBoundedControl</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">QskBoundedControl</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">min</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">max</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskControl</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_minimum</span><span class="p">(</span> <span class="n">qMin</span><span class="p">(</span> <span class="n">min</span><span class="p">,</span> <span class="n">max</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_maximum</span><span class="p">(</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">min</span><span class="p">,</span> <span class="n">max</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskBoundedControl</span><span class="o">::~</span><span class="n">QskBoundedControl</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">setMinimum</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">minimum</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">m_minimum</span><span class="p">,</span> <span class="n">minimum</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_minimum</span> <span class="o">=</span> <span class="n">minimum</span><span class="p">;</span>
+    <span class="n">Q_EMIT</span> <span class="n">minimumChanged</span><span class="p">(</span> <span class="n">minimum</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isComponentComplete</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">adjustBoundaries</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">boundariesChanged</span><span class="p">(</span> <span class="n">boundaries</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">update</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">minimum</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_minimum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">setMaximum</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">maximum</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">m_maximum</span><span class="p">,</span> <span class="n">maximum</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_maximum</span> <span class="o">=</span> <span class="n">maximum</span><span class="p">;</span>
+    <span class="n">Q_EMIT</span> <span class="n">maximumChanged</span><span class="p">(</span> <span class="n">maximum</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isComponentComplete</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">adjustBoundaries</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">boundariesChanged</span><span class="p">(</span> <span class="n">boundaries</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">update</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">maximum</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_maximum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">setBoundaries</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">min</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">max</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">max</span> <span class="o">&lt;</span> <span class="n">min</span> <span class="p">)</span>
+        <span class="n">max</span> <span class="o">=</span> <span class="n">min</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">oldMin</span> <span class="o">=</span> <span class="n">m_minimum</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">oldMax</span> <span class="o">=</span> <span class="n">m_maximum</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">min</span> <span class="o">==</span> <span class="n">oldMin</span> <span class="o">&amp;&amp;</span> <span class="n">max</span> <span class="o">==</span> <span class="n">oldMax</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_minimum</span> <span class="o">=</span> <span class="n">min</span><span class="p">;</span>
+    <span class="n">m_maximum</span> <span class="o">=</span> <span class="n">max</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isComponentComplete</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">adjustBoundaries</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_minimum</span> <span class="o">!=</span> <span class="n">oldMin</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">minimumChanged</span><span class="p">(</span> <span class="n">m_minimum</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_maximum</span> <span class="o">!=</span> <span class="n">oldMax</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">maximumChanged</span><span class="p">(</span> <span class="n">m_maximum</span> <span class="p">);</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">boundariesChanged</span><span class="p">(</span> <span class="n">boundaries</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">update</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">setBoundaries</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">boundaries</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setBoundaries</span><span class="p">(</span> <span class="n">boundaries</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">(),</span> <span class="n">boundaries</span><span class="p">.</span><span class="n">upperBound</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskIntervalF</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">boundaries</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">QskIntervalF</span><span class="p">(</span> <span class="n">m_minimum</span><span class="p">,</span> <span class="n">m_maximum</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">adjustBoundaries</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">increasing</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_maximum</span> <span class="o">&gt;=</span> <span class="n">m_minimum</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">increasing</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_minimum</span> <span class="o">=</span> <span class="n">m_maximum</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">minimumChanged</span><span class="p">(</span> <span class="n">m_minimum</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">m_maximum</span> <span class="o">=</span> <span class="n">m_minimum</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">maximumChanged</span><span class="p">(</span> <span class="n">m_maximum</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">boundariesChanged</span><span class="p">(</span> <span class="n">boundaries</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">update</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">boundaryLength</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_maximum</span> <span class="o">-</span> <span class="n">m_minimum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">componentComplete</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">componentComplete</span><span class="p">();</span>
+    <span class="n">adjustBoundaries</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">boundedValue</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">minimum</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">minimum</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskFuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">maximum</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">maximum</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">qBound</span><span class="p">(</span> <span class="n">minimum</span><span class="p">(),</span> <span class="n">value</span><span class="p">,</span> <span class="n">maximum</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">valueAsRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">range</span> <span class="o">=</span> <span class="n">m_maximum</span> <span class="o">-</span> <span class="n">m_minimum</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">range</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span> <span class="n">value</span> <span class="o">-</span> <span class="n">m_minimum</span> <span class="p">)</span> <span class="o">/</span> <span class="n">range</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskBoundedControl</span><span class="o">::</span><span class="n">valueFromRatio</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">ratio</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">m_minimum</span> <span class="o">+</span> <span class="n">ratio</span> <span class="o">*</span> <span class="p">(</span> <span class="n">m_maximum</span> <span class="o">-</span> <span class="n">m_minimum</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskBoundedControl.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

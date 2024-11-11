@@ -1,0 +1,107 @@
+<h1 id="controlsqskanimationhinth">controls/QskAnimationHint.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskAnimationHint/">QskAnimationHint</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskAnimationHint_8h/#function-q_declare_typeinfo">Q_DECLARE_TYPEINFO</a></strong>(QskAnimationHint , Q_PRIMITIVE_TYPE )</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-q_declare_typeinfo">function Q_DECLARE_TYPEINFO</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span>
+    <span class="n">QskAnimationHint</span> <span class="p">,</span>
+    <span class="n">Q_PRIMITIVE_TYPE</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_ANIMATION_HINT_H
+#define QSK_ANIMATION_HINT_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+</span>
+<span class="cp">#include &lt;qeasingcurve.h&gt;
+#include &lt;qmetatype.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskAnimationHint</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">UpdateFlag</span>
+    <span class="p">{</span>
+        <span class="n">UpdateAuto</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="c1">// depending on the animated aspect</span>
+
+        <span class="n">UpdateNode</span>     <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">UpdatePolish</span>   <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">UpdateSizeHint</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">,</span>
+
+        <span class="n">UpdateAll</span> <span class="o">=</span> <span class="n">UpdateNode</span> <span class="o">|</span> <span class="n">UpdatePolish</span> <span class="o">|</span> <span class="n">UpdateSizeHint</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_DECLARE_FLAGS</span><span class="p">(</span> <span class="n">UpdateFlags</span><span class="p">,</span> <span class="n">UpdateFlag</span> <span class="p">)</span>
+
+    <span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskAnimationHint</span><span class="p">()</span> <span class="k">noexcept</span>
+        <span class="o">:</span> <span class="n">duration</span><span class="p">(</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">type</span><span class="p">(</span> <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">Linear</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">updateFlags</span><span class="p">(</span> <span class="n">UpdateAuto</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskAnimationHint</span><span class="p">(</span> <span class="n">uint</span> <span class="n">duration</span><span class="p">,</span>
+            <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">Type</span> <span class="n">type</span> <span class="o">=</span> <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">Linear</span> <span class="p">)</span> <span class="k">noexcept</span>
+        <span class="o">:</span> <span class="n">duration</span><span class="p">(</span> <span class="n">duration</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">type</span><span class="p">(</span> <span class="n">type</span> <span class="p">)</span>
+        <span class="p">,</span> <span class="n">updateFlags</span><span class="p">(</span> <span class="n">UpdateAuto</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="n">uint</span> <span class="n">duration</span><span class="p">;</span>
+    <span class="n">QEasingCurve</span><span class="o">::</span><span class="n">Type</span> <span class="n">type</span><span class="p">;</span>
+    <span class="n">UpdateFlags</span> <span class="n">updateFlags</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskAnimationHint</span> <span class="p">)</span>
+<span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span> <span class="n">QskAnimationHint</span><span class="p">,</span> <span class="n">Q_PRIMITIVE_TYPE</span> <span class="p">);</span>
+<span class="n">Q_DECLARE_OPERATORS_FOR_FLAGS</span><span class="p">(</span> <span class="n">QskAnimationHint</span><span class="o">::</span><span class="n">UpdateFlags</span> <span class="p">)</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

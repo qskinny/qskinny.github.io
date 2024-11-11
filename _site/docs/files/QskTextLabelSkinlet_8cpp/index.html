@@ -1,0 +1,157 @@
+<h1 id="controlsqsktextlabelskinletcpp">controls/QskTextLabelSkinlet.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskTextLabelSkinlet.h"
+#include "QskTextLabel.h"
+</span>
+<span class="cp">#include "QskTextOptions.h"
+#include "QskTextRenderer.h"
+</span>
+<span class="cp">#include &lt;qfontmetrics.h&gt;
+#include &lt;qmath.h&gt;
+</span>
+<span class="n">QskTextLabelSkinlet</span><span class="o">::</span><span class="n">QskTextLabelSkinlet</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">skin</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setNodeRoles</span><span class="p">(</span> <span class="p">{</span> <span class="n">PanelRole</span><span class="p">,</span> <span class="n">TextRole</span> <span class="p">}</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTextLabelSkinlet</span><span class="o">::~</span><span class="n">QskTextLabelSkinlet</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+<span class="n">QRectF</span> <span class="n">QskTextLabelSkinlet</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="n">subControl</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">Panel</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">contentsRect</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">subControl</span> <span class="o">==</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">Text</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">label</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskTextLabel</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">subControlContentsRect</span><span class="p">(</span>
+                <span class="n">contentsRect</span><span class="p">,</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">contentsRect</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">subControlRect</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">contentsRect</span><span class="p">,</span> <span class="n">subControl</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSGNode</span><span class="o">*</span> <span class="n">QskTextLabelSkinlet</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">label</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskTextLabel</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">nodeRole</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">PanelRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">label</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">()</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+            <span class="k">return</span> <span class="n">updateBoxNode</span><span class="p">(</span> <span class="n">label</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">Panel</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">TextRole</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">updateTextNode</span><span class="p">(</span> <span class="n">label</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">(),</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">(),</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">Text</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">updateSubNode</span><span class="p">(</span> <span class="n">skinnable</span><span class="p">,</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">node</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskTextLabelSkinlet</span><span class="o">::</span><span class="n">sizeHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span> <span class="n">skinnable</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">label</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskTextLabel</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">skinnable</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">font</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">effectiveFont</span><span class="p">(</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">Text</span> <span class="p">);</span>
+
+    <span class="k">auto</span> <span class="n">textOptions</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">textOptions</span><span class="p">();</span>
+    <span class="n">textOptions</span><span class="p">.</span><span class="n">setFormat</span><span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">effectiveTextFormat</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">text</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">();</span>
+
+    <span class="n">QSizeF</span> <span class="n">hint</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">qreal</span> <span class="n">lineHeight</span> <span class="o">=</span> <span class="n">QFontMetricsF</span><span class="p">(</span> <span class="n">font</span> <span class="p">).</span><span class="n">height</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">text</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="n">hint</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">qCeil</span><span class="p">(</span> <span class="n">lineHeight</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">textOptions</span><span class="p">.</span><span class="n">effectiveElideMode</span><span class="p">()</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ElideNone</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">hint</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">qCeil</span><span class="p">(</span> <span class="n">lineHeight</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                In case of QskTextOptions::NoWrap we could count
+                the line numbers and calculate the height from
+                lineHeight. TODO ...
+             */</span>
+            <span class="n">qreal</span> <span class="n">maxHeight</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;::</span><span class="n">max</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">maxHeight</span> <span class="o">/</span> <span class="n">lineHeight</span> <span class="o">&gt;</span> <span class="n">textOptions</span><span class="p">.</span><span class="n">maximumLineCount</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// be careful with overflows</span>
+                <span class="n">maxHeight</span> <span class="o">=</span> <span class="n">textOptions</span><span class="p">.</span><span class="n">maximumLineCount</span><span class="p">()</span> <span class="o">*</span> <span class="n">lineHeight</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">QSizeF</span> <span class="n">size</span><span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">maxHeight</span> <span class="p">);</span>
+
+            <span class="n">size</span> <span class="o">=</span> <span class="n">QskTextRenderer</span><span class="o">::</span><span class="n">textSize</span><span class="p">(</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">textOptions</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">outerBoxSize</span><span class="p">(</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">Panel</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+
+            <span class="n">hint</span><span class="p">.</span><span class="n">setHeight</span><span class="p">(</span> <span class="n">qCeil</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">maxWidth</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;::</span><span class="n">max</span><span class="p">();</span>
+
+        <span class="n">QSizeF</span> <span class="n">size</span><span class="p">(</span> <span class="n">maxWidth</span><span class="p">,</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="n">size</span> <span class="o">=</span> <span class="n">QskTextRenderer</span><span class="o">::</span><span class="n">textSize</span><span class="p">(</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">textOptions</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">outerBoxSize</span><span class="p">(</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">Panel</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+
+        <span class="n">hint</span><span class="p">.</span><span class="n">setWidth</span><span class="p">(</span> <span class="n">qCeil</span><span class="p">(</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">hint</span> <span class="o">=</span> <span class="n">QskTextRenderer</span><span class="o">::</span><span class="n">textSize</span><span class="p">(</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">textOptions</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">hint</span> <span class="o">=</span> <span class="n">label</span><span class="o">-&gt;</span><span class="n">outerBoxSize</span><span class="p">(</span> <span class="n">QskTextLabel</span><span class="o">::</span><span class="n">Panel</span><span class="p">,</span> <span class="n">hint</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskTextLabelSkinlet.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

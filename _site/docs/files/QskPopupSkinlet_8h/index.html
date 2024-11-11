@@ -1,0 +1,65 @@
+<h1 id="controlsqskpopupskinleth">controls/QskPopupSkinlet.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskPopupSkinlet/">QskPopupSkinlet</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_POPUP_SKINLET_H
+#define QSK_POPUP_SKINLET_H
+</span>
+<span class="cp">#include "QskSkinlet.h"
+</span>
+<span class="k">class</span> <span class="nc">QskPopup</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskPopupSkinlet</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskSkinlet</span>
+<span class="p">{</span>
+    <span class="n">Q_GADGET</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskSkinlet</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">NodeRole</span>
+    <span class="p">{</span>
+        <span class="n">OverlayRole</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="n">QskPopupSkinlet</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskPopupSkinlet</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="n">QRectF</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">Subcontrol</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">protected:</span>
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updateSubNode</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span><span class="p">,</span>
+        <span class="n">quint8</span> <span class="n">nodeRole</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updateOverlayNode</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskPopup</span><span class="o">*</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

@@ -1,0 +1,488 @@
+<h1 id="dialogsqskdialogsubwindowcpp">dialogs/QskDialogSubWindow.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskDialogSubWindow_8cpp/#function-qsksetrejectonclose">qskSetRejectOnClose</a></strong>(QskDialogSubWindow * subWindow, bool on)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qsksetrejectonclose">function qskSetRejectOnClose</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskSetRejectOnClose</span><span class="p">(</span>
+    <span class="n">QskDialogSubWindow</span> <span class="o">*</span> <span class="n">subWindow</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">on</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskDialogSubWindow.h"
+#include "QskDialogButtonBox.h"
+#include "QskPushButton.h"
+#include "QskQuick.h"
+</span>
+<span class="cp">#include &lt;qeventloop.h&gt;
+#include &lt;qquickwindow.h&gt;
+#include &lt;qpointer.h&gt;
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskSetRejectOnClose</span><span class="p">(</span> <span class="n">QskDialogSubWindow</span><span class="o">*</span> <span class="n">subWindow</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">subWindow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskPopup</span><span class="o">::</span><span class="n">closed</span><span class="p">,</span>
+            <span class="n">subWindow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">reject</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">QObject</span><span class="o">::</span><span class="n">disconnect</span><span class="p">(</span> <span class="n">subWindow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskPopup</span><span class="o">::</span><span class="n">closed</span><span class="p">,</span>
+            <span class="n">subWindow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">reject</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskDialogSubWindow</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">NoAction</span><span class="p">;</span>
+
+    <span class="n">QPointer</span><span class="o">&lt;</span> <span class="n">QQuickItem</span> <span class="o">&gt;</span> <span class="n">contentItem</span><span class="p">;</span>
+    <span class="n">QskDialogButtonBox</span><span class="o">*</span> <span class="n">buttonBox</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="n">QMarginsF</span> <span class="n">contentPadding</span><span class="p">;</span>
+
+    <span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="n">result</span> <span class="o">=</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Rejected</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">QskDialogSubWindow</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setPolishOnResize</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="n">qskSetRejectOnClose</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskDialogSubWindow</span><span class="o">::~</span><span class="n">QskDialogSubWindow</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">addDialogAction</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">action</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">action</span> <span class="o">!=</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">NoAction</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">initButtonBox</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">addAction</span><span class="p">(</span> <span class="n">action</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">addDialogButton</span><span class="p">(</span>
+    <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">button</span><span class="p">,</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">ActionRole</span> <span class="n">actionRole</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">button</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">initButtonBox</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">addButton</span><span class="p">(</span> <span class="n">button</span><span class="p">,</span> <span class="n">actionRole</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">setDialogActions</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="n">actions</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">actions</span> <span class="o">==</span> <span class="n">actions</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">actions</span> <span class="o">=</span> <span class="n">actions</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">actions</span> <span class="o">==</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">NoAction</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">delete</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+            <span class="n">disconnect</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogButtonBox</span><span class="o">::</span><span class="n">accepted</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">accept</span> <span class="p">);</span>
+
+            <span class="n">disconnect</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogButtonBox</span><span class="o">::</span><span class="n">rejected</span><span class="p">,</span>
+                <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">reject</span> <span class="p">);</span>
+
+        <span class="p">}</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">initButtonBox</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setActions</span><span class="p">(</span> <span class="n">actions</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">dialogActions</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">actions</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">NoAction</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">setContentItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentItem</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentItem</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span>
+            <span class="k">delete</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentItem</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">item</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">item</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">contentItem</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">setContentPadding</span><span class="p">(</span> <span class="k">const</span> <span class="n">QMarginsF</span><span class="o">&amp;</span> <span class="n">padding</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// should be a skin hint ???</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentPadding</span> <span class="o">!=</span> <span class="n">padding</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentPadding</span> <span class="o">=</span> <span class="n">padding</span><span class="p">;</span>
+
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">polish</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QMarginsF</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">contentPadding</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentPadding</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">setDefaultDialogAction</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">action</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">button</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+        <span class="n">button</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">button</span><span class="p">(</span> <span class="n">action</span> <span class="p">);</span>
+
+    <span class="n">setDefaultButton</span><span class="p">(</span> <span class="n">button</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">setDefaultButton</span><span class="p">(</span> <span class="n">QskPushButton</span><span class="o">*</span> <span class="n">button</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">qskIsAncestorOf</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">,</span> <span class="n">button</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+<span class="cp">#if defined( QT_DEBUG )
+</span>        <span class="n">qWarning</span><span class="p">(</span> <span class="s">"Only buttons of the QskDialogButtonBox can be the default button."</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setDefaultButton</span><span class="p">(</span> <span class="n">button</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskPushButton</span><span class="o">*</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">defaultButton</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">defaultButton</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskDialogButtonBox</span><span class="o">*</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">buttonBox</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QskDialogButtonBox</span><span class="o">*</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">buttonBox</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">clickedAction</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">clickedAction</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">NoAction</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">setResult</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="n">result</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">result</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">exec</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">priority</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qWarning</span><span class="p">(</span> <span class="s">"illegal call of QskDialogSubWindow::exec "</span>
+                  <span class="s">"for a subwindow with non default priority."</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">open</span><span class="p">();</span>
+
+    <span class="c1">//check for window after call to open(), because maybe a popupmanager assigns a window on open.</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">window</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qWarning</span><span class="p">(</span> <span class="s">"trying to exec a subwindow without window."</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Rejected</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">mouseGrabber</span> <span class="o">=</span> <span class="n">window</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">mouseGrabberItem</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// when being called from QQuickWindow::mouseReleaseEvent</span>
+        <span class="c1">// the mouse grabber has not yet been released.</span>
+
+        <span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="n">qskIsAncestorOf</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">mouseGrabber</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">qskUngrabMouse</span><span class="p">(</span> <span class="n">mouseGrabber</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">QEventLoop</span> <span class="n">eventLoop</span><span class="p">;</span>
+
+    <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">finished</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">eventLoop</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QEventLoop</span><span class="o">::</span><span class="n">quit</span> <span class="p">);</span>
+    <span class="p">(</span> <span class="kt">void</span> <span class="p">)</span> <span class="n">eventLoop</span><span class="p">.</span><span class="n">exec</span><span class="p">(</span> <span class="n">QEventLoop</span><span class="o">::</span><span class="n">DialogExec</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">done</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">DialogCode</span> <span class="n">result</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isOpen</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qskSetRejectOnClose</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="n">close</span><span class="p">();</span>
+        <span class="n">qskSetRejectOnClose</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">finished</span><span class="p">(</span> <span class="n">result</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">result</span> <span class="o">==</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Accepted</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">accepted</span><span class="p">();</span>
+    <span class="k">else</span>
+        <span class="n">Q_EMIT</span> <span class="n">rejected</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">accept</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">done</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Accepted</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">reject</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">done</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Rejected</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">keyPressEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">&amp;&amp;</span>
+        <span class="n">QskDialogButtonBox</span><span class="o">::</span><span class="n">isDefaultButtonKeyEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">button</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">defaultButton</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">button</span> <span class="o">&amp;&amp;</span> <span class="n">button</span><span class="o">-&gt;</span><span class="n">isEnabled</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">button</span><span class="o">-&gt;</span><span class="n">click</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">matches</span><span class="p">(</span> <span class="n">QKeySequence</span><span class="o">::</span><span class="n">Cancel</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// using shortcuts instead ???</span>
+
+        <span class="n">reject</span><span class="p">();</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">keyPressEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskDialogButtonBox</span><span class="o">*</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">createButtonBox</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">QskDialogButtonBox</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">initButtonBox</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">=</span> <span class="n">createButtonBox</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+        <span class="n">connect</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogButtonBox</span><span class="o">::</span><span class="n">accepted</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">accept</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">UniqueConnection</span> <span class="p">);</span>
+
+        <span class="n">connect</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogButtonBox</span><span class="o">::</span><span class="n">rejected</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">reject</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">UniqueConnection</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">aboutToShow</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">size</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// setting an initial size from the hint, centered inside the window</span>
+
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">cx</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">parentItem</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">();</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">cy</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">parentItem</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">();</span>
+
+        <span class="n">QRectF</span> <span class="n">rect</span><span class="p">;</span>
+        <span class="n">rect</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span> <span class="n">sizeConstraint</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">rect</span><span class="p">.</span><span class="n">moveCenter</span><span class="p">(</span> <span class="n">QPointF</span><span class="p">(</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="n">setGeometry</span><span class="p">(</span> <span class="n">rect</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">aboutToShow</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">updateLayout</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">updateLayout</span><span class="p">();</span>
+
+    <span class="k">auto</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">layoutRect</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="o">&amp;&amp;</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">isVisibleToParent</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">h</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">sizeConstraint</span><span class="p">().</span><span class="n">height</span><span class="p">();</span>
+        <span class="n">rect</span><span class="p">.</span><span class="n">setBottom</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">()</span> <span class="o">-</span> <span class="n">h</span> <span class="p">);</span>
+
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">setGeometry</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">bottom</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">h</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentItem</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="n">rect</span><span class="p">.</span><span class="n">marginsRemoved</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentPadding</span> <span class="p">);</span>
+        <span class="n">qskSetItemGeometry</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="p">,</span> <span class="n">rect</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskDialogSubWindow</span><span class="o">::</span><span class="n">layoutSizeHint</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+
+    <span class="n">QSizeF</span> <span class="n">buttonBoxHint</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">constraintHeight</span> <span class="o">=</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">buttonBox</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">buttonBox</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">isVisibleToLayout</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">buttonBoxHint</span> <span class="o">=</span> <span class="n">buttonBox</span><span class="o">-&gt;</span><span class="n">sizeConstraint</span><span class="p">(</span>
+                <span class="n">which</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+                <span class="n">buttonBoxHint</span><span class="p">.</span><span class="n">rwidth</span><span class="p">()</span> <span class="o">=</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">constraintHeight</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="o">&amp;&amp;</span> <span class="n">buttonBoxHint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">constraintHeight</span> <span class="o">-=</span> <span class="n">buttonBoxHint</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+                <span class="n">constraintHeight</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">constraintHeight</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">QSizeF</span> <span class="n">contentHint</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsVisibleToLayout</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentItem</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentPadding</span><span class="p">;</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dw</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">left</span><span class="p">()</span> <span class="o">+</span> <span class="n">m</span><span class="p">.</span><span class="n">right</span><span class="p">();</span>
+        <span class="k">const</span> <span class="n">qreal</span> <span class="n">dh</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">+</span> <span class="n">m</span><span class="p">.</span><span class="n">bottom</span><span class="p">();</span>
+
+        <span class="n">qreal</span> <span class="n">constraintWidth</span> <span class="o">=</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">constraintWidth</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="n">constraintWidth</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">constraintWidth</span> <span class="o">-</span> <span class="n">dw</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">constraintHeight</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="n">constraintHeight</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">constraintHeight</span> <span class="o">-</span> <span class="n">dh</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">);</span>
+
+        <span class="n">contentHint</span> <span class="o">=</span> <span class="n">qskSizeConstraint</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">contentItem</span><span class="p">,</span>
+            <span class="n">which</span><span class="p">,</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">constraintWidth</span><span class="p">,</span> <span class="n">constraintHeight</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">contentHint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="n">contentHint</span><span class="p">.</span><span class="n">rwidth</span><span class="p">()</span> <span class="o">+=</span> <span class="n">dw</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">contentHint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="n">contentHint</span><span class="p">.</span><span class="n">rheight</span><span class="p">()</span> <span class="o">+=</span> <span class="n">dh</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">qreal</span> <span class="n">w</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">buttonBoxHint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">contentHint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">qreal</span> <span class="n">h</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">buttonBoxHint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="o">&amp;&amp;</span> <span class="n">contentHint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">buttonBoxHint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">+</span> <span class="n">contentHint</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskDialogSubWindow.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

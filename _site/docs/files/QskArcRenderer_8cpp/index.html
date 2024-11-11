@@ -1,0 +1,60 @@
+<h1 id="nodesqskarcrenderercpp">nodes/QskArcRenderer.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskArcRenderer.h"
+#include "QskArcMetrics.h"
+#include "QskGradient.h"
+</span>
+<span class="cp">#include &lt;qpainter.h&gt;
+#include &lt;qrect.h&gt;
+</span>
+<span class="kt">void</span> <span class="n">QskArcRenderer</span><span class="o">::</span><span class="n">renderArc</span><span class="p">(</span><span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">rect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskArcMetrics</span><span class="o">&amp;</span> <span class="n">metrics</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGradient</span><span class="o">&amp;</span> <span class="n">gradient</span><span class="p">,</span>
+    <span class="n">QPainter</span><span class="o">*</span> <span class="n">painter</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setRenderHint</span><span class="p">(</span> <span class="n">QPainter</span><span class="o">::</span><span class="n">Antialiasing</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+
+    <span class="n">QGradientStops</span> <span class="n">stops</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskGradientStop</span><span class="o">&amp;</span> <span class="n">stop</span> <span class="o">:</span> <span class="n">gradient</span><span class="p">.</span><span class="n">stops</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QGradientStop</span> <span class="n">s</span><span class="p">(</span> <span class="n">stop</span><span class="p">.</span><span class="n">position</span><span class="p">(),</span> <span class="n">stop</span><span class="p">.</span><span class="n">color</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">stops</span><span class="p">.</span><span class="n">append</span><span class="p">(</span> <span class="n">s</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="cm">/*
+        horizontal is interpreted as in direction of the arc,
+        while vertical means from the inner to the outer border
+     */</span>
+
+    <span class="n">QBrush</span> <span class="n">brush</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">gradient</span><span class="p">.</span><span class="n">orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskGradient</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QRadialGradient</span> <span class="n">gradient</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">center</span><span class="p">(),</span> <span class="n">qMin</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="n">gradient</span><span class="p">.</span><span class="n">setStops</span><span class="p">(</span> <span class="n">stops</span> <span class="p">);</span>
+
+        <span class="n">brush</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">QConicalGradient</span> <span class="n">gradient</span><span class="p">(</span> <span class="n">rect</span><span class="p">.</span><span class="n">center</span><span class="p">(),</span> <span class="n">metrics</span><span class="p">.</span><span class="n">startAngle</span><span class="p">()</span> <span class="o">/</span> <span class="mf">16.0</span> <span class="p">);</span>
+        <span class="n">gradient</span><span class="p">.</span><span class="n">setStops</span><span class="p">(</span> <span class="n">stops</span> <span class="p">);</span>
+
+        <span class="n">brush</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">setPen</span><span class="p">(</span> <span class="n">QPen</span><span class="p">(</span> <span class="n">brush</span><span class="p">,</span> <span class="n">metrics</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SolidLine</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">FlatCap</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">painter</span><span class="o">-&gt;</span><span class="n">drawArc</span><span class="p">(</span> <span class="n">rect</span><span class="p">,</span> <span class="n">metrics</span><span class="p">.</span><span class="n">startAngle</span><span class="p">(),</span> <span class="n">metrics</span><span class="p">.</span><span class="n">spanAngle</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

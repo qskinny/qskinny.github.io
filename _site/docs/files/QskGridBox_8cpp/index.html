@@ -1,0 +1,587 @@
+<h1 id="layoutsqskgridboxcpp">layouts/QskGridBox.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskGridBox_8cpp/#function-qsksetitemactive">qskSetItemActive</a></strong>(QObject * receiver, const QQuickItem * item, bool on)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskGridBox_8cpp/#function-qskupdatefocuschain">qskUpdateFocusChain</a></strong>(QskGridBox * box, const QskGridLayoutEngine * engine, QQuickItem * item, const QRect &amp; grid)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qsksetitemactive">function qskSetItemActive</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskSetItemActive</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">receiver</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">on</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskupdatefocuschain">function qskUpdateFocusChain</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskUpdateFocusChain</span><span class="p">(</span>
+    <span class="n">QskGridBox</span> <span class="o">*</span> <span class="n">box</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskGridLayoutEngine</span> <span class="o">*</span> <span class="n">engine</span><span class="p">,</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRect</span> <span class="o">&amp;</span> <span class="n">grid</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskGridBox.h"
+#include "QskGridLayoutEngine.h"
+#include "QskEvent.h"
+#include "QskQuick.h"
+#include &lt;qdebug.h&gt;
+#include &lt;algorithm&gt;
+</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskSetItemActive</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">receiver</span><span class="p">,</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/*
+        For QQuickItems not being derived from QskControl we manually
+        send QEvent::LayoutRequest events.
+     */</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">sendLayoutRequest</span> <span class="o">=</span>
+            <span class="p">[</span><span class="n">receiver</span><span class="p">]()</span>
+            <span class="p">{</span>
+                <span class="n">QEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LayoutRequest</span> <span class="p">);</span>
+                <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">receiver</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+            <span class="p">};</span>
+
+        <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickItem</span><span class="o">::</span><span class="n">implicitWidthChanged</span><span class="p">,</span>
+            <span class="n">receiver</span><span class="p">,</span> <span class="n">sendLayoutRequest</span> <span class="p">);</span>
+
+        <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickItem</span><span class="o">::</span><span class="n">implicitHeightChanged</span><span class="p">,</span>
+            <span class="n">receiver</span><span class="p">,</span> <span class="n">sendLayoutRequest</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">QObject</span><span class="o">::</span><span class="n">disconnect</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickItem</span><span class="o">::</span><span class="n">implicitWidthChanged</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="nb">nullptr</span> <span class="p">);</span>
+        <span class="n">QObject</span><span class="o">::</span><span class="n">disconnect</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickItem</span><span class="o">::</span><span class="n">implicitHeightChanged</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskUpdateFocusChain</span><span class="p">(</span>
+    <span class="n">QskGridBox</span><span class="o">*</span> <span class="n">box</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskGridLayoutEngine</span><span class="o">*</span> <span class="n">engine</span><span class="p">,</span>
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRect</span><span class="o">&amp;</span> <span class="n">grid</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/*
+        We are running over all entries each time an item gets inserted.
+        There should be a faster way TODO ...
+     */</span>
+
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">cellIndex</span> <span class="o">=</span> <span class="n">grid</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">*</span> <span class="n">engine</span><span class="o">-&gt;</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">+</span> <span class="n">grid</span><span class="p">.</span><span class="n">x</span><span class="p">();</span>
+
+    <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">itemNext</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">minDelta</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">engine</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">itemAt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">-&gt;</span><span class="n">itemAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">itemAt</span> <span class="o">&amp;&amp;</span> <span class="n">item</span> <span class="o">!=</span> <span class="n">itemAt</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">gridAt</span> <span class="o">=</span> <span class="n">engine</span><span class="o">-&gt;</span><span class="n">gridAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">gridAt</span><span class="p">.</span><span class="n">y</span><span class="p">()</span> <span class="o">*</span> <span class="n">engine</span><span class="o">-&gt;</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">+</span> <span class="n">gridAt</span><span class="p">.</span><span class="n">x</span><span class="p">()</span> <span class="o">-</span> <span class="n">cellIndex</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">delta</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">itemNext</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="n">minDelta</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">itemNext</span> <span class="o">=</span> <span class="n">itemAt</span><span class="p">;</span>
+                    <span class="n">minDelta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">itemNext</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">item</span><span class="o">-&gt;</span><span class="n">stackBefore</span><span class="p">(</span> <span class="n">itemNext</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">itemLast</span> <span class="o">=</span> <span class="n">box</span><span class="o">-&gt;</span><span class="n">childItems</span><span class="p">().</span><span class="n">last</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">itemLast</span> <span class="o">!=</span> <span class="n">item</span> <span class="p">)</span>
+            <span class="n">item</span><span class="o">-&gt;</span><span class="n">stackAfter</span><span class="p">(</span> <span class="n">itemLast</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskGridBox</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">QskGridLayoutEngine</span> <span class="n">engine</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">blockAutoRemove</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskGridBox</span><span class="o">::</span><span class="n">QskGridBox</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskBox</span><span class="p">(</span> <span class="nb">false</span><span class="p">,</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskGridBox</span><span class="o">::~</span><span class="n">QskGridBox</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">engine</span><span class="p">.</span><span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">engine</span><span class="p">.</span><span class="n">itemAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">setItemActive</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">addItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">qskControlCast</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">control</span><span class="o">-&gt;</span><span class="n">setLayoutAlignmentHint</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">addItem</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">addItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rowSpan</span><span class="p">,</span> <span class="kt">int</span> <span class="n">columnSpan</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">control</span> <span class="o">=</span> <span class="n">qskControlCast</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">control</span><span class="o">-&gt;</span><span class="n">setLayoutAlignmentHint</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">addItem</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">rowSpan</span><span class="p">,</span> <span class="n">columnSpan</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">addItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rowSpan</span><span class="p">,</span> <span class="kt">int</span> <span class="n">columnSpan</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="o">||</span> <span class="n">item</span> <span class="o">==</span> <span class="k">this</span> <span class="o">||</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">column</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskIsTransparentForPositioner</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"Inserting an item that is marked as transparent for layouting:"</span>
+            <span class="o">&lt;&lt;</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">metaObject</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">();</span>
+
+        <span class="n">qskSetTransparentForPositioner</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">rowSpan</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">rowSpan</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+    <span class="n">columnSpan</span> <span class="o">=</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">columnSpan</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="p">);</span>
+
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="n">QRect</span> <span class="n">itemGrid</span><span class="p">(</span> <span class="n">column</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">columnSpan</span><span class="p">,</span> <span class="n">rowSpan</span> <span class="p">);</span>
+    <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">parentItem</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">indexOf</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">engine</span><span class="p">.</span><span class="n">gridAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">)</span> <span class="o">==</span> <span class="n">itemGrid</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="n">index</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">item</span><span class="o">-&gt;</span><span class="n">setParent</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">parentItem</span><span class="p">()</span> <span class="o">!=</span> <span class="k">this</span> <span class="p">)</span>
+            <span class="n">item</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+        <span class="n">setItemActive</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">engine</span><span class="p">.</span><span class="n">insertItem</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">itemGrid</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">engine</span><span class="p">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="n">qskUpdateFocusChain</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">engine</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">itemGrid</span> <span class="p">);</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">polish</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">index</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">addSpacer</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">spacing</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rowSpan</span><span class="p">,</span> <span class="kt">int</span> <span class="n">columnSpan</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">insertSpacer</span><span class="p">(</span>
+        <span class="n">spacing</span><span class="p">,</span> <span class="n">QRect</span><span class="p">(</span> <span class="n">column</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">columnSpan</span><span class="p">,</span> <span class="n">rowSpan</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">polish</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">index</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">addColumnSpacer</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">spacing</span><span class="p">,</span> <span class="kt">int</span> <span class="n">column</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">addSpacer</span><span class="p">(</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="n">spacing</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">column</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">addRowSpacer</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">spacing</span><span class="p">,</span> <span class="kt">int</span> <span class="n">row</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">addSpacer</span><span class="p">(</span> <span class="n">QSizeF</span><span class="p">(</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">spacing</span> <span class="p">),</span> <span class="n">row</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">removeAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">engine</span><span class="p">.</span><span class="n">itemAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">setItemActive</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="n">engine</span><span class="p">.</span><span class="n">removeAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">removeItem</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">removeAt</span><span class="p">(</span> <span class="n">indexOf</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">clear</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">autoDelete</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">blockAutoRemove</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">elementCount</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">itemAtIndex</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setItemActive</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+
+            <span class="k">if</span><span class="p">(</span> <span class="n">autoDelete</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">()</span> <span class="o">==</span> <span class="k">this</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="k">delete</span> <span class="n">item</span><span class="p">;</span>
+            <span class="k">else</span>
+                <span class="n">item</span><span class="o">-&gt;</span><span class="n">setParentItem</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">blockAutoRemove</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">elementCount</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">count</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">rowCount</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">rowCount</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">columnCount</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">columnCount</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">itemAtIndex</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">itemAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">indexOf</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">indexOf</span><span class="p">(</span> <span class="n">item</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QQuickItem</span><span class="o">*</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">itemAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">column</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">itemAt</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">indexAt</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">column</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">indexAt</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRect</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">gridOfIndex</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">gridAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QRect</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">effectiveGridOfIndex</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">effectiveGridAt</span><span class="p">(</span> <span class="n">index</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">setDefaultAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">setDefaultAlignment</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Q_EMIT</span> <span class="n">defaultAlignmentChanged</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">defaultAlignment</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">defaultAlignment</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">setSpacing</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">spacing</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">setSpacing</span><span class="p">(</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">orientations</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">polish</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">resetSpacing</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">o</span> <span class="o">:</span> <span class="p">{</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">}</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">orientations</span> <span class="o">&amp;</span> <span class="n">o</span> <span class="p">)</span>
+            <span class="n">setSpacing</span><span class="p">(</span> <span class="n">o</span><span class="p">,</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">defaultSpacing</span><span class="p">(</span> <span class="n">o</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">spacing</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">spacing</span><span class="p">(</span> <span class="n">orientation</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">setRowStretchFactor</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">stretch</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">setStretchFactor</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">stretch</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">rowStretchFactor</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">stretchFactor</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Vertical</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">setColumnStretchFactor</span><span class="p">(</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="kt">int</span> <span class="n">stretch</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">setStretchFactor</span><span class="p">(</span> <span class="n">column</span><span class="p">,</span> <span class="n">stretch</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">columnStretchFactor</span><span class="p">(</span> <span class="kt">int</span> <span class="n">column</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">stretchFactor</span><span class="p">(</span> <span class="n">column</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Horizontal</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">setRowFixedHeight</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setRowHeightHint</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MinimumSize</span><span class="p">,</span> <span class="n">height</span> <span class="p">);</span>
+    <span class="n">setRowHeightHint</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MaximumSize</span><span class="p">,</span> <span class="n">height</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">setColumnFixedWidth</span><span class="p">(</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setColumnWidthHint</span><span class="p">(</span> <span class="n">column</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MinimumSize</span><span class="p">,</span> <span class="n">width</span> <span class="p">);</span>
+    <span class="n">setColumnWidthHint</span><span class="p">(</span> <span class="n">column</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MaximumSize</span><span class="p">,</span> <span class="n">width</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">setRowHeightHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">height</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">setRowSizeHint</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">height</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">rowHeightHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">rowSizeHint</span><span class="p">(</span> <span class="n">row</span><span class="p">,</span> <span class="n">which</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">setColumnWidthHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">width</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">setColumnSizeHint</span><span class="p">(</span> <span class="n">column</span><span class="p">,</span> <span class="n">which</span><span class="p">,</span> <span class="n">width</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">qreal</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">columnWidthHint</span><span class="p">(</span> <span class="kt">int</span> <span class="n">column</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">columnSizeHint</span><span class="p">(</span> <span class="n">column</span><span class="p">,</span> <span class="n">which</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">invalidate</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">invalidate</span><span class="p">();</span>
+
+    <span class="n">resetImplicitSize</span><span class="p">();</span>
+    <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">setItemActive</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickItem</span><span class="o">::</span><span class="n">visibleChanged</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskGridBox</span><span class="o">::</span><span class="n">invalidate</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">QObject</span><span class="o">::</span><span class="n">disconnect</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickItem</span><span class="o">::</span><span class="n">visibleChanged</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskGridBox</span><span class="o">::</span><span class="n">invalidate</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskControlCast</span><span class="p">(</span> <span class="n">item</span> <span class="p">)</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">qskSetItemActive</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">updateLayout</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">maybeUnresized</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">setGeometries</span><span class="p">(</span> <span class="n">layoutRect</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">layoutSizeHint</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="n">constraint</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MaximumSize</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// we can extend beyond the maximum size of the children</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">sizeHint</span><span class="p">(</span> <span class="n">which</span><span class="p">,</span> <span class="n">constraint</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">geometryChangeEvent</span><span class="p">(</span> <span class="n">QskGeometryChangeEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">geometryChangeEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">isResized</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">polish</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span> <span class="n">ItemChange</span> <span class="n">change</span><span class="p">,</span> <span class="k">const</span> <span class="n">ItemChangeData</span><span class="o">&amp;</span> <span class="n">value</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">itemChange</span><span class="p">(</span> <span class="n">change</span><span class="p">,</span> <span class="n">value</span> <span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">change</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">ItemChildRemovedChange</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">blockAutoRemove</span> <span class="p">)</span>
+                <span class="n">removeItem</span><span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">item</span> <span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemVisibleHasChanged</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">boolValue</span> <span class="p">)</span>
+                <span class="n">polish</span><span class="p">();</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemSceneChange</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">window</span> <span class="p">)</span>
+                <span class="n">polish</span><span class="p">();</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LayoutRequest</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">invalidate</span><span class="p">();</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LayoutDirectionChange</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">.</span><span class="n">setVisualDirection</span><span class="p">(</span>
+                <span class="n">layoutMirroring</span><span class="p">()</span> <span class="o">?</span> <span class="n">Qt</span><span class="o">::</span><span class="n">RightToLeft</span> <span class="o">:</span> <span class="n">Qt</span><span class="o">::</span><span class="n">LeftToRight</span> <span class="p">);</span>
+
+            <span class="n">polish</span><span class="p">();</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">ContentsRectChange</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">polish</span><span class="p">();</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskGridBox</span><span class="o">::</span><span class="n">dump</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">engine</span><span class="p">;</span>
+
+    <span class="k">auto</span> <span class="n">debug</span> <span class="o">=</span> <span class="n">qDebug</span><span class="p">();</span>
+
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">constraint</span> <span class="o">=</span> <span class="n">sizeConstraint</span><span class="p">();</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"QskGridBox"</span>
+          <span class="o">&lt;&lt;</span> <span class="s">"["</span> <span class="o">&lt;&lt;</span> <span class="n">engine</span><span class="p">.</span><span class="n">columnCount</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">","</span> <span class="o">&lt;&lt;</span> <span class="n">engine</span><span class="p">.</span><span class="n">rowCount</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"] w:"</span>
+          <span class="o">&lt;&lt;</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">" h:"</span> <span class="o">&lt;&lt;</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">engine</span><span class="p">.</span><span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">grid</span> <span class="o">=</span> <span class="n">engine</span><span class="p">.</span><span class="n">gridAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"  ["</span><span class="p">;</span>
+
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="n">grid</span><span class="p">.</span><span class="n">left</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">grid</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="p">)</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"-"</span> <span class="o">&lt;&lt;</span> <span class="n">grid</span><span class="p">.</span><span class="n">right</span><span class="p">();</span>
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">","</span><span class="p">;</span>
+
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="n">grid</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">grid</span><span class="p">.</span><span class="n">height</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="p">)</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"-&gt;"</span> <span class="o">&lt;&lt;</span> <span class="n">grid</span><span class="p">.</span><span class="n">bottom</span><span class="p">();</span>
+
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"]: "</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">item</span> <span class="o">=</span> <span class="n">engine</span><span class="p">.</span><span class="n">itemAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">constraint</span> <span class="o">=</span> <span class="n">qskSizeConstraint</span><span class="p">(</span> <span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">);</span>
+
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">metaObject</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">()</span>
+                  <span class="o">&lt;&lt;</span> <span class="s">" w:"</span> <span class="o">&lt;&lt;</span> <span class="n">constraint</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">" h:"</span> <span class="o">&lt;&lt;</span> <span class="n">constraint</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">size</span> <span class="o">=</span> <span class="n">engine</span><span class="p">.</span><span class="n">spacerAt</span><span class="p">(</span> <span class="n">i</span> <span class="p">);</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"spacer w:"</span> <span class="o">&lt;&lt;</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">" h:"</span> <span class="o">&lt;&lt;</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskGridBox.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

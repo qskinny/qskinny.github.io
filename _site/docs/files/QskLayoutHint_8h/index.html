@@ -1,0 +1,250 @@
+<h1 id="layoutsqsklayouthinth">layouts/QskLayoutHint.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskLayoutHint/">QskLayoutHint</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskLayoutHint_8h/#function-q_declare_typeinfo">Q_DECLARE_TYPEINFO</a></strong>(QskLayoutHint , Q_MOVABLE_TYPE )</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskLayoutHint_8h/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskLayoutHint &amp; hint)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-q_declare_typeinfo">function Q_DECLARE_TYPEINFO</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span>
+    <span class="n">QskLayoutHint</span> <span class="p">,</span>
+    <span class="n">Q_MOVABLE_TYPE</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskLayoutHint</span> <span class="o">&amp;</span> <span class="n">hint</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_LAYOUT_HINT_H
+#define QSK_LAYOUT_HINT_H
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include &lt;qglobal.h&gt;
+#include &lt;qmetatype.h&gt;
+#include &lt;limits&gt;
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskLayoutHint</span>
+<span class="p">{</span>
+    <span class="n">Q_GADGET</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">minimum</span> <span class="n">READ</span> <span class="n">minimum</span> <span class="n">WRITE</span> <span class="n">setMinimum</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">preferred</span> <span class="n">READ</span> <span class="n">preferred</span> <span class="n">WRITE</span> <span class="n">setPreferred</span> <span class="p">)</span>
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">maximum</span> <span class="n">READ</span> <span class="n">maximum</span> <span class="n">WRITE</span> <span class="n">setMaximum</span> <span class="p">)</span>
+
+  <span class="nl">public:</span>
+    <span class="k">constexpr</span> <span class="n">QskLayoutHint</span><span class="p">()</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="n">QskLayoutHint</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">minimum</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">preferred</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">maximum</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">normalize</span><span class="p">()</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="n">QskLayoutHint</span> <span class="n">normalized</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">isDefault</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">size</span><span class="p">(</span> <span class="kt">int</span> <span class="n">which</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setSize</span><span class="p">(</span> <span class="kt">int</span> <span class="n">which</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">size</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskLayoutHint</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskLayoutHint</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setMinimum</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">minimum</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setPreferred</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">preferred</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setMaximum</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">maximum</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setSizes</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">minimum</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">preferred</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">maximum</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">expandTo</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskLayoutHint</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">expandMinimum</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">expandPreferred</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">expandMaximum</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="n">qreal</span> <span class="n">combined</span><span class="p">(</span> <span class="kt">int</span> <span class="n">which</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">value1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">value2</span> <span class="p">)</span> <span class="k">noexcept</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">unlimited</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span> <span class="kt">float</span> <span class="o">&gt;::</span><span class="n">max</span><span class="p">();</span>
+
+  <span class="nl">private:</span>
+    <span class="n">qreal</span> <span class="n">m_minimum</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">m_preferred</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">m_maximum</span> <span class="o">=</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">unlimited</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span> <span class="n">QskLayoutHint</span><span class="p">,</span> <span class="n">Q_MOVABLE_TYPE</span> <span class="p">);</span>
+<span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskLayoutHint</span> <span class="p">)</span>
+
+<span class="n">QT_WARNING_PUSH</span>
+<span class="nf">QT_WARNING_DISABLE_CLANG</span><span class="p">(</span><span class="s">"-Wfloat-equal"</span><span class="p">)</span>
+<span class="n">QT_WARNING_DISABLE_GCC</span><span class="p">(</span><span class="s">"-Wfloat-equal"</span><span class="p">)</span>
+<span class="n">QT_WARNING_DISABLE_INTEL</span><span class="p">(</span><span class="mi">1572</span><span class="p">)</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">QskLayoutHint</span><span class="p">(</span>
+        <span class="n">qreal</span> <span class="n">minimum</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">preferred</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">maximum</span> <span class="p">)</span> <span class="k">noexcept</span>
+    <span class="o">:</span> <span class="n">m_minimum</span><span class="p">(</span> <span class="n">minimum</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_preferred</span><span class="p">(</span> <span class="n">preferred</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_maximum</span><span class="p">(</span> <span class="n">maximum</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">minimum</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_minimum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">setMinimum</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_minimum</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">preferred</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_preferred</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">setPreferred</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_preferred</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="n">qreal</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">maximum</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_maximum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">setMaximum</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_maximum</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">expandMinimum</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">m_minimum</span> <span class="p">)</span>
+        <span class="n">m_minimum</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">expandPreferred</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">m_preferred</span> <span class="p">)</span>
+        <span class="n">m_preferred</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">expandMaximum</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">value</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">m_maximum</span> <span class="p">)</span>
+        <span class="n">m_maximum</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">setSizes</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">minimum</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">preferred</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">maximum</span> <span class="p">)</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="n">m_minimum</span> <span class="o">=</span> <span class="n">minimum</span><span class="p">;</span>
+    <span class="n">m_preferred</span> <span class="o">=</span> <span class="n">preferred</span><span class="p">;</span>
+    <span class="n">m_maximum</span> <span class="o">=</span> <span class="n">maximum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">qreal</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">size</span><span class="p">(</span> <span class="kt">int</span> <span class="n">which</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">switch</span><span class="p">(</span> <span class="n">which</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MinimumSize</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">m_minimum</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">m_preferred</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">MaximumSize</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">m_maximum</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">isDefault</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="n">m_minimum</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">m_preferred</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">m_maximum</span> <span class="o">==</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">unlimited</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="k">operator</span><span class="o">==</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskLayoutHint</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span> <span class="n">m_preferred</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_preferred</span> <span class="p">)</span>
+        <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">m_minimum</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_minimum</span> <span class="p">)</span>
+        <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">m_maximum</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">m_maximum</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="k">constexpr</span> <span class="kt">bool</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="k">operator</span><span class="o">!=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskLayoutHint</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="p">(</span> <span class="o">*</span><span class="k">this</span> <span class="o">==</span> <span class="n">other</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kr">inline</span> <span class="n">QskLayoutHint</span> <span class="n">QskLayoutHint</span><span class="o">::</span><span class="n">normalized</span><span class="p">()</span> <span class="k">const</span> <span class="k">noexcept</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">hint</span> <span class="o">=</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="n">hint</span><span class="p">.</span><span class="n">normalize</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QT_WARNING_POP</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="k">class</span> <span class="nc">QDebug</span><span class="p">;</span>
+<span class="n">QSK_EXPORT</span> <span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskLayoutHint</span><span class="o">&amp;</span> <span class="p">);</span>
+
+<span class="cp">#endif
+</span>
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

@@ -1,0 +1,1037 @@
+<h1 id="controlsqsktextinputcpp">controls/QskTextInput.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskTextInput_8cpp/#function-qskpropagatereadonly">qskPropagateReadOnly</a></strong>(QskTextInput * input)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskTextInput_8cpp/#function-qskbindsignals">qskBindSignals</a></strong>(const QQuickTextInput * wrappedInput, QskTextInput * input)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskTextInput_8cpp/#function-qskupdateinputmethodfont">qskUpdateInputMethodFont</a></strong>(const QskTextInput * input)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskpropagatereadonly">function qskPropagateReadOnly</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskPropagateReadOnly</span><span class="p">(</span>
+    <span class="n">QskTextInput</span> <span class="o">*</span> <span class="n">input</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskbindsignals">function qskBindSignals</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskBindSignals</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickTextInput</span> <span class="o">*</span> <span class="n">wrappedInput</span><span class="p">,</span>
+    <span class="n">QskTextInput</span> <span class="o">*</span> <span class="n">input</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskupdateinputmethodfont">function qskUpdateInputMethodFont</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="n">qskUpdateInputMethodFont</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskTextInput</span> <span class="o">*</span> <span class="n">input</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskTextInput.h"
+#include "QskQuick.h"
+</span>
+
+<span class="cp">#include &lt;private/qquicktextinput_p.h&gt;
+#include &lt;private/qquicktextinput_p_p.h&gt;
+</span>
+
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="p">,</span> <span class="n">Panel</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="p">,</span> <span class="n">Text</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="p">,</span> <span class="n">PanelSelected</span> <span class="p">)</span>
+<span class="n">QSK_SUBCONTROL</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="p">,</span> <span class="n">TextSelected</span> <span class="p">)</span>
+
+<span class="n">QSK_SYSTEM_STATE</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="p">,</span> <span class="n">ReadOnly</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">FirstSystemState</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="n">QSK_SYSTEM_STATE</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="p">,</span> <span class="n">Editing</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">FirstSystemState</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span> <span class="p">)</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskPropagateReadOnly</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="o">*</span> <span class="n">input</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Q_EMIT</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">readOnlyChanged</span><span class="p">(</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">isReadOnly</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">QEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">ReadOnlyChange</span> <span class="p">);</span>
+    <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="n">input</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskBindSignals</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickTextInput</span><span class="o">*</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="n">QskTextInput</span><span class="o">*</span> <span class="n">input</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">textChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="p">[</span> <span class="n">input</span> <span class="p">]</span> <span class="p">{</span> <span class="n">Q_EMIT</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">textChanged</span><span class="p">(</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">()</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">displayTextChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="p">[</span> <span class="n">input</span> <span class="p">]</span> <span class="p">{</span> <span class="n">Q_EMIT</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">displayTextChanged</span><span class="p">(</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">displayText</span><span class="p">()</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 9, 0 )
+</span>    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">textEdited</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="p">[</span> <span class="n">input</span> <span class="p">]</span> <span class="p">{</span> <span class="n">Q_EMIT</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">textEdited</span><span class="p">(</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">()</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">validatorChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTextInput</span><span class="o">::</span><span class="n">validatorChanged</span> <span class="p">);</span>
+
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">inputMaskChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTextInput</span><span class="o">::</span><span class="n">inputMaskChanged</span> <span class="p">);</span>
+
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">readOnlyChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="p">[</span> <span class="n">input</span> <span class="p">]</span> <span class="p">{</span> <span class="n">qskPropagateReadOnly</span><span class="p">(</span> <span class="n">input</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 8, 0 )
+</span>    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">overwriteModeChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTextInput</span><span class="o">::</span><span class="n">overwriteModeChanged</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">maximumLengthChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTextInput</span><span class="o">::</span><span class="n">maximumLengthChanged</span> <span class="p">);</span>
+
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">echoModeChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="p">[</span> <span class="n">input</span> <span class="p">]</span> <span class="p">{</span> <span class="n">Q_EMIT</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">echoModeChanged</span><span class="p">(</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">echoMode</span><span class="p">()</span> <span class="p">);</span> <span class="p">}</span> <span class="p">);</span>
+
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">passwordCharacterChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTextInput</span><span class="o">::</span><span class="n">passwordCharacterChanged</span> <span class="p">);</span>
+
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">passwordMaskDelayChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskTextInput</span><span class="o">::</span><span class="n">passwordMaskDelayChanged</span> <span class="p">);</span>
+
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickItem</span><span class="o">::</span><span class="n">implicitWidthChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskControl</span><span class="o">::</span><span class="n">resetImplicitSize</span> <span class="p">);</span>
+
+    <span class="n">QObject</span><span class="o">::</span><span class="n">connect</span><span class="p">(</span> <span class="n">wrappedInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QQuickItem</span><span class="o">::</span><span class="n">implicitHeightChanged</span><span class="p">,</span>
+        <span class="n">input</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">QskControl</span><span class="o">::</span><span class="n">resetImplicitSize</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">TextInput</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QQuickTextInput</span>
+    <span class="p">{</span>
+        <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QQuickTextInput</span><span class="p">;</span>
+
+      <span class="nl">public:</span>
+        <span class="n">TextInput</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="o">*</span> <span class="p">);</span>
+
+        <span class="kt">void</span> <span class="n">setEditing</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setHAlign</span><span class="p">(</span> <span class="p">(</span> <span class="n">HAlignment</span> <span class="p">)</span> <span class="p">(</span> <span class="kt">int</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x0f</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">setVAlign</span><span class="p">(</span> <span class="p">(</span> <span class="n">VAlignment</span> <span class="p">)</span> <span class="p">(</span> <span class="kt">int</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xf0</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kt">bool</span> <span class="n">fixup</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">QQuickTextInputPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="k">this</span> <span class="p">)</span><span class="o">-&gt;</span><span class="n">fixup</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kt">bool</span> <span class="n">hasAcceptableInput</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="cm">/*
+                we would like to call QQuickTextInputPrivate::hasAcceptableInput
+                but unfortunately it is private, so we need to hack somthing
+                together
+             */</span>
+
+            <span class="k">auto</span> <span class="n">that</span> <span class="o">=</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">TextInput</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+            <span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">QQuickTextInputPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">that</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_validator</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">QString</span> <span class="n">text</span> <span class="o">=</span> <span class="n">displayText</span><span class="p">();</span>
+                <span class="kt">int</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_cursor</span><span class="p">;</span>
+
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">state</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_validator</span><span class="o">-&gt;</span><span class="n">validate</span><span class="p">(</span> <span class="n">text</span><span class="p">,</span> <span class="n">pos</span> <span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">state</span> <span class="o">!=</span> <span class="n">QValidator</span><span class="o">::</span><span class="n">Acceptable</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_maskData</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="cm">/*
+                    We only want to do the check for the maskData here
+                    and have to disable d-&gt;m_validator temporarily
+                 */</span>
+
+                <span class="k">class</span> <span class="nc">Validator</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QValidator</span>
+                <span class="p">{</span>
+                  <span class="nl">public:</span>
+                    <span class="n">State</span> <span class="n">validate</span><span class="p">(</span> <span class="n">QString</span><span class="o">&amp;</span><span class="p">,</span> <span class="kt">int</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+                    <span class="p">{</span>
+                        <span class="k">return</span> <span class="n">QValidator</span><span class="o">::</span><span class="n">Acceptable</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">};</span>
+
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">validator</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_validator</span><span class="p">;</span>
+
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">validInput</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_validInput</span><span class="p">;</span>
+                <span class="k">const</span> <span class="k">auto</span> <span class="n">acceptableInput</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_acceptableInput</span><span class="p">;</span>
+
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_acceptableInput</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+                <span class="k">static</span> <span class="n">Validator</span> <span class="n">noValidator</span><span class="p">;</span>
+                <span class="n">that</span><span class="o">-&gt;</span><span class="n">setValidator</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">noValidator</span> <span class="p">);</span> <span class="c1">// implicitly checking maskData</span>
+                <span class="n">that</span><span class="o">-&gt;</span><span class="n">setValidator</span><span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_validator</span> <span class="p">);</span>
+
+                <span class="k">const</span> <span class="kt">bool</span> <span class="n">isAcceptable</span> <span class="o">=</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_acceptableInput</span><span class="p">;</span>
+
+                <span class="c1">// restoring old values</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_validInput</span> <span class="o">=</span> <span class="n">validInput</span><span class="p">;</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_acceptableInput</span> <span class="o">=</span> <span class="n">acceptableInput</span><span class="p">;</span>
+
+                <span class="k">return</span> <span class="n">isAcceptable</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">updateColors</span><span class="p">();</span>
+        <span class="kt">void</span> <span class="n">updateMetrics</span><span class="p">();</span>
+
+        <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">handleEvent</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">event</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+      <span class="nl">protected:</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 6, 0, 0 )
+</span>        <span class="kt">void</span> <span class="n">geometryChange</span><span class="p">(</span>
+            <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">oldGeometry</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="n">Inherited</span><span class="o">::</span><span class="n">geometryChange</span><span class="p">(</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="n">oldGeometry</span> <span class="p">);</span>
+            <span class="n">updateClip</span><span class="p">();</span>
+        <span class="p">}</span>
+<span class="cp">#else
+</span>        <span class="kt">void</span> <span class="n">geometryChanged</span><span class="p">(</span>
+            <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span> <span class="n">oldGeometry</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="n">Inherited</span><span class="o">::</span><span class="n">geometryChanged</span><span class="p">(</span> <span class="n">newGeometry</span><span class="p">,</span> <span class="n">oldGeometry</span> <span class="p">);</span>
+            <span class="n">updateClip</span><span class="p">();</span>
+        <span class="p">}</span>
+<span class="cp">#endif
+</span>
+        <span class="kt">void</span> <span class="n">updateClip</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">setClip</span><span class="p">(</span> <span class="p">(</span> <span class="n">contentWidth</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">width</span><span class="p">()</span> <span class="p">)</span> <span class="o">||</span>
+                <span class="p">(</span> <span class="n">contentHeight</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">height</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updatePaintNode</span><span class="p">(</span>
+            <span class="n">QSGNode</span><span class="o">*</span> <span class="n">oldNode</span><span class="p">,</span> <span class="n">UpdatePaintNodeData</span><span class="o">*</span> <span class="n">data</span> <span class="p">)</span> <span class="k">override</span>
+        <span class="p">{</span>
+            <span class="n">updateColors</span><span class="p">();</span>
+            <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">updatePaintNode</span><span class="p">(</span> <span class="n">oldNode</span><span class="p">,</span> <span class="n">data</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="n">TextInput</span><span class="o">::</span><span class="n">TextInput</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="o">*</span> <span class="n">textInput</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">QQuickTextInput</span><span class="p">(</span> <span class="n">textInput</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">classBegin</span><span class="p">();</span>
+
+        <span class="n">setActiveFocusOnTab</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="n">setFlag</span><span class="p">(</span> <span class="n">ItemAcceptsInputMethod</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="n">setFocusOnPress</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+        <span class="n">componentComplete</span><span class="p">();</span>
+
+        <span class="n">connect</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">TextInput</span><span class="o">::</span><span class="n">contentSizeChanged</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">TextInput</span><span class="o">::</span><span class="n">updateClip</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">TextInput</span><span class="o">::</span><span class="n">setEditing</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">QQuickTextInputPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">cursorVisible</span> <span class="o">==</span> <span class="n">on</span> <span class="p">)</span>
+            <span class="k">return</span><span class="p">;</span>
+
+        <span class="n">setCursorVisible</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 7, 0 )
+</span>        <span class="n">d</span><span class="o">-&gt;</span><span class="n">setBlinkingCursorEnabled</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">on</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_passwordEchoEditing</span> <span class="o">||</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_passwordEchoTimer</span><span class="p">.</span><span class="n">isActive</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">updatePasswordEchoEditing</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">polish</span><span class="p">();</span>
+        <span class="n">update</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">TextInput</span><span class="o">::</span><span class="n">updateMetrics</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">input</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskTextInput</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">parentItem</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="n">setAlignment</span><span class="p">(</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">alignment</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">setFont</span><span class="p">(</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">font</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">TextInput</span><span class="o">::</span><span class="n">updateColors</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">input</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QskTextInput</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">parentItem</span><span class="p">()</span> <span class="p">);</span>
+        <span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">QQuickTextInputPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+
+        <span class="kt">bool</span> <span class="n">isDirty</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+        <span class="n">QColor</span> <span class="n">color</span><span class="p">;</span>
+
+        <span class="n">color</span> <span class="o">=</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">color</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">Text</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">color</span> <span class="o">!=</span> <span class="n">color</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">d</span><span class="o">-&gt;</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
+            <span class="n">isDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">hasSelectedText</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">color</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">PanelSelected</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">selectionColor</span> <span class="o">!=</span> <span class="n">color</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">selectionColor</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
+                <span class="n">isDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">color</span> <span class="o">=</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">color</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">TextSelected</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">selectedTextColor</span> <span class="o">!=</span> <span class="n">color</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">d</span><span class="o">-&gt;</span><span class="n">selectedTextColor</span> <span class="o">=</span> <span class="n">color</span><span class="p">;</span>
+                <span class="n">isDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">isDirty</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">d</span><span class="o">-&gt;</span><span class="n">textLayoutDirty</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="n">d</span><span class="o">-&gt;</span><span class="n">updateType</span> <span class="o">=</span> <span class="n">QQuickTextInputPrivate</span><span class="o">::</span><span class="n">UpdatePaintNode</span><span class="p">;</span>
+            <span class="n">update</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">QskTextInput</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">TextInput</span><span class="o">*</span> <span class="n">textInput</span><span class="p">;</span>
+    <span class="n">QString</span> <span class="n">description</span><span class="p">;</span> <span class="c1">// f.e. used as prompt in QskInputPanel</span>
+
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">activationModes</span> <span class="o">:</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">hasPanel</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskTextInput</span><span class="o">::</span><span class="n">QskTextInput</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">Inherited</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">()</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">activationModes</span> <span class="o">=</span> <span class="n">ActivationOnMouse</span> <span class="o">|</span> <span class="n">ActivationOnKey</span><span class="p">;</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPanel</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="n">setPolishOnResize</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="n">setFocusPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">StrongFocus</span> <span class="p">);</span>
+
+    <span class="n">setFlag</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemAcceptsInputMethod</span> <span class="p">);</span>
+
+    <span class="cm">/*
+        QQuickTextInput is a beast of almost 5k lines of code, we don't
+        want to reimplement that - at least not now.
+        So this is more or less a simple wrapper making everything
+        conforming to qskinny.
+     */</span>
+
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TextInput</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+    <span class="n">qskBindSignals</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="p">,</span> <span class="k">this</span> <span class="p">);</span>
+
+    <span class="n">setAcceptedMouseButtons</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">acceptedMouseButtons</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setAcceptedMouseButtons</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoButton</span> <span class="p">);</span>
+
+    <span class="n">initSizePolicy</span><span class="p">(</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Minimum</span><span class="p">,</span> <span class="n">QskSizePolicy</span><span class="o">::</span><span class="n">Fixed</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTextInput</span><span class="o">::</span><span class="n">QskTextInput</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">QskTextInput</span><span class="p">(</span> <span class="n">parent</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setText</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTextInput</span><span class="o">::~</span><span class="n">QskTextInput</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setPanel</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="o">!=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPanel</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPanel</span> <span class="o">=</span> <span class="n">on</span><span class="p">;</span>
+
+        <span class="n">resetImplicitSize</span><span class="p">();</span>
+        <span class="n">polish</span><span class="p">();</span>
+        <span class="n">update</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">hasPanel</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPanel</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">ShortcutOverride</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">handleEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">::</span><span class="n">LocaleChange</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qskUpdateInputMethod</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImPreferredLanguage</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">event</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">keyPressEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isEditing</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">switch</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Enter</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Return</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">hasAcceptableInput</span><span class="p">()</span> <span class="o">||</span> <span class="n">fixup</span><span class="p">()</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">QGuiApplication</span><span class="o">::</span><span class="n">inputMethod</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">commit</span><span class="p">();</span>
+
+                    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="p">(</span> <span class="n">inputMethodHints</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImhMultiLine</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">setEditing</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+                        <span class="c1">// When returning from a virtual keyboard</span>
+                        <span class="n">qskForceActiveFocus</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PopupFocusReason</span> <span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+<span class="cp">#if 1
+</span>            <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Escape</span><span class="p">:</span>
+            <span class="p">{</span>
+                <span class="n">setEditing</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+                <span class="n">qskForceActiveFocus</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PopupFocusReason</span> <span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+<span class="cp">#endif
+</span>            <span class="nl">default:</span>
+            <span class="p">{</span>
+                <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">handleEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">activationModes</span> <span class="o">&amp;</span> <span class="n">ActivationOnKey</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">event</span><span class="o">-&gt;</span><span class="n">isAutoRepeat</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Select</span> <span class="o">||</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Key_Space</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">setEditing</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">keyPressEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">keyReleaseEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">keyReleaseEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">mousePressEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">handleEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isReadOnly</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">qGuiApp</span><span class="o">-&gt;</span><span class="n">styleHints</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">setFocusOnTouchRelease</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">setEditing</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">mouseMoveEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">handleEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">mouseReleaseEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">handleEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">isReadOnly</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">qGuiApp</span><span class="o">-&gt;</span><span class="n">styleHints</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">setFocusOnTouchRelease</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">setEditing</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">mouseDoubleClickEvent</span><span class="p">(</span> <span class="n">QMouseEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">handleEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">inputMethodEvent</span><span class="p">(</span> <span class="n">QInputMethodEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">handleEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">focusInEvent</span><span class="p">(</span> <span class="n">QFocusEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">activationModes</span> <span class="o">&amp;</span> <span class="n">ActivationOnFocus</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">switch</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">reason</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ActiveWindowFocusReason</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PopupFocusReason</span><span class="p">:</span>
+                <span class="k">break</span><span class="p">;</span>
+
+            <span class="nl">default:</span>
+                <span class="n">setEditing</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">focusInEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">focusOutEvent</span><span class="p">(</span> <span class="n">QFocusEvent</span><span class="o">*</span> <span class="n">event</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">event</span><span class="o">-&gt;</span><span class="n">reason</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ActiveWindowFocusReason</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PopupFocusReason</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">deselect</span><span class="p">();</span>
+            <span class="n">setEditing</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">focusOutEvent</span><span class="p">(</span> <span class="n">event</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QSizeF</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">layoutSizeHint</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">which</span> <span class="o">!=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">PreferredSize</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QSizeF</span><span class="p">();</span>
+
+    <span class="k">auto</span> <span class="n">input</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="p">;</span>
+
+    <span class="n">input</span><span class="o">-&gt;</span><span class="n">updateMetrics</span><span class="p">();</span>
+
+    <span class="n">QSizeF</span> <span class="n">hint</span><span class="p">(</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">implicitWidth</span><span class="p">(),</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">implicitHeight</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">hasPanel</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">hint</span> <span class="o">=</span> <span class="n">outerBoxSize</span><span class="p">(</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">hint</span> <span class="p">);</span>
+        <span class="n">hint</span> <span class="o">=</span> <span class="n">hint</span><span class="p">.</span><span class="n">expandedTo</span><span class="p">(</span> <span class="n">strutSizeHint</span><span class="p">(</span> <span class="n">Panel</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">hint</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">updateLayout</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">input</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="p">;</span>
+
+    <span class="n">input</span><span class="o">-&gt;</span><span class="n">updateMetrics</span><span class="p">();</span>
+    <span class="n">qskSetItemGeometry</span><span class="p">(</span> <span class="n">input</span><span class="p">,</span> <span class="n">subControlRect</span><span class="p">(</span> <span class="n">Text</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">updateNode</span><span class="p">(</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">node</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">updateColors</span><span class="p">();</span>
+    <span class="n">Inherited</span><span class="o">::</span><span class="n">updateNode</span><span class="p">(</span> <span class="n">node</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">text</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setText</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setText</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setDescription</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">description</span> <span class="o">!=</span> <span class="n">text</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">description</span> <span class="o">=</span> <span class="n">text</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">descriptionChanged</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">description</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">description</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskTextInput</span><span class="o">::</span><span class="n">ActivationModes</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">activationModes</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">ActivationModes</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">activationModes</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setActivationModes</span><span class="p">(</span> <span class="n">ActivationModes</span> <span class="n">modes</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">ActivationModes</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">activationModes</span> <span class="p">)</span> <span class="o">!=</span> <span class="n">modes</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">activationModes</span> <span class="o">=</span> <span class="n">modes</span><span class="p">;</span>
+        <span class="n">Q_EMIT</span> <span class="n">activationModesChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">qskUpdateInputMethodFont</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextInput</span><span class="o">*</span> <span class="n">input</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">queries</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImCursorRectangle</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImFont</span><span class="p">;</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 7, 0 )
+</span>    <span class="n">queries</span> <span class="o">|=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImAnchorRectangle</span><span class="p">;</span>
+<span class="cp">#endif
+</span>
+    <span class="n">qskUpdateInputMethod</span><span class="p">(</span> <span class="n">input</span><span class="p">,</span> <span class="n">queries</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setFontRole</span><span class="p">(</span> <span class="kt">int</span> <span class="n">role</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setFontRoleHint</span><span class="p">(</span> <span class="n">Text</span><span class="p">,</span> <span class="n">role</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qskUpdateInputMethodFont</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+        <span class="n">Q_EMIT</span> <span class="n">fontRoleChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">resetFontRole</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetFontRoleHint</span><span class="p">(</span> <span class="n">Text</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qskUpdateInputMethodFont</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+        <span class="n">Q_EMIT</span> <span class="n">fontRoleChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">fontRole</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">fontRoleHint</span><span class="p">(</span> <span class="n">Text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">setAlignmentHint</span><span class="p">(</span> <span class="n">Text</span><span class="p">,</span> <span class="n">alignment</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setAlignment</span><span class="p">(</span> <span class="n">alignment</span> <span class="p">);</span>
+        <span class="n">Q_EMIT</span> <span class="n">alignmentChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">resetAlignment</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">resetAlignmentHint</span><span class="p">(</span> <span class="n">Text</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setAlignment</span><span class="p">(</span> <span class="n">alignment</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">Q_EMIT</span> <span class="n">alignmentChanged</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">alignment</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">alignmentHint</span><span class="p">(</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignLeft</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">::</span><span class="n">AlignTop</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QFont</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">font</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">effectiveFont</span><span class="p">(</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">Text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">isReadOnly</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">isReadOnly</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setReadOnly</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">input</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">input</span><span class="o">-&gt;</span><span class="n">isReadOnly</span><span class="p">()</span> <span class="o">==</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+<span class="cp">#if 1
+</span>    <span class="c1">// do we want to be able to restore the previous policy ?</span>
+    <span class="n">setFocusPolicy</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">NoFocus</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>
+    <span class="n">input</span><span class="o">-&gt;</span><span class="n">setReadOnly</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+
+    <span class="c1">// we are killing user settings here ?</span>
+    <span class="n">input</span><span class="o">-&gt;</span><span class="n">setFlag</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">::</span><span class="n">ItemAcceptsInputMethod</span><span class="p">,</span> <span class="o">!</span><span class="n">on</span> <span class="p">);</span>
+    <span class="n">qskUpdateInputMethod</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImEnabled</span> <span class="p">);</span>
+
+    <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">ReadOnly</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setEditing</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">isReadOnly</span><span class="p">()</span> <span class="o">||</span> <span class="n">on</span> <span class="o">==</span> <span class="n">isEditing</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">setSkinStateFlag</span><span class="p">(</span> <span class="n">Editing</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setEditing</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+<span class="c">#if 0
+        updateInputMethod( Qt::ImCursorRectangle | Qt::ImAnchorRectangle );
+        QGuiApplication::inputMethod()-&gt;inputDirection
+#endif
+</span>        <span class="n">qskInputMethodSetVisible</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">hasAcceptableInput</span><span class="p">()</span> <span class="o">||</span> <span class="n">fixup</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">Q_EMIT</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">editingFinished</span><span class="p">();</span>
+
+<span class="c">#if 0
+        inputMethod-&gt;reset();
+#endif
+</span>        <span class="n">qskInputMethodSetVisible</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nb">false</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Q_EMIT</span> <span class="n">editingChanged</span><span class="p">(</span> <span class="n">on</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">isEditing</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">hasSkinState</span><span class="p">(</span> <span class="n">Editing</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">ensureVisible</span><span class="p">(</span> <span class="kt">int</span> <span class="n">position</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">ensureVisible</span><span class="p">(</span> <span class="n">position</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">cursorPosition</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">cursorPosition</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setCursorPosition</span><span class="p">(</span> <span class="kt">int</span> <span class="n">pos</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setCursorPosition</span><span class="p">(</span> <span class="n">pos</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">maxLength</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">maxLength</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setMaxLength</span><span class="p">(</span> <span class="kt">int</span> <span class="n">length</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setMaxLength</span><span class="p">(</span> <span class="n">length</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QValidator</span><span class="o">*</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">validator</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">validator</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setValidator</span><span class="p">(</span> <span class="n">QValidator</span><span class="o">*</span> <span class="n">validator</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setValidator</span><span class="p">(</span> <span class="n">validator</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">inputMask</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">inputMask</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setInputMask</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">mask</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setInputMask</span><span class="p">(</span> <span class="n">mask</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskTextInput</span><span class="o">::</span><span class="n">EchoMode</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">echoMode</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">echoMode</span><span class="p">();</span>
+    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">EchoMode</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">mode</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setEchoMode</span><span class="p">(</span> <span class="n">EchoMode</span> <span class="n">mode</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">mode</span> <span class="o">!=</span> <span class="n">echoMode</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setEchoMode</span><span class="p">(</span>
+            <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">QQuickTextInput</span><span class="o">::</span><span class="n">EchoMode</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">mode</span> <span class="p">)</span> <span class="p">);</span>
+
+        <span class="n">qskUpdateInputMethod</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImHints</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">passwordCharacter</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">passwordCharacter</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setPasswordCharacter</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setPasswordCharacter</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">resetPasswordCharacter</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setPasswordCharacter</span><span class="p">(</span>
+        <span class="n">QGuiApplication</span><span class="o">::</span><span class="n">styleHints</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">passwordMaskCharacter</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">passwordMaskDelay</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">passwordMaskDelay</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setPasswordMaskDelay</span><span class="p">(</span> <span class="kt">int</span> <span class="n">ms</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setPasswordMaskDelay</span><span class="p">(</span> <span class="n">ms</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">resetPasswordMaskDelay</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">resetPasswordMaskDelay</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">displayText</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">displayText</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QString</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">preeditText</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">d</span> <span class="o">=</span> <span class="n">QQuickTextInputPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">d</span><span class="o">-&gt;</span><span class="n">m_textLayout</span><span class="p">.</span><span class="n">preeditAreaText</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 8, 0 )
+</span>
+<span class="kt">bool</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">overwriteMode</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">overwriteMode</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setOverwriteMode</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">overwrite</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setOverwriteMode</span><span class="p">(</span> <span class="n">overwrite</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span>
+<span class="kt">bool</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">hasAcceptableInput</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">hasAcceptableInput</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">fixup</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">fixup</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">inputMethodQuery</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQuery</span> <span class="n">property</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">inputMethodQuery</span><span class="p">(</span> <span class="n">property</span><span class="p">,</span> <span class="n">QVariant</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">inputMethodQuery</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQuery</span> <span class="n">query</span><span class="p">,</span> <span class="n">QVariant</span> <span class="n">argument</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span> <span class="n">query</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImEnabled</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">QVariant</span><span class="p">(</span> <span class="p">(</span> <span class="kt">bool</span> <span class="p">)</span> <span class="p">(</span> <span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">ItemAcceptsInputMethod</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImFont</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">font</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImPreferredLanguage</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">locale</span><span class="p">();</span>
+        <span class="p">}</span>
+<span class="cp">#if QT_VERSION &gt;= QT_VERSION_CHECK( 5, 7, 0 )
+</span>        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImInputItemClipRectangle</span><span class="p">:</span>
+<span class="cp">#endif
+</span>        <span class="k">case</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImCursorRectangle</span><span class="p">:</span>
+        <span class="p">{</span>
+            <span class="n">QVariant</span> <span class="n">v</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">inputMethodQuery</span><span class="p">(</span> <span class="n">query</span><span class="p">,</span> <span class="n">argument</span> <span class="p">);</span>
+<span class="cp">#if 1
+</span>            <span class="k">if</span> <span class="p">(</span> <span class="n">v</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="n">QRectF</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">v</span><span class="p">.</span><span class="n">setValue</span><span class="p">(</span> <span class="n">v</span><span class="p">.</span><span class="n">toRectF</span><span class="p">().</span><span class="n">translated</span><span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">position</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>            <span class="k">return</span> <span class="n">v</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nl">default:</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">inputMethodQuery</span><span class="p">(</span> <span class="n">query</span><span class="p">,</span> <span class="n">argument</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">canUndo</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">canUndo</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">canRedo</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">canRedo</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">inputMethodHints</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">inputMethodHints</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setInputMethodHints</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="n">hints</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">inputMethodHints</span><span class="p">()</span> <span class="o">!=</span> <span class="n">hints</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">textInput</span><span class="o">-&gt;</span><span class="n">setInputMethodHints</span><span class="p">(</span> <span class="n">hints</span> <span class="p">);</span>
+        <span class="n">qskUpdateInputMethod</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImHints</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">setupFrom</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">item</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">item</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="c1">// finding attributes from the input hints of item</span>
+
+    <span class="kt">int</span> <span class="n">maxCharacters</span> <span class="o">=</span> <span class="mi">32767</span><span class="p">;</span>
+    <span class="n">QskTextInput</span><span class="o">::</span><span class="n">EchoMode</span> <span class="n">echoMode</span> <span class="o">=</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">Normal</span><span class="p">;</span>
+
+    <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodQueries</span> <span class="n">queries</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImQueryAll</span><span class="p">;</span>
+    <span class="n">queries</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">Qt</span><span class="o">::</span><span class="n">ImEnabled</span><span class="p">;</span>
+
+    <span class="n">QInputMethodQueryEvent</span> <span class="n">event</span><span class="p">(</span> <span class="n">queries</span> <span class="p">);</span>
+    <span class="n">QCoreApplication</span><span class="o">::</span><span class="n">sendEvent</span><span class="p">(</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">item</span> <span class="p">),</span> <span class="o">&amp;</span><span class="n">event</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="p">.</span><span class="n">queries</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImHints</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">hints</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">InputMethodHints</span> <span class="o">&gt;</span><span class="p">(</span>
+            <span class="n">event</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImHints</span> <span class="p">).</span><span class="n">toInt</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">hints</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImhHiddenText</span> <span class="p">)</span>
+            <span class="n">echoMode</span> <span class="o">=</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">NoEcho</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="p">.</span><span class="n">queries</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImMaximumTextLength</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// needs to be handled before Qt::ImCursorPosition !</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">max</span> <span class="o">=</span> <span class="n">event</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImMaximumTextLength</span> <span class="p">).</span><span class="n">toInt</span><span class="p">();</span>
+        <span class="n">maxCharacters</span> <span class="o">=</span> <span class="n">qBound</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max</span><span class="p">,</span> <span class="n">maxCharacters</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">setMaxLength</span><span class="p">(</span> <span class="n">maxCharacters</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="p">.</span><span class="n">queries</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImSurroundingText</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">text</span> <span class="o">=</span> <span class="n">event</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImSurroundingText</span> <span class="p">).</span><span class="n">toString</span><span class="p">();</span>
+        <span class="n">setText</span><span class="p">(</span> <span class="n">text</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="p">.</span><span class="n">queries</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImCursorPosition</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">event</span><span class="p">.</span><span class="n">value</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImCursorPosition</span> <span class="p">).</span><span class="n">toInt</span><span class="p">();</span>
+        <span class="n">setCursorPosition</span><span class="p">(</span> <span class="n">pos</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">event</span><span class="p">.</span><span class="n">queries</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">::</span><span class="n">ImCurrentSelection</span> <span class="p">)</span>
+    <span class="p">{</span>
+<span class="c">#if 0
+        const auto text = event.value( Qt::ImCurrentSelection ).toString();
+        if ( !text.isEmpty() )
+        {
+        }
+#endif
+</span>    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">passwordMaskDelay</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">QString</span> <span class="n">passwordCharacter</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">echoMode</span> <span class="o">==</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">NoEcho</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="cm">/*
+             Qt::ImhHiddenText does not provide information
+             to decide between NoEcho/Password, or provides
+             more details about how to deal with hidden inputs.
+             So we try to find out more from trying some properties.
+         */</span>
+
+        <span class="n">QVariant</span> <span class="n">value</span><span class="p">;</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span> <span class="s">"passwordMaskDelay"</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">passwordMaskDelay</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">toInt</span><span class="p">();</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span> <span class="s">"passwordCharacter"</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="n">QString</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">passwordCharacter</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">toString</span><span class="p">();</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span> <span class="s">"echoMode"</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">value</span><span class="p">.</span><span class="n">canConvert</span><span class="o">&lt;</span> <span class="kt">int</span> <span class="o">&gt;</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">toInt</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">Password</span> <span class="p">)</span>
+                <span class="n">echoMode</span> <span class="o">=</span> <span class="n">QskTextInput</span><span class="o">::</span><span class="n">Password</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">passwordMaskDelay</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="n">setPasswordMaskDelay</span><span class="p">(</span> <span class="n">passwordMaskDelay</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">resetPasswordMaskDelay</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">passwordCharacter</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="n">setPasswordCharacter</span><span class="p">(</span> <span class="n">passwordCharacter</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">resetPasswordCharacter</span><span class="p">();</span>
+
+    <span class="n">setEchoMode</span><span class="p">(</span> <span class="n">echoMode</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskTextInput.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

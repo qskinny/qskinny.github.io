@@ -1,0 +1,60 @@
+<h1 id="nodesqskrichtextrendererh">nodes/QskRichTextRenderer.h</h1>
+
+<h2 id="namespaces">Namespaces</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong><a href="/docs/namespaces/namespaceQskRichTextRenderer/">QskRichTextRenderer</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_RICH_TEXT_RENDERER_H
+#define QSK_RICH_TEXT_RENDERER_H
+</span>
+<span class="cp">#include "QskNamespace.h"
+#include &lt;qnamespace.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskTextColors</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskTextOptions</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QString</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QFont</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QRectF</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QSizeF</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QQuickItem</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QSGTransformNode</span><span class="p">;</span>
+
+<span class="k">namespace</span> <span class="n">QskRichTextRenderer</span>
+<span class="p">{</span>
+    <span class="n">QSK_EXPORT</span> <span class="kt">void</span> <span class="n">updateNode</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span><span class="p">,</span>
+        <span class="n">Qsk</span><span class="o">::</span><span class="n">TextStyle</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextColors</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QQuickItem</span><span class="o">*</span><span class="p">,</span> <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="n">QSK_EXPORT</span> <span class="n">QSizeF</span> <span class="n">textSize</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="n">QSK_EXPORT</span> <span class="n">QRectF</span> <span class="n">textRect</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QFont</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

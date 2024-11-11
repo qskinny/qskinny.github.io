@@ -1,0 +1,208 @@
+<h1 id="dialogsqskdialogh">dialogs/QskDialog.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskDialog/">QskDialog</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="defines">Defines</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskDialog_8h/#define-qskdialog">qskDialog</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="macro-documentation">Macro Documentation</h2>
+
+<h3 id="define-qskdialog">define qskDialog</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define qskDialog QskDialog::instance()
+</span></code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_DIALOG_H
+#define QSK_DIALOG_H 1
+</span>
+<span class="cp">#include "QskGlobal.h"
+</span>
+<span class="cp">#include &lt;qobject.h&gt;
+#include &lt;memory&gt;
+</span>
+<span class="k">class</span> <span class="nc">QString</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QWindow</span><span class="p">;</span>
+
+<span class="cp">#if defined( qskDialog )
+#undef qskDialog
+#endif
+</span>
+<span class="cp">#define qskDialog QskDialog::instance()
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskDialog</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">Policy</span> <span class="n">policy</span> <span class="n">READ</span> <span class="n">policy</span>
+        <span class="n">WRITE</span> <span class="n">setPolicy</span> <span class="n">NOTIFY</span> <span class="n">policyChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QWindow</span><span class="o">*</span> <span class="n">transientParent</span> <span class="n">READ</span> <span class="n">transientParent</span>
+        <span class="n">WRITE</span> <span class="n">setTransientParent</span> <span class="n">NOTIFY</span> <span class="n">transientParentChanged</span> <span class="p">)</span>
+
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">Policy</span>
+    <span class="p">{</span>
+        <span class="n">EmbeddedBox</span><span class="p">,</span>
+        <span class="n">EmbeddedWindow</span><span class="p">,</span> <span class="c1">// not yet implemented, do we need it ?</span>
+        <span class="n">TopLevelWindow</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">Policy</span> <span class="p">)</span>
+
+    <span class="c1">// a.k.a QMessageBox::StandardButton or QPlatformDialogHelper::StandardButton</span>
+    <span class="k">enum</span> <span class="n">Action</span>
+    <span class="p">{</span>
+        <span class="n">NoAction</span>           <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">Ok</span>                 <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">Save</span>               <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">11</span><span class="p">,</span>
+        <span class="n">SaveAll</span>            <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="n">Open</span>               <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">13</span><span class="p">,</span>
+        <span class="n">Yes</span>                <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">14</span><span class="p">,</span>
+        <span class="n">YesToAll</span>           <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="n">No</span>                 <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="n">NoToAll</span>            <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="n">Abort</span>              <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">18</span><span class="p">,</span>
+        <span class="n">Retry</span>              <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">19</span><span class="p">,</span>
+        <span class="n">Ignore</span>             <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="n">Close</span>              <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">21</span><span class="p">,</span>
+        <span class="n">Cancel</span>             <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">22</span><span class="p">,</span>
+        <span class="n">Discard</span>            <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">23</span><span class="p">,</span>
+        <span class="n">Help</span>               <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">24</span><span class="p">,</span>
+        <span class="n">Apply</span>              <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">25</span><span class="p">,</span>
+        <span class="n">Reset</span>              <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">26</span><span class="p">,</span>
+        <span class="n">RestoreDefaults</span>    <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">27</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">Action</span> <span class="p">)</span>
+    <span class="n">Q_DECLARE_FLAGS</span><span class="p">(</span> <span class="n">Actions</span><span class="p">,</span> <span class="n">Action</span> <span class="p">)</span>
+
+    <span class="c1">// a.k.a QMessageBox::ButtonRole</span>
+    <span class="k">enum</span> <span class="n">ActionRole</span>
+    <span class="p">{</span>
+        <span class="n">InvalidRole</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+
+        <span class="n">AcceptRole</span><span class="p">,</span>
+        <span class="n">RejectRole</span><span class="p">,</span>
+        <span class="n">DestructiveRole</span><span class="p">,</span>
+        <span class="n">UserRole</span><span class="p">,</span>
+        <span class="n">HelpRole</span><span class="p">,</span>
+        <span class="n">YesRole</span><span class="p">,</span>
+        <span class="n">NoRole</span><span class="p">,</span>
+        <span class="n">ResetRole</span><span class="p">,</span>
+        <span class="n">ApplyRole</span><span class="p">,</span>
+
+        <span class="n">NActionRoles</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">ActionRole</span> <span class="p">)</span>
+
+    <span class="c1">// for building the mask in QskSkin::dialogButtonLayout</span>
+    <span class="k">enum</span> <span class="n">ButtonLayoutFlag</span>
+    <span class="p">{</span>
+        <span class="c1">// from QPlatformDialogHelper::ButtonRole</span>
+        <span class="n">ActionMask</span>      <span class="o">=</span> <span class="mh">0x0FFFFFFF</span><span class="p">,</span>
+
+        <span class="n">AlternateRole</span>   <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">28</span><span class="p">,</span>
+        <span class="n">Stretch</span>         <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">29</span><span class="p">,</span>
+        <span class="n">Reverse</span>         <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">30</span>
+    <span class="p">};</span>
+
+    <span class="k">enum</span> <span class="n">DialogCode</span>
+    <span class="p">{</span>
+        <span class="n">Rejected</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">Accepted</span>
+    <span class="p">};</span>
+
+    <span class="n">Q_ENUM</span><span class="p">(</span> <span class="n">DialogCode</span> <span class="p">)</span>
+
+    <span class="k">static</span> <span class="n">QskDialog</span><span class="o">*</span> <span class="n">instance</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">setPolicy</span><span class="p">(</span> <span class="n">Policy</span> <span class="p">);</span>
+    <span class="n">Policy</span> <span class="n">policy</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="kt">void</span> <span class="n">setTransientParent</span><span class="p">(</span> <span class="n">QWindow</span><span class="o">*</span> <span class="p">);</span>
+    <span class="n">Q_INVOKABLE</span> <span class="n">QWindow</span><span class="o">*</span> <span class="n">transientParent</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="n">Action</span> <span class="n">message</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="kt">int</span> <span class="n">symbolType</span><span class="p">,</span>
+        <span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span> <span class="n">Ok</span><span class="p">,</span> <span class="n">Action</span> <span class="n">defaultAction</span> <span class="o">=</span> <span class="n">NoAction</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="n">Action</span> <span class="n">information</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+        <span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span> <span class="n">Ok</span><span class="p">,</span> <span class="n">Action</span> <span class="n">defaultAction</span> <span class="o">=</span> <span class="n">NoAction</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="n">Action</span> <span class="n">warning</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+        <span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span> <span class="n">Ok</span><span class="p">,</span> <span class="n">Action</span> <span class="n">defaultAction</span> <span class="o">=</span> <span class="n">NoAction</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="n">Action</span> <span class="n">critical</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+        <span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span> <span class="n">Ok</span><span class="p">,</span> <span class="n">Action</span> <span class="n">defaultAction</span> <span class="o">=</span> <span class="n">NoAction</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="n">Action</span> <span class="n">question</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+        <span class="n">Actions</span> <span class="n">actions</span> <span class="o">=</span> <span class="n">Actions</span><span class="p">(</span> <span class="n">Yes</span> <span class="o">|</span> <span class="n">No</span> <span class="p">),</span>
+        <span class="n">Action</span> <span class="n">defaultAction</span> <span class="o">=</span> <span class="n">NoAction</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="n">QString</span> <span class="n">select</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">title</span><span class="p">,</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QStringList</span><span class="o">&amp;</span> <span class="n">entries</span><span class="p">,</span> <span class="kt">int</span> <span class="n">selectedRow</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">transientParentChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">policyChanged</span><span class="p">();</span>
+
+  <span class="nl">private:</span>
+    <span class="n">QskDialog</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">QskDialog</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Action</span> <span class="p">)</span>
+<span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="p">)</span>
+<span class="n">Q_DECLARE_OPERATORS_FOR_FLAGS</span><span class="p">(</span> <span class="n">QskDialog</span><span class="o">::</span><span class="n">Actions</span> <span class="p">)</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

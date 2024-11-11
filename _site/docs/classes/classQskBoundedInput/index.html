@@ -1,0 +1,397 @@
+<h1 id="qskboundedinput">QskBoundedInput</h1>
+
+<p>Inherits from QskBoundedControl</p>
+
+<p>Inherited by <a href="/docs/classes/classQskBoundedRangeInput/">QskBoundedRangeInput</a>, <a href="/docs/classes/classQskBoundedValueInput/">QskBoundedValueInput</a></p>
+
+<h2 id="public-slots">Public Slots</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#slot-setstepsize">setStepSize</a></strong>(qreal stepSize)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#slot-setpagesize">setPageSize</a></strong>(int pageSize)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#slot-stepup">stepUp</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#slot-stepdown">stepDown</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#slot-pageup">pageUp</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#slot-pagedown">pageDown</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#slot-increment">increment</a></strong>(qreal offset) =0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-signals">Public Signals</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#signal-stepsizechanged">stepSizeChanged</a></strong>(qreal )</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#signal-pagesizechanged">pageSizeChanged</a></strong>(qreal )</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#signal-snapchanged">snapChanged</a></strong>(bool )</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#signal-readonlychanged">readOnlyChanged</a></strong>(bool )</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-qskboundedinput">QskBoundedInput</a></strong>(QQuickItem * parent =nullptr)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-~qskboundedinput">~QskBoundedInput</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-stepsize">stepSize</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-pagesize">pageSize</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-setsnap">setSnap</a></strong>(bool snap)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-snap">snap</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-setreadonly">setReadOnly</a></strong>(bool readOnly)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-isreadonly">isReadOnly</a></strong>() const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-keypressevent">keyPressEvent</a></strong>(QKeyEvent * event) override</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-wheelevent">wheelEvent</a></strong>(QWheelEvent * event) override</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-componentcomplete">componentComplete</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-aligninput">alignInput</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-alignedvalue">alignedValue</a></strong>(qreal value) const</td>
+    </tr>
+    <tr>
+      <td>QskIntervalF</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#function-alignedinterval">alignedInterval</a></strong>(const QskIntervalF &amp; interval) const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-properties">Public Properties</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#property-stepsize">stepSize</a></strong></td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#property-pagesize">pageSize</a></strong></td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#property-snap">snap</a></strong></td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#property-readonly">readOnly</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-attributes">Public Attributes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>const <a href="/docs/classes/classQskAspect/#enum-state">QskAspect::State</a></td>
+      <td><strong><a href="/docs/classes/classQskBoundedInput/#variable-readonly">ReadOnly</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-slots-documentation">Public Slots Documentation</h2>
+
+<h3 id="slot-setstepsize">slot setStepSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setStepSize</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">stepSize</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="slot-setpagesize">slot setPageSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setPageSize</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">pageSize</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="slot-stepup">slot stepUp</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">stepUp</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="slot-stepdown">slot stepDown</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">stepDown</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="slot-pageup">slot pageUp</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">pageUp</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="slot-pagedown">slot pageDown</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">pageDown</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="slot-increment">slot increment</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">increment</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">offset</span>
+<span class="p">)</span> <span class="o">=</span><span class="mi">0</span>
+</code></pre></div></div>
+
+<h2 id="public-signals-documentation">Public Signals Documentation</h2>
+
+<h3 id="signal-stepsizechanged">signal stepSizeChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">stepSizeChanged</span><span class="p">(</span>
+    <span class="n">qreal</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="signal-pagesizechanged">signal pageSizeChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">pageSizeChanged</span><span class="p">(</span>
+    <span class="n">qreal</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="signal-snapchanged">signal snapChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">snapChanged</span><span class="p">(</span>
+    <span class="kt">bool</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="signal-readonlychanged">signal readOnlyChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">readOnlyChanged</span><span class="p">(</span>
+    <span class="kt">bool</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskboundedinput">function QskBoundedInput</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskBoundedInput</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskboundedinput-1">function ~QskBoundedInput</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskBoundedInput</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-stepsize">function stepSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">stepSize</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-pagesize">function pageSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">pageSize</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setsnap">function setSnap</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setSnap</span><span class="p">(</span>
+    <span class="kt">bool</span> <span class="n">snap</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-snap">function snap</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">snap</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setreadonly">function setReadOnly</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setReadOnly</span><span class="p">(</span>
+    <span class="kt">bool</span> <span class="n">readOnly</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-isreadonly">function isReadOnly</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isReadOnly</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-keypressevent">function keyPressEvent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">keyPressEvent</span><span class="p">(</span>
+    <span class="n">QKeyEvent</span> <span class="o">*</span> <span class="n">event</span>
+<span class="p">)</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-wheelevent">function wheelEvent</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">wheelEvent</span><span class="p">(</span>
+    <span class="n">QWheelEvent</span> <span class="o">*</span> <span class="n">event</span>
+<span class="p">)</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-componentcomplete">function componentComplete</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">componentComplete</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-aligninput">function alignInput</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">alignInput</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-alignedvalue">function alignedValue</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">alignedValue</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">value</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-alignedinterval">function alignedInterval</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskIntervalF</span> <span class="n">alignedInterval</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span> <span class="o">&amp;</span> <span class="n">interval</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h2 id="public-property-documentation">Public Property Documentation</h2>
+
+<h3 id="property-stepsize">property stepSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">stepSize</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="property-pagesize">property pageSize</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">pageSize</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="property-snap">property snap</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">snap</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="property-readonly">property readOnly</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">readOnly</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+
+<h3 id="variable-readonly">variable ReadOnly</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="k">const</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">State</span> <span class="n">ReadOnly</span><span class="p">;</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

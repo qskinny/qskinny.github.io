@@ -1,0 +1,490 @@
+<h1 id="commonqskobjectcountercpp">common/QskObjectCounter.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskObjectCounter_8cpp/#function-qskisitem">qskIsItem</a></strong>(const QObject * object)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/files/QskObjectCounter_8cpp/#function-qskinstallcleanuphookhandler">qskInstallCleanupHookHandler</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskObjectCounter_8cpp/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskObjectCounter &amp; counter)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="attributes">Attributes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/files/QskObjectCounter_8cpp/#variable-qskautodeletehook">qskAutoDeleteHook</a></strong></td>
+    </tr>
+    <tr>
+      <td>CounterHook *</td>
+      <td><strong><a href="/docs/files/QskObjectCounter_8cpp/#variable-qskcounterhook">qskCounterHook</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="defines">Defines</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskObjectCounter_8cpp/#define-qsk_object_info">QSK_OBJECT_INFO</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskisitem">function qskIsItem</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">qskIsItem</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QObject</span> <span class="o">*</span> <span class="n">object</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinstallcleanuphookhandler">function qskInstallCleanupHookHandler</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">qskInstallCleanupHookHandler</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskObjectCounter</span> <span class="o">&amp;</span> <span class="n">counter</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="attributes-documentation">Attributes Documentation</h2>
+
+<h3 id="variable-qskautodeletehook">variable qskAutoDeleteHook</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">bool</span> <span class="n">qskAutoDeleteHook</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="variable-qskcounterhook">variable qskCounterHook</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">CounterHook</span> <span class="o">*</span> <span class="n">qskCounterHook</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="macro-documentation">Macro Documentation</h2>
+
+<h3 id="define-qsk_object_info">define QSK_OBJECT_INFO</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define QSK_OBJECT_INFO 0
+</span></code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskObjectCounter.h"
+</span>
+<span class="cp">#include &lt;qdebug.h&gt;
+#include &lt;qset.h&gt;
+</span>
+
+<span class="cp">#include &lt;private/qhooks_p.h&gt;
+#include &lt;private/qobject_p.h&gt;
+#include &lt;private/qquickitem_p.h&gt;
+</span>
+
+<span class="cp">#define QSK_OBJECT_INFO 0
+</span>
+<span class="cp">#if QSK_OBJECT_INFO
+#include &lt;qset.h&gt;
+#endif
+</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">bool</span> <span class="nf">qskIsItem</span><span class="p">(</span> <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">QObjectPrivate</span><span class="o">*</span> <span class="n">o_p</span> <span class="o">=</span> <span class="n">QObjectPrivate</span><span class="o">::</span><span class="n">get</span><span class="p">(</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">QObject</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">object</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="cm">/*
+        The addObject hook is called from the constructor of QObject,
+        where we don't have the derived class constructed yet.
+        So we can't cast the object itself and also have to rely on
+        RTTI being enabled. TODO ...
+     */</span>
+
+    <span class="k">return</span> <span class="k">dynamic_cast</span><span class="o">&lt;</span> <span class="n">QQuickItemPrivate</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">o_p</span> <span class="p">)</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="k">class</span> <span class="nc">Counter</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">Counter</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">reset</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">created</span> <span class="o">=</span> <span class="n">destroyed</span> <span class="o">=</span> <span class="n">current</span> <span class="o">=</span> <span class="n">maximum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">increment</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">created</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">current</span><span class="o">++</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">current</span> <span class="o">&gt;</span> <span class="n">maximum</span> <span class="p">)</span>
+                <span class="n">maximum</span> <span class="o">=</span> <span class="n">current</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">decrement</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">destroyed</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">current</span><span class="o">--</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">int</span> <span class="n">created</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">destroyed</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">current</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">maximum</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">CounterData</span> <span class="k">final</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QObject</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">Counter</span> <span class="n">counter</span><span class="p">[</span> <span class="mi">2</span> <span class="p">];</span>
+
+<span class="cp">#if QSK_OBJECT_INFO
+</span>        <span class="n">QSet</span><span class="o">&lt;</span> <span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">objectTable</span><span class="p">;</span>
+<span class="cp">#endif
+</span>    <span class="p">};</span>
+
+    <span class="k">class</span> <span class="nc">CounterHook</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="n">CounterHook</span><span class="p">();</span>
+        <span class="o">~</span><span class="n">CounterHook</span><span class="p">();</span>
+
+        <span class="kt">void</span> <span class="n">registerCounters</span><span class="p">(</span> <span class="n">CounterData</span><span class="o">*</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">);</span>
+        <span class="kt">bool</span> <span class="n">isCountersRegistered</span><span class="p">(</span> <span class="k">const</span> <span class="n">CounterData</span><span class="o">*</span>  <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+        <span class="kt">bool</span> <span class="n">isActive</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+        <span class="kt">void</span> <span class="n">startup</span><span class="p">();</span>
+        <span class="kt">void</span> <span class="n">addObject</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">);</span>
+        <span class="kt">void</span> <span class="n">removeObject</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">);</span>
+
+        <span class="k">static</span> <span class="kt">void</span> <span class="n">cleanupHook</span><span class="p">();</span>
+
+      <span class="nl">private:</span>
+        <span class="k">static</span> <span class="kt">void</span> <span class="n">startupHook</span><span class="p">();</span>
+        <span class="k">static</span> <span class="kt">void</span> <span class="n">addObjectHook</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">);</span>
+        <span class="k">static</span> <span class="kt">void</span> <span class="n">removeObjectHook</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="p">);</span>
+
+        <span class="n">QSet</span><span class="o">&lt;</span> <span class="n">CounterData</span><span class="o">*</span> <span class="o">&gt;</span> <span class="n">m_counterDataSet</span><span class="p">;</span>
+
+        <span class="n">quintptr</span> <span class="n">m_otherStartup</span><span class="p">;</span>
+        <span class="n">quintptr</span> <span class="n">m_otherAddObject</span><span class="p">;</span>
+        <span class="n">quintptr</span> <span class="n">m_otherRemoveObject</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">bool</span> <span class="n">qskAutoDeleteHook</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+<span class="k">static</span> <span class="n">CounterHook</span><span class="o">*</span> <span class="n">qskCounterHook</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+<span class="n">CounterHook</span><span class="o">::</span><span class="n">CounterHook</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">m_otherStartup</span> <span class="o">=</span> <span class="n">qtHookData</span><span class="p">[</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">Startup</span> <span class="p">];</span>
+    <span class="n">m_otherAddObject</span> <span class="o">=</span> <span class="n">qtHookData</span><span class="p">[</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">AddQObject</span> <span class="p">];</span>
+    <span class="n">m_otherRemoveObject</span> <span class="o">=</span> <span class="n">qtHookData</span><span class="p">[</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">RemoveQObject</span> <span class="p">];</span>
+
+    <span class="n">qtHookData</span><span class="p">[</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">Startup</span> <span class="p">]</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="n">quintptr</span> <span class="o">&gt;</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">startupHook</span> <span class="p">);</span>
+    <span class="n">qtHookData</span><span class="p">[</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">AddQObject</span> <span class="p">]</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="n">quintptr</span> <span class="o">&gt;</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">addObjectHook</span> <span class="p">);</span>
+    <span class="n">qtHookData</span><span class="p">[</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">RemoveQObject</span> <span class="p">]</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="n">quintptr</span> <span class="o">&gt;</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">removeObjectHook</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">CounterHook</span><span class="o">::~</span><span class="n">CounterHook</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">qtHookData</span><span class="p">[</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">Startup</span> <span class="p">]</span> <span class="o">=</span> <span class="n">m_otherStartup</span><span class="p">;</span>
+    <span class="n">qtHookData</span><span class="p">[</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">AddQObject</span> <span class="p">]</span> <span class="o">=</span> <span class="n">m_otherAddObject</span><span class="p">;</span>
+    <span class="n">qtHookData</span><span class="p">[</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">RemoveQObject</span> <span class="p">]</span> <span class="o">=</span> <span class="n">m_otherRemoveObject</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CounterHook</span><span class="o">::</span><span class="n">registerCounters</span><span class="p">(</span> <span class="n">CounterData</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="n">m_counterDataSet</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">data</span> <span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">m_counterDataSet</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span> <span class="n">data</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">CounterHook</span><span class="o">::</span><span class="n">isCountersRegistered</span><span class="p">(</span> <span class="k">const</span> <span class="n">CounterData</span><span class="o">*</span> <span class="n">data</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_counterDataSet</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span> <span class="k">const_cast</span><span class="o">&lt;</span> <span class="n">CounterData</span><span class="o">*</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">CounterHook</span><span class="o">::</span><span class="n">isActive</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">!</span><span class="n">m_counterDataSet</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CounterHook</span><span class="o">::</span><span class="n">startup</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="c">#if 0
+    qDebug() &lt;&lt; "** QskObjectCounterHook enabled";
+#endif
+</span>    <span class="k">if</span> <span class="p">(</span> <span class="n">m_otherStartup</span> <span class="p">)</span>
+        <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">StartupCallback</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_otherStartup</span> <span class="p">)();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CounterHook</span><span class="o">::</span><span class="n">addObject</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">isItem</span> <span class="o">=</span> <span class="n">qskIsItem</span><span class="p">(</span> <span class="n">object</span> <span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">counterData</span> <span class="o">:</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="n">m_counterDataSet</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">counterData</span><span class="o">-&gt;</span><span class="n">counter</span><span class="p">[</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">Objects</span> <span class="p">].</span><span class="n">increment</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">isItem</span> <span class="p">)</span>
+            <span class="n">counterData</span><span class="o">-&gt;</span><span class="n">counter</span><span class="p">[</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">Items</span> <span class="p">].</span><span class="n">increment</span><span class="p">();</span>
+
+<span class="cp">#if QSK_OBJECT_INFO
+</span>        <span class="n">counterData</span><span class="o">-&gt;</span><span class="n">objectTable</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">object</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_otherAddObject</span> <span class="p">)</span>
+        <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">AddQObjectCallback</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_otherAddObject</span> <span class="p">)(</span> <span class="n">object</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CounterHook</span><span class="o">::</span><span class="n">removeObject</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">isItem</span> <span class="o">=</span> <span class="n">qskIsItem</span><span class="p">(</span> <span class="n">object</span> <span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">counterData</span> <span class="o">:</span> <span class="n">qskAsConst</span><span class="p">(</span> <span class="n">m_counterDataSet</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">counterData</span><span class="o">-&gt;</span><span class="n">counter</span><span class="p">[</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">Objects</span> <span class="p">].</span><span class="n">decrement</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">isItem</span> <span class="p">)</span>
+            <span class="n">counterData</span><span class="o">-&gt;</span><span class="n">counter</span><span class="p">[</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">Items</span> <span class="p">].</span><span class="n">decrement</span><span class="p">();</span>
+
+<span class="cp">#if QSK_OBJECT_INFO
+</span>        <span class="n">counterData</span><span class="o">-&gt;</span><span class="n">objectTable</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span> <span class="n">object</span> <span class="p">);</span>
+<span class="cp">#endif
+</span>    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_otherRemoveObject</span> <span class="p">)</span>
+        <span class="k">reinterpret_cast</span><span class="o">&lt;</span> <span class="n">QHooks</span><span class="o">::</span><span class="n">RemoveQObjectCallback</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">m_otherRemoveObject</span> <span class="p">)(</span> <span class="n">object</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CounterHook</span><span class="o">::</span><span class="n">startupHook</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskCounterHook</span> <span class="p">)</span>
+        <span class="n">qskCounterHook</span><span class="o">-&gt;</span><span class="n">startup</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CounterHook</span><span class="o">::</span><span class="n">addObjectHook</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskCounterHook</span> <span class="p">)</span>
+        <span class="n">qskCounterHook</span><span class="o">-&gt;</span><span class="n">addObject</span><span class="p">(</span> <span class="n">object</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CounterHook</span><span class="o">::</span><span class="n">removeObjectHook</span><span class="p">(</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">object</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskCounterHook</span> <span class="p">)</span>
+        <span class="n">qskCounterHook</span><span class="o">-&gt;</span><span class="n">removeObject</span><span class="p">(</span> <span class="n">object</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CounterHook</span><span class="o">::</span><span class="n">cleanupHook</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">qskCounterHook</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">qskCounterHook</span><span class="o">-&gt;</span><span class="n">isActive</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">qskCounterHook</span><span class="p">;</span>
+        <span class="n">qskCounterHook</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// From now on we remove the hooks as soon as there are no counters</span>
+    <span class="n">qskAutoDeleteHook</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">qskInstallCleanupHookHandler</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">qAddPostRoutine</span><span class="p">(</span> <span class="n">CounterHook</span><span class="o">::</span><span class="n">cleanupHook</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Q_COREAPP_STARTUP_FUNCTION</span><span class="p">(</span> <span class="n">qskInstallCleanupHookHandler</span> <span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">QskObjectCounter</span><span class="o">::</span><span class="n">PrivateData</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="n">PrivateData</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">debugAtDestruction</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">debugAtDestruction</span><span class="p">(</span> <span class="n">debugAtDestruction</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="n">CounterData</span> <span class="n">counterData</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">debugAtDestruction</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">QskObjectCounter</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">debugAtDestruction</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_data</span><span class="p">(</span> <span class="k">new</span> <span class="nf">PrivateData</span><span class="p">(</span> <span class="n">debugAtDestruction</span> <span class="p">)</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">setActive</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskObjectCounter</span><span class="o">::~</span><span class="n">QskObjectCounter</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">setActive</span><span class="p">(</span> <span class="nb">false</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">debugAtDestruction</span> <span class="p">)</span>
+        <span class="n">dump</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">setActive</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">qskCounterHook</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">qskCounterHook</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CounterHook</span><span class="p">();</span>
+
+        <span class="n">qskCounterHook</span><span class="o">-&gt;</span><span class="n">registerCounters</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">counterData</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">qskCounterHook</span><span class="o">-&gt;</span><span class="n">registerCounters</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">counterData</span><span class="p">,</span> <span class="n">on</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">qskCounterHook</span><span class="o">-&gt;</span><span class="n">isActive</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">qskAutoDeleteHook</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">delete</span> <span class="n">qskCounterHook</span><span class="p">;</span>
+                <span class="n">qskCounterHook</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">isActive</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">qskCounterHook</span> <span class="o">&amp;&amp;</span> <span class="n">qskCounterHook</span><span class="o">-&gt;</span><span class="n">isCountersRegistered</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">m_data</span><span class="o">-&gt;</span><span class="n">counterData</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">reset</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">auto</span><span class="o">&amp;</span> <span class="n">counters</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">counterData</span><span class="p">.</span><span class="n">counter</span><span class="p">;</span>
+
+    <span class="n">counters</span><span class="p">[</span> <span class="n">Objects</span> <span class="p">].</span><span class="n">reset</span><span class="p">();</span>
+    <span class="n">counters</span><span class="p">[</span> <span class="n">Items</span> <span class="p">].</span><span class="n">reset</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">created</span><span class="p">(</span> <span class="n">ObjectType</span> <span class="n">objectType</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">counterData</span><span class="p">.</span><span class="n">counter</span><span class="p">[</span> <span class="n">objectType</span> <span class="p">].</span><span class="n">created</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">destroyed</span><span class="p">(</span> <span class="n">ObjectType</span> <span class="n">objectType</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">counterData</span><span class="p">.</span><span class="n">counter</span><span class="p">[</span> <span class="n">objectType</span> <span class="p">].</span><span class="n">destroyed</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">current</span><span class="p">(</span> <span class="n">ObjectType</span> <span class="n">objectType</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">counterData</span><span class="p">.</span><span class="n">counter</span><span class="p">[</span> <span class="n">objectType</span> <span class="p">].</span><span class="n">current</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">maximum</span><span class="p">(</span> <span class="n">ObjectType</span> <span class="n">objectType</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">counterData</span><span class="p">.</span><span class="n">counter</span><span class="p">[</span> <span class="n">objectType</span> <span class="p">].</span><span class="n">maximum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">debugStatistics</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="n">ObjectType</span> <span class="n">objectType</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">counterData</span><span class="p">.</span><span class="n">counter</span><span class="p">[</span> <span class="n">objectType</span> <span class="p">];</span>
+
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">'('</span><span class="p">;</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"created: "</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">created</span>
+          <span class="o">&lt;&lt;</span> <span class="s">", destroyed: "</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">destroyed</span>
+          <span class="o">&lt;&lt;</span> <span class="s">", current: "</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">current</span>
+          <span class="o">&lt;&lt;</span> <span class="s">", maximum: "</span> <span class="o">&lt;&lt;</span> <span class="n">c</span><span class="p">.</span><span class="n">maximum</span><span class="p">;</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">')'</span><span class="p">;</span>
+
+<span class="cp">#if QSK_OBJECT_INFO
+</span>    <span class="k">if</span> <span class="p">(</span> <span class="n">objectType</span> <span class="o">==</span> <span class="n">Objects</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">objectTable</span> <span class="o">=</span> <span class="n">m_data</span><span class="o">-&gt;</span><span class="n">counterData</span><span class="p">.</span><span class="n">objectTable</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">objectTable</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n\t</span><span class="s">=== Leaks ===</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">object</span> <span class="o">:</span> <span class="n">objectTable</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\t</span><span class="s">Class: "</span> <span class="o">&lt;&lt;</span> <span class="n">object</span><span class="o">-&gt;</span><span class="n">metaObject</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">();</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">object</span><span class="o">-&gt;</span><span class="n">objectName</span><span class="p">().</span><span class="n">isEmpty</span><span class="p">()</span> <span class="p">)</span>
+                    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">" Name: "</span> <span class="o">&lt;&lt;</span> <span class="n">object</span><span class="o">-&gt;</span><span class="n">objectName</span><span class="p">();</span> 
+                <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="sc">'\n'</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="cp">#endif
+</span><span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">dump</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QDebug</span> <span class="n">debug</span> <span class="o">=</span> <span class="n">qDebug</span><span class="p">();</span>
+
+    <span class="n">QDebugStateSaver</span> <span class="n">saver</span><span class="p">(</span> <span class="n">debug</span> <span class="p">);</span>
+
+    <span class="n">debug</span><span class="p">.</span><span class="n">nospace</span><span class="p">();</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"* Statistics</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"  Objects: "</span><span class="p">;</span>
+    <span class="n">debugStatistics</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="n">Objects</span> <span class="p">);</span>
+
+    <span class="n">debug</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">  Items: "</span><span class="p">;</span>
+    <span class="n">debugStatistics</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="n">Items</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskObjectCounter</span><span class="o">&amp;</span> <span class="n">counter</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">counter</span><span class="p">.</span><span class="n">debugStatistics</span><span class="p">(</span> <span class="n">debug</span><span class="p">,</span> <span class="n">QskObjectCounter</span><span class="o">::</span><span class="n">Objects</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">debug</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

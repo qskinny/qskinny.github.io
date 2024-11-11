@@ -1,0 +1,342 @@
+<h1 id="qsklayoutengine2d">QskLayoutEngine2D</h1>
+
+<p>Inherited by <a href="/docs/classes/classQskGridLayoutEngine/">QskGridLayoutEngine</a>, <a href="/docs/classes/classQskLinearLayoutEngine/">QskLinearLayoutEngine</a></p>
+
+<h2 id="protected-types">Protected Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#enum-@12">@12</a></strong> { ElementCache = 1 « 0, LayoutCache = 1 « 1}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-qsklayoutengine2d">QskLayoutEngine2D</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>virtual</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-~qsklayoutengine2d">~QskLayoutEngine2D</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>virtual int</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-count">count</a></strong>() const =0</td>
+    </tr>
+    <tr>
+      <td>virtual QQuickItem *</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-itemat">itemAt</a></strong>(int index) const =0</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-indexof">indexOf</a></strong>(const QQuickItem * item) const</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-rowcount">rowCount</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-columncount">columnCount</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-setvisualdirection">setVisualDirection</a></strong>(Qt::LayoutDirection direction)</td>
+    </tr>
+    <tr>
+      <td>Qt::LayoutDirection</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-visualdirection">visualDirection</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-setdefaultalignment">setDefaultAlignment</a></strong>(Qt::Alignment alignment)</td>
+    </tr>
+    <tr>
+      <td>Qt::Alignment</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-defaultalignment">defaultAlignment</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-setextraspacingat">setExtraSpacingAt</a></strong>(Qt::Edges edges)</td>
+    </tr>
+    <tr>
+      <td>Qt::Edges</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-extraspacingat">extraSpacingAt</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-setspacing">setSpacing</a></strong>(qreal spacing, Qt::Orientations orientations)</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-spacing">spacing</a></strong>(Qt::Orientation orientation) const</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-defaultspacing">defaultSpacing</a></strong>(Qt::Orientation ) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-invalidate">invalidate</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-widthforheight">widthForHeight</a></strong>(qreal height) const</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-heightforwidth">heightForWidth</a></strong>(qreal width) const</td>
+    </tr>
+    <tr>
+      <td>QSizeF</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-sizehint">sizeHint</a></strong>(Qt::SizeHint which, const QSizeF &amp; constraint) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-setgeometries">setGeometries</a></strong>(const QRectF &amp; rect)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-layoutitem">layoutItem</a></strong>(QQuickItem * item, const QRect &amp; grid) const</td>
+    </tr>
+    <tr>
+      <td>QskLayoutHint</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-layouthint">layoutHint</a></strong>(const QQuickItem * item, Qt::Orientation orientation, qreal constraint) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-invalidate">invalidate</a></strong>(int what)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskLayoutEngine2D/#function-requiresadjustment">requiresAdjustment</a></strong>(const QQuickItem * item) const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-types-documentation">Protected Types Documentation</h2>
+
+<h3 id="enum-12">enum @12</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ElementCache</td>
+      <td>1 « 0</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>LayoutCache</td>
+      <td>1 « 1</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qsklayoutengine2d">function QskLayoutEngine2D</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskLayoutEngine2D</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qsklayoutengine2d-1">function ~QskLayoutEngine2D</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="o">~</span><span class="n">QskLayoutEngine2D</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-count">function count</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">int</span> <span class="n">count</span><span class="p">()</span> <span class="k">const</span> <span class="o">=</span><span class="mi">0</span>
+</code></pre></div></div>
+
+<h3 id="function-itemat">function itemAt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">itemAt</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">index</span>
+<span class="p">)</span> <span class="k">const</span> <span class="o">=</span><span class="mi">0</span>
+</code></pre></div></div>
+
+<h3 id="function-indexof">function indexOf</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">indexOf</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-rowcount">function rowCount</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">int</span> <span class="n">rowCount</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-columncount">function columnCount</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">int</span> <span class="n">columnCount</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setvisualdirection">function setVisualDirection</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">setVisualDirection</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">LayoutDirection</span> <span class="n">direction</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-visualdirection">function visualDirection</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">LayoutDirection</span> <span class="n">visualDirection</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setdefaultalignment">function setDefaultAlignment</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">setDefaultAlignment</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-defaultalignment">function defaultAlignment</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">defaultAlignment</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setextraspacingat">function setExtraSpacingAt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">setExtraSpacingAt</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Edges</span> <span class="n">edges</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-extraspacingat">function extraSpacingAt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Qt</span><span class="o">::</span><span class="n">Edges</span> <span class="n">extraSpacingAt</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setspacing">function setSpacing</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">setSpacing</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">spacing</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientations</span> <span class="n">orientations</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-spacing">function spacing</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">spacing</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-defaultspacing">function defaultSpacing</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">defaultSpacing</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> 
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-invalidate">function invalidate</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="kt">void</span> <span class="n">invalidate</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-widthforheight">function widthForHeight</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">widthForHeight</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">height</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-heightforwidth">function heightForWidth</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">heightForWidth</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">width</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-sizehint">function sizeHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">sizeHint</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">constraint</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setgeometries">function setGeometries</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setGeometries</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QRectF</span> <span class="o">&amp;</span> <span class="n">rect</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-layoutitem">function layoutItem</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">layoutItem</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRect</span> <span class="o">&amp;</span> <span class="n">grid</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-layouthint">function layoutHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskLayoutHint</span> <span class="n">layoutHint</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">constraint</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-invalidate-1">function invalidate</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">invalidate</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">what</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-requiresadjustment">function requiresAdjustment</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">requiresAdjustment</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:28 CEST</p>

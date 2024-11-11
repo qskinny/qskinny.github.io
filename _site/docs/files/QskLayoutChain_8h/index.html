@@ -1,0 +1,197 @@
+<h1 id="layoutsqsklayoutchainh">layouts/QskLayoutChain.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskLayoutChain/">QskLayoutChain</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskLayoutChain_8h/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskLayoutChain::Segment &amp; segment)</td>
+    </tr>
+    <tr>
+      <td>QDebug</td>
+      <td><strong><a href="/docs/files/QskLayoutChain_8h/#function-operator&lt;&lt;">operator«</a></strong>(QDebug debug, const QskLayoutChain::CellData &amp; cell)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskLayoutChain_8h/#function-q_declare_typeinfo">Q_DECLARE_TYPEINFO</a></strong>(QskLayoutChain::Segment , Q_MOVABLE_TYPE )</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskLayoutChain_8h/#function-q_declare_typeinfo">Q_DECLARE_TYPEINFO</a></strong>(QskLayoutChain::CellData , Q_MOVABLE_TYPE )</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-operator">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segment</span> <span class="o">&amp;</span> <span class="n">segment</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-operator-1">function operator«</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span>
+    <span class="n">QDebug</span> <span class="n">debug</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">CellData</span> <span class="o">&amp;</span> <span class="n">cell</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-q_declare_typeinfo">function Q_DECLARE_TYPEINFO</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span>
+    <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segment</span> <span class="p">,</span>
+    <span class="n">Q_MOVABLE_TYPE</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-q_declare_typeinfo-1">function Q_DECLARE_TYPEINFO</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span>
+    <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">CellData</span> <span class="p">,</span>
+    <span class="n">Q_MOVABLE_TYPE</span> 
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_LAYOUT_CHAIN_H
+#define QSK_LAYOUT_CHAIN_H
+</span>
+<span class="cp">#include &lt;QskLayoutHint.h&gt;
+#include &lt;qrect.h&gt;
+#include &lt;qvector.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QDebug</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QskLayoutChain</span>
+<span class="p">{</span>
+  <span class="nl">public:</span>
+    <span class="k">class</span> <span class="nc">Segment</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">end</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">start</span> <span class="o">+</span> <span class="n">length</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="n">qreal</span> <span class="n">start</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="n">qreal</span> <span class="n">length</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">typedef</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">Segment</span> <span class="o">&gt;</span> <span class="n">Segments</span><span class="p">;</span>
+
+    <span class="k">class</span> <span class="nc">CellData</span>
+    <span class="p">{</span>
+      <span class="nl">public:</span>
+        <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">size</span><span class="p">(</span> <span class="kt">int</span> <span class="n">which</span> <span class="p">)</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">hint</span><span class="p">.</span><span class="n">size</span><span class="p">(</span> <span class="n">which</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="kr">inline</span> <span class="kt">void</span> <span class="n">setSize</span><span class="p">(</span> <span class="kt">int</span> <span class="n">which</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">size</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">hint</span><span class="p">.</span><span class="n">setSize</span><span class="p">(</span> <span class="n">which</span><span class="p">,</span> <span class="n">size</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">QskLayoutHint</span> <span class="n">hint</span><span class="p">;</span>
+
+        <span class="kt">int</span> <span class="n">stretch</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">canGrow</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">isShrunk</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">isValid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="k">enum</span> <span class="n">FillMode</span>
+    <span class="p">{</span>
+        <span class="n">Leading</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">Trailing</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+    <span class="p">};</span>
+
+    <span class="n">QskLayoutChain</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">QskLayoutChain</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">invalidate</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">reset</span><span class="p">(</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">constraint</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">expandCell</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="k">const</span> <span class="n">CellData</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">expandCells</span><span class="p">(</span> <span class="kt">int</span> <span class="n">start</span><span class="p">,</span> <span class="kt">int</span> <span class="n">end</span><span class="p">,</span> <span class="k">const</span> <span class="n">CellData</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">shrinkCell</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="k">const</span> <span class="n">CellData</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">finish</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">CellData</span><span class="o">&amp;</span> <span class="n">cell</span><span class="p">(</span> <span class="kt">int</span> <span class="n">index</span> <span class="p">)</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_cells</span><span class="p">[</span> <span class="n">index</span> <span class="p">];</span> <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">setSpacing</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">spacing</span> <span class="p">);</span>
+    <span class="n">qreal</span> <span class="n">spacing</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_spacing</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">setFillMode</span><span class="p">(</span> <span class="kt">int</span> <span class="n">mode</span> <span class="p">)</span> <span class="p">{</span> <span class="n">m_fillMode</span> <span class="o">=</span> <span class="n">mode</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">fillMode</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_fillMode</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="n">Segments</span> <span class="n">segments</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">size</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">QskLayoutHint</span> <span class="n">boundingHint</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_boundingHint</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="n">qreal</span> <span class="n">constraint</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_constraint</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kr">inline</span> <span class="kt">int</span> <span class="n">count</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">m_cells</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="p">}</span>
+
+  <span class="nl">private:</span>
+    <span class="n">Segments</span> <span class="n">distributed</span><span class="p">(</span> <span class="kt">int</span> <span class="n">which</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">offset</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">extra</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">Segments</span> <span class="n">minimumExpanded</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">size</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="n">Segments</span> <span class="n">preferredStretched</span><span class="p">(</span> <span class="n">qreal</span> <span class="n">size</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QskLayoutHint</span> <span class="n">m_boundingHint</span><span class="p">;</span>
+    <span class="n">qreal</span> <span class="n">m_constraint</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">;</span>
+
+    <span class="n">qreal</span> <span class="n">m_spacing</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">m_fillMode</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">m_sumStretches</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">m_validCells</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">CellData</span> <span class="o">&gt;</span> <span class="n">m_cells</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#ifndef QT_NO_DEBUG_STREAM
+</span>
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segment</span><span class="o">&amp;</span> <span class="p">);</span>
+<span class="n">QDebug</span> <span class="k">operator</span><span class="o">&lt;&lt;</span><span class="p">(</span> <span class="n">QDebug</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">CellData</span><span class="o">&amp;</span> <span class="p">);</span>
+
+<span class="cp">#endif
+</span>
+<span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">Segment</span><span class="p">,</span> <span class="n">Q_MOVABLE_TYPE</span> <span class="p">);</span>
+<span class="n">Q_DECLARE_TYPEINFO</span><span class="p">(</span> <span class="n">QskLayoutChain</span><span class="o">::</span><span class="n">CellData</span><span class="p">,</span> <span class="n">Q_MOVABLE_TYPE</span> <span class="p">);</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

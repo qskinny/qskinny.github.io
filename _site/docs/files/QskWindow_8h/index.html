@@ -1,0 +1,157 @@
+<h1 id="controlsqskwindowh">controls/QskWindow.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskWindow/">QskWindow</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>QskSkin *</td>
+      <td><strong><a href="/docs/files/QskWindow_8h/#function-qskeffectiveskin">qskEffectiveSkin</a></strong>(const QQuickWindow * window)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskeffectiveskin">function qskEffectiveSkin</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskSkin</span> <span class="o">*</span> <span class="n">qskEffectiveSkin</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickWindow</span> <span class="o">*</span> <span class="n">window</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_WINDOW_H
+#define QSK_WINDOW_H 1
+</span>
+<span class="cp">#include "QskGlobal.h"
+#include &lt;qquickwindow.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">QskWindowPrivate</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskObjectAttributes</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskSkin</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskWindow</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QQuickWindow</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">deleteOnClose</span> <span class="n">READ</span> <span class="n">deleteOnClose</span>
+        <span class="n">WRITE</span> <span class="n">setDeleteOnClose</span> <span class="n">NOTIFY</span> <span class="n">deleteOnCloseChanged</span> <span class="n">FINAL</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">autoLayoutChildren</span> <span class="n">READ</span> <span class="n">autoLayoutChildren</span>
+        <span class="n">WRITE</span> <span class="n">setAutoLayoutChildren</span> <span class="n">NOTIFY</span> <span class="n">autoLayoutChildrenChanged</span> <span class="n">FINAL</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QLocale</span> <span class="n">locale</span> <span class="n">READ</span> <span class="n">locale</span>
+        <span class="n">WRITE</span> <span class="n">setLocale</span> <span class="n">RESET</span> <span class="n">resetLocale</span> <span class="n">NOTIFY</span> <span class="n">localeChanged</span> <span class="n">FINAL</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QQuickWindow</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="k">enum</span> <span class="n">EventAcceptance</span>
+    <span class="p">{</span>
+        <span class="n">EventProcessed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">EventPropagationStopped</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="p">};</span>
+
+    <span class="n">QskWindow</span><span class="p">(</span> <span class="n">QWindow</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="n">QskWindow</span><span class="p">(</span> <span class="n">QQuickRenderControl</span><span class="o">*</span> <span class="n">renderControl</span><span class="p">,</span> <span class="n">QWindow</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+    <span class="o">~</span><span class="n">QskWindow</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span><span class="o">::</span><span class="n">setScreen</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setScreen</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">bool</span> <span class="n">deleteOnClose</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">setDeleteOnClose</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">setAutoLayoutChildren</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">autoLayoutChildren</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="kt">void</span> <span class="n">addItem</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="p">);</span>
+
+    <span class="n">QLocale</span> <span class="n">locale</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">resetLocale</span><span class="p">();</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="kt">void</span> <span class="n">setPreferredSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="n">Q_INVOKABLE</span> <span class="n">QSize</span> <span class="n">preferredSize</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="n">QSize</span> <span class="n">sizeConstraint</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">Q_INVOKABLE</span> <span class="kt">void</span> <span class="n">setFixedSize</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSize</span><span class="o">&amp;</span> <span class="p">);</span>
+
+    <span class="kt">void</span> <span class="n">polishItems</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">setCustomRenderMode</span><span class="p">(</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">mode</span> <span class="p">);</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">customRenderMode</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="c1">// extra flag to interprete accepted events</span>
+    <span class="kt">void</span> <span class="n">setEventAcceptance</span><span class="p">(</span> <span class="n">EventAcceptance</span> <span class="p">);</span>
+    <span class="n">EventAcceptance</span> <span class="n">eventAcceptance</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="c1">// each window might have its own skin</span>
+    <span class="kt">void</span> <span class="n">setSkin</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">setSkin</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="n">QskSkin</span><span class="o">*</span> <span class="n">skin</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">localeChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">autoLayoutChildrenChanged</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">deleteOnCloseChanged</span><span class="p">();</span>
+
+  <span class="k">public</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">setLocale</span><span class="p">(</span> <span class="k">const</span> <span class="n">QLocale</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resizeF</span><span class="p">(</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">bool</span> <span class="n">event</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">resizeEvent</span><span class="p">(</span> <span class="n">QResizeEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">exposeEvent</span><span class="p">(</span> <span class="n">QExposeEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">keyPressEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">keyReleaseEvent</span><span class="p">(</span> <span class="n">QKeyEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">layoutItems</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">ensureFocus</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">FocusReason</span> <span class="p">);</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">enforceSkin</span><span class="p">();</span>
+
+    <span class="n">Q_DECLARE_PRIVATE</span><span class="p">(</span> <span class="n">QskWindow</span> <span class="p">)</span>
+<span class="p">};</span>
+
+<span class="n">QSK_EXPORT</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="nf">qskEffectiveSkin</span><span class="p">(</span> <span class="k">const</span> <span class="n">QQuickWindow</span><span class="o">*</span> <span class="p">);</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

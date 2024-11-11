@@ -1,0 +1,123 @@
+<h1 id="controlsqsktextlabelh">controls/QskTextLabel.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskTextLabel/">QskTextLabel</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_TEXT_LABEL_H
+#define QSK_TEXT_LABEL_H
+</span>
+<span class="cp">#include "QskControl.h"
+#include "QskTextOptions.h"
+</span>
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskTextLabel</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskControl</span>
+<span class="p">{</span>
+    <span class="n">Q_OBJECT</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QString</span> <span class="n">text</span> <span class="n">READ</span> <span class="n">text</span> <span class="n">WRITE</span> <span class="n">setText</span> <span class="n">NOTIFY</span> <span class="n">textChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">int</span> <span class="n">fontRole</span> <span class="n">READ</span> <span class="n">fontRole</span>
+        <span class="n">WRITE</span> <span class="n">setFontRole</span> <span class="n">RESET</span> <span class="n">resetFontRole</span> <span class="n">NOTIFY</span> <span class="n">fontRoleChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QFont</span> <span class="n">font</span> <span class="n">READ</span> <span class="n">font</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QColor</span> <span class="n">textColor</span> <span class="n">READ</span> <span class="n">textColor</span>
+        <span class="n">WRITE</span> <span class="n">setTextColor</span> <span class="n">RESET</span> <span class="n">resetTextColor</span> <span class="n">NOTIFY</span> <span class="n">textColorChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">QskTextOptions</span> <span class="n">textOptions</span> <span class="n">READ</span> <span class="n">textOptions</span>
+        <span class="n">WRITE</span> <span class="n">setTextOptions</span> <span class="n">NOTIFY</span> <span class="n">textOptionsChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span> <span class="n">READ</span> <span class="n">alignment</span>
+        <span class="n">WRITE</span> <span class="n">setAlignment</span> <span class="n">NOTIFY</span> <span class="n">alignmentChanged</span> <span class="p">)</span>
+
+    <span class="n">Q_PROPERTY</span><span class="p">(</span> <span class="kt">bool</span> <span class="n">panel</span> <span class="n">READ</span> <span class="n">hasPanel</span>
+        <span class="n">WRITE</span> <span class="n">setPanel</span> <span class="n">NOTIFY</span> <span class="n">panelChanged</span> <span class="p">)</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskControl</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">QSK_SUBCONTROLS</span><span class="p">(</span> <span class="n">Panel</span><span class="p">,</span> <span class="n">Text</span> <span class="p">)</span>
+
+    <span class="n">QskTextLabel</span><span class="p">(</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="n">QskTextLabel</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">,</span> <span class="n">QQuickItem</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+
+    <span class="o">~</span><span class="n">QskTextLabel</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="n">QString</span> <span class="n">text</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setFontRole</span><span class="p">(</span> <span class="kt">int</span> <span class="n">role</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetFontRole</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">fontRole</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setTextColor</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetTextColor</span><span class="p">();</span>
+    <span class="n">QColor</span> <span class="n">textColor</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setTextOptions</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="n">QskTextOptions</span> <span class="n">textOptions</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setTextFormat</span><span class="p">(</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">TextFormat</span> <span class="p">);</span>
+    <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">TextFormat</span> <span class="n">textFormat</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">TextFormat</span> <span class="n">effectiveTextFormat</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setWrapMode</span><span class="p">(</span> <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">WrapMode</span> <span class="p">);</span>
+    <span class="n">QskTextOptions</span><span class="o">::</span><span class="n">WrapMode</span> <span class="n">wrapMode</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setElideMode</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="p">);</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">TextElideMode</span> <span class="n">elideMode</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setAlignment</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">resetAlignment</span><span class="p">();</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="n">alignment</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QFont</span> <span class="n">font</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">setPanel</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">hasPanel</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">Q_SIGNALS:</span>
+    <span class="kt">void</span> <span class="n">textChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">textColorChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QColor</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">textOptionsChanged</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskTextOptions</span><span class="o">&amp;</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">fontRoleChanged</span><span class="p">(</span> <span class="kt">int</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">alignmentChanged</span><span class="p">(</span> <span class="n">Qt</span><span class="o">::</span><span class="n">Alignment</span> <span class="p">);</span>
+    <span class="kt">void</span> <span class="n">panelChanged</span><span class="p">(</span> <span class="kt">bool</span> <span class="p">);</span>
+
+  <span class="k">public</span> <span class="n">Q_SLOTS</span><span class="o">:</span>
+    <span class="kt">void</span> <span class="n">setText</span><span class="p">(</span> <span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="p">);</span>
+
+  <span class="nl">protected:</span>
+    <span class="kt">void</span> <span class="n">changeEvent</span><span class="p">(</span> <span class="n">QEvent</span><span class="o">*</span> <span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="k">class</span> <span class="nc">PrivateData</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span> <span class="n">PrivateData</span> <span class="o">&gt;</span> <span class="n">m_data</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

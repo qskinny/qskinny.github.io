@@ -1,0 +1,367 @@
+<h1 id="commonqskscaleenginecpp">common/QskScaleEngine.cpp</h1>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="c1">// code copied from Qwt - with permission from the author ( = myself )</span>
+
+<span class="cp">#include "QskScaleEngine.h"
+#include "QskFunctions.h"
+#include "QskIntervalF.h"
+#include "QskScaleTickmarks.h"
+</span>
+<span class="cp">#include &lt;QDebug&gt;
+#include &lt;QtMath&gt;
+</span>
+<span class="cp">#include &lt;cmath&gt;
+</span>
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="c1">// What about using qskFuzzyCompare and friends ???</span>
+
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">_eps</span> <span class="o">=</span> <span class="mf">1.0e-6</span><span class="p">;</span>
+
+    <span class="kr">inline</span> <span class="kt">int</span> <span class="n">fuzzyCompare</span><span class="p">(</span> <span class="kt">double</span> <span class="n">value1</span><span class="p">,</span> <span class="kt">double</span> <span class="n">value2</span><span class="p">,</span> <span class="kt">double</span> <span class="n">intervalSize</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">double</span> <span class="n">eps</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">abs</span><span class="p">(</span> <span class="mf">1.0e-6</span> <span class="o">*</span> <span class="n">intervalSize</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">value2</span> <span class="o">-</span> <span class="n">value1</span> <span class="o">&gt;</span> <span class="n">eps</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">value1</span> <span class="o">-</span> <span class="n">value2</span> <span class="o">&gt;</span> <span class="n">eps</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kr">inline</span> <span class="kt">bool</span> <span class="n">fuzzyContains</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">interval</span><span class="p">,</span> <span class="kt">double</span> <span class="n">value</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">interval</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">fuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">interval</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">(),</span> <span class="n">interval</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">fuzzyCompare</span><span class="p">(</span> <span class="n">value</span><span class="p">,</span> <span class="n">interval</span><span class="p">.</span><span class="n">upperBound</span><span class="p">(),</span> <span class="n">interval</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">ceilEps</span><span class="p">(</span> <span class="kt">double</span> <span class="n">value</span><span class="p">,</span> <span class="kt">double</span> <span class="n">intervalSize</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">double</span> <span class="n">eps</span> <span class="o">=</span> <span class="n">_eps</span> <span class="o">*</span> <span class="n">intervalSize</span><span class="p">;</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="p">(</span> <span class="n">value</span> <span class="o">-</span> <span class="n">eps</span> <span class="p">)</span> <span class="o">/</span> <span class="n">intervalSize</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">ceil</span><span class="p">(</span> <span class="n">value</span> <span class="p">)</span> <span class="o">*</span> <span class="n">intervalSize</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">floorEps</span><span class="p">(</span> <span class="kt">double</span> <span class="n">value</span><span class="p">,</span> <span class="kt">double</span> <span class="n">intervalSize</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">double</span> <span class="n">eps</span> <span class="o">=</span> <span class="n">_eps</span> <span class="o">*</span> <span class="n">intervalSize</span><span class="p">;</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="p">(</span> <span class="n">value</span> <span class="o">+</span> <span class="n">eps</span> <span class="p">)</span> <span class="o">/</span> <span class="n">intervalSize</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">floor</span><span class="p">(</span> <span class="n">value</span> <span class="p">)</span> <span class="o">*</span> <span class="n">intervalSize</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">divideEps</span><span class="p">(</span> <span class="kt">double</span> <span class="n">intervalSize</span><span class="p">,</span> <span class="kt">double</span> <span class="n">numSteps</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">numSteps</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="o">||</span> <span class="n">intervalSize</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="p">(</span> <span class="n">intervalSize</span> <span class="o">-</span> <span class="p">(</span> <span class="n">_eps</span> <span class="o">*</span> <span class="n">intervalSize</span> <span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="n">numSteps</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">double</span> <span class="n">divideInterval</span><span class="p">(</span> <span class="kt">double</span> <span class="n">intervalSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">numSteps</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">numSteps</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">v</span> <span class="o">=</span> <span class="n">divideEps</span><span class="p">(</span> <span class="n">intervalSize</span><span class="p">,</span> <span class="n">numSteps</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">v</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="p">)</span>
+            <span class="k">return</span> <span class="mf">0.0</span><span class="p">;</span>
+
+        <span class="k">constexpr</span> <span class="kt">double</span> <span class="n">base</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">;</span>
+
+        <span class="c1">// the same as std::log10( std::fabs( v ) );</span>
+        <span class="k">const</span> <span class="kt">double</span> <span class="n">lx</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">log</span><span class="p">(</span> <span class="n">std</span><span class="o">::</span><span class="n">fabs</span><span class="p">(</span> <span class="n">v</span> <span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="n">std</span><span class="o">::</span><span class="n">log</span><span class="p">(</span> <span class="n">base</span> <span class="p">);</span>
+        <span class="k">const</span> <span class="kt">double</span> <span class="n">p</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">floor</span><span class="p">(</span> <span class="n">lx</span> <span class="p">);</span>
+
+        <span class="k">const</span> <span class="kt">double</span> <span class="n">fraction</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span> <span class="n">base</span><span class="p">,</span> <span class="n">lx</span> <span class="o">-</span> <span class="n">p</span> <span class="p">);</span>
+
+        <span class="n">uint</span> <span class="n">n</span> <span class="o">=</span> <span class="n">base</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span> <span class="p">(</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="n">fraction</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">n</span> <span class="o">/=</span> <span class="mi">2</span><span class="p">;</span>
+
+        <span class="kt">double</span> <span class="n">stepSize</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">std</span><span class="o">::</span><span class="n">pow</span><span class="p">(</span> <span class="n">base</span><span class="p">,</span> <span class="n">p</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="n">stepSize</span> <span class="o">=</span> <span class="o">-</span><span class="n">stepSize</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="n">stepSize</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span>
+<span class="p">{</span>
+    <span class="kt">double</span> <span class="n">minorStepSize</span><span class="p">(</span> <span class="kt">double</span> <span class="n">intervalSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxSteps</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">double</span> <span class="n">minStep</span> <span class="o">=</span> <span class="n">divideInterval</span><span class="p">(</span> <span class="n">intervalSize</span><span class="p">,</span> <span class="n">maxSteps</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">minStep</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// # ticks per interval</span>
+            <span class="k">const</span> <span class="kt">int</span> <span class="n">numTicks</span> <span class="o">=</span> <span class="n">qCeil</span><span class="p">(</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">intervalSize</span> <span class="o">/</span> <span class="n">minStep</span> <span class="p">)</span> <span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+            <span class="c1">// Do the minor steps fit into the interval?</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">fuzzyCompare</span><span class="p">(</span> <span class="p">(</span> <span class="n">numTicks</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">minStep</span> <span class="p">),</span>
+                <span class="n">qAbs</span><span class="p">(</span> <span class="n">intervalSize</span> <span class="p">),</span> <span class="n">intervalSize</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="c1">// The minor steps doesn't fit into the interval</span>
+                <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">intervalSize</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">minStep</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">QskScaleEngine</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskScaleEngine</span><span class="o">::~</span><span class="n">QskScaleEngine</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">setAttribute</span><span class="p">(</span> <span class="n">Attribute</span> <span class="n">attribute</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">on</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">on</span> <span class="p">)</span>
+        <span class="n">m_attributes</span> <span class="o">|=</span> <span class="n">attribute</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="n">m_attributes</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">attribute</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">testAttribute</span><span class="p">(</span> <span class="n">Attribute</span> <span class="n">attribute</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_attributes</span> <span class="o">&amp;</span> <span class="n">attribute</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">setAttributes</span><span class="p">(</span> <span class="n">Attributes</span> <span class="n">attributes</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_attributes</span> <span class="o">=</span> <span class="n">attributes</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">Attributes</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">attributes</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m_attributes</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskScaleTickmarks</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">divideScale</span><span class="p">(</span>
+    <span class="n">qreal</span> <span class="n">x1</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">x2</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxMajorSteps</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxMinorSteps</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">stepSize</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QskScaleTickmarks</span> <span class="n">tickmarks</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">interval</span> <span class="o">=</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">normalized</span><span class="p">(</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">interval</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;::</span><span class="n">max</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qWarning</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">"QskScaleEngine::divideScale: overflow"</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">tickmarks</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">interval</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">tickmarks</span><span class="p">;</span>
+
+    <span class="n">stepSize</span> <span class="o">=</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">stepSize</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">stepSize</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">maxMajorSteps</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="p">)</span>
+            <span class="n">maxMajorSteps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="n">stepSize</span> <span class="o">=</span> <span class="n">divideInterval</span><span class="p">(</span> <span class="n">interval</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">maxMajorSteps</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">stepSize</span> <span class="o">!=</span> <span class="mf">0.0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">tickmarks</span> <span class="o">=</span> <span class="n">buildTicks</span><span class="p">(</span> <span class="n">interval</span><span class="p">,</span> <span class="n">stepSize</span><span class="p">,</span> <span class="n">maxMinorSteps</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">x1</span> <span class="o">&gt;</span> <span class="n">x2</span> <span class="p">)</span>
+        <span class="n">tickmarks</span><span class="p">.</span><span class="n">invert</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">tickmarks</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">autoScale</span><span class="p">(</span><span class="kt">int</span> <span class="n">maxNumSteps</span><span class="p">,</span> <span class="n">qreal</span><span class="o">&amp;</span> <span class="n">x1</span><span class="p">,</span> <span class="n">qreal</span><span class="o">&amp;</span> <span class="n">x2</span><span class="p">,</span> <span class="n">qreal</span><span class="o">&amp;</span> <span class="n">stepSize</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">interval</span> <span class="o">=</span> <span class="n">QskIntervalF</span><span class="o">::</span><span class="n">normalized</span><span class="p">(</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="p">);</span>
+
+    <span class="n">interval</span><span class="p">.</span><span class="n">setLowerBound</span><span class="p">(</span> <span class="n">interval</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">interval</span><span class="p">.</span><span class="n">setUpperBound</span><span class="p">(</span> <span class="n">interval</span><span class="p">.</span><span class="n">upperBound</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">stepSize</span> <span class="o">=</span> <span class="n">divideInterval</span><span class="p">(</span> <span class="n">interval</span><span class="p">.</span><span class="n">width</span><span class="p">(),</span> <span class="n">qMax</span><span class="p">(</span> <span class="n">maxNumSteps</span><span class="p">,</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">testAttribute</span><span class="p">(</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">Floating</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">interval</span> <span class="o">=</span> <span class="n">align</span><span class="p">(</span> <span class="n">interval</span><span class="p">,</span> <span class="n">stepSize</span> <span class="p">);</span>
+
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">interval</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">();</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">interval</span><span class="p">.</span><span class="n">upperBound</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">testAttribute</span><span class="p">(</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">Inverted</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">qSwap</span><span class="p">(</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="p">);</span>
+        <span class="n">stepSize</span> <span class="o">=</span> <span class="o">-</span><span class="n">stepSize</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskIntervalF</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">align</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">interval</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">stepSize</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">interval</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">interval</span><span class="p">.</span><span class="n">upperBound</span><span class="p">();</span>
+
+    <span class="c1">// when there is no rounding beside some effect, when</span>
+    <span class="c1">// calculating with doubles, we keep the original value</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">max</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;::</span><span class="n">max</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">-</span><span class="n">max</span> <span class="o">+</span> <span class="n">stepSize</span> <span class="o">&lt;=</span> <span class="n">x1</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">x</span> <span class="o">=</span> <span class="n">floorEps</span><span class="p">(</span> <span class="n">x1</span><span class="p">,</span> <span class="n">stepSize</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="n">qFuzzyCompare</span><span class="p">(</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">max</span> <span class="o">-</span> <span class="n">stepSize</span> <span class="o">&gt;=</span> <span class="n">x2</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">x</span> <span class="o">=</span> <span class="n">ceilEps</span><span class="p">(</span> <span class="n">x2</span><span class="p">,</span> <span class="n">stepSize</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">qFuzzyIsNull</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="n">qFuzzyCompare</span><span class="p">(</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QskIntervalF</span><span class="p">(</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QVector</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">strip</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;&amp;</span> <span class="n">ticks</span><span class="p">,</span> <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">interval</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">interval</span><span class="p">.</span><span class="n">isValid</span><span class="p">()</span> <span class="o">||</span> <span class="n">ticks</span><span class="p">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">fuzzyContains</span><span class="p">(</span> <span class="n">interval</span><span class="p">,</span> <span class="n">ticks</span><span class="p">.</span><span class="n">first</span><span class="p">()</span> <span class="p">)</span>
+        <span class="o">&amp;&amp;</span> <span class="n">fuzzyContains</span><span class="p">(</span> <span class="n">interval</span><span class="p">,</span> <span class="n">ticks</span><span class="p">.</span><span class="n">last</span><span class="p">()</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">ticks</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;</span> <span class="n">strippedTicks</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ticks</span><span class="p">.</span><span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">fuzzyContains</span><span class="p">(</span> <span class="n">interval</span><span class="p">,</span> <span class="n">ticks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">strippedTicks</span> <span class="o">+=</span> <span class="n">ticks</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">strippedTicks</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskScaleTickmarks</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">buildTicks</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">interval</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">stepSize</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxMinorSteps</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="n">T</span> <span class="o">=</span> <span class="n">QskScaleTickmarks</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">boundingInterval</span> <span class="o">=</span> <span class="n">align</span><span class="p">(</span> <span class="n">interval</span><span class="p">,</span> <span class="n">stepSize</span> <span class="p">);</span>
+
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;</span> <span class="n">ticks</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+    <span class="n">ticks</span><span class="p">[</span><span class="n">T</span><span class="o">::</span><span class="n">MajorTick</span><span class="p">]</span> <span class="o">=</span> <span class="n">buildMajorTicks</span><span class="p">(</span> <span class="n">boundingInterval</span><span class="p">,</span> <span class="n">stepSize</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">maxMinorSteps</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">buildMinorTicks</span><span class="p">(</span> <span class="n">ticks</span><span class="p">[</span><span class="n">T</span><span class="o">::</span><span class="n">MajorTick</span><span class="p">],</span> <span class="n">maxMinorSteps</span><span class="p">,</span> <span class="n">stepSize</span><span class="p">,</span>
+            <span class="n">ticks</span><span class="p">[</span><span class="n">T</span><span class="o">::</span><span class="n">MinorTick</span><span class="p">],</span> <span class="n">ticks</span><span class="p">[</span><span class="n">T</span><span class="o">::</span><span class="n">MediumTick</span><span class="p">]</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="k">auto</span><span class="o">&amp;</span> <span class="n">t</span> <span class="o">:</span> <span class="n">ticks</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span> <span class="n">t</span><span class="p">,</span> <span class="n">interval</span> <span class="p">);</span>
+
+        <span class="c1">// ticks very close to 0.0 are</span>
+        <span class="c1">// explicitely set to 0.0</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">t</span><span class="p">.</span><span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">fuzzyCompare</span><span class="p">(</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">stepSize</span> <span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">QskScaleTickmarks</span> <span class="n">tickmarks</span><span class="p">;</span>
+    <span class="n">tickmarks</span><span class="p">.</span><span class="n">setMinorTicks</span><span class="p">(</span> <span class="n">ticks</span><span class="p">[</span><span class="n">T</span><span class="o">::</span><span class="n">MinorTick</span><span class="p">]</span> <span class="p">);</span>
+    <span class="n">tickmarks</span><span class="p">.</span><span class="n">setMediumTicks</span><span class="p">(</span> <span class="n">ticks</span><span class="p">[</span><span class="n">T</span><span class="o">::</span><span class="n">MediumTick</span><span class="p">]</span> <span class="p">);</span>
+    <span class="n">tickmarks</span><span class="p">.</span><span class="n">setMajorTicks</span><span class="p">(</span> <span class="n">ticks</span><span class="p">[</span><span class="n">T</span><span class="o">::</span><span class="n">MajorTick</span><span class="p">]</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">tickmarks</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QVector</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">buildMajorTicks</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QskIntervalF</span><span class="o">&amp;</span> <span class="n">interval</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">stepSize</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">numTicks</span> <span class="o">=</span> <span class="n">qRound</span><span class="p">(</span> <span class="n">interval</span><span class="p">.</span><span class="n">width</span><span class="p">()</span> <span class="o">/</span> <span class="n">stepSize</span> <span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">numTicks</span> <span class="o">&gt;</span> <span class="mi">10000</span> <span class="p">)</span>
+        <span class="n">numTicks</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;</span> <span class="n">ticks</span><span class="p">;</span>
+    <span class="n">ticks</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span> <span class="n">numTicks</span> <span class="p">);</span>
+
+    <span class="n">ticks</span> <span class="o">+=</span> <span class="n">interval</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">();</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numTicks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="n">ticks</span> <span class="o">+=</span> <span class="n">interval</span><span class="p">.</span><span class="n">lowerBound</span><span class="p">()</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">stepSize</span><span class="p">;</span>
+    <span class="n">ticks</span> <span class="o">+=</span> <span class="n">interval</span><span class="p">.</span><span class="n">upperBound</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">ticks</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskScaleEngine</span><span class="o">::</span><span class="n">buildMinorTicks</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;&amp;</span> <span class="n">majorTicks</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxMinorSteps</span><span class="p">,</span> <span class="n">qreal</span> <span class="n">stepSize</span><span class="p">,</span>
+    <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;&amp;</span> <span class="n">minorTicks</span><span class="p">,</span> <span class="n">QVector</span><span class="o">&lt;</span> <span class="n">qreal</span> <span class="o">&gt;&amp;</span> <span class="n">mediumTicks</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">auto</span> <span class="n">minStep</span> <span class="o">=</span> <span class="n">minorStepSize</span><span class="p">(</span> <span class="n">stepSize</span><span class="p">,</span> <span class="n">maxMinorSteps</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">minStep</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="c1">// # ticks per interval</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">numTicks</span> <span class="o">=</span> <span class="n">qCeil</span><span class="p">(</span> <span class="n">qAbs</span><span class="p">(</span> <span class="n">stepSize</span> <span class="o">/</span> <span class="n">minStep</span> <span class="p">)</span> <span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">medIndex</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">numTicks</span> <span class="o">%</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="n">medIndex</span> <span class="o">=</span> <span class="n">numTicks</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="c1">// calculate minor ticks</span>
+
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">majorTicks</span><span class="p">.</span><span class="n">count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">val</span> <span class="o">=</span> <span class="n">majorTicks</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">numTicks</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">minStep</span><span class="p">;</span>
+
+            <span class="kt">double</span> <span class="n">alignedValue</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">fuzzyCompare</span><span class="p">(</span> <span class="n">val</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">stepSize</span> <span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="n">alignedValue</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">k</span> <span class="o">==</span> <span class="n">medIndex</span> <span class="p">)</span>
+                <span class="n">mediumTicks</span> <span class="o">+=</span> <span class="n">alignedValue</span><span class="p">;</span>
+            <span class="k">else</span>
+                <span class="n">minorTicks</span> <span class="o">+=</span> <span class="n">alignedValue</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">#include "moc_QskScaleEngine.cpp"
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

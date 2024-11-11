@@ -1,0 +1,352 @@
+<h1 id="qskskin">QskSkin</h1>
+
+<p>Inherits from QObject</p>
+
+<h2 id="public-types">Public Types</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enum</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#enum-skinfontrole">SkinFontRole</a></strong> { DefaultFont = 0, TinyFont, SmallFont, MediumFont, LargeFont, HugeFont}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-qskskin">QskSkin</a></strong>(QObject * parent =nullptr)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-~qskskin">~QskSkin</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>template &lt;typename Control ,typename Skinlet &gt; <br />void</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-declareskinlet">declareSkinlet</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-resetcolors">resetColors</a></strong>(const QColor &amp; accent)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-setskinhint">setSkinHint</a></strong>(<a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, const QVariant &amp; hint)</td>
+    </tr>
+    <tr>
+      <td>const QVariant &amp;</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-skinhint">skinHint</a></strong>(<a href="/docs/classes/classQskAspect/">QskAspect</a> aspect) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-setgraphicfilter">setGraphicFilter</a></strong>(int graphicRole, const QskColorFilter &amp; colorFilter)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-resetgraphicfilter">resetGraphicFilter</a></strong>(int graphicRole)</td>
+    </tr>
+    <tr>
+      <td>QskColorFilter</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-graphicfilter">graphicFilter</a></strong>(int graphicRole) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-setfont">setFont</a></strong>(int fontRole, const QFont &amp; font)</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-resetfont">resetFont</a></strong>(int fontRole)</td>
+    </tr>
+    <tr>
+      <td>QFont</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-font">font</a></strong>(int fontRole) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-setupfonts">setupFonts</a></strong>(const QString &amp; family, int weight =-1, bool italic =false)</td>
+    </tr>
+    <tr>
+      <td>virtual <a href="/docs/classes/classQskGraphic/">QskGraphic</a></td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-symbol">symbol</a></strong>(int symbolType) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-addgraphicprovider">addGraphicProvider</a></strong>(const QString &amp; providerId, QskGraphicProvider * provider)</td>
+    </tr>
+    <tr>
+      <td>QskGraphicProvider *</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-graphicprovider">graphicProvider</a></strong>(const QString &amp; providerId) const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-hasgraphicprovider">hasGraphicProvider</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>virtual const int *</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-dialogbuttonlayout">dialogButtonLayout</a></strong>(Qt::Orientation orientation) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-setstatemask">setStateMask</a></strong>(QskAspect::States mask)</td>
+    </tr>
+    <tr>
+      <td>QskAspect::States</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-statemask">stateMask</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td><a href="/docs/classes/classQskSkinlet/">QskSkinlet</a> *</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-skinlet">skinlet</a></strong>(const QMetaObject * metaObject)</td>
+    </tr>
+    <tr>
+      <td>const QskSkinHintTable &amp;</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-hinttable">hintTable</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>QskSkinHintTable &amp;</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-hinttable">hintTable</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>const std::unordered_map&lt; int, QFont &gt; &amp;</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-fonts">fonts</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>const std::unordered_map&lt; int, QskColorFilter &gt; &amp;</td>
+      <td><strong><a href="/docs/classes/classQskSkin/#function-graphicfilters">graphicFilters</a></strong>() const</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-types-documentation">Public Types Documentation</h2>
+
+<h3 id="enum-skinfontrole">enum SkinFontRole</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enumerator</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DefaultFont</td>
+      <td>0</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>TinyFont</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>SmallFont</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>MediumFont</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>LargeFont</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>HugeFont</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskskin">function QskSkin</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskSkin</span><span class="p">(</span>
+    <span class="n">QObject</span> <span class="o">*</span> <span class="n">parent</span> <span class="o">=</span><span class="nb">nullptr</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-qskskin-1">function ~QskSkin</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskSkin</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-declareskinlet">function declareSkinlet</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">Control</span> <span class="p">,</span>
+<span class="k">typename</span> <span class="nc">Skinlet</span> <span class="p">&gt;</span>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="n">declareSkinlet</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-resetcolors">function resetColors</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">resetColors</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QColor</span> <span class="o">&amp;</span> <span class="n">accent</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-setskinhint">function setSkinHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setSkinHint</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QVariant</span> <span class="o">&amp;</span> <span class="n">hint</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-skinhint">function skinHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">QVariant</span> <span class="o">&amp;</span> <span class="n">skinHint</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setgraphicfilter">function setGraphicFilter</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setGraphicFilter</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">graphicRole</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QskColorFilter</span> <span class="o">&amp;</span> <span class="n">colorFilter</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-resetgraphicfilter">function resetGraphicFilter</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetGraphicFilter</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">graphicRole</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-graphicfilter">function graphicFilter</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskColorFilter</span> <span class="n">graphicFilter</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">graphicRole</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setfont">function setFont</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setFont</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">fontRole</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QFont</span> <span class="o">&amp;</span> <span class="n">font</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-resetfont">function resetFont</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">resetFont</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">fontRole</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-font">function font</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QFont</span> <span class="n">font</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">fontRole</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setupfonts">function setupFonts</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setupFonts</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">family</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">weight</span> <span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">italic</span> <span class="o">=</span><span class="nb">false</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-symbol">function symbol</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="n">QskGraphic</span> <span class="n">symbol</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">symbolType</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-addgraphicprovider">function addGraphicProvider</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">addGraphicProvider</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">providerId</span><span class="p">,</span>
+    <span class="n">QskGraphicProvider</span> <span class="o">*</span> <span class="n">provider</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-graphicprovider">function graphicProvider</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGraphicProvider</span> <span class="o">*</span> <span class="n">graphicProvider</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span> <span class="n">providerId</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-hasgraphicprovider">function hasGraphicProvider</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">hasGraphicProvider</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-dialogbuttonlayout">function dialogButtonLayout</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="k">const</span> <span class="kt">int</span> <span class="o">*</span> <span class="n">dialogButtonLayout</span><span class="p">(</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setstatemask">function setStateMask</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setStateMask</span><span class="p">(</span>
+    <span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">mask</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-statemask">function stateMask</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskAspect</span><span class="o">::</span><span class="n">States</span> <span class="n">stateMask</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-skinlet">function skinlet</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskSkinlet</span> <span class="o">*</span> <span class="n">skinlet</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QMetaObject</span> <span class="o">*</span> <span class="n">metaObject</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-hinttable">function hintTable</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">QskSkinHintTable</span> <span class="o">&amp;</span> <span class="n">hintTable</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-hinttable-1">function hintTable</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskSkinHintTable</span> <span class="o">&amp;</span> <span class="n">hintTable</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-fonts">function fonts</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QFont</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">fonts</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-graphicfilters">function graphicFilters</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="kt">int</span><span class="p">,</span> <span class="n">QskColorFilter</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">graphicFilters</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:28 CEST</p>

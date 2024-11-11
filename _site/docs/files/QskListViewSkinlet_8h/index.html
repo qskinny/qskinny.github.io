@@ -1,0 +1,86 @@
+<h1 id="controlsqsklistviewskinleth">controls/QskListViewSkinlet.h</h1>
+
+<h2 id="classes">Classes</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskListViewSkinlet/">QskListViewSkinlet</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#ifndef QSK_LIST_VIEW_SKINLET_H
+#define QSK_LIST_VIEW_SKINLET_H
+</span>
+<span class="cp">#include "QskScrollViewSkinlet.h"
+</span>
+<span class="k">class</span> <span class="nc">QskListView</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskListViewNode</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QskTextNode</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QMarginsF</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QSizeF</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QRectF</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">QSGTransformNode</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">QSK_EXPORT</span> <span class="n">QskListViewSkinlet</span> <span class="o">:</span> <span class="k">public</span> <span class="n">QskScrollViewSkinlet</span>
+<span class="p">{</span>
+    <span class="n">Q_GADGET</span>
+
+    <span class="k">using</span> <span class="n">Inherited</span> <span class="o">=</span> <span class="n">QskScrollViewSkinlet</span><span class="p">;</span>
+
+  <span class="nl">public:</span>
+    <span class="n">Q_INVOKABLE</span> <span class="n">QskListViewSkinlet</span><span class="p">(</span> <span class="n">QskSkin</span><span class="o">*</span> <span class="o">=</span> <span class="nb">nullptr</span> <span class="p">);</span>
+    <span class="o">~</span><span class="n">QskListViewSkinlet</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="n">QSizeF</span> <span class="n">sizeHint</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinnable</span><span class="o">*</span><span class="p">,</span>
+        <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="nl">protected:</span>
+    <span class="k">enum</span> <span class="n">NodeRole</span>
+    <span class="p">{</span>
+        <span class="n">TextRole</span><span class="p">,</span>
+        <span class="n">GraphicRole</span>
+    <span class="p">};</span>
+
+    <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updateContentsNode</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QskScrollView</span><span class="o">*</span><span class="p">,</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span> <span class="k">override</span><span class="p">;</span>
+
+    <span class="k">virtual</span> <span class="n">QSGNode</span><span class="o">*</span> <span class="n">updateCellNode</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span><span class="p">,</span>
+        <span class="n">QSGNode</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="n">QRectF</span><span class="o">&amp;</span><span class="p">,</span> <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">col</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+  <span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">updateForegroundNodes</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span><span class="p">,</span> <span class="n">QskListViewNode</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="n">updateBackgroundNodes</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span><span class="p">,</span> <span class="n">QskListViewNode</span><span class="o">*</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">updateVisibleForegroundNodes</span><span class="p">(</span>
+        <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span><span class="p">,</span> <span class="n">QskListViewNode</span><span class="o">*</span><span class="p">,</span>
+        <span class="kt">int</span> <span class="n">rowMin</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rowMax</span><span class="p">,</span> <span class="kt">int</span> <span class="n">colMin</span><span class="p">,</span> <span class="kt">int</span> <span class="n">colMax</span><span class="p">,</span>
+        <span class="k">const</span> <span class="n">QMarginsF</span><span class="o">&amp;</span> <span class="n">margin</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">forward</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+
+    <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="n">updateForegroundNode</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskListView</span><span class="o">*</span><span class="p">,</span>
+        <span class="n">QSGNode</span><span class="o">*</span> <span class="n">parentNode</span><span class="p">,</span> <span class="n">QSGTransformNode</span><span class="o">*</span> <span class="n">cellNode</span><span class="p">,</span>
+        <span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">col</span><span class="p">,</span> <span class="k">const</span> <span class="n">QSizeF</span><span class="o">&amp;</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">forward</span> <span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif
+</span></code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:29 CEST</p>

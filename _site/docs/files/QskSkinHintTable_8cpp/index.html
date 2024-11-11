@@ -1,0 +1,396 @@
+<h1 id="controlsqskskinhinttablecpp">controls/QskSkinHintTable.cpp</h1>
+
+<h2 id="functions">Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>const QVariant *</td>
+      <td><strong><a href="/docs/files/QskSkinHintTable_8cpp/#function-qskresolvedhint">qskResolvedHint</a></strong>(<a href="/docs/classes/classQskAspect/">QskAspect</a> aspect, const std::unordered_map&lt; <a href="/docs/classes/classQskAspect/">QskAspect</a>, QVariant &gt; &amp; hints, <a href="/docs/classes/classQskAspect/">QskAspect</a> * resolvedAspect)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="defines">Defines</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/files/QskSkinHintTable_8cpp/#define-qsk_assert_counter">QSK_ASSERT_COUNTER</a></strong>(x)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="functions-documentation">Functions Documentation</h2>
+
+<h3 id="function-qskresolvedhint">function qskResolvedHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">inline</span> <span class="k">const</span> <span class="n">QVariant</span> <span class="o">*</span> <span class="n">qskResolvedHint</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="p">,</span> <span class="n">QVariant</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">hints</span><span class="p">,</span>
+    <span class="n">QskAspect</span> <span class="o">*</span> <span class="n">resolvedAspect</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="macro-documentation">Macro Documentation</h2>
+
+<h3 id="define-qsk_assert_counter">define QSK_ASSERT_COUNTER</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define QSK_ASSERT_COUNTER(
+</span>    <span class="n">x</span>
+<span class="p">)</span>
+<span class="n">Q_ASSERT</span><span class="p">(</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span> <span class="k">decltype</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span> <span class="o">&gt;::</span><span class="n">max</span><span class="p">()</span> <span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="source-code">Source code</h2>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/******************************************************************************
+ * QSkinny - Copyright (C) 2016 Uwe Rathmann
+ * This file may be used under the terms of the QSkinny License, Version 1.0
+ *****************************************************************************/</span>
+
+<span class="cp">#include "QskSkinHintTable.h"
+#include "QskAnimationHint.h"
+</span>
+<span class="cp">#include &lt;limits&gt;
+</span>
+<span class="k">const</span> <span class="n">QVariant</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">invalidHint</span><span class="p">;</span>
+
+<span class="kr">inline</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">*</span> <span class="nf">qskResolvedHint</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="p">,</span> <span class="n">QVariant</span> <span class="o">&gt;&amp;</span> <span class="n">hints</span><span class="p">,</span>
+    <span class="n">QskAspect</span><span class="o">*</span> <span class="n">resolvedAspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">a</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">;</span>
+
+    <span class="n">Q_FOREVER</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">hints</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">hints</span><span class="p">.</span><span class="n">cend</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">resolvedAspect</span> <span class="p">)</span>
+                <span class="o">*</span><span class="n">resolvedAspect</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">;</span>
+
+            <span class="k">return</span> <span class="o">&amp;</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+        <span class="p">}</span>
+
+<span class="cp">#if 1
+</span>        <span class="cm">/*
+            We intend to remove the obscure mechanism of resolving a hint
+            by dropping the state bits ony by one in the future. Instead we
+            will have methods in QskSkinHintTableEditor, that allow
+            to set combinations of states in one call. 
+         */</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">topState</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">.</span><span class="n">topState</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">aspect</span><span class="p">.</span><span class="n">clearState</span><span class="p">(</span> <span class="n">topState</span> <span class="p">);</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="cp">#else
+</span>        <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">hasState</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">aspect</span><span class="p">.</span><span class="n">clearStates</span><span class="p">();</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="cp">#endif
+</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">placement</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// clear the placement bits and restart</span>
+            <span class="n">aspect</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+            <span class="n">aspect</span><span class="p">.</span><span class="n">setPlacement</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">NoPlacement</span> <span class="p">);</span>
+
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">QskSkinHintTable</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">QskSkinHintTable</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinHintTable</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">m_hints</span><span class="p">(</span> <span class="nb">nullptr</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_animatorCount</span><span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_animatorCount</span> <span class="p">)</span>
+    <span class="p">,</span> <span class="n">m_statefulCount</span><span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_statefulCount</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_hints</span> <span class="p">)</span>
+        <span class="n">m_hints</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HintMap</span><span class="p">(</span> <span class="o">*</span><span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_hints</span> <span class="p">)</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinHintTable</span><span class="o">::~</span><span class="n">QskSkinHintTable</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">delete</span> <span class="n">m_hints</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskSkinHintTable</span><span class="o">&amp;</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span> <span class="k">const</span> <span class="n">QskSkinHintTable</span><span class="o">&amp;</span> <span class="n">other</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">m_animatorCount</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_animatorCount</span><span class="p">;</span>
+    <span class="n">m_statefulCount</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">m_statefulCount</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">other</span><span class="p">.</span><span class="n">m_hints</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_hints</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+            <span class="n">m_hints</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HintMap</span><span class="p">();</span>
+
+        <span class="o">*</span><span class="n">m_hints</span> <span class="o">=</span> <span class="o">*</span><span class="n">other</span><span class="p">.</span><span class="n">m_hints</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">m_hints</span><span class="p">;</span>
+        <span class="n">m_hints</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="p">,</span> <span class="n">QVariant</span> <span class="o">&gt;&amp;</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">hints</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_hints</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="o">*</span><span class="n">m_hints</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span> <span class="n">QskAspect</span><span class="p">,</span> <span class="n">QVariant</span> <span class="o">&gt;</span> <span class="n">dummyHints</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">dummyHints</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#define QSK_ASSERT_COUNTER( x ) Q_ASSERT( x &lt; std::numeric_limits&lt; decltype( x ) &gt;::max() )
+</span>
+<span class="kt">bool</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">setHint</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="k">const</span> <span class="n">QVariant</span><span class="o">&amp;</span> <span class="n">skinHint</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_hints</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">m_hints</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HintMap</span><span class="p">();</span>
+
+    <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_hints</span><span class="o">-&gt;</span><span class="n">find</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">==</span> <span class="n">m_hints</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">m_hints</span><span class="o">-&gt;</span><span class="n">emplace</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">skinHint</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">isAnimator</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_animatorCount</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">QSK_ASSERT_COUNTER</span><span class="p">(</span> <span class="n">m_animatorCount</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">hasStates</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_statefulCount</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">QSK_ASSERT_COUNTER</span><span class="p">(</span> <span class="n">m_statefulCount</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">!=</span> <span class="n">skinHint</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">=</span> <span class="n">skinHint</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#undef QSK_ASSERT_COUNTER
+</span>
+<span class="kt">bool</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">removeHint</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_hints</span> <span class="o">==</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">bool</span> <span class="n">erased</span> <span class="o">=</span> <span class="n">m_hints</span><span class="o">-&gt;</span><span class="n">erase</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">erased</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">isAnimator</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">m_animatorCount</span><span class="o">--</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">hasStates</span><span class="p">()</span> <span class="p">)</span>
+            <span class="n">m_statefulCount</span><span class="o">--</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">m_hints</span><span class="o">-&gt;</span><span class="n">empty</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">delete</span> <span class="n">m_hints</span><span class="p">;</span>
+            <span class="n">m_hints</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">erased</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QVariant</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">takeHint</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_hints</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_hints</span><span class="o">-&gt;</span><span class="n">find</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_hints</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">const</span> <span class="k">auto</span> <span class="n">value</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+            <span class="n">m_hints</span><span class="o">-&gt;</span><span class="n">erase</span><span class="p">(</span> <span class="n">it</span> <span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">isAnimator</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">m_animatorCount</span><span class="o">--</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">aspect</span><span class="p">.</span><span class="n">hasStates</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">m_statefulCount</span><span class="o">--</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="n">m_hints</span><span class="o">-&gt;</span><span class="n">empty</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">delete</span> <span class="n">m_hints</span><span class="p">;</span>
+                <span class="n">m_hints</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">value</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QVariant</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">clear</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">delete</span> <span class="n">m_hints</span><span class="p">;</span>
+    <span class="n">m_hints</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+
+    <span class="n">m_animatorCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">m_statefulCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">QVariant</span><span class="o">*</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">resolvedHint</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskAspect</span><span class="o">*</span> <span class="n">resolvedAspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_hints</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">qskResolvedHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="o">*</span><span class="n">m_hints</span><span class="p">,</span> <span class="n">resolvedAspect</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">resolvedAspect</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">QskAspect</span> <span class="n">a</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_hints</span> <span class="o">!=</span> <span class="nb">nullptr</span> <span class="p">)</span>
+        <span class="n">qskResolvedHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="o">*</span><span class="n">m_hints</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">a</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">a</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">QskAspect</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">resolvedAnimator</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskAnimationHint</span><span class="o">&amp;</span> <span class="n">hint</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">m_hints</span> <span class="o">&amp;&amp;</span> <span class="n">m_animatorCount</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Q_FOREVER</span>
+        <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">m_hints</span><span class="o">-&gt;</span><span class="n">find</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">m_hints</span><span class="o">-&gt;</span><span class="n">cend</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">hint</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">value</span><span class="o">&lt;</span> <span class="n">QskAnimationHint</span> <span class="o">&gt;</span><span class="p">();</span>
+                <span class="k">return</span> <span class="n">aspect</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="k">const</span> <span class="k">auto</span> <span class="n">topState</span> <span class="o">=</span> <span class="n">aspect</span><span class="p">.</span><span class="n">topState</span><span class="p">()</span> <span class="p">)</span>
+                <span class="n">aspect</span><span class="p">.</span><span class="n">clearState</span><span class="p">(</span> <span class="n">topState</span> <span class="p">);</span>
+            <span class="k">else</span>
+                <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">QskAspect</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">QskAnimationHint</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">animation</span><span class="p">(</span> <span class="n">QskAspect</span> <span class="n">aspect</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setAnimator</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">hint</span><span class="o">&lt;</span> <span class="n">QskAnimationHint</span> <span class="o">&gt;</span><span class="p">(</span> <span class="n">aspect</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">setAnimation</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">QskAnimationHint</span> <span class="n">animation</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">aspect</span><span class="p">.</span><span class="n">setAnimator</span><span class="p">(</span> <span class="nb">true</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">setHint</span><span class="p">(</span> <span class="n">aspect</span><span class="p">,</span> <span class="n">animation</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">QskSkinHintTable</span><span class="o">::</span><span class="n">isResolutionMatching</span><span class="p">(</span>
+    <span class="n">QskAspect</span> <span class="n">aspect1</span><span class="p">,</span> <span class="n">QskAspect</span> <span class="n">aspect2</span> <span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">aspect1</span> <span class="o">==</span> <span class="n">aspect2</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="n">aspect1</span><span class="p">.</span><span class="n">trunk</span><span class="p">()</span> <span class="o">!=</span> <span class="n">aspect2</span><span class="p">.</span><span class="n">trunk</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">hasStates</span><span class="p">()</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">aspect1</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">aspect2</span><span class="p">;</span>
+
+    <span class="n">Q_FOREVER</span>
+    <span class="p">{</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">s1</span> <span class="o">=</span> <span class="n">aspect1</span><span class="p">.</span><span class="n">topState</span><span class="p">();</span>
+        <span class="k">const</span> <span class="k">auto</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">aspect2</span><span class="p">.</span><span class="n">topState</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="n">s1</span> <span class="o">&gt;</span> <span class="n">s2</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">hasHint</span><span class="p">(</span> <span class="n">aspect1</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+            <span class="n">aspect1</span><span class="p">.</span><span class="n">clearState</span><span class="p">(</span> <span class="n">s1</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">s2</span> <span class="o">&gt;</span> <span class="n">s1</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">hasHint</span><span class="p">(</span> <span class="n">aspect2</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+            <span class="n">aspect2</span><span class="p">.</span><span class="n">clearState</span><span class="p">(</span> <span class="n">s2</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">aspect1</span> <span class="o">==</span> <span class="n">aspect2</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">hasHint</span><span class="p">(</span> <span class="n">aspect1</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="n">s1</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span> <span class="n">aspect1</span><span class="p">.</span><span class="n">placement</span><span class="p">()</span> <span class="o">==</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">NoPlacement</span> <span class="p">)</span>
+                        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+                    <span class="c1">// clear the placement bits and restart with the initial state</span>
+                    <span class="n">aspect1</span> <span class="o">=</span> <span class="n">a1</span><span class="p">;</span>
+                    <span class="n">aspect1</span><span class="p">.</span><span class="n">setPlacement</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">NoPlacement</span> <span class="p">);</span>
+
+                    <span class="n">aspect2</span> <span class="o">=</span> <span class="n">a2</span><span class="p">;</span>
+                    <span class="n">aspect2</span><span class="p">.</span><span class="n">setPlacement</span><span class="p">(</span> <span class="n">QskAspect</span><span class="o">::</span><span class="n">NoPlacement</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span> <span class="n">hasHint</span><span class="p">(</span> <span class="n">aspect1</span> <span class="p">)</span> <span class="o">||</span> <span class="n">hasHint</span><span class="p">(</span> <span class="n">aspect2</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="n">aspect1</span><span class="p">.</span><span class="n">clearState</span><span class="p">(</span> <span class="n">s1</span> <span class="p">);</span>
+            <span class="n">aspect2</span><span class="p">.</span><span class="n">clearState</span><span class="p">(</span> <span class="n">s2</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:30 CEST</p>

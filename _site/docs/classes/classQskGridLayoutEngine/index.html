@@ -1,0 +1,257 @@
+<h1 id="qskgridlayoutengine">QskGridLayoutEngine</h1>
+
+<p>Inherits from QskLayoutEngine2D</p>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-qskgridlayoutengine">QskGridLayoutEngine</a></strong>()</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-~qskgridlayoutengine">~QskGridLayoutEngine</a></strong>() override</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-count">count</a></strong>() const override</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-setstretchfactor">setStretchFactor</a></strong>(int pos, int stretch, Qt::Orientation orientation)</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-stretchfactor">stretchFactor</a></strong>(int pos, Qt::Orientation orientation) const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-setrowsizehint">setRowSizeHint</a></strong>(int row, Qt::SizeHint which, qreal height)</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-rowsizehint">rowSizeHint</a></strong>(int row, Qt::SizeHint which) const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-setcolumnsizehint">setColumnSizeHint</a></strong>(int column, Qt::SizeHint which, qreal width)</td>
+    </tr>
+    <tr>
+      <td>qreal</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-columnsizehint">columnSizeHint</a></strong>(int column, Qt::SizeHint which) const</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-insertitem">insertItem</a></strong>(QQuickItem * item, const QRect &amp; grid)</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-insertspacer">insertSpacer</a></strong>(const QSizeF &amp; spacing, const QRect &amp; grid)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-removeat">removeAt</a></strong>(int index)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-clear">clear</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>QQuickItem *</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-itemat">itemAt</a></strong>(int index) const override</td>
+    </tr>
+    <tr>
+      <td>QSizeF</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-spacerat">spacerAt</a></strong>(int index) const</td>
+    </tr>
+    <tr>
+      <td>QQuickItem *</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-itemat">itemAt</a></strong>(int row, int column) const</td>
+    </tr>
+    <tr>
+      <td>int</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-indexat">indexAt</a></strong>(int row, int column) const</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-setgridat">setGridAt</a></strong>(int index, const QRect &amp; grid)</td>
+    </tr>
+    <tr>
+      <td>QRect</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-gridat">gridAt</a></strong>(int index) const</td>
+    </tr>
+    <tr>
+      <td>QRect</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-effectivegridat">effectiveGridAt</a></strong>(int index) const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskGridLayoutEngine/#function-transpose">transpose</a></strong>()</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskgridlayoutengine">function QskGridLayoutEngine</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskGridLayoutEngine</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskgridlayoutengine-1">function ~QskGridLayoutEngine</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">~</span><span class="n">QskGridLayoutEngine</span><span class="p">()</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-count">function count</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">count</span><span class="p">()</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-setstretchfactor">function setStretchFactor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">setStretchFactor</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">pos</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">stretch</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-stretchfactor">function stretchFactor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">stretchFactor</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">pos</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">Orientation</span> <span class="n">orientation</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setrowsizehint">function setRowSizeHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">setRowSizeHint</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">row</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">height</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-rowsizehint">function rowSizeHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">rowSizeHint</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">row</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setcolumnsizehint">function setColumnSizeHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">setColumnSizeHint</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">column</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span><span class="p">,</span>
+    <span class="n">qreal</span> <span class="n">width</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-columnsizehint">function columnSizeHint</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">qreal</span> <span class="n">columnSizeHint</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">column</span><span class="p">,</span>
+    <span class="n">Qt</span><span class="o">::</span><span class="n">SizeHint</span> <span class="n">which</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-insertitem">function insertItem</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">insertItem</span><span class="p">(</span>
+    <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRect</span> <span class="o">&amp;</span> <span class="n">grid</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-insertspacer">function insertSpacer</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">insertSpacer</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QSizeF</span> <span class="o">&amp;</span> <span class="n">spacing</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRect</span> <span class="o">&amp;</span> <span class="n">grid</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-removeat">function removeAt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">removeAt</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">index</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-clear">function clear</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">clear</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-itemat">function itemAt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">itemAt</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">index</span>
+<span class="p">)</span> <span class="k">const</span> <span class="k">override</span>
+</code></pre></div></div>
+
+<h3 id="function-spacerat">function spacerAt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QSizeF</span> <span class="n">spacerAt</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">index</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-itemat-1">function itemAt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">itemAt</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">row</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">column</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-indexat">function indexAt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">indexAt</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">row</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">column</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setgridat">function setGridAt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">setGridAt</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">index</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">QRect</span> <span class="o">&amp;</span> <span class="n">grid</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-gridat">function gridAt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRect</span> <span class="n">gridAt</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">index</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-effectivegridat">function effectiveGridAt</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRect</span> <span class="n">effectiveGridAt</span><span class="p">(</span>
+    <span class="kt">int</span> <span class="n">index</span>
+<span class="p">)</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-transpose">function transpose</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">transpose</span><span class="p">()</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:28 CEST</p>

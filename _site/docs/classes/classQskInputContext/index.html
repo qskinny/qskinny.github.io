@@ -1,0 +1,226 @@
+<h1 id="qskinputcontext">QskInputContext</h1>
+
+<p>Inherits from QObject</p>
+
+<h2 id="public-signals">Public Signals</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#signal-activechanged">activeChanged</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#signal-panelrectchanged">panelRectChanged</a></strong>()</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-functions">Public Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-qskinputcontext">QskInputContext</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>virtual</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-~qskinputcontext">~QskInputContext</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-setfactory">setFactory</a></strong>(QskInputContextFactory * factory)</td>
+    </tr>
+    <tr>
+      <td>QskInputContextFactory *</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-factory">factory</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>QRectF</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-panelrect">panelRect</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-setinputpanelvisible">setInputPanelVisible</a></strong>(const QQuickItem * item, bool on)</td>
+    </tr>
+    <tr>
+      <td>bool</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-isinputpanelvisible">isInputPanelVisible</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>QLocale</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-locale">locale</a></strong>() const</td>
+    </tr>
+    <tr>
+      <td>QskTextPredictor *</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-textpredictor">textPredictor</a></strong>(const QLocale &amp; locale)</td>
+    </tr>
+    <tr>
+      <td>QskInputContext *</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-instance">instance</a></strong>()</td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-setinstance">setInstance</a></strong>(QskInputContext * inputContext)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="protected-functions">Protected Functions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-showpanel">showPanel</a></strong>(const QQuickItem * item)</td>
+    </tr>
+    <tr>
+      <td>virtual void</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#function-hidepanel">hidePanel</a></strong>(const QQuickItem * item)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="friends">Friends</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>class</td>
+      <td><strong><a href="/docs/classes/classQskInputContext/#friend-qskplatforminputcontext">QskPlatformInputContext</a></strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="public-signals-documentation">Public Signals Documentation</h2>
+
+<h3 id="signal-activechanged">signal activeChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">activeChanged</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="signal-panelrectchanged">signal panelRectChanged</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">panelRectChanged</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="public-functions-documentation">Public Functions Documentation</h2>
+
+<h3 id="function-qskinputcontext">function QskInputContext</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskInputContext</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-qskinputcontext-1">function ~QskInputContext</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="o">~</span><span class="n">QskInputContext</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-setfactory">function setFactory</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setFactory</span><span class="p">(</span>
+    <span class="n">QskInputContextFactory</span> <span class="o">*</span> <span class="n">factory</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-factory">function factory</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskInputContextFactory</span> <span class="o">*</span> <span class="n">factory</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-panelrect">function panelRect</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QRectF</span> <span class="n">panelRect</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-setinputpanelvisible">function setInputPanelVisible</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">setInputPanelVisible</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="n">on</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-isinputpanelvisible">function isInputPanelVisible</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">isInputPanelVisible</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-locale">function locale</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QLocale</span> <span class="n">locale</span><span class="p">()</span> <span class="k">const</span>
+</code></pre></div></div>
+
+<h3 id="function-textpredictor">function textPredictor</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">QskTextPredictor</span> <span class="o">*</span> <span class="n">textPredictor</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QLocale</span> <span class="o">&amp;</span> <span class="n">locale</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-instance">function instance</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">QskInputContext</span> <span class="o">*</span> <span class="n">instance</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="function-setinstance">function setInstance</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="n">setInstance</span><span class="p">(</span>
+    <span class="n">QskInputContext</span> <span class="o">*</span> <span class="n">inputContext</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="protected-functions-documentation">Protected Functions Documentation</h2>
+
+<h3 id="function-showpanel">function showPanel</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">showPanel</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="function-hidepanel">function hidePanel</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">virtual</span> <span class="kt">void</span> <span class="n">hidePanel</span><span class="p">(</span>
+    <span class="k">const</span> <span class="n">QQuickItem</span> <span class="o">*</span> <span class="n">item</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="friends-1">Friends</h2>
+
+<h3 id="friend-qskplatforminputcontext">friend QskPlatformInputContext</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">friend</span> <span class="k">class</span> <span class="nf">QskPlatformInputContext</span><span class="p">(</span>
+    <span class="n">QskPlatformInputContext</span> 
+<span class="p">);</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Updated on 28 July 2023 at 14:02:28 CEST</p>
