@@ -112,7 +112,7 @@ $(document).ready(function(){initNavTree('QskSkinHintTable_8cpp_source.html','')
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">const</span> QVariant QskSkinHintTable::invalidHint;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">inline</span> <span class="keyword">const</span> QVariant* qskResolvedHint( <a class="code hl_class" href="classQskAspect.html">QskAspect</a> aspect,</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskAspect, QVariant &gt;</a>&amp; hints, <a class="code hl_class" href="classQskAspect.html">QskAspect</a>* resolvedAspect )</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keyword">const</span> QHash&lt; QskAspect, QVariant &gt;&amp; hints, <a class="code hl_class" href="classQskAspect.html">QskAspect</a>* resolvedAspect )</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>{</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">auto</span> a = aspect;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('QskSkinHintTable_8cpp_source.html','')
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">            of copy/assignment operators much easier ( needed in QskSkinTransition ) we prefer</span></div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">            using the Qt container over the STL counterparts.</span></div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">         */</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        m_hints = <span class="keyword">new</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskAspect, QVariant &gt;</a>( *other.m_hints );</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        m_hints = <span class="keyword">new</span> QHash&lt; QskAspect, QVariant &gt;( *other.m_hints );</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    }</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>}</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
@@ -210,17 +210,17 @@ $(document).ready(function(){initNavTree('QskSkinHintTable_8cpp_source.html','')
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    m_hints = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordflow">if</span> ( other.m_hints )</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        m_hints = <span class="keyword">new</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskAspect, QVariant &gt;</a>( *other.m_hints );</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        m_hints = <span class="keyword">new</span> QHash&lt; QskAspect, QVariant &gt;( *other.m_hints );</div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>}</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskAspect, QVariant &gt;</a>&amp; QskSkinHintTable::hints()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="keyword">const</span> QHash&lt; QskAspect, QVariant &gt;&amp; QskSkinHintTable::hints()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">if</span> ( m_hints )</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keywordflow">return</span> *m_hints;</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keyword">static</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskAspect, QVariant &gt;</a> dummyHints;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keyword">static</span> QHash&lt; QskAspect, QVariant &gt; dummyHints;</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">return</span> dummyHints;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
@@ -229,7 +229,7 @@ $(document).ready(function(){initNavTree('QskSkinHintTable_8cpp_source.html','')
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="keywordtype">bool</span> QskSkinHintTable::setHint( <a class="code hl_class" href="classQskAspect.html">QskAspect</a> aspect, <span class="keyword">const</span> QVariant&amp; skinHint )</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>{</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordflow">if</span> ( m_hints == <span class="keyword">nullptr</span> )</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        m_hints = <span class="keyword">new</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskAspect, QVariant &gt;</a>();</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        m_hints = <span class="keyword">new</span> QHash&lt; QskAspect, QVariant &gt;();</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keyword">auto</span> it = m_hints-&gt;find( aspect );</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordflow">if</span> ( it == m_hints-&gt;end() )</div>
@@ -460,7 +460,6 @@ $(document).ready(function(){initNavTree('QskSkinHintTable_8cpp_source.html','')
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>        aspect2.<a class="code hl_function" href="classQskAspect.html#aea8b40de3e3fb03ac60192fc7d9fc633">clearState</a>( state2 );</div>
 <div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    }</div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>}</div>
-<div class="ttc" id="aclassQHash_html"><div class="ttname"><a href="classQHash.html">QHash&lt; QskAspect, QVariant &gt;</a></div></div>
 <div class="ttc" id="aclassQskAnimationHint_html"><div class="ttname"><a href="classQskAnimationHint.html">QskAnimationHint</a></div><div class="ttdef"><b>Definition</b> <a href="QskAnimationHint_8h_source.html#l00014">QskAnimationHint.h:15</a></div></div>
 <div class="ttc" id="aclassQskAspect_html"><div class="ttname"><a href="classQskAspect.html">QskAspect</a></div><div class="ttdoc">Lookup key for a QskSkinHintTable.</div><div class="ttdef"><b>Definition</b> <a href="QskAspect_8h_source.html#l00014">QskAspect.h:15</a></div></div>
 <div class="ttc" id="aclassQskAspect_html_a124b0035e530e51fd62145d6d242e8b3"><div class="ttname"><a href="classQskAspect.html#a124b0035e530e51fd62145d6d242e8b3">QskAspect::topState</a></div><div class="ttdeci">State topState() const noexcept</div><div class="ttdef"><b>Definition</b> <a href="QskAspect_8cpp_source.html#l00347">QskAspect.cpp:347</a></div></div>

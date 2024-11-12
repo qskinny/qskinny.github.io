@@ -39,7 +39,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classQskStackBoxAnimator2.html"
+"classQskStackBoxAnimator4.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -170,7 +170,7 @@ $(document).ready(function(){initNavTree('QskSkinTransition_8cpp_source.html',''
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>}</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">static</span> <span class="keywordtype">void</span> qskAddCandidates( <span class="keyword">const</span> QskSkinTransition::Type mask,</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskAspect, QVariant &gt;</a>&amp; hints, QSet&lt; QskAspect &gt;&amp; candidates )</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keyword">const</span> QHash&lt; QskAspect, QVariant &gt;&amp; hints, QSet&lt; QskAspect &gt;&amp; candidates )</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>{</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">for</span> ( <span class="keyword">auto</span> it = hints.constBegin(); it != hints.constEnd(); ++it )</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    {</div>
@@ -265,10 +265,10 @@ $(document).ready(function(){initNavTree('QskSkinTransition_8cpp_source.html',''
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        QVariant animatedFontSize( <span class="keyword">const</span> <a class="code hl_class" href="classQskFontRole.html">QskFontRole</a>&amp; ) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        <span class="keywordtype">void</span> addGraphicFilterAnimators( <span class="keyword">const</span> <a class="code hl_class" href="classQskAnimationHint.html">QskAnimationHint</a>&amp;,</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>            <span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; int, QskColorFilter &gt;</a>&amp;, <span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; int, QskColorFilter &gt;</a>&amp; );</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>            <span class="keyword">const</span> QHash&lt; int, QskColorFilter &gt;&amp;, <span class="keyword">const</span> QHash&lt; int, QskColorFilter &gt;&amp; );</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        <span class="keywordtype">void</span> addFontSizeAnimators( <span class="keyword">const</span> <a class="code hl_class" href="classQskAnimationHint.html">QskAnimationHint</a>&amp;,</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>            <span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskFontRole, QFont &gt;</a>&amp;, <span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskFontRole, QFont &gt;</a>&amp; );</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>            <span class="keyword">const</span> QHash&lt; QskFontRole, QFont &gt;&amp;, <span class="keyword">const</span> QHash&lt; QskFontRole, QFont &gt;&amp; );</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        <span class="keywordtype">void</span> addItemAspects( QQuickItem*,</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>            <span class="keyword">const</span> <a class="code hl_class" href="classQskAnimationHint.html">QskAnimationHint</a>&amp;, <span class="keyword">const</span> QSet&lt; QskAspect &gt;&amp;,</div>
@@ -292,9 +292,9 @@ $(document).ready(function(){initNavTree('QskSkinTransition_8cpp_source.html',''
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        QQuickWindow* m_window;</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        <a class="code hl_class" href="classQHash.html">QHash&lt; QskAspect, HintAnimator &gt;</a> m_animatorMap;</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        <a class="code hl_class" href="classQHash.html">QHash&lt; int, QskVariantAnimator &gt;</a> m_graphicFilterAnimatorMap;</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        <a class="code hl_class" href="classQHash.html">QHash&lt; QskFontRole, QskVariantAnimator &gt;</a> m_fontSizeAnimatorMap;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        QHash&lt; QskAspect, HintAnimator &gt; m_animatorMap;</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        QHash&lt; int, QskVariantAnimator &gt; m_graphicFilterAnimatorMap;</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        QHash&lt; QskFontRole, QskVariantAnimator &gt; m_fontSizeAnimatorMap;</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        std::vector&lt; UpdateInfo &gt; m_updateInfos; <span class="comment">// vector: for fast iteration</span></div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    };</div>
@@ -423,8 +423,8 @@ $(document).ready(function(){initNavTree('QskSkinTransition_8cpp_source.html',''
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
 <div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="keywordtype">void</span> WindowAnimator::addGraphicFilterAnimators(</div>
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>    <span class="keyword">const</span> <a class="code hl_class" href="classQskAnimationHint.html">QskAnimationHint</a>&amp; animatorHint,</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    <span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; int, QskColorFilter &gt;</a>&amp; filters1,</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    <span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; int, QskColorFilter &gt;</a>&amp; filters2 )</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>    <span class="keyword">const</span> QHash&lt; int, QskColorFilter &gt;&amp; filters1,</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>    <span class="keyword">const</span> QHash&lt; int, QskColorFilter &gt;&amp; filters2 )</div>
 <div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>{</div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>    <span class="keyword">const</span> <a class="code hl_class" href="classQskColorFilter.html">QskColorFilter</a> noFilter;</div>
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
@@ -453,12 +453,12 @@ $(document).ready(function(){initNavTree('QskSkinTransition_8cpp_source.html',''
 <div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span> </div>
 <div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="comment">// from QskSkin.cpp</span></div>
 <div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><span class="keyword">extern</span> QFont qskResolvedFont(</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskFontRole, QFont &gt;</a>&amp;, <span class="keyword">const</span> <a class="code hl_class" href="classQskFontRole.html">QskFontRole</a>&amp; );</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>    <span class="keyword">const</span> QHash&lt; QskFontRole, QFont &gt;&amp;, <span class="keyword">const</span> <a class="code hl_class" href="classQskFontRole.html">QskFontRole</a>&amp; );</div>
 <div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span><span class="keywordtype">void</span> WindowAnimator::addFontSizeAnimators(</div>
 <div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    <span class="keyword">const</span> <a class="code hl_class" href="classQskAnimationHint.html">QskAnimationHint</a>&amp; animatorHint,</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    <span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskFontRole, QFont &gt;</a>&amp; fonts1,</div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    <span class="keyword">const</span> <a class="code hl_class" href="classQHash.html">QHash&lt; QskFontRole, QFont &gt;</a>&amp; fonts2 )</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    <span class="keyword">const</span> QHash&lt; QskFontRole, QFont &gt;&amp; fonts1,</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    <span class="keyword">const</span> QHash&lt; QskFontRole, QFont &gt;&amp; fonts2 )</div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>{</div>
 <div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt;= QskFontRole::Display; i++ )</div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    {</div>
@@ -768,8 +768,8 @@ $(document).ready(function(){initNavTree('QskSkinTransition_8cpp_source.html',''
 <div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>    <span class="keyword">struct</span></div>
 <div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>    {</div>
 <div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>        <a class="code hl_class" href="classQskSkinHintTable.html">QskSkinHintTable</a> hintTable;</div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>        <a class="code hl_class" href="classQHash.html">QHash&lt; int, QskColorFilter &gt;</a> graphicFilters;</div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>        <a class="code hl_class" href="classQHash.html">QHash&lt; QskFontRole, QFont &gt;</a> fontTable;</div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>        QHash&lt; int, QskColorFilter &gt; graphicFilters;</div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>        QHash&lt; QskFontRole, QFont &gt; fontTable;</div>
 <div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>    } tables[ 2 ];</div>
 <div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span> </div>
 <div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>    Type mask = QskSkinTransition::AllTypes;</div>
@@ -927,7 +927,6 @@ $(document).ready(function(){initNavTree('QskSkinTransition_8cpp_source.html',''
 <div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>}</div>
 <div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span> </div>
 <div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span><span class="preprocessor">#include &quot;QskSkinTransition.moc&quot;</span></div>
-<div class="ttc" id="aclassQHash_html"><div class="ttname"><a href="classQHash.html">QHash&lt; QskAspect, QVariant &gt;</a></div></div>
 <div class="ttc" id="aclassQskAnimationHint_html"><div class="ttname"><a href="classQskAnimationHint.html">QskAnimationHint</a></div><div class="ttdef"><b>Definition</b> <a href="QskAnimationHint_8h_source.html#l00014">QskAnimationHint.h:15</a></div></div>
 <div class="ttc" id="aclassQskAspect_html"><div class="ttname"><a href="classQskAspect.html">QskAspect</a></div><div class="ttdoc">Lookup key for a QskSkinHintTable.</div><div class="ttdef"><b>Definition</b> <a href="QskAspect_8h_source.html#l00014">QskAspect.h:15</a></div></div>
 <div class="ttc" id="aclassQskAspect_html_a1525d3dfa407f0116af827748050200b"><div class="ttname"><a href="classQskAspect.html#a1525d3dfa407f0116af827748050200b">QskAspect::State</a></div><div class="ttdeci">State</div><div class="ttdef"><b>Definition</b> <a href="QskAspect_8h_source.html#l00111">QskAspect.h:112</a></div></div>

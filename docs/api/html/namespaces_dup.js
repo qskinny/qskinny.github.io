@@ -11,6 +11,5 @@ var namespaces_dup =
         [ "Visible", "namespaceQsk.html#ae19e4c577be142d1375417e8070a551fa8a3e3b758cee09db4a65ee63afe9277c", null ],
         [ "Hidden", "namespaceQsk.html#ae19e4c577be142d1375417e8070a551fac56fe33f1d28a1843ca7ed85fe49dcaf", null ]
       ] ]
-    ] ],
-    [ "std", "namespacestd.html", "namespacestd" ]
+    ] ]
 ];

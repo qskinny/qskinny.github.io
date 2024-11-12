@@ -18,12 +18,6 @@ var annotated_dup =
       [ "ColoredLine", "classQskVertex_1_1ColoredLine.html", null ],
       [ "Line", "classQskVertex_1_1Line.html", null ]
     ] ],
-    [ "std", "namespacestd.html", [
-      [ "hash< QskAspect >", "structstd_1_1hash_3_01QskAspect_01_4.html", null ],
-      [ "hash< QskFontRole >", "structstd_1_1hash_3_01QskFontRole_01_4.html", null ]
-    ] ],
-    [ "QHash", "classQHash.html", null ],
-    [ "QList", "classQList.html", null ],
     [ "QskAbstractButton", "classQskAbstractButton.html", null ],
     [ "QskAnimationHint", "classQskAnimationHint.html", null ],
     [ "QskAnimator", "classQskAnimator.html", null ],

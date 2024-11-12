@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['textelement_0',['TextElement',['../classQskSubcontrolLayoutEngine_1_1TextElement.html',1,'QskSubcontrolLayoutEngine']]]
+  ['visitor_0',['Visitor',['../classQskObjectTree_1_1Visitor.html',1,'QskObjectTree']]]
 ];
