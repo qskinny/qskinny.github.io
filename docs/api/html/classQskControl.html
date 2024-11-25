@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -9,6 +10,54 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<!-- QSkinny WASM code -->
+        <script type="text/javascript">
+            async function docSampleInit()
+            {
+                const spinner = document.querySelector('#qtspinner');
+                const screen = document.querySelector('#qt-wasm-screen');
+                const status = document.querySelector('#qtstatus');
+                const showUi = (ui) => {
+                    [spinner, screen].forEach(element => element.style.display = 'none');
+                    if (screen === ui)
+                    {
+                        screen.style.position = 'default';
+                        screen.style.width = '500px';
+                        screen.style.height = '300px';
+                    }
+                    ui.style.display = 'block';
+                }
+                try {
+                    if(spinner)
+                    {
+                        showUi(spinner);
+                        status.innerHTML = 'Loading...';
+                        const instance = await qtLoad({
+                            qt: {
+                                onLoaded: () => showUi(screen),
+                                onExit: exitData =>
+                                {
+                                    status.innerHTML = 'Application exit';
+                                    status.innerHTML +=
+                                        exitData.code !== undefined ? ` with code ` : '';
+                                    status.innerHTML +=
+                                        exitData.text !== undefined ? ` ()` : '';
+                                    showUi(spinner);
+                                },
+                                entryFunction: window.createQtAppInstance,
+                                containerElements: [screen],
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.error(e);
+                    console.error(e.stack);
+                }
+            }
+        </script>
+    <script type="text/javascript" src="apiDocumentationSamples.js"></script>
+    <script type="text/javascript" src="qtloader.js"></script>
+<!-- end QSkinny WASM code -->
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
@@ -17,9 +66,9 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
+<body onLoad="docSampleInit()">
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
@@ -1651,9 +1700,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Value of the <a class="el" href="classQskControl.html#a4922b874ba4b0b113d097940514d7fed">locale</a> property </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a042cf70a645a44e9582bab83a58da123">setLocale()</a>, <a class="el" href="classQskControl.html#afca376fbc9d696f19fa39771ef42685d">resetLocale()</a>, <a class="el" href="classQskControl.html#a15c6a5884f9121e4bded602fa4064b53">localeChanged()</a> </dd>
-<dd>
-QEvent::LocaleChange </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a042cf70a645a44e9582bab83a58da123">setLocale()</a>, <a class="el" href="classQskControl.html#afca376fbc9d696f19fa39771ef42685d">resetLocale()</a>, <a class="el" href="classQskControl.html#a15c6a5884f9121e4bded602fa4064b53">localeChanged()</a> \saqt QEvent::LocaleChange </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskControl_8cpp_source.html#l00182">182</a> of file <a class="el" href="QskControl_8cpp_source.html">QskControl.cpp</a>.</p>
 
@@ -1683,9 +1730,7 @@ QEvent::LocaleChange </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>Signal indicating, that the value of the <a class="el" href="classQskControl.html#a4922b874ba4b0b113d097940514d7fed">locale</a> property has changed</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a4922b874ba4b0b113d097940514d7fed">locale</a> </dd>
-<dd>
-QEvent::LocaleChange </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a4922b874ba4b0b113d097940514d7fed">locale</a> \saqt QEvent::LocaleChange </dd></dl>
 
 </div>
 </div>
@@ -1705,9 +1750,7 @@ QEvent::LocaleChange </dd></dl>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>margins around the contents of the control </dd></dl>
 <dl class="section user"><dt>Aspect</dt><dd>QskControl::Background | <a class="el" href="classQskAspect.html#abe34bcf592dd94b99b1a3461e810ad73acdbbc15bd41c3538403c8c118b5cf090">QskAspect::Metric</a> | <a class="el" href="classQskAspect.html#a916d523f0d3d620c06f7503037c47fafad462cb434b390e2bcc993ddccd9c10c0">QskAspect::Padding</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a9e364e8849e59502a9ade3412fa8fa8f">contentsRect()</a>, <a class="el" href="classQskControl.html#aa281c8e8f81c983326da58ae733e5a10">setMargins()</a> </dd>
-<dd>
-QEvent::ContentsRectChange </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a9e364e8849e59502a9ade3412fa8fa8f">contentsRect()</a>, <a class="el" href="classQskControl.html#aa281c8e8f81c983326da58ae733e5a10">setMargins()</a> \saqt QEvent::ContentsRectChange </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskControl_8cpp_source.html#l00144">144</a> of file <a class="el" href="QskControl_8cpp_source.html">QskControl.cpp</a>.</p>
 
@@ -1949,9 +1992,7 @@ QEvent::ContentsRectChange </dd></dl>
       </table>
 </div><div class="memdoc">
 <p>Reset the locale to be inherited from the parentItem()</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a4922b874ba4b0b113d097940514d7fed">locale()</a>, <a class="el" href="classQskControl.html#a042cf70a645a44e9582bab83a58da123">setLocale()</a>, <a class="el" href="classQskControl.html#a15c6a5884f9121e4bded602fa4064b53">localeChanged()</a> </dd>
-<dd>
-QEvent::LocaleChange </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a4922b874ba4b0b113d097940514d7fed">locale()</a>, <a class="el" href="classQskControl.html#a042cf70a645a44e9582bab83a58da123">setLocale()</a>, <a class="el" href="classQskControl.html#a15c6a5884f9121e4bded602fa4064b53">localeChanged()</a> \saqt QEvent::LocaleChange </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskControl_8cpp_source.html#l00204">204</a> of file <a class="el" href="QskControl_8cpp_source.html">QskControl.cpp</a>.</p>
 
@@ -1973,9 +2014,7 @@ QEvent::LocaleChange </dd></dl>
 </div><div class="memdoc">
 <p>Reset the margins to the default value provided from the skin</p>
 <dl class="section user"><dt>Aspect</dt><dd>QskControl::Background | <a class="el" href="classQskAspect.html#abe34bcf592dd94b99b1a3461e810ad73acdbbc15bd41c3538403c8c118b5cf090">QskAspect::Metric</a> | <a class="el" href="classQskAspect.html#a916d523f0d3d620c06f7503037c47fafad462cb434b390e2bcc993ddccd9c10c0">QskAspect::Padding</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a9e364e8849e59502a9ade3412fa8fa8f">contentsRect()</a>, <a class="el" href="classQskControl.html#aa281c8e8f81c983326da58ae733e5a10">setMargins()</a>, <a class="el" href="classQskControl.html#ac16a7d163e51751880b97ea3faf5292b">margins()</a> </dd>
-<dd>
-QEvent::ContentsRectChange </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a9e364e8849e59502a9ade3412fa8fa8f">contentsRect()</a>, <a class="el" href="classQskControl.html#aa281c8e8f81c983326da58ae733e5a10">setMargins()</a>, <a class="el" href="classQskControl.html#ac16a7d163e51751880b97ea3faf5292b">margins()</a> \saqt QEvent::ContentsRectChange </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskControl_8cpp_source.html#l00135">135</a> of file <a class="el" href="QskControl_8cpp_source.html">QskControl.cpp</a>.</p>
 
@@ -2332,9 +2371,7 @@ QEvent::ContentsRectChange </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>Set the <a class="el" href="classQskControl.html#a4922b874ba4b0b113d097940514d7fed">locale</a> for the control and all its descendents, that do not have their own locale</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a4922b874ba4b0b113d097940514d7fed">locale()</a>, <a class="el" href="classQskControl.html#afca376fbc9d696f19fa39771ef42685d">resetLocale()</a>, <a class="el" href="classQskControl.html#a15c6a5884f9121e4bded602fa4064b53">localeChanged()</a> </dd>
-<dd>
-QEvent::LocaleChange </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a4922b874ba4b0b113d097940514d7fed">locale()</a>, <a class="el" href="classQskControl.html#afca376fbc9d696f19fa39771ef42685d">resetLocale()</a>, <a class="el" href="classQskControl.html#a15c6a5884f9121e4bded602fa4064b53">localeChanged()</a> \saqt QEvent::LocaleChange </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskControl_8cpp_source.html#l00187">187</a> of file <a class="el" href="QskControl_8cpp_source.html">QskControl.cpp</a>.</p>
 
@@ -2363,9 +2400,7 @@ QEvent::LocaleChange </dd></dl>
   </dd>
 </dl>
 <dl class="section user"><dt>Aspect</dt><dd>QskControl::Background | <a class="el" href="classQskAspect.html#abe34bcf592dd94b99b1a3461e810ad73acdbbc15bd41c3538403c8c118b5cf090">QskAspect::Metric</a> | <a class="el" href="classQskAspect.html#a916d523f0d3d620c06f7503037c47fafad462cb434b390e2bcc993ddccd9c10c0">QskAspect::Padding</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a9e364e8849e59502a9ade3412fa8fa8f">contentsRect()</a>, <a class="el" href="classQskControl.html#ac16a7d163e51751880b97ea3faf5292b">margins()</a> </dd>
-<dd>
-QEvent::ContentsRectChange </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a9e364e8849e59502a9ade3412fa8fa8f">contentsRect()</a>, <a class="el" href="classQskControl.html#ac16a7d163e51751880b97ea3faf5292b">margins()</a> \saqt QEvent::ContentsRectChange </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskControl_8cpp_source.html#l00124">124</a> of file <a class="el" href="QskControl_8cpp_source.html">QskControl.cpp</a>.</p>
 
@@ -3514,9 +3549,7 @@ QEvent::ContentsRectChange </dd></dl>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">A state bit that is set, when QQuickItem::isEnabled() == false.
-</pre><dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a9e8309c39efc60449af6581319df7978">QskItem::setDisabled()</a> </dd>
-<dd>
-QQuickItem::enabled </dd></dl>
+</pre><dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a9e8309c39efc60449af6581319df7978">QskItem::setDisabled()</a> \saqt QQuickItem::enabled </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskControl_8h_source.html#l00056">56</a> of file <a class="el" href="QskControl_8h_source.html">QskControl.h</a>.</p>
 
@@ -3542,9 +3575,7 @@ QQuickItem::enabled </dd></dl>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">A state bit that is set, when the item is the active focus item
-</pre> <dl class="section see"><dt>See also</dt><dd>focusPolicy </dd>
-<dd>
-QQuickItem::acceptHoverEvents(), QQuickItem::focusInEvent() QQuickItem::focusOutEvent() </dd></dl>
+</pre> <dl class="section see"><dt>See also</dt><dd>focusPolicy \saqt QQuickItem::acceptHoverEvents(), QQuickItem::focusInEvent() QQuickItem::focusOutEvent() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskControl_8h_source.html#l00056">56</a> of file <a class="el" href="QskControl_8h_source.html">QskControl.h</a>.</p>
 
@@ -3572,7 +3603,7 @@ QQuickItem::acceptHoverEvents(), QQuickItem::focusInEvent() QQuickItem::focusOut
 <pre class="fragment">A state bit that is set, when the item is hovered
 It allows to define a specific representation in the skin,
 when being hovered.
-</pre> <dl class="section see"><dt>See also</dt><dd>QQuickItem::acceptHoverEvents(), QQuickItem::hoverEnterEvent(), QQuickItem::hoverLeaveEvent() </dd></dl>
+</pre><p> \saqt QQuickItem::acceptHoverEvents(), QQuickItem::hoverEnterEvent(), QQuickItem::hoverLeaveEvent() </p>
 
 <p class="definition">Definition at line <a class="el" href="QskControl_8h_source.html#l00056">56</a> of file <a class="el" href="QskControl_8h_source.html">QskControl.h</a>.</p>
 
@@ -3604,9 +3635,7 @@ when being hovered.
 </ul>
 <p>Child items, where the transparentForPositioners flag is set, are excluded.</p>
 <dl class="section user"><dt>Access functions:</dt><dd><a class="el" href="classQskControl.html#afd0f572601d726d8b5f36e45185f6dba">autoLayoutChildren()</a>, <a class="el" href="classQskControl.html#a498419067c86c79924d727e426a0b07d">setAutoLayoutChildren()</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a81d875c1b68ff8a965dac22f4c8d9087">layoutRect()</a>, layoutHints(), layoutAlignmentHint(), QskItem::transparentForPositioners </dd>
-<dd>
-QQuickItem::updatePolish()</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#a81d875c1b68ff8a965dac22f4c8d9087">layoutRect()</a>, layoutHints(), layoutAlignmentHint(), QskItem::transparentForPositioners \saqt QQuickItem::updatePolish()</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Auto layouting is similar to what happens when putting several items into the same cell of a <a class="el" href="classQskGridBox.html">QskGridBox</a>.</dd></dl>
 <dl class="section user"><dt>Access functions:</dt><dd><a class="el" href="classQskControl.html#afd0f572601d726d8b5f36e45185f6dba">autoLayoutChildren()</a>, <a class="el" href="classQskControl.html#a498419067c86c79924d727e426a0b07d">setAutoLayoutChildren()</a> </dd></dl>
 
@@ -3898,6 +3927,7 @@ QQuickItem::updatePolish()</dd></dl>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.9.8-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

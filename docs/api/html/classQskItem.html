@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -9,6 +10,54 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<!-- QSkinny WASM code -->
+        <script type="text/javascript">
+            async function docSampleInit()
+            {
+                const spinner = document.querySelector('#qtspinner');
+                const screen = document.querySelector('#qt-wasm-screen');
+                const status = document.querySelector('#qtstatus');
+                const showUi = (ui) => {
+                    [spinner, screen].forEach(element => element.style.display = 'none');
+                    if (screen === ui)
+                    {
+                        screen.style.position = 'default';
+                        screen.style.width = '500px';
+                        screen.style.height = '300px';
+                    }
+                    ui.style.display = 'block';
+                }
+                try {
+                    if(spinner)
+                    {
+                        showUi(spinner);
+                        status.innerHTML = 'Loading...';
+                        const instance = await qtLoad({
+                            qt: {
+                                onLoaded: () => showUi(screen),
+                                onExit: exitData =>
+                                {
+                                    status.innerHTML = 'Application exit';
+                                    status.innerHTML +=
+                                        exitData.code !== undefined ? ` with code ` : '';
+                                    status.innerHTML +=
+                                        exitData.text !== undefined ? ` ()` : '';
+                                    showUi(spinner);
+                                },
+                                entryFunction: window.createQtAppInstance,
+                                containerElements: [screen],
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.error(e);
+                    console.error(e.stack);
+                }
+            }
+        </script>
+    <script type="text/javascript" src="apiDocumentationSamples.js"></script>
+    <script type="text/javascript" src="qtloader.js"></script>
+<!-- end QSkinny WASM code -->
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
@@ -17,9 +66,9 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
+<body onLoad="docSampleInit()">
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
@@ -303,13 +352,13 @@ in the scene what might become a significant factor for the startup performance
 Instead of trying to work around these problems by asynchrounous instantiation
 strategies ( QQmlIncubator ) the DeferredUpdate flag offers a much simpler
 and obvious solution: don't instantiate before really needed.
-</pre> <dl class="section see"><dt>See also</dt><dd>QQuickItem::isVisible()</dd></dl>
+</pre><p> \saqt QQuickItem::isVisible()</p>
 <dl class="section note"><dt>Note</dt><dd>Some more advanced algorithms have not yet been implemented, such as viewport frustrum culling (i.e. hiding items outside of the window geometry). </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a8428a4f497354b0f1f09329bb0f4c4a5a453f1c671c98ed22baf2e8f41b28c704" name="a8428a4f497354b0f1f09329bb0f4c4a5a453f1c671c98ed22baf2e8f41b28c704"></a>DeferredPolish&#160;</td><td class="fielddoc"><pre class="fragment">Polishing an item is blocked when being invisible.
 F.e for all items being derived from QskControl the layout calculations
 happen during polishing.
-</pre> <dl class="section see"><dt>See also</dt><dd>QQuickItem::updatePolish(), QQuickItem::polish() </dd></dl>
+</pre><p> \saqt QQuickItem::updatePolish(), QQuickItem::polish() </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a8428a4f497354b0f1f09329bb0f4c4a5a9d58d6c18f565596752c5904bdd03ca5" name="a8428a4f497354b0f1f09329bb0f4c4a5a9d58d6c18f565596752c5904bdd03ca5"></a>DeferredLayout&#160;</td><td class="fielddoc"><pre class="fragment">Recalculations of the implicitSize are blocked until being explicitly requested. 
 
@@ -320,14 +369,12 @@ without recalculating the actual size hints ( f.e the implicitSize ).
 When having layout code that relies on binding the implicit width/height
 the QskItem::DeferredLayout flag needs to be disabled.
 </pre> <dl class="section note"><dt>Note</dt><dd>All layout classes offered by the Qt/Quick modules of the Qt Company ( f.e anchors ) do require immediate updates of the implicit size.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a835eb94fb90551feece2b9d9203f4273">QskItem::resetImplicitSize()</a> </dd>
-<dd>
-QQuickItem::implicitSize() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a835eb94fb90551feece2b9d9203f4273">QskItem::resetImplicitSize()</a> \saqt QQuickItem::implicitSize() </dd></dl>
 </td></tr>
 <tr><td class="fieldname"><a id="a8428a4f497354b0f1f09329bb0f4c4a5a378b7344859107b95ba162be44c662b0" name="a8428a4f497354b0f1f09329bb0f4c4a5a378b7344859107b95ba162be44c662b0"></a>CleanupOnVisibility&#160;</td><td class="fielddoc"><pre class="fragment">Delete scene graph nodes, when the item becomes hidden.
 Enabling this mode will reduce the memory footprint, but comes at the cost
 of having to recreate nodes once the item gets shown again.
-</pre> <dl class="section see"><dt>See also</dt><dd>QQuickItem::isVisible() </dd></dl>
+</pre><p> \saqt QQuickItem::isVisible() </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a8428a4f497354b0f1f09329bb0f4c4a5a73add90e003ab93bcacc802fdbd0d551" name="a8428a4f497354b0f1f09329bb0f4c4a5a73add90e003ab93bcacc802fdbd0d551"></a>PreferRasterForTextures&#160;</td><td class="fielddoc"><pre class="fragment">When creating textures from QskGraphic, prefer the raster paint
 engine over the OpenGL paint engine.
@@ -433,9 +480,7 @@ engine over the OpenGL paint engine.
 </div><div class="memdoc">
 <p>A specific hook that is intended to be overloaded by controls that need to do some specific operations, when an item is painted the first time after becoming visible.</p>
 <p>The default implementation is a no operation.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#afd2c887321c106af395cd226c5d29ea9">initiallyPainted</a> </dd>
-<dd>
-QQuickItem::setVisible() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#afd2c887321c106af395cd226c5d29ea9">initiallyPainted</a> \saqt QQuickItem::setVisible() </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classQskMenu.html#a380315608f2d56426ad6b404c5832620">QskMenu</a>, <a class="el" href="classQskPopup.html#a09e96fb6f482adbd609cd22dfa9fc3d2">QskPopup</a>, and <a class="el" href="classQskSlider.html#ab933a17fbdef7221c6d0ef590654e555">QskSlider</a>.</p>
 
@@ -538,9 +583,7 @@ QQuickItem::setVisible() </dd></dl>
 <p>The QML engine initializes an item as being incomplete by explicitly calling <a class="el" href="classQskItem.html#a7594e4eb8d783fb010b9b029a996da4b">classBegin()</a>. Once the item has been constructed <a class="el" href="classQskItem.html#adffffca32a07ae06c549dd748d4ec9b4">componentComplete()</a> is called. This way temporary operations during the construction can be avoided.</p>
 <p>In the C++ case the item indicates being complete from the beginning and both hooks are never called.</p>
 <p>The overloaded version calls the base class and has no purpose beside being an entry point for debugging.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#adffffca32a07ae06c549dd748d4ec9b4">componentComplete()</a> </dd>
-<dd>
-QQuickItem::classBegin, QQuickItem::isComponentComplete() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#adffffca32a07ae06c549dd748d4ec9b4">componentComplete()</a> \saqt QQuickItem::classBegin, QQuickItem::isComponentComplete() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l00267">267</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -591,9 +634,7 @@ QQuickItem::classBegin, QQuickItem::isComponentComplete() </dd></dl>
 <p>The QML engine initilizes an item as being incomplete by explicitly calling QQuickItem::classBegin(). Once the item has been constructed <a class="el" href="classQskItem.html#adffffca32a07ae06c549dd748d4ec9b4">componentComplete()</a> is called. This way temporary operations during the construction can be avoided.</p>
 <p>In the C++ case the item indicates being complete from the beginning and both hooks are never called.</p>
 <p>The overloaded does some sanity checks in debug mode and calls the base class.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a7594e4eb8d783fb010b9b029a996da4b">classBegin()</a> </dd>
-<dd>
-QQuickItem::isComponentComplete(), QQuickItem::componentComplete </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a7594e4eb8d783fb010b9b029a996da4b">classBegin()</a> \saqt QQuickItem::isComponentComplete(), QQuickItem::componentComplete </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l00272">272</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -757,9 +798,7 @@ QQuickItem::isComponentComplete(), QQuickItem::componentComplete </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a3c21d48230976c5d57ff59578a45744c">geometryChange()</a> </dd>
-<dd>
-QObject::installEventFilter() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a3c21d48230976c5d57ff59578a45744c">geometryChange()</a> \saqt QObject::installEventFilter() </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classQskGraphicLabel.html#a5578c7b1a3983477e7a6154158392abb">QskGraphicLabel</a>, <a class="el" href="classQskScrollBox.html#acbc65a5a7a22a63c49c9589a8f4bfac8">QskScrollBox</a>, <a class="el" href="classQskSubWindowArea.html#aa12f7379b9c51fe87cf8307ac38cea12">QskSubWindowArea</a>, <a class="el" href="classQskGridBox.html#afb16aeb664268daeb46db634b4bbcbc6">QskGridBox</a>, and <a class="el" href="classQskLinearBox.html#af9e59d09e22b75bf7489190bda2ac705">QskLinearBox</a>.</p>
 
@@ -819,9 +858,7 @@ QObject::installEventFilter() </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>An alternative way to call setVisible( false ). Useful for signal/slot connections</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a2af21003297efc6aca88b93ee68983d7">show()</a> </dd>
-<dd>
-QQuickItem::setVisible() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a2af21003297efc6aca88b93ee68983d7">show()</a> \saqt QQuickItem::setVisible() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l00315">315</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -853,9 +890,7 @@ QQuickItem::setVisible() </dd></dl>
 <p>In the QSkinny layout system the implicitSize is a synonym for what is also known as sizeHint or preferredSize.</p>
 <dl class="section return"><dt>Returns</dt><dd>Implicit size,</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Layout code that relies on property bindings of the implicit width a height needs to disable the <a class="el" href="classQskItem.html#a8428a4f497354b0f1f09329bb0f4c4a5a9d58d6c18f565596752c5904bdd03ca5">QskItem::DeferredLayout</a> flag</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#aca3971abb3657161542b1d3bd20111d8">QskControl::preferredSize()</a>, <a class="el" href="classQskControl.html#acc953a6b90655c8bd5e3d39d817f7170">QskControl::sizeHint()</a> </dd>
-<dd>
-QQuickItem::implicitWidth(), QQuickItem::implicitHeight() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskControl.html#aca3971abb3657161542b1d3bd20111d8">QskControl::preferredSize()</a>, <a class="el" href="classQskControl.html#acc953a6b90655c8bd5e3d39d817f7170">QskControl::sizeHint()</a> \saqt QQuickItem::implicitWidth(), QQuickItem::implicitHeight() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8h_source.html#l00219">219</a> of file <a class="el" href="QskItem_8h_source.html">QskItem.h</a>.</p>
 
@@ -897,9 +932,7 @@ QQuickItem::implicitWidth(), QQuickItem::implicitHeight() </dd></dl>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>True, if the item will be polished in the next scene graph update cycle. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#ab7e3df41eb4a89437fc9c183bdc7155f">isUpdateNodeScheduled()</a> </dd>
-<dd>
-QQuickItem::polish() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#ab7e3df41eb4a89437fc9c183bdc7155f">isUpdateNodeScheduled()</a> \saqt QQuickItem::polish() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l00565">565</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -991,9 +1024,7 @@ QQuickItem::polish() </dd></dl>
 </div><div class="memdoc">
 <p>An item might be invisible because it has been explicitly hidden or one of its ancestors has been hidden. <a class="el" href="classQskItem.html#a3885a0ff6d5279f1ee50bbf4adc908d8">isVisibleToParent()</a> indicates the first situation.</p>
 <dl class="section return"><dt>Returns</dt><dd>true once setVisible( false ) has been called</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a73c2c66aad0728c7fce20d60d2d3406b">visibleToParent()</a>, qskIsVisibleToParent() </dd>
-<dd>
-QQuickItem::setVisible() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a73c2c66aad0728c7fce20d60d2d3406b">visibleToParent()</a>, qskIsVisibleToParent() \saqt QQuickItem::setVisible() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l00325">325</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -1062,9 +1093,7 @@ QQuickItem::setVisible() </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>It is recommended to avoid using this type of notifications where possible. Netter rely on overloading the corresponding event handlers, what allows application code to make use of convenient and well established concepts like event filtering ( QObject::installEventFilter() ).</dd>
 <dd>
 If you re-implement this method in a subclass, be sure to call the overloaded method of the base class.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a489733803162f2453a4f74c2ba99d657">event()</a> </dd>
-<dd>
-QQuickItem::itemChange() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a489733803162f2453a4f74c2ba99d657">event()</a> \saqt QQuickItem::itemChange() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l00863">863</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -1173,7 +1202,7 @@ In Qml the parameters are routed through the attached LayoutMirroring property t
 </table>
 </div><div class="memdoc">
 <p>Notification, that is overloaded for debuging purposes, without doing anything beside calling the base class.</p>
-<dl class="section see"><dt>See also</dt><dd>QQuickItem::mouseUngrabEvent </dd></dl>
+<p>\saqt QQuickItem::mouseUngrabEvent </p>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l01044">1044</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -1393,7 +1422,7 @@ In Qml the parameters are routed through the attached LayoutMirroring property t
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Convenience function, equivalent to setEnabled( !on ). </p><dl class="section see"><dt>See also</dt><dd>QQuickItem::setEnabled() </dd></dl>
+<p>Convenience function, equivalent to setEnabled( !on ). \saqt QQuickItem::setEnabled() </p>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l00300">300</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -1495,9 +1524,7 @@ In Qml the parameters are routed through the attached LayoutMirroring property t
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#ab989e127a829f9a3e0e6aebde0db81d1">geometry()</a>, <a class="el" href="classQskItem.html#a3c21d48230976c5d57ff59578a45744c">geometryChange()</a> </dd>
-<dd>
-QQuickItem::size(), QQuickItem::position() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#ab989e127a829f9a3e0e6aebde0db81d1">geometry()</a>, <a class="el" href="classQskItem.html#a3c21d48230976c5d57ff59578a45744c">geometryChange()</a> \saqt QQuickItem::size(), QQuickItem::position() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8h_source.html#l00204">204</a> of file <a class="el" href="QskItem_8h_source.html">QskItem.h</a>.</p>
 
@@ -1550,9 +1577,7 @@ QQuickItem::size(), QQuickItem::position() </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#ab989e127a829f9a3e0e6aebde0db81d1">geometry()</a>, <a class="el" href="classQskItem.html#a3c21d48230976c5d57ff59578a45744c">geometryChange()</a> </dd>
-<dd>
-QQuickItem::size(), QQuickItem::position() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#ab989e127a829f9a3e0e6aebde0db81d1">geometry()</a>, <a class="el" href="classQskItem.html#a3c21d48230976c5d57ff59578a45744c">geometryChange()</a> \saqt QQuickItem::size(), QQuickItem::position() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l00330">330</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -1582,9 +1607,7 @@ QQuickItem::size(), QQuickItem::position() </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>Convenience function, equivalent to setVisible( !on ).</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a2af21003297efc6aca88b93ee68983d7">show()</a>, <a class="el" href="classQskItem.html#ac8dfc8c1c45a15043ef69ddf53a923c5">hide()</a> </dd>
-<dd>
-QQuickItem::setVisible() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a2af21003297efc6aca88b93ee68983d7">show()</a>, <a class="el" href="classQskItem.html#ac8dfc8c1c45a15043ef69ddf53a923c5">hide()</a> \saqt QQuickItem::setVisible() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l00305">305</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -1852,9 +1875,7 @@ QQuickItem::setVisible() </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>An alternative way to call setVisible( true ). Useful for signal/slot connections</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#ac8dfc8c1c45a15043ef69ddf53a923c5">hide()</a>, <a class="el" href="classQskItem.html#a3ca341fb4b268233b0e93e2877b7b276">setHidden()</a> </dd>
-<dd>
-QQuickItem::setVisible() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#ac8dfc8c1c45a15043ef69ddf53a923c5">hide()</a>, <a class="el" href="classQskItem.html#a3ca341fb4b268233b0e93e2877b7b276">setHidden()</a> \saqt QQuickItem::setVisible() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l00310">310</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -1911,7 +1932,7 @@ QQuickItem::setVisible() </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>Notification, that is overloaded for debuging purposes, without doing anything beside calling the base class.</p>
-<dl class="section see"><dt>See also</dt><dd>QQuickItem::touchUngrabEvent </dd></dl>
+<p>\saqt QQuickItem::touchUngrabEvent </p>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8cpp_source.html#l01049">1049</a> of file <a class="el" href="QskItem_8cpp_source.html">QskItem.cpp</a>.</p>
 
@@ -2204,7 +2225,7 @@ QQuickItem::setVisible() </dd></dl>
 </table>
 </div><div class="memdoc">
 <p>A property indicating if the item has child items.</p>
-<dl class="section see"><dt>See also</dt><dd>QQuickItem::childItems(), QQuickItem::parentItem() </dd></dl>
+<p>\saqt QQuickItem::childItems(), QQuickItem::parentItem() </p>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8h_source.html#l00039">39</a> of file <a class="el" href="QskItem_8h_source.html">QskItem.h</a>.</p>
 
@@ -2334,9 +2355,7 @@ QQuickItem::setVisible() </dd></dl>
 </div><div class="memdoc">
 <p>The tabFence flag can be used to create local tab focus chains. It is usually used in combination with QQuickItem::ItemIsFocusScope.</p>
 <p><a class="el" href="classQskPopup.html">QskPopup</a> is an example where the focus tab chain is expected to continue with the first child instead of leaving the popup, when reaching its end.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#aa9f3f46db4fb63f0944da8162fdca334">isTabFence()</a>, QQuickItem::ItemIsFocusScope </dd>
-<dd>
-QQuickItem::ItemIsFocusScope </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#aa9f3f46db4fb63f0944da8162fdca334">isTabFence()</a>, QQuickItem::ItemIsFocusScope \saqt QQuickItem::ItemIsFocusScope </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8h_source.html#l00023">23</a> of file <a class="el" href="QskItem_8h_source.html">QskItem.h</a>.</p>
 
@@ -2390,9 +2409,7 @@ QQuickItem::ItemIsFocusScope </dd></dl>
 </div><div class="memdoc">
 <p>Flag indicating if an item would become visible if its parentItem() is shown. The implementation relies on the internal explicitVisible flag, that has not been exposed by the public API of QQuickItem.</p>
 <p>In many situations it is important to know if an item has been explicitly hidden because of a setVisible( false ) or it is a child of an item, that is in an invisible state. F,e for calculating the size hint for a hidden container it is necessary to know which children would stay hidden when the container becomes visible.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a3ca341fb4b268233b0e93e2877b7b276">setHidden()</a>, <a class="el" href="classQskItem.html#a2af21003297efc6aca88b93ee68983d7">show()</a>, <a class="el" href="classQskItem.html#ac8dfc8c1c45a15043ef69ddf53a923c5">hide()</a>, <a class="el" href="classQskItem.html#a3885a0ff6d5279f1ee50bbf4adc908d8">isVisibleToParent()</a>, qskIsVisibleToParent() </dd>
-<dd>
-QQuickItem::setVisible() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskItem.html#a3ca341fb4b268233b0e93e2877b7b276">setHidden()</a>, <a class="el" href="classQskItem.html#a2af21003297efc6aca88b93ee68983d7">show()</a>, <a class="el" href="classQskItem.html#ac8dfc8c1c45a15043ef69ddf53a923c5">hide()</a>, <a class="el" href="classQskItem.html#a3885a0ff6d5279f1ee50bbf4adc908d8">isVisibleToParent()</a>, qskIsVisibleToParent() \saqt QQuickItem::setVisible() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskItem_8h_source.html#l00038">38</a> of file <a class="el" href="QskItem_8h_source.html">QskItem.h</a>.</p>
 
@@ -2424,6 +2441,7 @@ QQuickItem::setVisible() </dd></dl>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.9.8-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -9,6 +10,54 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<!-- QSkinny WASM code -->
+        <script type="text/javascript">
+            async function docSampleInit()
+            {
+                const spinner = document.querySelector('#qtspinner');
+                const screen = document.querySelector('#qt-wasm-screen');
+                const status = document.querySelector('#qtstatus');
+                const showUi = (ui) => {
+                    [spinner, screen].forEach(element => element.style.display = 'none');
+                    if (screen === ui)
+                    {
+                        screen.style.position = 'default';
+                        screen.style.width = '500px';
+                        screen.style.height = '300px';
+                    }
+                    ui.style.display = 'block';
+                }
+                try {
+                    if(spinner)
+                    {
+                        showUi(spinner);
+                        status.innerHTML = 'Loading...';
+                        const instance = await qtLoad({
+                            qt: {
+                                onLoaded: () => showUi(screen),
+                                onExit: exitData =>
+                                {
+                                    status.innerHTML = 'Application exit';
+                                    status.innerHTML +=
+                                        exitData.code !== undefined ? ` with code ` : '';
+                                    status.innerHTML +=
+                                        exitData.text !== undefined ? ` ()` : '';
+                                    showUi(spinner);
+                                },
+                                entryFunction: window.createQtAppInstance,
+                                containerElements: [screen],
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.error(e);
+                    console.error(e.stack);
+                }
+            }
+        </script>
+    <script type="text/javascript" src="apiDocumentationSamples.js"></script>
+    <script type="text/javascript" src="qtloader.js"></script>
+<!-- end QSkinny WASM code -->
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
@@ -17,9 +66,9 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
+<body onLoad="docSampleInit()">
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
@@ -142,7 +191,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00372">372</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00371">371</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
 
 </div>
 </div>
@@ -172,7 +221,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00379">379</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00378">378</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
 
 </div>
 </div>
@@ -208,7 +257,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00385">385</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00384">384</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
 
 </div>
 </div>
@@ -228,7 +277,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00729">729</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00728">728</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
 
 </div>
 </div>
@@ -247,7 +296,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00778">778</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00777">777</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
 
 </div>
 </div>
@@ -267,7 +316,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00544">544</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00543">543</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
 
 </div>
 </div>
@@ -287,7 +336,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00483">483</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00482">482</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
 
 </div>
 </div>
@@ -317,7 +366,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00639">639</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00638">638</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
 
 </div>
 </div>
@@ -337,7 +386,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00619">619</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00618">618</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
 
 </div>
 </div>
@@ -357,12 +406,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00600">600</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskBoxBasicStroker_8cpp_source.html#l00599">599</a> of file <a class="el" href="QskBoxBasicStroker_8cpp_source.html">QskBoxBasicStroker.cpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.9.8-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

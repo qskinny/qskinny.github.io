@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['layouts_0',['Layouts',['../qsklayouts.html',1,'']]]
+  ['my_20script_20page_0',['My Script Page',['../index.html',1,'']]]
 ];

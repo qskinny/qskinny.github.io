@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['website_0',['Generating the website',['../md_generate-website.html',1,'']]]
+  ['vector_20graphics_0',['Vector graphics',['../qskvectorgraphics.html',1,'']]]
 ];

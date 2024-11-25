@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -9,6 +10,54 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<!-- QSkinny WASM code -->
+        <script type="text/javascript">
+            async function docSampleInit()
+            {
+                const spinner = document.querySelector('#qtspinner');
+                const screen = document.querySelector('#qt-wasm-screen');
+                const status = document.querySelector('#qtstatus');
+                const showUi = (ui) => {
+                    [spinner, screen].forEach(element => element.style.display = 'none');
+                    if (screen === ui)
+                    {
+                        screen.style.position = 'default';
+                        screen.style.width = '500px';
+                        screen.style.height = '300px';
+                    }
+                    ui.style.display = 'block';
+                }
+                try {
+                    if(spinner)
+                    {
+                        showUi(spinner);
+                        status.innerHTML = 'Loading...';
+                        const instance = await qtLoad({
+                            qt: {
+                                onLoaded: () => showUi(screen),
+                                onExit: exitData =>
+                                {
+                                    status.innerHTML = 'Application exit';
+                                    status.innerHTML +=
+                                        exitData.code !== undefined ? ` with code ` : '';
+                                    status.innerHTML +=
+                                        exitData.text !== undefined ? ` ()` : '';
+                                    showUi(spinner);
+                                },
+                                entryFunction: window.createQtAppInstance,
+                                containerElements: [screen],
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.error(e);
+                    console.error(e.stack);
+                }
+            }
+        </script>
+    <script type="text/javascript" src="apiDocumentationSamples.js"></script>
+    <script type="text/javascript" src="qtloader.js"></script>
+<!-- end QSkinny WASM code -->
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
@@ -17,9 +66,9 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
+<body onLoad="docSampleInit()">
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
@@ -99,47 +148,52 @@ $(document).ready(function(){initNavTree('md_generate-website.html',''); initRes
 Prerequisites</h1>
 <p>You will need:</p>
 <ol type="1">
-<li>The <code>documentation-xml-website</code> branch of the Edelhirsch QSkinny repository at <a href="https://github.com/edelhirsch/qskinny/tree/documentation-xml-website">https://github.com/edelhirsch/qskinny/tree/documentation-xml-website</a> .</li>
+<li>A recent version of doxygen; The currently used version is 1.9.8. The <code>doxygen</code> binary needs to be in the $PATH.</li>
 </ol>
 <ol type="1">
-<li>A recent version of doxygen; The currently used version is 1.9.1 built from github sources. The <code>doxygen</code> binary needs to be in the $PATH.</li>
+<li>The <code>m4</code> command, which can be installed with <code>sudo apt install m4</code>.</li>
 </ol>
 <ol type="1">
-<li>A recent version of doxybook2 with some custom patches. The script <code>generate-website.sh</code> should download and build the right version, however the script might need some adaptation of paths. For reference, the required version can be found at <a href="https://github.com/edelhirsch/doxybook2/tree/jekyll">https://github.com/edelhirsch/doxybook2/tree/jekyll</a> .</li>
-</ol>
-<ol type="1">
-<li>A recent version of Jekyll (see <a href="https://jekyllrb.com/">https://jekyllrb.com/</a>), which will generate the static html pages. This and other required packages can be installed via <div class="fragment"><div class="line">gem install jekyll:3.9.0</div>
+<li>A recent version of Jekyll (see <a href="https://jekyllrb.com/">https://jekyllrb.com/</a>), which will generate the static html pages. The currently used jekyll version is 4.2.2. Also a recent version of bundler is required; this can be installed with: <div class="fragment"><div class="line">gem install jekyll:4.2.2</div>
 <div class="line">gem install bundler:2.1.4</div>
-</div><!-- fragment --> There might be some packages missing from the list above; in this case the Gemfile in the qskinny-website repository might help.</li>
+</div><!-- fragment --></li>
 </ol>
 <ol type="1">
-<li>Checkout the current website repository via <code>git clone git@github.com:qskinny/qskinny.github.io.git</code></li>
+<li>Checkout the repo to generate the website via <code>git clone git@github.com:peter-ha/qskinny-website.git</code></li>
+</ol>
+<ol type="1">
+<li>Checkout the live website repository via <code>git clone git@github.com:qskinny/qskinny.github.io.git</code></li>
 </ol>
 <h1><a class="anchor" id="autotoc_md7898"></a>
 Generating the website</h1>
-<p>Generating the static HTML sites is done with the <code>generate-website.sh</code> script in the <code>qskinny/doc</code> directory. The script has some hardcoded paths and probably needs some adaptation to run correctly.</p>
-<p>It will do the following:</p>
-<ol type="1">
-<li>Generate HTML from doxygen. This step is needed because for some reason when generating XML from doxygen there are no images with dependency graphs. <em>Note</em>: This step is only executed if the <code>html</code> folder doesn't exist, because otherwise it would take too long.</li>
-</ol>
-<ol type="1">
-<li>Generate XML from doxygen. The generated XML is used with doxybook2 in the next step. <em>Note</em>: This step is only executed if the <code>xml</code> folder doesn't exist, because otherwise it would take too long.</li>
-</ol>
-<ol type="1">
-<li>Generate markdown from XML with doxybook2. This markdown will be used by Jekyll to either server the website content locally or generate static HTML from it, see below.</li>
-</ol>
 <h2><a class="anchor" id="autotoc_md7899"></a>
-Generating the website locally</h2>
-<p>When the command line switch <code>-local</code> is used with the <code>generate-website.sh</code> script, it will generate the content to a local folder <code>doxybook-out</code>. This is meant to be able to copy selected files to the website directory at <code>~/dev/qskinny-website</code>. Otherwise, the script will copy the content to the website repository for uploading (again, paths are hardcoded as of now). So when generating content for the first time, just run the script without any switches, which should generate the website to <code>~/dev/qskinny-website</code>.</p>
+Generating the API documentation with doxygen</h2>
+<div class="fragment"><div class="line">cd ~/dev/qskinny/doc</div>
+<div class="line">export PATH=.:$PATH</div>
+<div class="line">doxygen</div>
+</div><!-- fragment --><p> This will generate the documentation into the <code>api</code> folder.</p>
 <h2><a class="anchor" id="autotoc_md7900"></a>
-Testing the website locally</h2>
-<p>After having generated the website as described above, go to <code>~/dev/qskinny-website</code> and run <code>jekyll serve --livereload</code>. This should start a browser at <a href="http://127.0.0.1:4000/">http://127.0.0.1:4000/</a>, which will display the website.</p>
-<h2><a class="anchor" id="autotoc_md7901"></a>
-Generating the website publicly</h2>
-<p>When the command line switch <code>-publish</code> is used, the script will automatically generate a new version of the homepage and publish it at <a href="https://qskinny.github.io">https://qskinny.github.io</a> . This wil only work with the proper user rights of course. </p>
+Testing and building the website locally</h2>
+<p>First copy the generated files from above to the website repo:</p>
+<div class="fragment"><div class="line">cp -r api ~/dev/qskinny-website/docs/</div>
+</div><!-- fragment --><p>Then test the website locally:</p>
+<div class="fragment"><div class="line">cd ~/dev/qskinny-website</div>
+<div class="line">bundle exec jekyll serve --livereload</div>
+</div><!-- fragment --><p>Then direct your browser to <code><a href="http://127.0.0.1:4000/">http://127.0.0.1:4000/</a></code>.</p>
+<p>If all looks good, generate the static HTML website:</p>
+<div class="fragment"><div class="line">bundle exec jekyll build</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md7901"></a>
+Publishing the website</h2>
+<p>Just copy over the generated HTML files to the public website repo and push a new version of the homepage:</p>
+<div class="fragment"><div class="line">cp -r _site/* ~/dev/qskinny.github.io/</div>
+<div class="line">cd ~/dev/qskinny.github.io/</div>
+<div class="line">git commit -a -m &quot;new version&quot;  # you might want to add new files</div>
+<div class="line">gith push</div>
+</div><!-- fragment --><p>That's it, the new website is now published at <a href="https://qskinny.github.io/">https://qskinny.github.io/</a> . </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.9.8-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

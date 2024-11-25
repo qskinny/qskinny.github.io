@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -9,6 +10,54 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<!-- QSkinny WASM code -->
+        <script type="text/javascript">
+            async function docSampleInit()
+            {
+                const spinner = document.querySelector('#qtspinner');
+                const screen = document.querySelector('#qt-wasm-screen');
+                const status = document.querySelector('#qtstatus');
+                const showUi = (ui) => {
+                    [spinner, screen].forEach(element => element.style.display = 'none');
+                    if (screen === ui)
+                    {
+                        screen.style.position = 'default';
+                        screen.style.width = '500px';
+                        screen.style.height = '300px';
+                    }
+                    ui.style.display = 'block';
+                }
+                try {
+                    if(spinner)
+                    {
+                        showUi(spinner);
+                        status.innerHTML = 'Loading...';
+                        const instance = await qtLoad({
+                            qt: {
+                                onLoaded: () => showUi(screen),
+                                onExit: exitData =>
+                                {
+                                    status.innerHTML = 'Application exit';
+                                    status.innerHTML +=
+                                        exitData.code !== undefined ? ` with code ` : '';
+                                    status.innerHTML +=
+                                        exitData.text !== undefined ? ` ()` : '';
+                                    showUi(spinner);
+                                },
+                                entryFunction: window.createQtAppInstance,
+                                containerElements: [screen],
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.error(e);
+                    console.error(e.stack);
+                }
+            }
+        </script>
+    <script type="text/javascript" src="apiDocumentationSamples.js"></script>
+    <script type="text/javascript" src="qtloader.js"></script>
+<!-- end QSkinny WASM code -->
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
@@ -17,9 +66,9 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
+<body onLoad="docSampleInit()">
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
@@ -686,10 +735,8 @@ Public Member Functions</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskPlacementPolicy.html#abe62be8f3bd4e174c2b2ec0363abb86a" title="Policy for the item, when being visible ( to its parent )">visiblePolicy</a>, <a class="el" href="classQskItem.html#a3885a0ff6d5279f1ee50bbf4adc908d8">QskItem::isVisibleToParent()</a>, qskIsVisibleToParent()</dd></dl>
 <dl class="section note"><dt>Note</dt><dd><a class="el" href="classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bfa42fd248ea8d158266996c61a6557638b">QskPlacementPolicy::Ignore</a> is stored in the transparentForPositioner bit in QQuickItem and might have an impact on Qt/Quick layout code.</dd>
 <dd>
-<a class="el" href="classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bfa13b50577861e1330542865c8cae50586">QskPlacementPolicy::Reserve</a> is equivalent to what is offered by </dd></dl>
-<dl class="section see"><dt>See also</dt><dd>QSizePolicy::retainSizeWhenHidden().</dd>
-<dd>
-<a class="el" href="classQskPlacementPolicy.html#a367c23c20ed7950bff2971f221853908">setHiddenPolicy()</a>, <a class="el" href="classQskPlacementPolicy.html#abe62be8f3bd4e174c2b2ec0363abb86a" title="Policy for the item, when being visible ( to its parent )">visiblePolicy()</a> </dd></dl>
+<a class="el" href="classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bfa13b50577861e1330542865c8cae50586">QskPlacementPolicy::Reserve</a> is equivalent to what is offered by \saqt QSizePolicy::retainSizeWhenHidden().</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskPlacementPolicy.html#a367c23c20ed7950bff2971f221853908">setHiddenPolicy()</a>, <a class="el" href="classQskPlacementPolicy.html#abe62be8f3bd4e174c2b2ec0363abb86a" title="Policy for the item, when being visible ( to its parent )">visiblePolicy()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskPlacementPolicy_8h_source.html#l00018">18</a> of file <a class="el" href="QskPlacementPolicy_8h_source.html">QskPlacementPolicy.h</a>.</p>
 
@@ -738,6 +785,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.9.8-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
