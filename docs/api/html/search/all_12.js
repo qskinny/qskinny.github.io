@@ -44,7 +44,7 @@ var searchData=
   ['left_41',['left',['../classQskAspect.html#a4fa173c2083729cc9d0dafcb2ada59b4aaf166736dc5755be5222db2a85c99a37',1,'QskAspect::Left'],['..//home/peter/dev/qskinny/doc/doxybook-out/classes/classQskMargins.md#autotoc_md2057',1,'property left']]],
   ['lefttoright_42',['LeftToRight',['../namespaceQsk.html#a3732501dd24802564a701bce469140fca6c7f05e01188d216eee09772f149661b',1,'Qsk']]],
   ['lemonchiffon_43',['variable LemonChiffon',['..//home/peter/dev/qskinny/doc/doxybook-out/namespaces/namespaceQskRgb.md#autotoc_md7491',1,'']]],
-  ['license_44',['License',['..//home/peter/dev/qskinny/doc/qsk.dox#license',1,'']]],
+  ['license_44',['License',['../index.html#license',1,'']]],
   ['lightblue_45',['variable LightBlue',['..//home/peter/dev/qskinny/doc/doxybook-out/namespaces/namespaceQskRgb.md#autotoc_md7492',1,'']]],
   ['lightblue100_46',['variable LightBlue100',['..//home/peter/dev/qskinny/doc/doxybook-out/namespaces/namespaceQskRgb.md#autotoc_md7656',1,'']]],
   ['lightblue200_47',['variable LightBlue200',['..//home/peter/dev/qskinny/doc/doxybook-out/namespaces/namespaceQskRgb.md#autotoc_md7657',1,'']]],

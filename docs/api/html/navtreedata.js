@@ -25,7 +25,7 @@
 var NAVTREE =
 [
   [ "QSkinny", "index.html", [
-    [ "My Script Page", "index.html", null ],
+    [ "Introduction", "index.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ]
     ] ],
