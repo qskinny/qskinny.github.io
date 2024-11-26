@@ -70,5 +70,5 @@ var NAVTREEINDEX1 =
 "namespaceQsk.html#ae19e4c577be142d1375417e8070a551fac56fe33f1d28a1843ca7ed85fe49dcaf":[1,0,0,1,1],
 "namespaces.html":[1,0],
 "pages.html":[],
-"structQskBoxMetrics_1_1Corner.html":[2,0,24,0]
+"structQskBoxMetrics_1_1Corner.html":[2,0,23,0]
 };

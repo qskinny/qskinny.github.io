@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>QSkinny: Generating the website</title>
+<title>QSkinny: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -114,7 +114,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('md_generate-website.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('classQskClipNode.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -139,73 +139,20 @@ $(document).ready(function(){initNavTree('md_generate-website.html',''); initRes
 </div>
 </div>
 
-<div><div class="header">
-  <div class="headertitle"><div class="title">Generating the website</div></div>
+<div class="header">
+  <div class="headertitle"><div class="title">QskClipNode Member List</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a> </p>
-<h1><a class="anchor" id="autotoc_md1"></a>
-Prerequisites</h1>
-<p>You will need:</p>
-<ol type="1">
-<li>A recent version of doxygen; The currently used version is 1.9.8. The <code>doxygen</code> binary needs to be in the $PATH.</li>
-</ol>
-<ol type="1">
-<li>The <code>m4</code> command, which can be installed with <code>sudo apt install m4</code>.</li>
-</ol>
-<ol type="1">
-<li>A recent version of Jekyll (see <a href="https://jekyllrb.com/">https://jekyllrb.com/</a>), which will generate the static html pages. The currently used jekyll version is 4.2.2. Also a recent version of bundler is required; this can be installed with: <div class="fragment"><div class="line">gem install jekyll:4.2.2</div>
-<div class="line">gem install bundler:2.1.4</div>
-</div><!-- fragment --></li>
-</ol>
-<ol type="1">
-<li>Checkout the repo to generate the website via <code>git clone git@github.com:peter-ha/qskinny-website.git</code></li>
-</ol>
-<ol type="1">
-<li>Checkout the live website repository via <code>git clone git@github.com:qskinny/qskinny.github.io.git</code></li>
-</ol>
-<h1><a class="anchor" id="autotoc_md2"></a>
-Generating the website</h1>
-<h2><a class="anchor" id="autotoc_md3"></a>
-Generating the API documentation with doxygen</h2>
-<div class="fragment"><div class="line">cd ~/dev/qskinny/doc</div>
-<div class="line">export PATH=.:$PATH</div>
-<div class="line">doxygen</div>
-</div><!-- fragment --><p> This will generate the documentation into the <code>api</code> folder.</p>
-<h2><a class="anchor" id="autotoc_md4"></a>
-Generating specific header and footer files for doxygen</h2>
-<p><em>This needs to be done only when the doxygen version changes.</em></p>
-<div class="fragment"><div class="line">cd ~/dev/qskinny/doc</div>
-<div class="line">doxygen -w html api/header.html api/footer.html</div>
-</div><!-- fragment --><p>Now open <code>api/header.html</code> and copy the code block starting with the comment <code>&lt;!-- QSkinny WASM code --&gt;</code> into the new header file.</p>
-<p><em>Also</em>, change the <code>&lt;body&gt;</code> tag to load the WASM code at startup:</p>
-<div class="fragment"><div class="line">&lt;body onLoad=&quot;docSampleInit()&quot;&gt;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md5"></a>
-Using a different stylesheet for doxygen</h2>
-<div class="fragment"><div class="line">git clone git clone git@github.com:jothepro/doxygen-awesome-css.git</div>
-<div class="line">cd doxygen-awesome-css</div>
-<div class="line">git checkout v2.3.4</div>
-<div class="line">cp doxygen-awesome.css ~/dev/qskinny/doc/</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md6"></a>
-Testing and building the website locally</h2>
-<p>First copy the generated files from above to the website repo:</p>
-<div class="fragment"><div class="line">cp -r api ~/dev/qskinny-website/docs/</div>
-</div><!-- fragment --><p>Then test the website locally:</p>
-<div class="fragment"><div class="line">cd ~/dev/qskinny-website</div>
-<div class="line">bundle exec jekyll serve --livereload</div>
-</div><!-- fragment --><p>Then direct your browser to <code><a href="http://127.0.0.1:4000/">http://127.0.0.1:4000/</a></code>.</p>
-<p>If all looks good, generate the static HTML website:</p>
-<div class="fragment"><div class="line">bundle exec jekyll build</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md7"></a>
-Publishing the website</h2>
-<p>Just copy over the generated HTML files to the public website repo and push a new version of the homepage:</p>
-<div class="fragment"><div class="line">cp -r _site/* ~/dev/qskinny.github.io/</div>
-<div class="line">cd ~/dev/qskinny.github.io/</div>
-<div class="line">git commit -a -m &quot;new version&quot;  # you might want to add new files</div>
-<div class="line">gith push</div>
-</div><!-- fragment --><p>That's it, the new website is now published at <a href="https://qskinny.github.io/">https://qskinny.github.io/</a> . </p>
-</div></div><!-- contents -->
-</div><!-- PageDoc -->
+
+<p>This is the complete list of members for <a class="el" href="classQskClipNode.html">QskClipNode</a>, including all inherited members.</p>
+<table class="directory">
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>boundingRectangle</b>() const (defined in <a class="el" href="classQskClipNode.html">QskClipNode</a>)</td><td class="entry"><a class="el" href="classQskClipNode.html">QskClipNode</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>QskClipNode</b>() (defined in <a class="el" href="classQskClipNode.html">QskClipNode</a>)</td><td class="entry"><a class="el" href="classQskClipNode.html">QskClipNode</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>setBox</b>(const QQuickWindow *, const QRectF &amp;, const QskBoxShapeMetrics &amp;, const QskBoxBorderMetrics &amp;) (defined in <a class="el" href="classQskClipNode.html">QskClipNode</a>)</td><td class="entry"><a class="el" href="classQskClipNode.html">QskClipNode</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>setRect</b>(const QRectF &amp;) (defined in <a class="el" href="classQskClipNode.html">QskClipNode</a>)</td><td class="entry"><a class="el" href="classQskClipNode.html">QskClipNode</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>setRegion</b>(const QRectF &amp;, const QRectF &amp;excludedRect) (defined in <a class="el" href="classQskClipNode.html">QskClipNode</a>)</td><td class="entry"><a class="el" href="classQskClipNode.html">QskClipNode</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>~QskClipNode</b>() override (defined in <a class="el" href="classQskClipNode.html">QskClipNode</a>)</td><td class="entry"><a class="el" href="classQskClipNode.html">QskClipNode</a></td><td class="entry"></td></tr>
+</table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->
 <!-- start footer part -->
