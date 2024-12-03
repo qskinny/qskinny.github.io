@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['optimizations_0',['Optimizations',['../qskoptimizations.html',1,'']]]
+  ['qskinny_0',['QSkinny',['../index.html',1,'']]]
 ];
