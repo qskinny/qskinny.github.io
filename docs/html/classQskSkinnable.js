@@ -35,7 +35,6 @@ var classQskSkinnable =
     [ "isTransitionAccepted", "classQskSkinnable.html#a6ef5eb533c980483bd934ec83f9385c0", null ],
     [ "marginHint", "classQskSkinnable.html#a2b463eac41831fc5813c324b590cbfd4", null ],
     [ "metaObject", "classQskSkinnable.html#a7ded844b4c1ee6c93ab6f9b54d355fe9", null ],
-    [ "metric", "classQskSkinnable.html#af7ee11024764a173d679d5e2d4b229a8", null ],
     [ "outerBox", "classQskSkinnable.html#ac51f38f9d7b1260f4668d39bd7851db9", null ],
     [ "outerBoxSize", "classQskSkinnable.html#a7949f35a99c24bedba529693454d86d0", null ],
     [ "paddingHint", "classQskSkinnable.html#a1d884ed4efeccadcb6388e34730b5c6c", null ],

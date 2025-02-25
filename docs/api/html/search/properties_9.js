@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['placementpolicy_0',['placementPolicy',['../classQskControl.html#ab6d86cb9bf4f164d26cc4406becfc478',1,'QskControl']]],
-  ['polishonresize_1',['polishOnResize',['../classQskItem.html#a365429c57da82ccdee008fd836ae215e',1,'QskItem']]],
-  ['preferredsize_2',['preferredSize',['../classQskControl.html#aca3971abb3657161542b1d3bd20111d8',1,'QskControl']]]
+  ['orientation_0',['orientation',['../classQskSeparator.html#acb7e61c9b8832ff71ad9809addf3047b',1,'QskSeparator::orientation'],['../classQskLinearBox.html#adbf81e4dfe2cb2c39a6e9f3ef545e2f6',1,'QskLinearBox::orientation']]],
+  ['origin_1',['origin',['../classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55',1,'QskProgressIndicator']]]
 ];

@@ -179,7 +179,7 @@ $(document).ready(function(){initNavTree('QskProgressIndicator_8cpp_source.html'
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keywordtype">void</span> advance( qreal value )<span class="keyword"> override</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">        </span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <span class="keywordflow">if</span> ( m_indicator-&gt;setPositionHint( QskProgressIndicator::Fill, value ) )</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <span class="keywordflow">if</span> ( m_indicator-&gt;setPositionHint( <a class="code hl_variable" href="classQskProgressIndicator.html#a449b6593fd492e7a6bcb19f9e7a58a5f">QskProgressIndicator::Fill</a>, value ) )</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                m_indicator-&gt;update();</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        }</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
@@ -224,7 +224,8 @@ $(document).ready(function(){initNavTree('QskProgressIndicator_8cpp_source.html'
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordtype">bool</span> isIndeterminate = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>QskProgressIndicator::QskProgressIndicator( qreal min, qreal max, QQuickItem* parent )</div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a267ebed5812e66fc90a9a0c679c08249">   77</a></span><a class="code hl_function" href="classQskProgressIndicator.html#ab29f443f70c419c7498c7c7cfdd59bda">QskProgressIndicator::QskProgressIndicator</a>( qreal min, qreal max, QQuickItem* parent )</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    : <a class="code hl_class" href="classQskBoundedControl.html">QskBoundedControl</a>( min, max, parent )</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    , m_data( new PrivateData )</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>{</div>
@@ -233,28 +234,38 @@ $(document).ready(function(){initNavTree('QskProgressIndicator_8cpp_source.html'
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    connect( <span class="keyword">this</span>, &amp;QskBoundedControl::boundariesChanged,</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="keyword">this</span>, &amp;QskProgressIndicator::adjustValue );</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>}</div>
+</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>QskProgressIndicator::QskProgressIndicator( QQuickItem* parent )</div>
+<div class="foldopen" id="foldopen00087" data-start="{" data-end="}">
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#ab29f443f70c419c7498c7c7cfdd59bda">   87</a></span><a class="code hl_function" href="classQskProgressIndicator.html#ab29f443f70c419c7498c7c7cfdd59bda">QskProgressIndicator::QskProgressIndicator</a>( QQuickItem* parent )</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    : <a class="code hl_class" href="classQskProgressIndicator.html">QskProgressIndicator</a>( 0.0, 100.0, parent )</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>{</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>}</div>
+</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>QskProgressIndicator::QskProgressIndicator( <span class="keyword">const</span> <a class="code hl_class" href="classQskIntervalF.html">QskIntervalF</a>&amp; boundaries, QQuickItem* parent )</div>
+<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#af5e9b42ccbe22e3ff84c9c322cdd7bab">   92</a></span><a class="code hl_function" href="classQskProgressIndicator.html#ab29f443f70c419c7498c7c7cfdd59bda">QskProgressIndicator::QskProgressIndicator</a>( <span class="keyword">const</span> <a class="code hl_class" href="classQskIntervalF.html">QskIntervalF</a>&amp; boundaries, QQuickItem* parent )</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    : <a class="code hl_class" href="classQskProgressIndicator.html">QskProgressIndicator</a>( boundaries.lowerBound(), boundaries.upperBound(), parent )</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>{</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>}</div>
+</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>QskProgressIndicator::~QskProgressIndicator()</div>
+<div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#ac53dd9c68047d1d7257e43a36470fc11">   97</a></span><a class="code hl_function" href="classQskProgressIndicator.html#ac53dd9c68047d1d7257e43a36470fc11">QskProgressIndicator::~QskProgressIndicator</a>()</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>{</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keyword">delete</span> m_data-&gt;animator;</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}</div>
+</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="keywordtype">bool</span> QskProgressIndicator::isIndeterminate()<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00102" data-start="{" data-end="}">
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a338cecb724b4ed588ee1023e56bc2863">  102</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classQskProgressIndicator.html#a338cecb724b4ed588ee1023e56bc2863">QskProgressIndicator::isIndeterminate</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">return</span> m_data-&gt;isIndeterminate;</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>}</div>
+</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="keywordtype">void</span> QskProgressIndicator::setIndeterminate( <span class="keywordtype">bool</span> on )</div>
+<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#ab8ea6a8e0ea865ab0546c189fa6b21f1">  107</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classQskProgressIndicator.html#ab8ea6a8e0ea865ab0546c189fa6b21f1">QskProgressIndicator::setIndeterminate</a>( <span class="keywordtype">bool</span> on )</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>{</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keywordflow">if</span> ( on == m_data-&gt;isIndeterminate )</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keywordflow">return</span>;</div>
@@ -263,159 +274,220 @@ $(document).ready(function(){initNavTree('QskProgressIndicator_8cpp_source.html'
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    m_data-&gt;updateIndeterminateAnimator( <span class="keyword">this</span> );</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    update();</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    Q_EMIT indeterminateChanged( on );</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    Q_EMIT <a class="code hl_signal" href="classQskProgressIndicator.html#aa74d52213fcdc516fd0e79a18afd3373">indeterminateChanged</a>( on );</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>}</div>
+</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="keywordtype">void</span> QskProgressIndicator::setFillGradient( <span class="keyword">const</span> <a class="code hl_class" href="classQskGradient.html">QskGradient</a>&amp; gradient )</div>
+<div class="foldopen" id="foldopen00119" data-start="{" data-end="}">
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a1d9191e06626c99f8713712c641e15fd">  119</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classQskProgressIndicator.html#a1d9191e06626c99f8713712c641e15fd">QskProgressIndicator::setFillGradient</a>( <span class="keyword">const</span> <a class="code hl_class" href="classQskGradient.html">QskGradient</a>&amp; gradient )</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>{</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <a class="code hl_function" href="classQskSkinnable.html#a5bf31ce22fe2b7d584b18638ce0986ba">setGradientHint</a>( Fill, gradient );</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <a class="code hl_function" href="classQskSkinnable.html#a5bf31ce22fe2b7d584b18638ce0986ba">setGradientHint</a>( <a class="code hl_variable" href="classQskProgressIndicator.html#a449b6593fd492e7a6bcb19f9e7a58a5f">Fill</a>, gradient );</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>}</div>
+</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="keywordtype">void</span> QskProgressIndicator::resetFillGradient()</div>
+<div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#ae37b84c48dbb2043c1fe5369b8d2221c">  124</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classQskProgressIndicator.html#ae37b84c48dbb2043c1fe5369b8d2221c">QskProgressIndicator::resetFillGradient</a>()</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>{</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <a class="code hl_function" href="classQskSkinnable.html#a208596293ca6e7512bfd5a7808601ec6">resetColor</a>( Fill );</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <a class="code hl_function" href="classQskSkinnable.html#a208596293ca6e7512bfd5a7808601ec6">resetColor</a>( <a class="code hl_variable" href="classQskProgressIndicator.html#a449b6593fd492e7a6bcb19f9e7a58a5f">Fill</a> );</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>}</div>
+</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><a class="code hl_class" href="classQskGradient.html">QskGradient</a> QskProgressIndicator::fillGradient()<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a3e2b2070450a2fbc295d38cc0236d11d">  129</a></span><a class="code hl_class" href="classQskGradient.html">QskGradient</a> <a class="code hl_function" href="classQskProgressIndicator.html#a3e2b2070450a2fbc295d38cc0236d11d">QskProgressIndicator::fillGradient</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classQskSkinnable.html#a41bcf9ecb54d2ca62b329b71fe70151a">gradientHint</a>( Fill );</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classQskSkinnable.html#a41bcf9ecb54d2ca62b329b71fe70151a">gradientHint</a>( <a class="code hl_variable" href="classQskProgressIndicator.html#a449b6593fd492e7a6bcb19f9e7a58a5f">Fill</a> );</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>}</div>
+</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="keywordtype">void</span> QskProgressIndicator::setExtent( qreal extent )</div>
+<div class="foldopen" id="foldopen00134" data-start="{" data-end="}">
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a5c78e8789a9c74bf900a623a67a3616e">  134</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classQskProgressIndicator.html#a5c78e8789a9c74bf900a623a67a3616e">QskProgressIndicator::setExtent</a>( qreal extent )</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>{</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">if</span> ( extent &lt; 0.0 )</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        extent = 0.0;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordflow">if</span> ( <a class="code hl_property" href="classQskProgressIndicator.html#af693758dfb4c16719463e541741c7562">extent</a> &lt; 0.0 )</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        <a class="code hl_property" href="classQskProgressIndicator.html#af693758dfb4c16719463e541741c7562">extent</a> = 0.0;</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">if</span> ( <a class="code hl_function" href="classQskSkinnable.html#aed54ac2dc4092f6e829576b2a2ca9aa5">setMetric</a>( Groove | <a class="code hl_enumvalue" href="classQskAspect.html#a916d523f0d3d620c06f7503037c47fafaf0378f242b2fb5ef09b47611e028b33d">QskAspect::Size</a>, extent ) )</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        Q_EMIT extentChanged( extent );</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">if</span> ( <a class="code hl_function" href="classQskSkinnable.html#aed54ac2dc4092f6e829576b2a2ca9aa5">setMetric</a>( <a class="code hl_variable" href="classQskProgressIndicator.html#ac9432df18a1ad6655630a343515dd209">Groove</a> | <a class="code hl_enumvalue" href="classQskAspect.html#a916d523f0d3d620c06f7503037c47fafaf0378f242b2fb5ef09b47611e028b33d">QskAspect::Size</a>, <a class="code hl_property" href="classQskProgressIndicator.html#af693758dfb4c16719463e541741c7562">extent</a> ) )</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        Q_EMIT <a class="code hl_signal" href="classQskProgressIndicator.html#a85ccf728f6fd635ff1a17b6f170558b8">extentChanged</a>( <a class="code hl_property" href="classQskProgressIndicator.html#af693758dfb4c16719463e541741c7562">extent</a> );</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>}</div>
+</div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="keywordtype">void</span> QskProgressIndicator::resetExtent()</div>
+<div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#ad8634b6c5995cdbf93f99fc20a2bac69">  143</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classQskProgressIndicator.html#ad8634b6c5995cdbf93f99fc20a2bac69">QskProgressIndicator::resetExtent</a>()</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>{</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordflow">if</span> ( <a class="code hl_function" href="classQskSkinnable.html#aff5127182ee7edb3ea901ca7c2a76e7e">resetMetric</a>( Groove | <a class="code hl_enumvalue" href="classQskAspect.html#a916d523f0d3d620c06f7503037c47fafaf0378f242b2fb5ef09b47611e028b33d">QskAspect::Size</a> ) )</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        Q_EMIT extentChanged( extent() );</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordflow">if</span> ( <a class="code hl_function" href="classQskSkinnable.html#aff5127182ee7edb3ea901ca7c2a76e7e">resetMetric</a>( <a class="code hl_variable" href="classQskProgressIndicator.html#ac9432df18a1ad6655630a343515dd209">Groove</a> | <a class="code hl_enumvalue" href="classQskAspect.html#a916d523f0d3d620c06f7503037c47fafaf0378f242b2fb5ef09b47611e028b33d">QskAspect::Size</a> ) )</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        Q_EMIT <a class="code hl_signal" href="classQskProgressIndicator.html#a85ccf728f6fd635ff1a17b6f170558b8">extentChanged</a>( <a class="code hl_property" href="classQskProgressIndicator.html#af693758dfb4c16719463e541741c7562">extent</a>() );</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>}</div>
+</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>qreal QskProgressIndicator::extent()<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00149" data-start="{" data-end="}">
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a13ccd1561a6db4a95ed33f8f998747a9">  149</a></span>qreal <a class="code hl_property" href="classQskProgressIndicator.html#af693758dfb4c16719463e541741c7562">QskProgressIndicator::extent</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keyword">auto</span> grooveSize = <a class="code hl_function" href="classQskSkinnable.html#af7ee11024764a173d679d5e2d4b229a8">metric</a>( Groove | <a class="code hl_enumvalue" href="classQskAspect.html#a916d523f0d3d620c06f7503037c47fafaf0378f242b2fb5ef09b47611e028b33d">QskAspect::Size</a> );</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keyword">auto</span> fillSize = <a class="code hl_function" href="classQskSkinnable.html#af7ee11024764a173d679d5e2d4b229a8">metric</a>( Fill | <a class="code hl_enumvalue" href="classQskAspect.html#a916d523f0d3d620c06f7503037c47fafaf0378f242b2fb5ef09b47611e028b33d">QskAspect::Size</a> );</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keywordflow">return</span> qMax( grooveSize, fillSize );</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>}</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="keywordtype">void</span> QskProgressIndicator::setOrigin( qreal origin )</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>{</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keywordflow">if</span> ( isComponentComplete() )</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        origin = boundedValue( origin );</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordflow">if</span>( !m_data-&gt;hasOrigin || !qskFuzzyCompare( m_data-&gt;origin, origin ) )</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    {</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        m_data-&gt;hasOrigin = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        m_data-&gt;origin = origin;</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        update();</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        Q_EMIT originChanged( origin );</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    }</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>}</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="keywordtype">void</span> QskProgressIndicator::resetOrigin()</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>{</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">if</span> ( m_data-&gt;hasOrigin )</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    {</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        m_data-&gt;hasOrigin = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        update();</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        Q_EMIT originChanged( origin() );</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    }</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>}</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>qreal QskProgressIndicator::origin()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordflow">if</span> ( m_data-&gt;hasOrigin )</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    {</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="keywordflow">return</span> boundedValue( m_data-&gt;origin );</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    }</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordflow">return</span> minimum();</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>}</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="keywordtype">void</span> QskProgressIndicator::setValue( qreal value )</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>{</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keywordflow">if</span> ( isComponentComplete() )</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        value = boundedValue( value );</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    setValueInternal( value );</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>}</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keywordflow">return</span> metric( <a class="code hl_variable" href="classQskProgressIndicator.html#ac9432df18a1ad6655630a343515dd209">Groove</a> | <a class="code hl_enumvalue" href="classQskAspect.html#a916d523f0d3d620c06f7503037c47fafaf0378f242b2fb5ef09b47611e028b33d">QskAspect::Size</a> );</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>}</div>
+</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="foldopen" id="foldopen00154" data-start="{" data-end="}">
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a4c7de67c203ff0c7df89d5588c7aa0f1">  154</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classQskProgressIndicator.html#a4c7de67c203ff0c7df89d5588c7aa0f1">QskProgressIndicator::setOrigin</a>( qreal origin )</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>{</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">if</span> ( isComponentComplete() )</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        <a class="code hl_property" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">origin</a> = boundedValue( <a class="code hl_property" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">origin</a> );</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordflow">if</span>( !m_data-&gt;hasOrigin || !qskFuzzyCompare( m_data-&gt;origin, <a class="code hl_property" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">origin</a> ) )</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        m_data-&gt;hasOrigin = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        m_data-&gt;origin = <a class="code hl_property" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">origin</a>;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        update();</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        Q_EMIT <a class="code hl_signal" href="classQskProgressIndicator.html#aa0e82f0c479394e8b18c6bb1c9e61a20">originChanged</a>( <a class="code hl_property" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">origin</a> );</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    }</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>}</div>
+</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="foldopen" id="foldopen00169" data-start="{" data-end="}">
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#ac4a91e71c1ceb2c67abf5cce0baeecf1">  169</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classQskProgressIndicator.html#ac4a91e71c1ceb2c67abf5cce0baeecf1">QskProgressIndicator::resetOrigin</a>()</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>{</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">if</span> ( m_data-&gt;hasOrigin )</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        m_data-&gt;hasOrigin = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        update();</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        Q_EMIT <a class="code hl_signal" href="classQskProgressIndicator.html#aa0e82f0c479394e8b18c6bb1c9e61a20">originChanged</a>( <a class="code hl_property" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">origin</a>() );</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    }</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>}</div>
+</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="foldopen" id="foldopen00180" data-start="{" data-end="}">
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#acb932e5114405ef6d7f4e364dc10b2b1">  180</a></span>qreal <a class="code hl_property" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">QskProgressIndicator::origin</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="keywordflow">if</span> ( m_data-&gt;hasOrigin )</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    {</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        <span class="keywordflow">return</span> boundedValue( m_data-&gt;origin );</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    }</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="keywordflow">return</span> minimum();</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>}</div>
+</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
+<div class="foldopen" id="foldopen00190" data-start="{" data-end="}">
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#afdfabeb102bc9fd3c03876c20fb8981f">  190</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classQskProgressIndicator.html#afdfabeb102bc9fd3c03876c20fb8981f">QskProgressIndicator::hasOrigin</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="keywordflow">return</span> m_data-&gt;hasOrigin;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>}</div>
+</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="foldopen" id="foldopen00195" data-start="{" data-end="}">
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a3fb157711a99092e18290296b26c0c5d">  195</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classQskProgressIndicator.html#a3fb157711a99092e18290296b26c0c5d">QskProgressIndicator::setValue</a>( qreal value )</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>{</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <span class="keywordflow">if</span> ( isComponentComplete() )</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        <a class="code hl_property" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value</a> = boundedValue( <a class="code hl_property" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value</a> );</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>qreal QskProgressIndicator::value()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keywordflow">return</span> m_data-&gt;value;</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>}</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="keywordtype">void</span> QskProgressIndicator::setValueAsRatio( qreal ratio )</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>{</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    ratio = qBound( 0.0, ratio, 1.0 );</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    setValue( minimum() + ratio * boundaryLength() );</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>}</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>qreal QskProgressIndicator::valueAsRatio()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    <span class="keywordflow">return</span> valueAsRatio( m_data-&gt;value );</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>}</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="keywordtype">void</span> QskProgressIndicator::componentComplete()</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>{</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    Inherited::componentComplete();</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    adjustValue();</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>}</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="keywordtype">void</span> QskProgressIndicator::adjustValue()</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>{</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keywordflow">if</span> ( isComponentComplete() )</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        setValueInternal( boundedValue( m_data-&gt;value ) );</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>}</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="keywordtype">void</span> QskProgressIndicator::setValueInternal( qreal value )</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>{</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="keywordflow">if</span> ( !qskFuzzyCompare( value, m_data-&gt;value ) )</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    {</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        m_data-&gt;value = value;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        Q_EMIT valueChanged( value );</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        update();</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    }</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>}</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="keywordtype">void</span> QskProgressIndicator::itemChange( QQuickItem::ItemChange change,</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keyword">const</span> QQuickItem::ItemChangeData&amp; value )</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>{</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keywordflow">switch</span>( <span class="keyword">static_cast&lt;</span> <span class="keywordtype">int</span> <span class="keyword">&gt;</span>( change ) )</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    {</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="keywordflow">case</span> QQuickItem::ItemVisibleHasChanged:</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <span class="keywordflow">case</span> QQuickItem::ItemSceneChange:</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        {</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>            m_data-&gt;updateIndeterminateAnimator( <span class="keyword">this</span> );</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        }</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    }</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <a class="code hl_function" href="classQskControl.html#a6f2c1d933cb7d6b53229400737ea10cb">Inherited::itemChange</a>( change, value );</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>}</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    setValueInternal( <a class="code hl_property" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value</a> );</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>}</div>
+</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="foldopen" id="foldopen00203" data-start="{" data-end="}">
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a593b95872b5b7cb758f8a02b9ba9080e">  203</a></span>qreal <a class="code hl_property" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">QskProgressIndicator::value</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">return</span> m_data-&gt;value;</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>}</div>
+</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
+<div class="foldopen" id="foldopen00208" data-start="{" data-end="}">
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a8a18a3cf31b767cf77d536d763a080c0">  208</a></span><span class="keywordtype">void</span> <a class="code hl_slot" href="classQskProgressIndicator.html#a8a18a3cf31b767cf77d536d763a080c0">QskProgressIndicator::setValueAsRatio</a>( qreal ratio )</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>{</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    ratio = qBound( 0.0, ratio, 1.0 );</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <a class="code hl_slot" href="classQskProgressIndicator.html#a3fb157711a99092e18290296b26c0c5d">setValue</a>( minimum() + ratio * boundaryLength() );</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>}</div>
+</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
+<div class="foldopen" id="foldopen00214" data-start="{" data-end="}">
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a0fd01d90fd4f31b43c8518a89fdac91a">  214</a></span>qreal <a class="code hl_property" href="classQskProgressIndicator.html#a53630f3328bd2b62289b0b3144c25b90">QskProgressIndicator::valueAsRatio</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    <span class="keywordflow">return</span> <a class="code hl_property" href="classQskProgressIndicator.html#a53630f3328bd2b62289b0b3144c25b90">valueAsRatio</a>( m_data-&gt;value );</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>}</div>
+</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="foldopen" id="foldopen00219" data-start="{" data-end="}">
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a6604e66f3ceb9336c4acc94f7aba9457">  219</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classQskProgressIndicator.html#a6604e66f3ceb9336c4acc94f7aba9457">QskProgressIndicator::componentComplete</a>()</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>{</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    Inherited::componentComplete();</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    adjustValue();</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>}</div>
+</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="keywordtype">void</span> QskProgressIndicator::adjustValue()</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>{</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="keywordflow">if</span> ( isComponentComplete() )</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        setValueInternal( boundedValue( m_data-&gt;value ) );</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>}</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span><span class="keywordtype">void</span> QskProgressIndicator::setValueInternal( qreal value )</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>{</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="keywordflow">if</span> ( !qskFuzzyCompare( <a class="code hl_property" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value</a>, m_data-&gt;value ) )</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        m_data-&gt;value = <a class="code hl_property" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value</a>;</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        Q_EMIT <a class="code hl_signal" href="classQskProgressIndicator.html#afe36656d8f07ba95fea55d135a92ccbb">valueChanged</a>( <a class="code hl_property" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value</a> );</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        update();</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    }</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>}</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
+<div class="foldopen" id="foldopen00242" data-start="{" data-end="}">
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno"><a class="line" href="classQskProgressIndicator.html#a1cbd00b15094fb5ef12098abe3e80cac">  242</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classQskProgressIndicator.html#a1cbd00b15094fb5ef12098abe3e80cac">QskProgressIndicator::itemChange</a>( QQuickItem::ItemChange change,</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keyword">const</span> QQuickItem::ItemChangeData&amp; value )</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>{</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="keywordflow">switch</span>( <span class="keyword">static_cast&lt;</span> <span class="keywordtype">int</span> <span class="keyword">&gt;</span>( change ) )</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    {</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        <span class="keywordflow">case</span> QQuickItem::ItemVisibleHasChanged:</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <span class="keywordflow">case</span> QQuickItem::ItemSceneChange:</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        {</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>            m_data-&gt;updateIndeterminateAnimator( <span class="keyword">this</span> );</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        }</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    }</div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="preprocessor">#include &quot;moc_QskProgressIndicator.cpp&quot;</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    <a class="code hl_function" href="classQskControl.html#a6f2c1d933cb7d6b53229400737ea10cb">Inherited::itemChange</a>( change, <a class="code hl_property" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value</a> );</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>}</div>
+</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span> </div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="preprocessor">#include &quot;moc_QskProgressIndicator.cpp&quot;</span></div>
 <div class="ttc" id="aclassQskAnimator_html"><div class="ttname"><a href="classQskAnimator.html">QskAnimator</a></div><div class="ttdef"><b>Definition</b> <a href="QskAnimator_8h_source.html#l00018">QskAnimator.h:19</a></div></div>
 <div class="ttc" id="aclassQskAspect_html_a916d523f0d3d620c06f7503037c47fafaf0378f242b2fb5ef09b47611e028b33d"><div class="ttname"><a href="classQskAspect.html#a916d523f0d3d620c06f7503037c47fafaf0378f242b2fb5ef09b47611e028b33d">QskAspect::Size</a></div><div class="ttdeci">@ Size</div><div class="ttdef"><b>Definition</b> <a href="QskAspect_8h_source.html#l00066">QskAspect.h:66</a></div></div>
 <div class="ttc" id="aclassQskBoundedControl_html"><div class="ttname"><a href="classQskBoundedControl.html">QskBoundedControl</a></div><div class="ttdef"><b>Definition</b> <a href="QskBoundedControl_8h_source.html#l00013">QskBoundedControl.h:14</a></div></div>
 <div class="ttc" id="aclassQskControl_html_a6f2c1d933cb7d6b53229400737ea10cb"><div class="ttname"><a href="classQskControl.html#a6f2c1d933cb7d6b53229400737ea10cb">QskControl::itemChange</a></div><div class="ttdeci">void itemChange(ItemChange, const ItemChangeData &amp;) override</div><div class="ttdef"><b>Definition</b> <a href="QskControl_8cpp_source.html#l00844">QskControl.cpp:844</a></div></div>
 <div class="ttc" id="aclassQskGradient_html"><div class="ttname"><a href="classQskGradient.html">QskGradient</a></div><div class="ttdef"><b>Definition</b> <a href="QskGradient_8h_source.html#l00021">QskGradient.h:22</a></div></div>
 <div class="ttc" id="aclassQskIntervalF_html"><div class="ttname"><a href="classQskIntervalF.html">QskIntervalF</a></div><div class="ttdef"><b>Definition</b> <a href="QskIntervalF_8h_source.html#l00016">QskIntervalF.h:17</a></div></div>
-<div class="ttc" id="aclassQskProgressIndicator_html"><div class="ttname"><a href="classQskProgressIndicator.html">QskProgressIndicator</a></div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8h_source.html#l00013">QskProgressIndicator.h:14</a></div></div>
-<div class="ttc" id="aclassQskSkinnable_html_a208596293ca6e7512bfd5a7808601ec6"><div class="ttname"><a href="classQskSkinnable.html#a208596293ca6e7512bfd5a7808601ec6">QskSkinnable::resetColor</a></div><div class="ttdeci">bool resetColor(QskAspect)</div><div class="ttdoc">Removes a color hint from the local table.</div><div class="ttdef"><b>Definition</b> <a href="QskSkinnable_8h_source.html#l00310">QskSkinnable.h:310</a></div></div>
-<div class="ttc" id="aclassQskSkinnable_html_a41bcf9ecb54d2ca62b329b71fe70151a"><div class="ttname"><a href="classQskSkinnable.html#a41bcf9ecb54d2ca62b329b71fe70151a">QskSkinnable::gradientHint</a></div><div class="ttdeci">QskGradient gradientHint(QskAspect, QskSkinHintStatus *=nullptr) const</div><div class="ttdoc">Retrieves a color hint as gradient.</div><div class="ttdef"><b>Definition</b> <a href="QskSkinnable_8cpp_source.html#l00536">QskSkinnable.cpp:536</a></div></div>
-<div class="ttc" id="aclassQskSkinnable_html_a5bf31ce22fe2b7d584b18638ce0986ba"><div class="ttname"><a href="classQskSkinnable.html#a5bf31ce22fe2b7d584b18638ce0986ba">QskSkinnable::setGradientHint</a></div><div class="ttdeci">bool setGradientHint(QskAspect, const QskGradient &amp;)</div><div class="ttdoc">Sets a gradient as color hint.</div><div class="ttdef"><b>Definition</b> <a href="QskSkinnable_8cpp_source.html#l00530">QskSkinnable.cpp:530</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html"><div class="ttname"><a href="classQskProgressIndicator.html">QskProgressIndicator</a></div><div class="ttdoc">Base class for progress indicators.</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8h_source.html#l00013">QskProgressIndicator.h:14</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a1cbd00b15094fb5ef12098abe3e80cac"><div class="ttname"><a href="classQskProgressIndicator.html#a1cbd00b15094fb5ef12098abe3e80cac">QskProgressIndicator::itemChange</a></div><div class="ttdeci">void itemChange(ItemChange, const ItemChangeData &amp;) override</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00242">QskProgressIndicator.cpp:242</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a1d9191e06626c99f8713712c641e15fd"><div class="ttname"><a href="classQskProgressIndicator.html#a1d9191e06626c99f8713712c641e15fd">QskProgressIndicator::setFillGradient</a></div><div class="ttdeci">void setFillGradient(const QskGradient &amp;)</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00119">QskProgressIndicator.cpp:119</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a338cecb724b4ed588ee1023e56bc2863"><div class="ttname"><a href="classQskProgressIndicator.html#a338cecb724b4ed588ee1023e56bc2863">QskProgressIndicator::isIndeterminate</a></div><div class="ttdeci">bool isIndeterminate() const</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00102">QskProgressIndicator.cpp:102</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a3e2b2070450a2fbc295d38cc0236d11d"><div class="ttname"><a href="classQskProgressIndicator.html#a3e2b2070450a2fbc295d38cc0236d11d">QskProgressIndicator::fillGradient</a></div><div class="ttdeci">QskGradient fillGradient() const</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00129">QskProgressIndicator.cpp:129</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a3fb157711a99092e18290296b26c0c5d"><div class="ttname"><a href="classQskProgressIndicator.html#a3fb157711a99092e18290296b26c0c5d">QskProgressIndicator::setValue</a></div><div class="ttdeci">void setValue(qreal)</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00195">QskProgressIndicator.cpp:195</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a449b6593fd492e7a6bcb19f9e7a58a5f"><div class="ttname"><a href="classQskProgressIndicator.html#a449b6593fd492e7a6bcb19f9e7a58a5f">QskProgressIndicator::Fill</a></div><div class="ttdeci">static const QskAspect::Subcontrol Fill</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8h_source.html#l00033">QskProgressIndicator.h:33</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a4c7de67c203ff0c7df89d5588c7aa0f1"><div class="ttname"><a href="classQskProgressIndicator.html#a4c7de67c203ff0c7df89d5588c7aa0f1">QskProgressIndicator::setOrigin</a></div><div class="ttdeci">void setOrigin(qreal)</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00154">QskProgressIndicator.cpp:154</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a53630f3328bd2b62289b0b3144c25b90"><div class="ttname"><a href="classQskProgressIndicator.html#a53630f3328bd2b62289b0b3144c25b90">QskProgressIndicator::valueAsRatio</a></div><div class="ttdeci">qreal valueAsRatio</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8h_source.html#l00027">QskProgressIndicator.h:28</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a5c78e8789a9c74bf900a623a67a3616e"><div class="ttname"><a href="classQskProgressIndicator.html#a5c78e8789a9c74bf900a623a67a3616e">QskProgressIndicator::setExtent</a></div><div class="ttdeci">void setExtent(qreal)</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00134">QskProgressIndicator.cpp:134</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a6604e66f3ceb9336c4acc94f7aba9457"><div class="ttname"><a href="classQskProgressIndicator.html#a6604e66f3ceb9336c4acc94f7aba9457">QskProgressIndicator::componentComplete</a></div><div class="ttdeci">void componentComplete() override</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00219">QskProgressIndicator.cpp:219</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a85ccf728f6fd635ff1a17b6f170558b8"><div class="ttname"><a href="classQskProgressIndicator.html#a85ccf728f6fd635ff1a17b6f170558b8">QskProgressIndicator::extentChanged</a></div><div class="ttdeci">void extentChanged(qreal)</div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_a8a18a3cf31b767cf77d536d763a080c0"><div class="ttname"><a href="classQskProgressIndicator.html#a8a18a3cf31b767cf77d536d763a080c0">QskProgressIndicator::setValueAsRatio</a></div><div class="ttdeci">void setValueAsRatio(qreal)</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00208">QskProgressIndicator.cpp:208</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_aa0e82f0c479394e8b18c6bb1c9e61a20"><div class="ttname"><a href="classQskProgressIndicator.html#aa0e82f0c479394e8b18c6bb1c9e61a20">QskProgressIndicator::originChanged</a></div><div class="ttdeci">void originChanged(qreal)</div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_aa74d52213fcdc516fd0e79a18afd3373"><div class="ttname"><a href="classQskProgressIndicator.html#aa74d52213fcdc516fd0e79a18afd3373">QskProgressIndicator::indeterminateChanged</a></div><div class="ttdeci">void indeterminateChanged(bool)</div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_ab29f443f70c419c7498c7c7cfdd59bda"><div class="ttname"><a href="classQskProgressIndicator.html#ab29f443f70c419c7498c7c7cfdd59bda">QskProgressIndicator::QskProgressIndicator</a></div><div class="ttdeci">QskProgressIndicator(QQuickItem *parent=nullptr)</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00087">QskProgressIndicator.cpp:87</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_ab8ea6a8e0ea865ab0546c189fa6b21f1"><div class="ttname"><a href="classQskProgressIndicator.html#ab8ea6a8e0ea865ab0546c189fa6b21f1">QskProgressIndicator::setIndeterminate</a></div><div class="ttdeci">void setIndeterminate(bool on=true)</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00107">QskProgressIndicator.cpp:107</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_ac4a91e71c1ceb2c67abf5cce0baeecf1"><div class="ttname"><a href="classQskProgressIndicator.html#ac4a91e71c1ceb2c67abf5cce0baeecf1">QskProgressIndicator::resetOrigin</a></div><div class="ttdeci">void resetOrigin()</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00169">QskProgressIndicator.cpp:169</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_ac53dd9c68047d1d7257e43a36470fc11"><div class="ttname"><a href="classQskProgressIndicator.html#ac53dd9c68047d1d7257e43a36470fc11">QskProgressIndicator::~QskProgressIndicator</a></div><div class="ttdeci">~QskProgressIndicator() override</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00097">QskProgressIndicator.cpp:97</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_ac9432df18a1ad6655630a343515dd209"><div class="ttname"><a href="classQskProgressIndicator.html#ac9432df18a1ad6655630a343515dd209">QskProgressIndicator::Groove</a></div><div class="ttdeci">static const QskAspect::Subcontrol Groove</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8h_source.html#l00033">QskProgressIndicator.h:33</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_acaaded56efa52edce1caf0777f539d55"><div class="ttname"><a href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">QskProgressIndicator::origin</a></div><div class="ttdeci">qreal origin</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8h_source.html#l00023">QskProgressIndicator.h:24</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_ad8634b6c5995cdbf93f99fc20a2bac69"><div class="ttname"><a href="classQskProgressIndicator.html#ad8634b6c5995cdbf93f99fc20a2bac69">QskProgressIndicator::resetExtent</a></div><div class="ttdeci">void resetExtent()</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00143">QskProgressIndicator.cpp:143</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_ae37b84c48dbb2043c1fe5369b8d2221c"><div class="ttname"><a href="classQskProgressIndicator.html#ae37b84c48dbb2043c1fe5369b8d2221c">QskProgressIndicator::resetFillGradient</a></div><div class="ttdeci">void resetFillGradient()</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00124">QskProgressIndicator.cpp:124</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_aea9d5b470eb03413719e8955113db7c2"><div class="ttname"><a href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">QskProgressIndicator::value</a></div><div class="ttdeci">qreal value</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8h_source.html#l00026">QskProgressIndicator.h:26</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_af693758dfb4c16719463e541741c7562"><div class="ttname"><a href="classQskProgressIndicator.html#af693758dfb4c16719463e541741c7562">QskProgressIndicator::extent</a></div><div class="ttdeci">qreal extent</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8h_source.html#l00017">QskProgressIndicator.h:18</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_afdfabeb102bc9fd3c03876c20fb8981f"><div class="ttname"><a href="classQskProgressIndicator.html#afdfabeb102bc9fd3c03876c20fb8981f">QskProgressIndicator::hasOrigin</a></div><div class="ttdeci">bool hasOrigin() const</div><div class="ttdef"><b>Definition</b> <a href="QskProgressIndicator_8cpp_source.html#l00190">QskProgressIndicator.cpp:190</a></div></div>
+<div class="ttc" id="aclassQskProgressIndicator_html_afe36656d8f07ba95fea55d135a92ccbb"><div class="ttname"><a href="classQskProgressIndicator.html#afe36656d8f07ba95fea55d135a92ccbb">QskProgressIndicator::valueChanged</a></div><div class="ttdeci">void valueChanged(qreal)</div></div>
+<div class="ttc" id="aclassQskSkinnable_html_a208596293ca6e7512bfd5a7808601ec6"><div class="ttname"><a href="classQskSkinnable.html#a208596293ca6e7512bfd5a7808601ec6">QskSkinnable::resetColor</a></div><div class="ttdeci">bool resetColor(QskAspect)</div><div class="ttdoc">Removes a color hint from the local table.</div><div class="ttdef"><b>Definition</b> <a href="QskSkinnable_8h_source.html#l00311">QskSkinnable.h:311</a></div></div>
+<div class="ttc" id="aclassQskSkinnable_html_a41bcf9ecb54d2ca62b329b71fe70151a"><div class="ttname"><a href="classQskSkinnable.html#a41bcf9ecb54d2ca62b329b71fe70151a">QskSkinnable::gradientHint</a></div><div class="ttdeci">QskGradient gradientHint(QskAspect, QskSkinHintStatus *=nullptr) const</div><div class="ttdoc">Retrieves a color hint as gradient.</div><div class="ttdef"><b>Definition</b> <a href="QskSkinnable_8cpp_source.html#l00544">QskSkinnable.cpp:544</a></div></div>
+<div class="ttc" id="aclassQskSkinnable_html_a5bf31ce22fe2b7d584b18638ce0986ba"><div class="ttname"><a href="classQskSkinnable.html#a5bf31ce22fe2b7d584b18638ce0986ba">QskSkinnable::setGradientHint</a></div><div class="ttdeci">bool setGradientHint(QskAspect, const QskGradient &amp;)</div><div class="ttdoc">Sets a gradient as color hint.</div><div class="ttdef"><b>Definition</b> <a href="QskSkinnable_8cpp_source.html#l00538">QskSkinnable.cpp:538</a></div></div>
 <div class="ttc" id="aclassQskSkinnable_html_aed54ac2dc4092f6e829576b2a2ca9aa5"><div class="ttname"><a href="classQskSkinnable.html#aed54ac2dc4092f6e829576b2a2ca9aa5">QskSkinnable::setMetric</a></div><div class="ttdeci">bool setMetric(QskAspect, qreal)</div><div class="ttdoc">Sets a metric hint.</div><div class="ttdef"><b>Definition</b> <a href="QskSkinnable_8cpp_source.html#l00425">QskSkinnable.cpp:425</a></div></div>
-<div class="ttc" id="aclassQskSkinnable_html_af7ee11024764a173d679d5e2d4b229a8"><div class="ttname"><a href="classQskSkinnable.html#af7ee11024764a173d679d5e2d4b229a8">QskSkinnable::metric</a></div><div class="ttdeci">qreal metric(QskAspect, QskSkinHintStatus *=nullptr) const</div><div class="ttdoc">Retrieves a metric hint.</div><div class="ttdef"><b>Definition</b> <a href="QskSkinnable_8cpp_source.html#l00435">QskSkinnable.cpp:435</a></div></div>
-<div class="ttc" id="aclassQskSkinnable_html_aff5127182ee7edb3ea901ca7c2a76e7e"><div class="ttname"><a href="classQskSkinnable.html#aff5127182ee7edb3ea901ca7c2a76e7e">QskSkinnable::resetMetric</a></div><div class="ttdeci">bool resetMetric(QskAspect)</div><div class="ttdoc">Removes a metric hint from the local table.</div><div class="ttdef"><b>Definition</b> <a href="QskSkinnable_8h_source.html#l00315">QskSkinnable.h:315</a></div></div>
+<div class="ttc" id="aclassQskSkinnable_html_aff5127182ee7edb3ea901ca7c2a76e7e"><div class="ttname"><a href="classQskSkinnable.html#aff5127182ee7edb3ea901ca7c2a76e7e">QskSkinnable::resetMetric</a></div><div class="ttdeci">bool resetMetric(QskAspect)</div><div class="ttdoc">Removes a metric hint from the local table.</div><div class="ttdef"><b>Definition</b> <a href="QskSkinnable_8h_source.html#l00316">QskSkinnable.h:316</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- HTML footer for doxygen 1.9.8-->

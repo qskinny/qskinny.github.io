@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('QskSubWindow_8h_source.html',''); init
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">using </span><a class="code hl_class" href="classQskPopup.html">Inherited</a> = <a class="code hl_class" href="classQskPopup.html">QskPopup</a>;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">enum</span> Decoration</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">enum</span> Decoration : quint16</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    {</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        NoDecoration   = 0,</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
@@ -251,8 +251,8 @@ $(document).ready(function(){initNavTree('QskSubWindow_8h_source.html',''); init
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    QSizeF layoutSizeHint( Qt::SizeHint, <span class="keyword">const</span> QSizeF&amp; ) <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordtype">void</span> itemChange( QQuickItem::ItemChange,</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keyword">const</span> QQuickItem::ItemChangeData&amp; ) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keywordtype">void</span> itemChange( ItemChange, <span class="keyword">const</span> ItemChangeData&amp; ) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordtype">void</span> geometryChange( <span class="keyword">const</span> QRectF&amp;, <span class="keyword">const</span> QRectF&amp; ) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keyword">private</span>:</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keyword">class </span>PrivateData;</div>

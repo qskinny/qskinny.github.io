@@ -1,9 +1,9 @@
 var classQskPlacementPolicy =
 [
-    [ "Policy", "classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bf", [
-      [ "Ignore", "classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bfa42fd248ea8d158266996c61a6557638b", null ],
-      [ "Reserve", "classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bfa13b50577861e1330542865c8cae50586", null ],
-      [ "Adjust", "classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bfad1fae9c309fed08bbcccb435fb9bd8d9", null ]
+    [ "Policy", "classQskPlacementPolicy.html#aae88f4499e9966742ea308b51b699f6c", [
+      [ "Ignore", "classQskPlacementPolicy.html#aae88f4499e9966742ea308b51b699f6ca42fd248ea8d158266996c61a6557638b", null ],
+      [ "Reserve", "classQskPlacementPolicy.html#aae88f4499e9966742ea308b51b699f6ca13b50577861e1330542865c8cae50586", null ],
+      [ "Adjust", "classQskPlacementPolicy.html#aae88f4499e9966742ea308b51b699f6cad1fae9c309fed08bbcccb435fb9bd8d9", null ]
     ] ],
     [ "QskPlacementPolicy", "classQskPlacementPolicy.html#aafe48993b7a1c899a67965aa3f3cd56d", null ],
     [ "QskPlacementPolicy", "classQskPlacementPolicy.html#aed2fa8ff2b19b05c6c97ae64525730b0", null ],

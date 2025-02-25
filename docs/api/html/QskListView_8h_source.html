@@ -183,7 +183,7 @@ $(document).ready(function(){initNavTree('QskListView_8h_source.html',''); initR
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    QSK_SUBCONTROLS( Cell, Text, Graphic )</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    QSK_STATES( Selected )</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">enum</span> SelectionMode</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">enum</span> SelectionMode : quint8</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    {</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        NoSelection,</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        SingleSelection,</div>
@@ -200,7 +200,7 @@ $(document).ready(function(){initNavTree('QskListView_8h_source.html',''); initR
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">void</span> setSelectionMode( SelectionMode );</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    SelectionMode selectionMode() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">void</span> setTextOptions( <span class="keyword">const</span> <a class="code hl_class" href="classQskTextOptions.html">QskTextOptions</a>&amp; textOptions );</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">void</span> setTextOptions( <span class="keyword">const</span> <a class="code hl_class" href="classQskTextOptions.html">QskTextOptions</a>&amp; );</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordtype">void</span> resetTextOptions();</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <a class="code hl_class" href="classQskTextOptions.html">QskTextOptions</a> textOptions() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
@@ -242,7 +242,7 @@ $(document).ready(function(){initNavTree('QskListView_8h_source.html',''); initR
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordtype">void</span> hoverLeaveEvent( QHoverEvent* ) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">#ifndef QT_NO_WHEELEVENT</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keyword">virtual</span> QPointF scrollOffset( <span class="keyword">const</span> QWheelEvent* ) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    QPointF scrollOffset( <span class="keyword">const</span> QWheelEvent* ) <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordtype">void</span> updateScrollableSize();</div>
@@ -257,8 +257,8 @@ $(document).ready(function(){initNavTree('QskListView_8h_source.html',''); initR
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassQskControl_html_a5a4e45c05629c674c088b4a258b07b41"><div class="ttname"><a href="classQskControl.html#a5a4e45c05629c674c088b4a258b07b41">QskControl::focusIndicatorRect</a></div><div class="ttdeci">virtual QRectF focusIndicatorRect() const</div><div class="ttdef"><b>Definition</b> <a href="QskControl_8cpp_source.html#l00957">QskControl.cpp:957</a></div></div>
-<div class="ttc" id="aclassQskItem_html_ab0f6ee781317e71c6c47e29610ff9d09"><div class="ttname"><a href="classQskItem.html#ab0f6ee781317e71c6c47e29610ff9d09">QskItem::changeEvent</a></div><div class="ttdeci">virtual void changeEvent(QEvent *)</div><div class="ttdef"><b>Definition</b> <a href="QskItem_8cpp_source.html#l00859">QskItem.cpp:859</a></div></div>
-<div class="ttc" id="aclassQskItem_html_adffffca32a07ae06c549dd748d4ec9b4"><div class="ttname"><a href="classQskItem.html#adffffca32a07ae06c549dd748d4ec9b4">QskItem::componentComplete</a></div><div class="ttdeci">void componentComplete() override</div><div class="ttdef"><b>Definition</b> <a href="QskItem_8cpp_source.html#l00272">QskItem.cpp:272</a></div></div>
+<div class="ttc" id="aclassQskItem_html_ab0f6ee781317e71c6c47e29610ff9d09"><div class="ttname"><a href="classQskItem.html#ab0f6ee781317e71c6c47e29610ff9d09">QskItem::changeEvent</a></div><div class="ttdeci">virtual void changeEvent(QEvent *)</div><div class="ttdef"><b>Definition</b> <a href="QskItem_8cpp_source.html#l00875">QskItem.cpp:875</a></div></div>
+<div class="ttc" id="aclassQskItem_html_adffffca32a07ae06c549dd748d4ec9b4"><div class="ttname"><a href="classQskItem.html#adffffca32a07ae06c549dd748d4ec9b4">QskItem::componentComplete</a></div><div class="ttdeci">void componentComplete() override</div><div class="ttdef"><b>Definition</b> <a href="QskItem_8cpp_source.html#l00274">QskItem.cpp:274</a></div></div>
 <div class="ttc" id="aclassQskListView_html"><div class="ttname"><a href="classQskListView.html">QskListView</a></div><div class="ttdef"><b>Definition</b> <a href="QskListView_8h_source.html#l00012">QskListView.h:13</a></div></div>
 <div class="ttc" id="aclassQskScrollView_html"><div class="ttname"><a href="classQskScrollView.html">QskScrollView</a></div><div class="ttdef"><b>Definition</b> <a href="QskScrollView_8h_source.html#l00011">QskScrollView.h:12</a></div></div>
 <div class="ttc" id="aclassQskTextOptions_html"><div class="ttname"><a href="classQskTextOptions.html">QskTextOptions</a></div><div class="ttdef"><b>Definition</b> <a href="QskTextOptions_8h_source.html#l00016">QskTextOptions.h:17</a></div></div>

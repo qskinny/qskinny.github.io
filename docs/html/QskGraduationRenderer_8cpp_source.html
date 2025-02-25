@@ -182,7 +182,7 @@ $(document).ready(function(){initNavTree('QskGraduationRenderer_8cpp_source.html
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        {</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        }</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keyword">inline</span> qreal map( qreal v )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> t + f * v; };</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keyword">inline</span> qreal map( qreal v )<span class="keyword"> const </span>{ <span class="keywordflow">return</span> t + f * v; }</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      <span class="keyword">private</span>:</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="keyword">const</span> qreal t;</div>
@@ -651,43 +651,42 @@ $(document).ready(function(){initNavTree('QskGraduationRenderer_8cpp_source.html
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>    }</div>
 <div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>    <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>    {</div>
-<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>        <span class="keyword">const</span> <span class="keyword">auto</span> tickPos = map.map( tick );</div>
-<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>        y = tickPos - 0.5 * h;</div>
-<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span> </div>
-<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>        <span class="keywordflow">if</span> ( clampLabels )</div>
-<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span>            y = qBound( max, y, min - h );</div>
-<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span> </div>
-<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>        x = m_data-&gt;position - offset - w;</div>
-<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>    }</div>
-<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span> </div>
-<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>    <span class="keywordflow">return</span> QRectF( x, y, w, h );</div>
-<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>}</div>
-<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span> </div>
-<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>QSGNode* QskGraduationRenderer::updateTickLabelNode( <span class="keyword">const</span> <a class="code hl_class" href="classQskSkinnable.html">QskSkinnable</a>* skinnable,</div>
-<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>    QSGNode* node, <span class="keyword">const</span> QVariant&amp; label, <span class="keyword">const</span> QRectF&amp; rect )<span class="keyword"> const</span></div>
-<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>    <span class="keywordflow">if</span> ( label.canConvert&lt; QString &gt;() )</div>
-<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>    {</div>
-<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>        <span class="keywordflow">return</span> QskSkinlet::updateTextNode( skinnable, node,</div>
-<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>            rect, Qt::AlignCenter, label.toString(), m_data-&gt;font,</div>
-<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>            <a class="code hl_class" href="classQskTextOptions.html">QskTextOptions</a>(), m_data-&gt;textColors, Qsk::Normal );</div>
-<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>    }</div>
-<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span> </div>
-<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>    <span class="keywordflow">if</span> ( label.canConvert&lt; <a class="code hl_class" href="classQskGraphic.html">QskGraphic</a> &gt;() )</div>
-<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>    {</div>
-<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>        <span class="keyword">const</span> <span class="keyword">auto</span> alignment = qskIsHorizontal( m_data-&gt;edge )</div>
-<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>            ? ( Qt::AlignHCenter | Qt::AlignBottom )</div>
-<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>            : ( Qt::AlignRight | Qt::AlignVCenter );</div>
-<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span> </div>
-<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>        <span class="keywordflow">return</span> QskSkinlet::updateGraphicNode(</div>
-<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>            skinnable, node, label.value&lt; <a class="code hl_class" href="classQskGraphic.html">QskGraphic</a> &gt;(),</div>
-<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>            m_data-&gt;colorFilter, rect, alignment );</div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>    }</div>
-<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span> </div>
-<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>}</div>
-<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span> </div>
-<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span><span class="preprocessor">#include &quot;moc_QskGraduationRenderer.cpp&quot;</span></div>
+<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>        y = tickPos - 0.5 * h;</div>
+<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span> </div>
+<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>        <span class="keywordflow">if</span> ( clampLabels )</div>
+<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>            y = qBound( max, y, min - h );</div>
+<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span> </div>
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno">  509</span>        x = m_data-&gt;position - offset - w;</div>
+<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>    }</div>
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span> </div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>    <span class="keywordflow">return</span> QRectF( x, y, w, h );</div>
+<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>}</div>
+<div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span> </div>
+<div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>QSGNode* QskGraduationRenderer::updateTickLabelNode( <span class="keyword">const</span> <a class="code hl_class" href="classQskSkinnable.html">QskSkinnable</a>* skinnable,</div>
+<div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>    QSGNode* node, <span class="keyword">const</span> QVariant&amp; label, <span class="keyword">const</span> QRectF&amp; rect )<span class="keyword"> const</span></div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>    <span class="keywordflow">if</span> ( label.canConvert&lt; QString &gt;() )</div>
+<div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>    {</div>
+<div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>        <span class="keywordflow">return</span> QskSkinlet::updateTextNode( skinnable, node,</div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno">  521</span>            rect, Qt::AlignCenter, label.toString(), m_data-&gt;font,</div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>            <a class="code hl_class" href="classQskTextOptions.html">QskTextOptions</a>(), m_data-&gt;textColors, Qsk::Normal );</div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>    }</div>
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span> </div>
+<div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span>    <span class="keywordflow">if</span> ( label.canConvert&lt; <a class="code hl_class" href="classQskGraphic.html">QskGraphic</a> &gt;() )</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>    {</div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>        <span class="keyword">const</span> <span class="keyword">auto</span> alignment = qskIsHorizontal( m_data-&gt;edge )</div>
+<div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span>            ? ( Qt::AlignHCenter | Qt::AlignBottom )</div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>            : ( Qt::AlignRight | Qt::AlignVCenter );</div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span> </div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>        <span class="keywordflow">return</span> QskSkinlet::updateGraphicNode(</div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>            skinnable, node, label.value&lt; <a class="code hl_class" href="classQskGraphic.html">QskGraphic</a> &gt;(),</div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>            m_data-&gt;colorFilter, rect, alignment );</div>
+<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>    }</div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span> </div>
+<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>}</div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span> </div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span><span class="preprocessor">#include &quot;moc_QskGraduationRenderer.cpp&quot;</span></div>
 <div class="ttc" id="aclassQskColorFilter_html"><div class="ttname"><a href="classQskColorFilter.html">QskColorFilter</a></div><div class="ttdef"><b>Definition</b> <a href="QskColorFilter_8h_source.html#l00020">QskColorFilter.h:21</a></div></div>
 <div class="ttc" id="aclassQskGraduationMetrics_html"><div class="ttname"><a href="classQskGraduationMetrics.html">QskGraduationMetrics</a></div><div class="ttdef"><b>Definition</b> <a href="QskGraduationMetrics_8h_source.html#l00014">QskGraduationMetrics.h:15</a></div></div>
 <div class="ttc" id="aclassQskGraphic_html"><div class="ttname"><a href="classQskGraphic.html">QskGraphic</a></div><div class="ttdoc">A paint device for scalable graphics.</div><div class="ttdef"><b>Definition</b> <a href="QskGraphic_8h_source.html#l00027">QskGraphic.h:28</a></div></div>

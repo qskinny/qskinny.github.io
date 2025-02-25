@@ -203,7 +203,7 @@ $(document).ready(function(){initNavTree('QskBoxShapeMetrics_8h_source.html','')
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">        The default setting is Symmetric.</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">     */</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">enum</span> ScalingMode</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">enum</span> ScalingMode : quint8</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    {</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        Symmetric,</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        SymmetricByMaximum,</div>
@@ -295,7 +295,7 @@ $(document).ready(function(){initNavTree('QskBoxShapeMetrics_8h_source.html','')
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    }</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    QSizeF m_radii[ 4 ];</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    Qt::SizeMode m_sizeMode : 2;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_sizeMode : 2;</div>
 <div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    ScalingMode m_scalingMode : 2;</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>};</div>
 </div>
@@ -430,7 +430,7 @@ $(document).ready(function(){initNavTree('QskBoxShapeMetrics_8h_source.html','')
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> Qt::SizeMode QskBoxShapeMetrics::sizeMode() const noexcept</div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>{</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="keywordflow">return</span> m_sizeMode;</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span> Qt::SizeMode <span class="keyword">&gt;</span>( m_sizeMode );</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>}</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="keyword">inline</span> <span class="keywordtype">void</span> QskBoxShapeMetrics::setScalingMode( ScalingMode scalingMode ) <span class="keyword">noexcept</span></div>
@@ -464,7 +464,7 @@ $(document).ready(function(){initNavTree('QskBoxShapeMetrics_8h_source.html','')
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    <span class="keywordflow">return</span> <a class="code hl_class" href="classQskBoxShapeMetrics.html">QskBoxShapeMetrics</a>(</div>
 <div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>        m_radii[ 0 ].transposed(), m_radii[ 1 ].transposed(),</div>
 <div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>        m_radii[ 2 ].transposed(), m_radii[ 3 ].transposed(),</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>        m_sizeMode, m_scalingMode );</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>        sizeMode(), m_scalingMode );</div>
 <div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>}</div>
 <div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
 <div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="preprocessor">#ifndef QT_NO_DEBUG_STREAM</span></div>

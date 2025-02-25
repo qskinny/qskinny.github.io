@@ -114,9 +114,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classQskHintAnimator.html",
-"classQskSkinnable.html#a03bf1ba82731a7ae28bd2630a322fd66",
-"tutorials.html#autotoc_md38"
+"classQskGridBox.html",
+"classQskShadowMetrics.html",
+"tutorials.html#autotoc_md13"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['panel_0',['Panel',['../classQskSeparator.html#a0b48e04e1f9638b24a2d99f60842efae',1,'QskSeparator']]]
+  ['hovered_0',['Hovered',['../classQskControl.html#a1f6e651037726beb8cc77133bb4f7137',1,'QskControl']]]
 ];

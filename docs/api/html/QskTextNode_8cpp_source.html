@@ -193,30 +193,33 @@ $(document).ready(function(){initNavTree('QskTextNode_8cpp_source.html',''); ini
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">const</span> QFont&amp; font, <span class="keyword">const</span> <a class="code hl_class" href="classQskTextOptions.html">QskTextOptions</a>&amp; options, <span class="keyword">const</span> <a class="code hl_class" href="classQskTextColors.html">QskTextColors</a>&amp; colors,</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    Qt::Alignment alignment, Qsk::TextStyle textStyle )</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>{</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    QMatrix4x4 matrix;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    matrix.translate( rect.left(), rect.top() );</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">if</span> ( !colors.styleColor().isValid() )</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        textStyle = Qsk::Normal;</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">if</span> ( matrix != this-&gt;matrix() ) <span class="comment">// avoid setting DirtyMatrix accidently</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        setMatrix( matrix );</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    QMatrix4x4 matrix;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    matrix.translate( rect.left(), rect.top() );</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keyword">const</span> <span class="keyword">auto</span> hash = qskHash( text, rect.size(), font,</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        options, colors, alignment, textStyle );</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> ( matrix != this-&gt;matrix() ) <span class="comment">// avoid setting DirtyMatrix accidently</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        setMatrix( matrix );</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">if</span> ( hash != m_hash )</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        m_hash = hash;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keyword">const</span> QRectF textRect( 0, 0, rect.width(), rect.height() );</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="comment">/*</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">            In case of having color changes only we would could</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">            go a faster update path: see QskPlainTextRenderer::updateNodeColor.</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">            TODO ...</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">         */</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        QskTextRenderer::updateNode( text, font, options, textStyle,</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            colors, alignment, textRect, item, <span class="keyword">this</span> );</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    }</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>}</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">const</span> <span class="keyword">auto</span> hash = qskHash( text, rect.size(), font,</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        options, colors, alignment, textStyle );</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">if</span> ( hash != m_hash )</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        m_hash = hash;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keyword">const</span> QRectF textRect( 0, 0, rect.width(), rect.height() );</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="comment">/*</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">            In case of having color changes only we would could</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">            go a faster update path: see QskPlainTextRenderer::updateNodeColor.</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">            TODO ...</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">         */</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        QskTextRenderer::updateNode( text, font, options, textStyle,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            colors, alignment, textRect, item, <span class="keyword">this</span> );</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>}</div>
 <div class="ttc" id="aclassQskTextColors_html"><div class="ttname"><a href="classQskTextColors.html">QskTextColors</a></div><div class="ttdef"><b>Definition</b> <a href="QskTextColors_8h_source.html#l00017">QskTextColors.h:18</a></div></div>
 <div class="ttc" id="aclassQskTextOptions_html"><div class="ttname"><a href="classQskTextOptions.html">QskTextOptions</a></div><div class="ttdef"><b>Definition</b> <a href="QskTextOptions_8h_source.html#l00016">QskTextOptions.h:17</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

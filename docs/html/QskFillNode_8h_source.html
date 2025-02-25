@@ -171,7 +171,7 @@ $(document).ready(function(){initNavTree('QskFillNode_8h_source.html',''); initR
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">using </span>Inherited = QSGGeometryNode;</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">enum</span> Coloring</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">enum</span> Coloring : quint8</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    {</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        Monochrome,</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        Polychrome,</div>
@@ -181,7 +181,7 @@ $(document).ready(function(){initNavTree('QskFillNode_8h_source.html',''); initR
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        Conic</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    };</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">enum</span> Hint</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">enum</span> Hint : quint8</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    {</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="comment">/*</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">            Colors might be defined in the material ( QskGradientMaterial,</span></div>
@@ -197,7 +197,7 @@ $(document).ready(function(){initNavTree('QskFillNode_8h_source.html',''); initR
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">            The default setting is to use colored points where possible. Note, that</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">            this is what is also done in the Qt/Quick classes.</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">         */</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        PreferColoredGeometry = 1</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        PreferColoredGeometry = 1 &lt;&lt; 0</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    };</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    Q_ENUM( Hint )</div>

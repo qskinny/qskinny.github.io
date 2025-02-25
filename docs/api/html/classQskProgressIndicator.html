@@ -151,8 +151,23 @@ $(document).ready(function(){initNavTree('classQskProgressIndicator.html',''); i
   <div class="headertitle"><div class="title">QskProgressIndicator Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Base class for progress indicators.  
+ <a href="classQskProgressIndicator.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="QskProgressIndicator_8h_source.html">QskProgressIndicator.h</a>&gt;</code></p>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
+<div class="textblock"><p>Base class for progress indicators. </p>
+<p><a class="el" href="classQskProgressIndicator.html" title="Base class for progress indicators.">QskProgressIndicator</a> is the base class for circular (<a class="el" href="classQskProgressRing.html" title="Circular progress indicator.">QskProgressRing</a>) and linear (<a class="el" href="classQskProgressBar.html">QskProgressBar</a>) progress indicators, and should not be instantiated directly.</p>
+<p>There are two modes for progress indicators:</p><ul>
+<li><b>Determinate</b>, which means the user has to set a progress value to advance the indicator</li>
+<li><b>Indeterminate</b>, which means the indicator will loop forever without the need for updating its value</li>
+</ul>
+<p>By default progress indicators are determinate.</p>
+<dl class="section user"><dt>Subcontrols:</dt><dd><a class="el" href="classQskProgressIndicator.html#ac9432df18a1ad6655630a343515dd209">QskProgressIndicator::Groove</a>, <a class="el" href="classQskProgressIndicator.html#a449b6593fd492e7a6bcb19f9e7a58a5f">QskProgressIndicator::Fill</a></dd></dl>
+<dl class="section user"><dt>Default Skinlet:</dt><dd><a class="el" href="classQskProgressIndicatorSkinlet.html">QskProgressIndicatorSkinlet</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressBar.html">QskProgressBar</a>, <a class="el" href="classQskProgressRing.html" title="Circular progress indicator.">QskProgressRing</a> </dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8h_source.html#l00013">13</a> of file <a class="el" href="QskProgressIndicator_8h_source.html">QskProgressIndicator.h</a>.</p>
 </div><div class="dynheader">
 Inheritance diagram for QskProgressIndicator:</div>
@@ -194,18 +209,14 @@ Public Slots</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="signals" name="signals"></a>
 Signals</h2></td></tr>
-<tr class="memitem:a7257e589c45356cac5ae0babc3ddc80e" id="r_a7257e589c45356cac5ae0babc3ddc80e"><td class="memItemLeft" align="right" valign="top"><a id="a7257e589c45356cac5ae0babc3ddc80e" name="a7257e589c45356cac5ae0babc3ddc80e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>extentChanged</b> (qreal)</td></tr>
-<tr class="separator:a7257e589c45356cac5ae0babc3ddc80e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91a1aaec1b0ed30d72e57c060dcfae51" id="r_a91a1aaec1b0ed30d72e57c060dcfae51"><td class="memItemLeft" align="right" valign="top"><a id="a91a1aaec1b0ed30d72e57c060dcfae51" name="a91a1aaec1b0ed30d72e57c060dcfae51"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>indeterminateChanged</b> (bool)</td></tr>
-<tr class="separator:a91a1aaec1b0ed30d72e57c060dcfae51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6604e9c0f4e39513304571b09e67a72" id="r_af6604e9c0f4e39513304571b09e67a72"><td class="memItemLeft" align="right" valign="top"><a id="af6604e9c0f4e39513304571b09e67a72" name="af6604e9c0f4e39513304571b09e67a72"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>valueChanged</b> (qreal)</td></tr>
-<tr class="separator:af6604e9c0f4e39513304571b09e67a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee247b77ed5f3cf16711f820e7066d3c" id="r_aee247b77ed5f3cf16711f820e7066d3c"><td class="memItemLeft" align="right" valign="top"><a id="aee247b77ed5f3cf16711f820e7066d3c" name="aee247b77ed5f3cf16711f820e7066d3c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>originChanged</b> (qreal)</td></tr>
-<tr class="separator:aee247b77ed5f3cf16711f820e7066d3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85ccf728f6fd635ff1a17b6f170558b8" id="r_a85ccf728f6fd635ff1a17b6f170558b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#a85ccf728f6fd635ff1a17b6f170558b8">extentChanged</a> (qreal)</td></tr>
+<tr class="separator:a85ccf728f6fd635ff1a17b6f170558b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa74d52213fcdc516fd0e79a18afd3373" id="r_aa74d52213fcdc516fd0e79a18afd3373"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#aa74d52213fcdc516fd0e79a18afd3373">indeterminateChanged</a> (bool)</td></tr>
+<tr class="separator:aa74d52213fcdc516fd0e79a18afd3373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe36656d8f07ba95fea55d135a92ccbb" id="r_afe36656d8f07ba95fea55d135a92ccbb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#afe36656d8f07ba95fea55d135a92ccbb">valueChanged</a> (qreal)</td></tr>
+<tr class="separator:afe36656d8f07ba95fea55d135a92ccbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0e82f0c479394e8b18c6bb1c9e61a20" id="r_aa0e82f0c479394e8b18c6bb1c9e61a20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#aa0e82f0c479394e8b18c6bb1c9e61a20">originChanged</a> (qreal)</td></tr>
+<tr class="separator:aa0e82f0c479394e8b18c6bb1c9e61a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header signals_classQskBoundedControl"><td colspan="2" onclick="javascript:toggleInherit('signals_classQskBoundedControl')"><img src="closed.png" alt="-"/>&#160;Signals inherited from <a class="el" href="classQskBoundedControl.html">QskBoundedControl</a></td></tr>
 <tr class="memitem:ab420d3b8cd815fb17b661f2ac9175fbf inherit signals_classQskBoundedControl" id="r_ab420d3b8cd815fb17b661f2ac9175fbf"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>minimumChanged</b> (qreal)</td></tr>
@@ -232,9 +243,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sectionChanged</b> (Q
 <tr class="memitem:aa4ca64a3b19abab1658f61f7fa2b1cff inherit signals_classQskItem" id="r_aa4ca64a3b19abab1658f61f7fa2b1cff"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>wheelEnabledChanged</b> (bool)</td></tr>
 <tr class="separator:aa4ca64a3b19abab1658f61f7fa2b1cff inherit signals_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34e1622d07aff35bdf5fd53a089cdcf0 inherit signals_classQskItem" id="r_a34e1622d07aff35bdf5fd53a089cdcf0"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>focusPolicyChanged</b> (Qt::FocusPolicy)</td></tr>
-<tr class="separator:a34e1622d07aff35bdf5fd53a089cdcf0 inherit signals_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa78184c9efb3def4ab2bd1754a2e5499 inherit signals_classQskItem" id="r_aa78184c9efb3def4ab2bd1754a2e5499"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#aa78184c9efb3def4ab2bd1754a2e5499">itemFlagsChanged</a> ()</td></tr>
 <tr class="separator:aa78184c9efb3def4ab2bd1754a2e5499 inherit signals_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf5fe0e13b9c06131867f86bade9da04 inherit signals_classQskItem" id="r_abf5fe0e13b9c06131867f86bade9da04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#abf5fe0e13b9c06131867f86bade9da04">updateFlagsChanged</a> (UpdateFlags)</td></tr>
@@ -248,6 +256,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a267ebed5812e66fc90a9a0c679c08249"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5e9b42ccbe22e3ff84c9c322cdd7bab" id="r_af5e9b42ccbe22e3ff84c9c322cdd7bab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#af5e9b42ccbe22e3ff84c9c322cdd7bab">QskProgressIndicator</a> (const <a class="el" href="classQskIntervalF.html">QskIntervalF</a> &amp;, QQuickItem *parent=nullptr)</td></tr>
 <tr class="separator:af5e9b42ccbe22e3ff84c9c322cdd7bab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac53dd9c68047d1d7257e43a36470fc11" id="r_ac53dd9c68047d1d7257e43a36470fc11"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#ac53dd9c68047d1d7257e43a36470fc11">~QskProgressIndicator</a> () override</td></tr>
+<tr class="separator:ac53dd9c68047d1d7257e43a36470fc11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a338cecb724b4ed588ee1023e56bc2863" id="r_a338cecb724b4ed588ee1023e56bc2863"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#a338cecb724b4ed588ee1023e56bc2863">isIndeterminate</a> () const</td></tr>
 <tr class="separator:a338cecb724b4ed588ee1023e56bc2863"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8ea6a8e0ea865ab0546c189fa6b21f1" id="r_ab8ea6a8e0ea865ab0546c189fa6b21f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#ab8ea6a8e0ea865ab0546c189fa6b21f1">setIndeterminate</a> (bool on=true)</td></tr>
@@ -268,6 +278,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac4a91e71c1ceb2c67abf5cce0baeecf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb932e5114405ef6d7f4e364dc10b2b1" id="r_acb932e5114405ef6d7f4e364dc10b2b1"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#acb932e5114405ef6d7f4e364dc10b2b1">origin</a> () const</td></tr>
 <tr class="separator:acb932e5114405ef6d7f4e364dc10b2b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdfabeb102bc9fd3c03876c20fb8981f" id="r_afdfabeb102bc9fd3c03876c20fb8981f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#afdfabeb102bc9fd3c03876c20fb8981f">hasOrigin</a> () const</td></tr>
+<tr class="separator:afdfabeb102bc9fd3c03876c20fb8981f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a593b95872b5b7cb758f8a02b9ba9080e" id="r_a593b95872b5b7cb758f8a02b9ba9080e"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#a593b95872b5b7cb758f8a02b9ba9080e">value</a> () const</td></tr>
 <tr class="separator:a593b95872b5b7cb758f8a02b9ba9080e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fd01d90fd4f31b43c8518a89fdac91a" id="r_a0fd01d90fd4f31b43c8518a89fdac91a"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#a0fd01d90fd4f31b43c8518a89fdac91a">valueAsRatio</a> () const</td></tr>
@@ -358,17 +370,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac19713db56516245350062584602b448 inherit pub_methods_classQskControl"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a760c5e239e1dd47183e13a00b8d82175 inherit pub_methods_classQskControl" id="r_a760c5e239e1dd47183e13a00b8d82175"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a760c5e239e1dd47183e13a00b8d82175">setPlacementPolicy</a> (<a class="el" href="classQskPlacementPolicy.html">QskPlacementPolicy</a>)</td></tr>
 <tr class="separator:a760c5e239e1dd47183e13a00b8d82175 inherit pub_methods_classQskControl"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c309c68e297b7fad919e917c214ffe7 inherit pub_methods_classQskControl" id="r_a2c309c68e297b7fad919e917c214ffe7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a2c309c68e297b7fad919e917c214ffe7">setPlacementPolicy</a> (<a class="el" href="classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bf">QskPlacementPolicy::Policy</a>, <a class="el" href="classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bf">QskPlacementPolicy::Policy</a>)</td></tr>
+<tr class="memitem:a2c309c68e297b7fad919e917c214ffe7 inherit pub_methods_classQskControl" id="r_a2c309c68e297b7fad919e917c214ffe7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a2c309c68e297b7fad919e917c214ffe7">setPlacementPolicy</a> (<a class="el" href="classQskPlacementPolicy.html#aae88f4499e9966742ea308b51b699f6c">QskPlacementPolicy::Policy</a>, <a class="el" href="classQskPlacementPolicy.html#aae88f4499e9966742ea308b51b699f6c">QskPlacementPolicy::Policy</a>)</td></tr>
 <tr class="separator:a2c309c68e297b7fad919e917c214ffe7 inherit pub_methods_classQskControl"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37b832f609c843f89cad3dc24c862c25 inherit pub_methods_classQskControl" id="r_a37b832f609c843f89cad3dc24c862c25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a37b832f609c843f89cad3dc24c862c25">setPlacementPolicy</a> (Qsk::Visibilities, <a class="el" href="classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bf">QskPlacementPolicy::Policy</a>)</td></tr>
+<tr class="memitem:a37b832f609c843f89cad3dc24c862c25 inherit pub_methods_classQskControl" id="r_a37b832f609c843f89cad3dc24c862c25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a37b832f609c843f89cad3dc24c862c25">setPlacementPolicy</a> (Qsk::Visibilities, <a class="el" href="classQskPlacementPolicy.html#aae88f4499e9966742ea308b51b699f6c">QskPlacementPolicy::Policy</a>)</td></tr>
 <tr class="separator:a37b832f609c843f89cad3dc24c862c25 inherit pub_methods_classQskControl"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d54b3316d6827bdd19231c08a10ceb7 inherit pub_methods_classQskControl" id="r_a7d54b3316d6827bdd19231c08a10ceb7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a7d54b3316d6827bdd19231c08a10ceb7">resetPlacementPolicy</a> ()</td></tr>
 <tr class="separator:a7d54b3316d6827bdd19231c08a10ceb7 inherit pub_methods_classQskControl"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a403cf36e9aed7a5fe381682cf897a223 inherit pub_methods_classQskControl" id="r_a403cf36e9aed7a5fe381682cf897a223"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classQskPlacementPolicy.html">QskPlacementPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a403cf36e9aed7a5fe381682cf897a223">placementPolicy</a> () const</td></tr>
 <tr class="separator:a403cf36e9aed7a5fe381682cf897a223 inherit pub_methods_classQskControl"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50b31479afe22ea1af1b3c462c8192f6 inherit pub_methods_classQskControl" id="r_a50b31479afe22ea1af1b3c462c8192f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bf">QskPlacementPolicy::Policy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a50b31479afe22ea1af1b3c462c8192f6">placementPolicy</a> (<a class="el" href="namespaceQsk.html#ae19e4c577be142d1375417e8070a551f">Qsk::Visibility</a>) const</td></tr>
+<tr class="memitem:a50b31479afe22ea1af1b3c462c8192f6 inherit pub_methods_classQskControl" id="r_a50b31479afe22ea1af1b3c462c8192f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classQskPlacementPolicy.html#aae88f4499e9966742ea308b51b699f6c">QskPlacementPolicy::Policy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a50b31479afe22ea1af1b3c462c8192f6">placementPolicy</a> (<a class="el" href="namespaceQsk.html#aa20d2d320b51e9f75618d941ccb0a7c2">Qsk::Visibility</a>) const</td></tr>
 <tr class="separator:a50b31479afe22ea1af1b3c462c8192f6 inherit pub_methods_classQskControl"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7637957292ff3e1299cdf29790dbc28b inherit pub_methods_classQskControl" id="r_a7637957292ff3e1299cdf29790dbc28b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classQskPlacementPolicy.html#a585e77ba561e8bf09109bd248cdcb0bf">QskPlacementPolicy::Policy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a7637957292ff3e1299cdf29790dbc28b">effectivePlacementPolicy</a> () const</td></tr>
+<tr class="memitem:a7637957292ff3e1299cdf29790dbc28b inherit pub_methods_classQskControl" id="r_a7637957292ff3e1299cdf29790dbc28b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classQskPlacementPolicy.html#aae88f4499e9966742ea308b51b699f6c">QskPlacementPolicy::Policy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a7637957292ff3e1299cdf29790dbc28b">effectivePlacementPolicy</a> () const</td></tr>
 <tr class="separator:a7637957292ff3e1299cdf29790dbc28b inherit pub_methods_classQskControl"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b66f5eec2fa8901f434494d56e47a9b inherit pub_methods_classQskControl" id="r_a2b66f5eec2fa8901f434494d56e47a9b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#a2b66f5eec2fa8901f434494d56e47a9b">isVisibleToLayout</a> () const</td></tr>
 <tr class="separator:a2b66f5eec2fa8901f434494d56e47a9b inherit pub_methods_classQskControl"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -475,10 +487,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8478d1de768ed5c76cfa2edbde16820c inherit pub_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b6873a184e2b6d31529907234122a16 inherit pub_methods_classQskItem" id="r_a9b6873a184e2b6d31529907234122a16"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#a9b6873a184e2b6d31529907234122a16">polishOnParentResize</a> () const</td></tr>
 <tr class="separator:a9b6873a184e2b6d31529907234122a16 inherit pub_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0f7788998aedd627713f92c7fa4c698 inherit pub_methods_classQskItem" id="r_ac0f7788998aedd627713f92c7fa4c698"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#ac0f7788998aedd627713f92c7fa4c698">setFocusPolicy</a> (Qt::FocusPolicy)</td></tr>
-<tr class="separator:ac0f7788998aedd627713f92c7fa4c698 inherit pub_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa705071f0213af9543053e5aa8c92538 inherit pub_methods_classQskItem" id="r_aa705071f0213af9543053e5aa8c92538"><td class="memItemLeft" align="right" valign="top">Qt::FocusPolicy&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#aa705071f0213af9543053e5aa8c92538">focusPolicy</a> () const</td></tr>
-<tr class="separator:aa705071f0213af9543053e5aa8c92538 inherit pub_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a269924b05abe89c32d2b787e9062241e inherit pub_methods_classQskItem" id="r_a269924b05abe89c32d2b787e9062241e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#a269924b05abe89c32d2b787e9062241e">setTabFence</a> (bool)</td></tr>
 <tr class="separator:a269924b05abe89c32d2b787e9062241e inherit pub_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9f3f46db4fb63f0944da8162fdca334 inherit pub_methods_classQskItem" id="r_aa9f3f46db4fb63f0944da8162fdca334"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#aa9f3f46db4fb63f0944da8162fdca334">isTabFence</a> () const</td></tr>
@@ -497,11 +505,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a43f3fcfd564ac64043f052db4874549b inherit pub_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa584b8acde342f1e47ea6fd0e46a685 inherit pub_methods_classQskItem" id="r_afa584b8acde342f1e47ea6fd0e46a685"><td class="memItemLeft" align="right" valign="top">UpdateFlags&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#afa584b8acde342f1e47ea6fd0e46a685">updateFlags</a> () const</td></tr>
 <tr class="separator:afa584b8acde342f1e47ea6fd0e46a685 inherit pub_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac84564e2e658a106eb625d25aab12c91 inherit pub_methods_classQskItem" id="r_ac84564e2e658a106eb625d25aab12c91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#ac84564e2e658a106eb625d25aab12c91">setUpdateFlag</a> (<a class="el" href="classQskItem.html#a8428a4f497354b0f1f09329bb0f4c4a5">UpdateFlag</a>, bool on=true)</td></tr>
+<tr class="memitem:ac84564e2e658a106eb625d25aab12c91 inherit pub_methods_classQskItem" id="r_ac84564e2e658a106eb625d25aab12c91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#ac84564e2e658a106eb625d25aab12c91">setUpdateFlag</a> (<a class="el" href="classQskItem.html#aa76dcac3dbb2a16cca4f47ddc87ee185">UpdateFlag</a>, bool on=true)</td></tr>
 <tr class="separator:ac84564e2e658a106eb625d25aab12c91 inherit pub_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae7a9be5ac939256aa0b4652c7113506 inherit pub_methods_classQskItem" id="r_aae7a9be5ac939256aa0b4652c7113506"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#aae7a9be5ac939256aa0b4652c7113506">resetUpdateFlag</a> (<a class="el" href="classQskItem.html#a8428a4f497354b0f1f09329bb0f4c4a5">UpdateFlag</a>)</td></tr>
+<tr class="memitem:aae7a9be5ac939256aa0b4652c7113506 inherit pub_methods_classQskItem" id="r_aae7a9be5ac939256aa0b4652c7113506"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#aae7a9be5ac939256aa0b4652c7113506">resetUpdateFlag</a> (<a class="el" href="classQskItem.html#aa76dcac3dbb2a16cca4f47ddc87ee185">UpdateFlag</a>)</td></tr>
 <tr class="separator:aae7a9be5ac939256aa0b4652c7113506 inherit pub_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada05c6c8663a8ebb1d5925e1f126a8c8 inherit pub_methods_classQskItem" id="r_ada05c6c8663a8ebb1d5925e1f126a8c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#ada05c6c8663a8ebb1d5925e1f126a8c8">testUpdateFlag</a> (<a class="el" href="classQskItem.html#a8428a4f497354b0f1f09329bb0f4c4a5">UpdateFlag</a>) const</td></tr>
+<tr class="memitem:ada05c6c8663a8ebb1d5925e1f126a8c8 inherit pub_methods_classQskItem" id="r_ada05c6c8663a8ebb1d5925e1f126a8c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#ada05c6c8663a8ebb1d5925e1f126a8c8">testUpdateFlag</a> (<a class="el" href="classQskItem.html#aa76dcac3dbb2a16cca4f47ddc87ee185">UpdateFlag</a>) const</td></tr>
 <tr class="separator:ada05c6c8663a8ebb1d5925e1f126a8c8 inherit pub_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7594e4eb8d783fb010b9b029a996da4b inherit pub_methods_classQskItem" id="r_a7594e4eb8d783fb010b9b029a996da4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#a7594e4eb8d783fb010b9b029a996da4b">classBegin</a> () override</td></tr>
 <tr class="separator:a7594e4eb8d783fb010b9b029a996da4b inherit pub_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -655,8 +663,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aff5127182ee7edb3ea901ca7c2a76e7e inherit pub_methods_classQskSkinnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a metric hint from the local table.  <br /></td></tr>
 <tr class="separator:aff5127182ee7edb3ea901ca7c2a76e7e inherit pub_methods_classQskSkinnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7ee11024764a173d679d5e2d4b229a8 inherit pub_methods_classQskSkinnable" id="r_af7ee11024764a173d679d5e2d4b229a8"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskSkinnable.html#af7ee11024764a173d679d5e2d4b229a8">metric</a> (<a class="el" href="classQskAspect.html">QskAspect</a>, <a class="el" href="classQskSkinHintStatus.html">QskSkinHintStatus</a> *=nullptr) const</td></tr>
-<tr class="memdesc:af7ee11024764a173d679d5e2d4b229a8 inherit pub_methods_classQskSkinnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a metric hint.  <br /></td></tr>
 <tr class="separator:af7ee11024764a173d679d5e2d4b229a8 inherit pub_methods_classQskSkinnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a487cf209f78dc541d048f0fb15ba5add inherit pub_methods_classQskSkinnable" id="r_a487cf209f78dc541d048f0fb15ba5add"><td class="memItemLeft" align="right" valign="top">qreal&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskSkinnable.html#a487cf209f78dc541d048f0fb15ba5add">metric</a> (<a class="el" href="classQskAspect.html">QskAspect</a>, qreal defaultValue) const</td></tr>
+<tr class="separator:a487cf209f78dc541d048f0fb15ba5add inherit pub_methods_classQskSkinnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8993dccbd0f32b8ceed7ed3a2bf8cf5 inherit pub_methods_classQskSkinnable" id="r_ac8993dccbd0f32b8ceed7ed3a2bf8cf5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskSkinnable.html#ac8993dccbd0f32b8ceed7ed3a2bf8cf5">setFlagHint</a> (<a class="el" href="classQskAspect.html">QskAspect</a>, int flag)</td></tr>
 <tr class="memdesc:ac8993dccbd0f32b8ceed7ed3a2bf8cf5 inherit pub_methods_classQskSkinnable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a flag hint.  <br /></td></tr>
 <tr class="separator:ac8993dccbd0f32b8ceed7ed3a2bf8cf5 inherit pub_methods_classQskSkinnable"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -829,10 +838,10 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a314b2c9c7463043e444f1eb6f71901e5" id="r_a314b2c9c7463043e444f1eb6f71901e5"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classQskAspect.html#ac7da709200e9d0e9e3fea08ccb2cc9a4">QskAspect::Subcontrol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#a314b2c9c7463043e444f1eb6f71901e5">Groove</a></td></tr>
-<tr class="separator:a314b2c9c7463043e444f1eb6f71901e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af461212e74a9671406b9da5996ac0aec" id="r_af461212e74a9671406b9da5996ac0aec"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classQskAspect.html#ac7da709200e9d0e9e3fea08ccb2cc9a4">QskAspect::Subcontrol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#af461212e74a9671406b9da5996ac0aec">Fill</a></td></tr>
-<tr class="separator:af461212e74a9671406b9da5996ac0aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9432df18a1ad6655630a343515dd209" id="r_ac9432df18a1ad6655630a343515dd209"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classQskAspect.html#ac7da709200e9d0e9e3fea08ccb2cc9a4">QskAspect::Subcontrol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#ac9432df18a1ad6655630a343515dd209">Groove</a></td></tr>
+<tr class="separator:ac9432df18a1ad6655630a343515dd209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a449b6593fd492e7a6bcb19f9e7a58a5f" id="r_a449b6593fd492e7a6bcb19f9e7a58a5f"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classQskAspect.html#ac7da709200e9d0e9e3fea08ccb2cc9a4">QskAspect::Subcontrol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskProgressIndicator.html#a449b6593fd492e7a6bcb19f9e7a58a5f">Fill</a></td></tr>
+<tr class="separator:a449b6593fd492e7a6bcb19f9e7a58a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_classQskControl"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classQskControl')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classQskControl.html">QskControl</a></td></tr>
 <tr class="memitem:ac9c8db58583778b737e7fa406455ddeb inherit pub_static_attribs_classQskControl" id="r_ac9c8db58583778b737e7fa406455ddeb"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classQskAspect.html#ac7da709200e9d0e9e3fea08ccb2cc9a4">QskAspect::Subcontrol</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskControl.html#ac9c8db58583778b737e7fa406455ddeb">Background</a></td></tr>
 <tr class="separator:ac9c8db58583778b737e7fa406455ddeb inherit pub_static_attribs_classQskControl"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -890,6 +899,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ab0f6ee781317e71c6c47e29610ff9d09 inherit pro_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa1135e2c434098ced0b9453ee44f956 inherit pro_methods_classQskItem" id="r_aaa1135e2c434098ced0b9453ee44f956"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#aaa1135e2c434098ced0b9453ee44f956">geometryChangeEvent</a> (<a class="el" href="classQskGeometryChangeEvent.html">QskGeometryChangeEvent</a> *)</td></tr>
 <tr class="separator:aaa1135e2c434098ced0b9453ee44f956 inherit pro_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0526662b1a39fe59834ec7d20f947c33 inherit pro_methods_classQskItem" id="r_a0526662b1a39fe59834ec7d20f947c33"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#a0526662b1a39fe59834ec7d20f947c33">viewportChangeEvent</a> (<a class="el" href="classQskViewportChangeEvent.html">QskViewportChangeEvent</a> *)</td></tr>
+<tr class="separator:a0526662b1a39fe59834ec7d20f947c33 inherit pro_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2b533b976eeab3c1d08cee16f9bdddf inherit pro_methods_classQskItem" id="r_ab2b533b976eeab3c1d08cee16f9bdddf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#ab2b533b976eeab3c1d08cee16f9bdddf">windowChangeEvent</a> (<a class="el" href="classQskWindowChangeEvent.html">QskWindowChangeEvent</a> *)</td></tr>
 <tr class="separator:ab2b533b976eeab3c1d08cee16f9bdddf inherit pro_methods_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a086adc1cac6cca104659d3a17d078b15 inherit pro_methods_classQskItem" id="r_a086adc1cac6cca104659d3a17d078b15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#a086adc1cac6cca104659d3a17d078b15">mouseUngrabEvent</a> () override</td></tr>
@@ -969,8 +980,6 @@ Properties</h2></td></tr>
 <tr class="separator:a365429c57da82ccdee008fd836ae215e inherit properties_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e68758ef65fd5ecc08fe04bd941d9ee inherit properties_classQskItem" id="r_a6e68758ef65fd5ecc08fe04bd941d9ee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#a6e68758ef65fd5ecc08fe04bd941d9ee">polishOnParentResize</a></td></tr>
 <tr class="separator:a6e68758ef65fd5ecc08fe04bd941d9ee inherit properties_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc7d1c56efeb00903809e267b075fec3 inherit properties_classQskItem" id="r_abc7d1c56efeb00903809e267b075fec3"><td class="memItemLeft" align="right" valign="top">Qt::FocusPolicy&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#abc7d1c56efeb00903809e267b075fec3">focusPolicy</a></td></tr>
-<tr class="separator:abc7d1c56efeb00903809e267b075fec3 inherit properties_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b2891f20c072b54a90274343bc86b3b inherit properties_classQskItem" id="r_a3b2891f20c072b54a90274343bc86b3b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#a3b2891f20c072b54a90274343bc86b3b">wheelEnabled</a></td></tr>
 <tr class="separator:a3b2891f20c072b54a90274343bc86b3b inherit properties_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73c2c66aad0728c7fce20d60d2d3406b inherit properties_classQskItem" id="r_a73c2c66aad0728c7fce20d60d2d3406b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#a73c2c66aad0728c7fce20d60d2d3406b">visibleToParent</a></td></tr>
@@ -985,17 +994,17 @@ Properties</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classQskItem"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classQskItem')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classQskItem.html">QskItem</a></td></tr>
-<tr class="memitem:a8428a4f497354b0f1f09329bb0f4c4a5 inherit pub_types_classQskItem" id="r_a8428a4f497354b0f1f09329bb0f4c4a5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#a8428a4f497354b0f1f09329bb0f4c4a5">UpdateFlag</a> { <br />
-&#160;&#160;<a class="el" href="classQskItem.html#a8428a4f497354b0f1f09329bb0f4c4a5a85ce71a10c9ebc1d1176d8fa3b8010eb">DeferredUpdate</a> = 1 &lt;&lt; 0
-, <a class="el" href="classQskItem.html#a8428a4f497354b0f1f09329bb0f4c4a5a453f1c671c98ed22baf2e8f41b28c704">DeferredPolish</a> = 1 &lt;&lt; 1
-, <a class="el" href="classQskItem.html#a8428a4f497354b0f1f09329bb0f4c4a5a9d58d6c18f565596752c5904bdd03ca5">DeferredLayout</a> = 1 &lt;&lt; 2
-, <a class="el" href="classQskItem.html#a8428a4f497354b0f1f09329bb0f4c4a5a378b7344859107b95ba162be44c662b0">CleanupOnVisibility</a> = 1 &lt;&lt; 3
+<tr class="memitem:aa76dcac3dbb2a16cca4f47ddc87ee185 inherit pub_types_classQskItem" id="r_aa76dcac3dbb2a16cca4f47ddc87ee185"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classQskItem.html#aa76dcac3dbb2a16cca4f47ddc87ee185">UpdateFlag</a> : quint16 { <br />
+&#160;&#160;<a class="el" href="classQskItem.html#aa76dcac3dbb2a16cca4f47ddc87ee185a85ce71a10c9ebc1d1176d8fa3b8010eb">DeferredUpdate</a> = 1 &lt;&lt; 0
+, <a class="el" href="classQskItem.html#aa76dcac3dbb2a16cca4f47ddc87ee185a453f1c671c98ed22baf2e8f41b28c704">DeferredPolish</a> = 1 &lt;&lt; 1
+, <a class="el" href="classQskItem.html#aa76dcac3dbb2a16cca4f47ddc87ee185a9d58d6c18f565596752c5904bdd03ca5">DeferredLayout</a> = 1 &lt;&lt; 2
+, <a class="el" href="classQskItem.html#aa76dcac3dbb2a16cca4f47ddc87ee185a378b7344859107b95ba162be44c662b0">CleanupOnVisibility</a> = 1 &lt;&lt; 3
 , <br />
-&#160;&#160;<a class="el" href="classQskItem.html#a8428a4f497354b0f1f09329bb0f4c4a5a73add90e003ab93bcacc802fdbd0d551">PreferRasterForTextures</a> = 1 &lt;&lt; 4
-, <a class="el" href="classQskItem.html#a8428a4f497354b0f1f09329bb0f4c4a5a213b58894a81c4411042156c014bb8d5">DebugForceBackground</a> = 1 &lt;&lt; 7
+&#160;&#160;<a class="el" href="classQskItem.html#aa76dcac3dbb2a16cca4f47ddc87ee185a73add90e003ab93bcacc802fdbd0d551">PreferRasterForTextures</a> = 1 &lt;&lt; 4
+, <a class="el" href="classQskItem.html#aa76dcac3dbb2a16cca4f47ddc87ee185a213b58894a81c4411042156c014bb8d5">DebugForceBackground</a> = 1 &lt;&lt; 7
 <br />
  }</td></tr>
-<tr class="separator:a8428a4f497354b0f1f09329bb0f4c4a5 inherit pub_types_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:aa76dcac3dbb2a16cca4f47ddc87ee185 inherit pub_types_classQskItem"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab29f443f70c419c7498c7c7cfdd59bda" name="ab29f443f70c419c7498c7c7cfdd59bda"></a>
@@ -1013,6 +1022,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Creates a new progress indicator with the given <em>parent</em>. </p>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00087">87</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
@@ -1049,6 +1059,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Creates a new progress indicator with the progress interval [<em>min</em>, <em>max</em>] and the given <em>parent</em>. </p>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00077">77</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
@@ -1064,7 +1075,7 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">QskProgressIndicator::QskProgressIndicator </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classQskIntervalF.html">QskIntervalF</a> &amp;&#160;</td>
-          <td class="paramname"><em>boundaries</em>, </td>
+          <td class="paramname"><em>interval</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1079,6 +1090,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Creates a new progress indicator with the given progress <em>interval</em> and the given <em>parent</em>. </p>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00092">92</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
@@ -1106,6 +1118,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Destructor. </p>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00097">97</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
@@ -1134,8 +1147,10 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>This will adjust the value appropriately when the component is complete.</p>
+<p>Derived classes overriding this function should call it in their implementation. </p>
 
-<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00216">216</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00219">219</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
 </div>
 </div>
@@ -1153,8 +1168,38 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Returns the extent, i.e. the size of the <a class="el" href="classQskProgressIndicator.html#ac9432df18a1ad6655630a343515dd209">QskProgressIndicator::Groove</a> subcontrol.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#a5c78e8789a9c74bf900a623a67a3616e">setExtent()</a>, <a class="el" href="classQskProgressIndicator.html#a85ccf728f6fd635ff1a17b6f170558b8">extentChanged()</a>, <a class="el" href="classQskProgressIndicator.html#ad8634b6c5995cdbf93f99fc20a2bac69">resetExtent()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00149">149</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a85ccf728f6fd635ff1a17b6f170558b8" name="a85ccf728f6fd635ff1a17b6f170558b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85ccf728f6fd635ff1a17b6f170558b8">&#9670;&#160;</a></span>extentChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QskProgressIndicator::extentChanged </td>
+          <td>(</td>
+          <td class="paramtype">qreal&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Will be emitted when the extent changes.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#af693758dfb4c16719463e541741c7562">extent()</a>, <a class="el" href="classQskProgressIndicator.html#a5c78e8789a9c74bf900a623a67a3616e">setExtent()</a>, <a class="el" href="classQskProgressIndicator.html#ad8634b6c5995cdbf93f99fc20a2bac69">resetExtent()</a> </dd></dl>
 
 </div>
 </div>
@@ -1172,8 +1217,59 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Returns the fill gradient.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#a1d9191e06626c99f8713712c641e15fd">setFillGradient()</a>, <a class="el" href="classQskProgressIndicator.html#ae37b84c48dbb2043c1fe5369b8d2221c">resetFillGradient()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00129">129</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+
+</div>
+</div>
+<a id="afdfabeb102bc9fd3c03876c20fb8981f" name="afdfabeb102bc9fd3c03876c20fb8981f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdfabeb102bc9fd3c03876c20fb8981f">&#9670;&#160;</a></span>hasOrigin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool QskProgressIndicator::hasOrigin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns true if an origin has been set via <a class="el" href="classQskProgressIndicator.html#a4c7de67c203ff0c7df89d5588c7aa0f1">setOrigin()</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">origin()</a>, <a class="el" href="classQskProgressIndicator.html#a4c7de67c203ff0c7df89d5588c7aa0f1">setOrigin()</a>, <a class="el" href="classQskProgressIndicator.html#aa0e82f0c479394e8b18c6bb1c9e61a20">originChanged()</a>, <a class="el" href="classQskProgressIndicator.html#ac4a91e71c1ceb2c67abf5cce0baeecf1">resetOrigin()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00190">190</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aa74d52213fcdc516fd0e79a18afd3373" name="aa74d52213fcdc516fd0e79a18afd3373"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa74d52213fcdc516fd0e79a18afd3373">&#9670;&#160;</a></span>indeterminateChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QskProgressIndicator::indeterminateChanged </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Will be emitted when the indicator changes from indeterminate to determinate or vice versa.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#a338cecb724b4ed588ee1023e56bc2863">isIndeterminate()</a>, <a class="el" href="classQskProgressIndicator.html#ab8ea6a8e0ea865ab0546c189fa6b21f1">setIndeterminate()</a> </dd></dl>
 
 </div>
 </div>
@@ -1191,6 +1287,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Returns whether the progress indicator is indeterminate, i.e. will loop forever.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#ab8ea6a8e0ea865ab0546c189fa6b21f1">setIndeterminate()</a>, <a class="el" href="classQskProgressIndicator.html#aa74d52213fcdc516fd0e79a18afd3373">indeterminateChanged()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00102">102</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
@@ -1229,8 +1327,10 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Checks whether the visibility has changed and animates the indicator in case it is indeterminate. I.e. when the indicator becomes visible it will start the animator, and when it becomes invisible it will stop it.</p>
+<p>Derived classes overriding this function should call it in their implementation. </p>
 
-<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00239">239</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00242">242</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
 </div>
 </div>
@@ -1248,8 +1348,38 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Returns the origin, i.e. the value where the progress will start. If no origin has been set via <a class="el" href="classQskProgressIndicator.html#a4c7de67c203ff0c7df89d5588c7aa0f1">setOrigin()</a>, the minimum value is returned.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#afdfabeb102bc9fd3c03876c20fb8981f">hasOrigin()</a>, <a class="el" href="classQskProgressIndicator.html#a4c7de67c203ff0c7df89d5588c7aa0f1">setOrigin()</a>, <a class="el" href="classQskProgressIndicator.html#aa0e82f0c479394e8b18c6bb1c9e61a20">originChanged()</a>, <a class="el" href="classQskProgressIndicator.html#ac4a91e71c1ceb2c67abf5cce0baeecf1">resetOrigin()</a>, QskBoundedControl::minimum() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00182">182</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00180">180</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aa0e82f0c479394e8b18c6bb1c9e61a20" name="aa0e82f0c479394e8b18c6bb1c9e61a20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0e82f0c479394e8b18c6bb1c9e61a20">&#9670;&#160;</a></span>originChanged</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QskProgressIndicator::originChanged </td>
+          <td>(</td>
+          <td class="paramtype">qreal&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Will be emitted when the origin changes.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">origin()</a>, <a class="el" href="classQskProgressIndicator.html#afdfabeb102bc9fd3c03876c20fb8981f">hasOrigin()</a>, <a class="el" href="classQskProgressIndicator.html#a4c7de67c203ff0c7df89d5588c7aa0f1">setOrigin()</a>, <a class="el" href="classQskProgressIndicator.html#ac4a91e71c1ceb2c67abf5cce0baeecf1">resetOrigin()</a> </dd></dl>
 
 </div>
 </div>
@@ -1267,6 +1397,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Resets the extent.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#af693758dfb4c16719463e541741c7562">extent()</a>, <a class="el" href="classQskProgressIndicator.html#a5c78e8789a9c74bf900a623a67a3616e">setExtent()</a>, <a class="el" href="classQskProgressIndicator.html#a85ccf728f6fd635ff1a17b6f170558b8">extentChanged()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00143">143</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
@@ -1286,6 +1418,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Resets the fill gradient.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#a3e2b2070450a2fbc295d38cc0236d11d">fillGradient()</a>, <a class="el" href="classQskProgressIndicator.html#a1d9191e06626c99f8713712c641e15fd">setFillGradient()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00124">124</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
@@ -1305,8 +1439,10 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Resets the origin.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#afdfabeb102bc9fd3c03876c20fb8981f">hasOrigin()</a>, <a class="el" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">origin( void )</a>, <a class="el" href="classQskProgressIndicator.html#a4c7de67c203ff0c7df89d5588c7aa0f1">setOrigin()</a>, <a class="el" href="classQskProgressIndicator.html#aa0e82f0c479394e8b18c6bb1c9e61a20">originChanged()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00171">171</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00169">169</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
 </div>
 </div>
@@ -1325,6 +1461,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Sets the size of the extent, i.e. the <a class="el" href="classQskProgressIndicator.html#ac9432df18a1ad6655630a343515dd209">QskProgressIndicator::Groove</a> subcontrol.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#af693758dfb4c16719463e541741c7562">extent()</a>, <a class="el" href="classQskProgressIndicator.html#a85ccf728f6fd635ff1a17b6f170558b8">extentChanged()</a>, <a class="el" href="classQskProgressIndicator.html#ad8634b6c5995cdbf93f99fc20a2bac69">resetExtent()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00134">134</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
@@ -1345,6 +1483,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Sets the fill gradient by setting the gradient hint of the <a class="el" href="classQskProgressIndicator.html#a449b6593fd492e7a6bcb19f9e7a58a5f">QskProgressIndicator::Fill</a> subcontrol.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#a3e2b2070450a2fbc295d38cc0236d11d">fillGradient()</a>, <a class="el" href="classQskProgressIndicator.html#ae37b84c48dbb2043c1fe5369b8d2221c">resetFillGradient()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00119">119</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
@@ -1365,6 +1505,8 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Sets whether the progress indicator is indeterminate.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#a338cecb724b4ed588ee1023e56bc2863">isIndeterminate()</a>, <a class="el" href="classQskProgressIndicator.html#aa74d52213fcdc516fd0e79a18afd3373">indeterminateChanged()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00107">107</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
@@ -1393,8 +1535,10 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Sets the origin.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">origin()</a>, <a class="el" href="classQskProgressIndicator.html#afdfabeb102bc9fd3c03876c20fb8981f">hasOrigin()</a>, <a class="el" href="classQskProgressIndicator.html#aa0e82f0c479394e8b18c6bb1c9e61a20">originChanged()</a>, <a class="el" href="classQskProgressIndicator.html#ac4a91e71c1ceb2c67abf5cce0baeecf1">resetOrigin()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00156">156</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00154">154</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
 </div>
 </div>
@@ -1421,8 +1565,10 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Sets the value to <em>value</em>. If <em>value</em> is outside of the boundaries(), it will be bound to this range.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#a8a18a3cf31b767cf77d536d763a080c0">setValueAsRatio()</a>, <a class="el" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value()</a>, <a class="el" href="classQskProgressIndicator.html#afe36656d8f07ba95fea55d135a92ccbb">valueChanged()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00192">192</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00195">195</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
 </div>
 </div>
@@ -1449,8 +1595,11 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Sets the value as ratio of [0.0, 1.0].</p>
+<p>If <em>ratio</em> is outside of this range, it will be bound to the interval [0.0, 1.0], i.e. if it is smaller than 0, it will be set to 0, and if it is greater than 1, it will be set to 1.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#a53630f3328bd2b62289b0b3144c25b90">valueAsRatio()</a>, <a class="el" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value()</a>, <a class="el" href="classQskProgressIndicator.html#a3fb157711a99092e18290296b26c0c5d">setValue()</a>, <a class="el" href="classQskProgressIndicator.html#afe36656d8f07ba95fea55d135a92ccbb">valueChanged()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00205">205</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00208">208</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
 </div>
 </div>
@@ -1468,8 +1617,10 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Returns the current value.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#a53630f3328bd2b62289b0b3144c25b90">valueAsRatio()</a>, <a class="el" href="classQskProgressIndicator.html#a3fb157711a99092e18290296b26c0c5d">setValue()</a>, <a class="el" href="classQskProgressIndicator.html#afe36656d8f07ba95fea55d135a92ccbb">valueChanged()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00200">200</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00203">203</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
 </div>
 </div>
@@ -1487,8 +1638,11 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Returns the current value as ratio, i.e. as percentage in the range of [0.0, 1.0].</p>
+<p>The ratio is calculated like this: ratio = (<a class="el" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value()</a> - minimum()) / (maximum() - minimum()).</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value()</a>, <a class="el" href="classQskProgressIndicator.html#a8a18a3cf31b767cf77d536d763a080c0">setValueAsRatio()</a>, <a class="el" href="classQskProgressIndicator.html#afe36656d8f07ba95fea55d135a92ccbb">valueChanged()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00211">211</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8cpp_source.html#l00214">214</a> of file <a class="el" href="QskProgressIndicator_8cpp_source.html">QskProgressIndicator.cpp</a>.</p>
 
 </div>
 </div>
@@ -1512,9 +1666,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="af461212e74a9671406b9da5996ac0aec" name="af461212e74a9671406b9da5996ac0aec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af461212e74a9671406b9da5996ac0aec">&#9670;&#160;</a></span>Fill</h2>
+<a id="afe36656d8f07ba95fea55d135a92ccbb" name="afe36656d8f07ba95fea55d135a92ccbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe36656d8f07ba95fea55d135a92ccbb">&#9670;&#160;</a></span>valueChanged</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1523,7 +1676,36 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classQskAspect.html#ac7da709200e9d0e9e3fea08ccb2cc9a4">QskAspect::Subcontrol</a> QskProgressIndicator::Fill</td>
+          <td class="memname">QskProgressIndicator::valueChanged </td>
+          <td>(</td>
+          <td class="paramtype">qreal&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">signal</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Will be emitted when the value changes.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value()</a>, <a class="el" href="classQskProgressIndicator.html#a53630f3328bd2b62289b0b3144c25b90">valueAsRatio()</a>, <a class="el" href="classQskProgressIndicator.html#a3fb157711a99092e18290296b26c0c5d">setValue()</a>, <a class="el" href="classQskProgressIndicator.html#a8a18a3cf31b767cf77d536d763a080c0">setValueAsRatio()</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a449b6593fd492e7a6bcb19f9e7a58a5f" name="a449b6593fd492e7a6bcb19f9e7a58a5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a449b6593fd492e7a6bcb19f9e7a58a5f">&#9670;&#160;</a></span>Fill</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">QskProgressIndicator::Fill</td>
         </tr>
       </table>
   </td>
@@ -1532,13 +1714,14 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Showing the current value of the indicator; is drawn above the <a class="el" href="classQskProgressIndicator.html#ac9432df18a1ad6655630a343515dd209">QskProgressIndicator::Groove</a>. </p>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8h_source.html#l00033">33</a> of file <a class="el" href="QskProgressIndicator_8h_source.html">QskProgressIndicator.h</a>.</p>
 
 </div>
 </div>
-<a id="a314b2c9c7463043e444f1eb6f71901e5" name="a314b2c9c7463043e444f1eb6f71901e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a314b2c9c7463043e444f1eb6f71901e5">&#9670;&#160;</a></span>Groove</h2>
+<a id="ac9432df18a1ad6655630a343515dd209" name="ac9432df18a1ad6655630a343515dd209"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9432df18a1ad6655630a343515dd209">&#9670;&#160;</a></span>Groove</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1547,7 +1730,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classQskAspect.html#ac7da709200e9d0e9e3fea08ccb2cc9a4">QskAspect::Subcontrol</a> QskProgressIndicator::Groove</td>
+          <td class="memname">QskProgressIndicator::Groove</td>
         </tr>
       </table>
   </td>
@@ -1556,6 +1739,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Indicating the value range that the indicator can have; is drawn below the <a class="el" href="classQskProgressIndicator.html#a449b6593fd492e7a6bcb19f9e7a58a5f">QskProgressIndicator::Fill</a>. </p>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8h_source.html#l00033">33</a> of file <a class="el" href="QskProgressIndicator_8h_source.html">QskProgressIndicator.h</a>.</p>
 
@@ -1581,6 +1765,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>The extent of the indicator.</p>
+<dl class="section user"><dt>Access functions:</dt><dd><a class="el" href="classQskProgressIndicator.html#af693758dfb4c16719463e541741c7562">extent()</a>, <a class="el" href="classQskProgressIndicator.html#a5c78e8789a9c74bf900a623a67a3616e">setExtent()</a>, <a class="el" href="classQskProgressIndicator.html#a85ccf728f6fd635ff1a17b6f170558b8">extentChanged()</a>, <a class="el" href="classQskProgressIndicator.html#ad8634b6c5995cdbf93f99fc20a2bac69">resetExtent()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8h_source.html#l00017">17</a> of file <a class="el" href="QskProgressIndicator_8h_source.html">QskProgressIndicator.h</a>.</p>
 
@@ -1605,6 +1791,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Whether the indicator is indeterminate or not.</p>
+<dl class="section user"><dt>Access functions:</dt><dd><a class="el" href="classQskProgressIndicator.html#a338cecb724b4ed588ee1023e56bc2863">isIndeterminate()</a>, <a class="el" href="classQskProgressIndicator.html#ab8ea6a8e0ea865ab0546c189fa6b21f1">setIndeterminate()</a>, <a class="el" href="classQskProgressIndicator.html#aa74d52213fcdc516fd0e79a18afd3373">indeterminateChanged()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8h_source.html#l00020">20</a> of file <a class="el" href="QskProgressIndicator_8h_source.html">QskProgressIndicator.h</a>.</p>
 
@@ -1629,6 +1817,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>The origin of the indicator.</p>
+<dl class="section user"><dt>Access functions:</dt><dd>qreal <a class="el" href="classQskProgressIndicator.html#acaaded56efa52edce1caf0777f539d55">origin()</a>, <a class="el" href="classQskProgressIndicator.html#a4c7de67c203ff0c7df89d5588c7aa0f1">setOrigin()</a>, <a class="el" href="classQskProgressIndicator.html#aa0e82f0c479394e8b18c6bb1c9e61a20">originChanged()</a>, <a class="el" href="classQskProgressIndicator.html#ac4a91e71c1ceb2c67abf5cce0baeecf1">resetOrigin()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8h_source.html#l00023">23</a> of file <a class="el" href="QskProgressIndicator_8h_source.html">QskProgressIndicator.h</a>.</p>
 
@@ -1653,6 +1843,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>The value of the indicator.</p>
+<dl class="section user"><dt>Access functions:</dt><dd><a class="el" href="classQskProgressIndicator.html#aea9d5b470eb03413719e8955113db7c2">value()</a>, <a class="el" href="classQskProgressIndicator.html#a3fb157711a99092e18290296b26c0c5d">setValue()</a>, <a class="el" href="classQskProgressIndicator.html#afe36656d8f07ba95fea55d135a92ccbb">valueChanged()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8h_source.html#l00026">26</a> of file <a class="el" href="QskProgressIndicator_8h_source.html">QskProgressIndicator.h</a>.</p>
 
@@ -1677,6 +1869,8 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>The value of the indicator as ratio.</p>
+<dl class="section user"><dt>Access functions:</dt><dd><a class="el" href="classQskProgressIndicator.html#a53630f3328bd2b62289b0b3144c25b90">valueAsRatio()</a>, <a class="el" href="classQskProgressIndicator.html#a8a18a3cf31b767cf77d536d763a080c0">setValueAsRatio()</a>, <a class="el" href="classQskProgressIndicator.html#afe36656d8f07ba95fea55d135a92ccbb">valueChanged()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="QskProgressIndicator_8h_source.html#l00027">27</a> of file <a class="el" href="QskProgressIndicator_8h_source.html">QskProgressIndicator.h</a>.</p>
 

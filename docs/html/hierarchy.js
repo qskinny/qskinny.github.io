@@ -14,6 +14,7 @@ var hierarchy =
         [ "QskGestureEvent", "classQskGestureEvent.html", null ],
         [ "QskGestureFilterEvent", "classQskGestureFilterEvent.html", null ],
         [ "QskPopupEvent", "classQskPopupEvent.html", null ],
+        [ "QskViewportChangeEvent", "classQskViewportChangeEvent.html", null ],
         [ "QskWindowChangeEvent", "classQskWindowChangeEvent.html", null ]
       ] ]
     ] ],
@@ -26,7 +27,9 @@ var hierarchy =
       [ "QskGestureRecognizer", "classQskGestureRecognizer.html", [
         [ "QskPanGestureRecognizer", "classQskPanGestureRecognizer.html", null ]
       ] ],
-      [ "QskGraphicProvider", "classQskGraphicProvider.html", null ],
+      [ "QskGraphicProvider", "classQskGraphicProvider.html", [
+        [ "QskGlyphGraphicProvider", "classQskGlyphGraphicProvider.html", null ]
+      ] ],
       [ "QskInputContext", "classQskInputContext.html", null ],
       [ "QskInputContextFactory", "classQskInputContextFactory.html", null ],
       [ "QskSkin", "classQskSkin.html", null ],
@@ -62,6 +65,14 @@ var hierarchy =
             ] ],
             [ "QskSwitchButton", "classQskSwitchButton.html", null ],
             [ "QskTabButton", "classQskTabButton.html", null ]
+          ] ],
+          [ "QskAbstractTextInput", "classQskAbstractTextInput.html", [
+            [ "QskTextEdit", "classQskTextEdit.html", [
+              [ "QskTextArea", "classQskTextArea.html", null ]
+            ] ],
+            [ "QskTextInput", "classQskTextInput.html", [
+              [ "QskTextField", "classQskTextField.html", null ]
+            ] ]
           ] ],
           [ "QskBoundedControl", "classQskBoundedControl.html", [
             [ "QskBoundedInput", "classQskBoundedInput.html", [
@@ -122,7 +133,6 @@ var hierarchy =
           [ "QskStatusIndicator", "classQskStatusIndicator.html", null ],
           [ "QskSubWindowArea", "classQskSubWindowArea.html", null ],
           [ "QskTabView", "classQskTabView.html", null ],
-          [ "QskTextInput", "classQskTextInput.html", null ],
           [ "QskTextLabel", "classQskTextLabel.html", null ]
         ] ]
       ] ]
@@ -199,6 +209,7 @@ var hierarchy =
       [ "QskTapAndHoldGesture", "classQskTapAndHoldGesture.html", null ],
       [ "QskTapGesture", "classQskTapGesture.html", null ]
     ] ],
+    [ "QskGlyphTable", "classQskGlyphTable.html", null ],
     [ "QskGradient", "classQskGradient.html", null ],
     [ "QskGradientStop", "classQskGradientStop.html", null ],
     [ "QskGraduationMetrics", "classQskGraduationMetrics.html", null ],
@@ -268,7 +279,8 @@ var hierarchy =
       [ "QskSwitchButtonSkinlet", "classQskSwitchButtonSkinlet.html", null ],
       [ "QskTabButtonSkinlet", "classQskTabButtonSkinlet.html", null ],
       [ "QskTabViewSkinlet", "classQskTabViewSkinlet.html", null ],
-      [ "QskTextInputSkinlet", "classQskTextInputSkinlet.html", null ],
+      [ "QskTextAreaSkinlet", "classQskTextAreaSkinlet.html", null ],
+      [ "QskTextFieldSkinlet", "classQskTextFieldSkinlet.html", null ],
       [ "QskTextLabelSkinlet", "classQskTextLabelSkinlet.html", null ]
     ] ],
     [ "QskSkinnable", "classQskSkinnable.html", [

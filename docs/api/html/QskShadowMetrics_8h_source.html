@@ -177,7 +177,7 @@ $(document).ready(function(){initNavTree('QskShadowMetrics_8h_source.html',''); 
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    Q_PROPERTY( ShapeMode shapeMode READ shapeMode WRITE setShapeMode )</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">enum</span> ShapeMode</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">enum</span> ShapeMode : quint8</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    {</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        Aligned = 0, <span class="comment">// The shape is related to some external definition</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
@@ -237,7 +237,7 @@ $(document).ready(function(){initNavTree('QskShadowMetrics_8h_source.html',''); 
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    qreal m_spreadRadius = 0.0;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    qreal m_blurRadius = 0.0;</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    quint8 m_sizeMode = Qt::AbsoluteSize;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    quint8 m_shapeMode = QskShadowMetrics::Aligned;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    ShapeMode m_shapeMode = QskShadowMetrics::Aligned;</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>};</div>
 </div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
@@ -322,7 +322,7 @@ $(document).ready(function(){initNavTree('QskShadowMetrics_8h_source.html',''); 
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    </div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="keyword">inline</span> <span class="keyword">constexpr</span> QskShadowMetrics::ShapeMode QskShadowMetrics::shapeMode() const noexcept</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>{   </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span> ShapeMode <span class="keyword">&gt;</span>( m_shapeMode );</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">return</span> m_shapeMode;</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>}</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="keyword">inline</span> <span class="keywordtype">void</span> QskShadowMetrics::setOffsetX( qreal dx ) <span class="keyword">noexcept</span></div>

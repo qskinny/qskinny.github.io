@@ -6,7 +6,7 @@ var searchData=
   ['binding_3',['2. Easy data binding',['../tutorials.html#autotoc_md5',1,'']]],
   ['border_4',['Border',['../classQskAspect.html#a916d523f0d3d620c06f7503037c47fafac62a19981a2e02aa90ffd0038a944ac1',1,'QskAspect']]],
   ['bottom_5',['Bottom',['../classQskAspect.html#a4fa173c2083729cc9d0dafcb2ada59b4ac1d1dedd604e6e3dd724d5a3be0bc6c5',1,'QskAspect']]],
-  ['bottomtotop_6',['BottomToTop',['../namespaceQsk.html#a3732501dd24802564a701bce469140fca8e1fc98541b4e6f789304f9bd45c2b6b',1,'Qsk']]],
+  ['bottomtotop_6',['BottomToTop',['../namespaceQsk.html#aaef4fa781c7e22ce89c3c435914118cda8e1fc98541b4e6f789304f9bd45c2b6b',1,'Qsk']]],
   ['boxbordercolorshint_7',['boxBorderColorsHint',['../classQskSkinnable.html#ab2811372d45c5182be57521e7bdaebff',1,'QskSkinnable']]],
   ['boxbordermetricshint_8',['boxBorderMetricsHint',['../classQskSkinnable.html#ae2d56873687f1d3e645f43a4c93015ff',1,'QskSkinnable']]],
   ['boxshapehint_9',['boxShapeHint',['../classQskSkinnable.html#a9b699fbc99fd87e50f4b668ff923abe5',1,'QskSkinnable']]],

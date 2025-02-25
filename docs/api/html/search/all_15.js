@@ -13,11 +13,11 @@ var searchData=
   ['top_10',['Top',['../classQskAspect.html#a4fa173c2083729cc9d0dafcb2ada59b4a033e23040d9208742eae2acbd6541890',1,'QskAspect']]],
   ['toprintable_11',['toPrintable',['../classQskAspect.html#a3615c4951f8b664abe6bb35452a035f9',1,'QskAspect']]],
   ['topstate_12',['topState',['../classQskAspect.html#a124b0035e530e51fd62145d6d242e8b3',1,'QskAspect']]],
-  ['toptobottom_13',['TopToBottom',['../namespaceQsk.html#a3732501dd24802564a701bce469140fcaa0d6bc0bf1d44c1e7101279ee4aa40e0',1,'Qsk']]],
+  ['toptobottom_13',['TopToBottom',['../namespaceQsk.html#aaef4fa781c7e22ce89c3c435914118cdaa0d6bc0bf1d44c1e7101279ee4aa40e0',1,'Qsk']]],
   ['touchungrabevent_14',['touchUngrabEvent',['../classQskItem.html#a89d7f2a02050c6c866d26b0b7aaec70d',1,'QskItem']]],
   ['transpose_15',['transpose',['../classQskLinearBox.html#ac436e56adee93b5add65867eddbe90e7',1,'QskLinearBox']]],
   ['trunk_16',['trunk',['../classQskAspect.html#a5fea9e8fa6e178bd6e4aee06c8595b92',1,'QskAspect']]],
   ['tutorials_17',['Tutorials',['../tutorials.html',1,'']]],
-  ['type_18',['type',['../classQskAspect.html#a854519f806b9919c62171f588b1255f2',1,'QskAspect::type()'],['../classQskPainterCommand.html#a89bbe50b7a4563bf94f306ff0f155210',1,'QskPainterCommand::type()'],['../classQskAspect.html#abe34bcf592dd94b99b1a3461e810ad73',1,'QskAspect::Type'],['../classQskPainterCommand.html#a63dce64f21aff199cb3fcb39cba1c9b1',1,'QskPainterCommand::Type']]],
+  ['type_18',['type',['../classQskAspect.html#a854519f806b9919c62171f588b1255f2',1,'QskAspect::type() const noexcept'],['../classQskAspect.html#abe34bcf592dd94b99b1a3461e810ad73',1,'QskAspect::Type']]],
   ['types_20of_20layouts_19',['Types of layouts',['../tutorials.html#autotoc_md17',1,'']]]
 ];

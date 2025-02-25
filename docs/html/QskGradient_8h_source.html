@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('QskGradient_8h_source.html',''); initR
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    Q_CLASSINFO( <span class="stringliteral">&quot;DefaultProperty&quot;</span>, <span class="stringliteral">&quot;stops&quot;</span> )</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">enum</span> Type</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">enum</span> Type : quint8</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    {</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        Stops,</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('QskGradient_8h_source.html',''); initR
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    };</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    Q_ENUM( Type )</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">enum</span> SpreadMode</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">enum</span> SpreadMode : quint8</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    {</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        PadSpread,</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        ReflectSpread,</div>
@@ -209,7 +209,7 @@ $(document).ready(function(){initNavTree('QskGradient_8h_source.html',''); initR
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    };</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    Q_ENUM( SpreadMode )</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">enum</span> StretchMode</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">enum</span> StretchMode : quint8</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    {</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        NoStretch,</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        StretchToSize</div>
@@ -332,8 +332,8 @@ $(document).ready(function(){initNavTree('QskGradient_8h_source.html',''); initR
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    qreal m_values[5] = {};</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_type : 3;</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_spreadMode : 3;</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> m_stretchMode : 3;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    SpreadMode m_spreadMode : 3;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    StretchMode m_stretchMode : 3;</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="keyword">mutable</span> <span class="keywordtype">bool</span> m_isDirty : 1;</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="keyword">mutable</span> <span class="keywordtype">bool</span> m_isValid : 1;</div>

@@ -182,7 +182,7 @@ $(document).ready(function(){initNavTree('QskDialog_8h_source.html',''); initRes
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        WRITE setTransientParent NOTIFY transientParentChanged )</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">enum</span> Policy</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">enum</span> Policy : quint8</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    {</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        EmbeddedBox,</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        EmbeddedWindow, <span class="comment">// not yet implemented, do we need it ?</span></div>
@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('QskDialog_8h_source.html',''); initRes
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    Q_ENUM( Policy )</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="comment">// a.k.a QMessageBox::StandardButton or QPlatformDialogHelper::StandardButton</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">enum</span> Action</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">enum</span> Action : quint32</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    {</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        NoAction           = 0,</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        Ok                 = 1 &lt;&lt; 10,</div>
@@ -219,7 +219,7 @@ $(document).ready(function(){initNavTree('QskDialog_8h_source.html',''); initRes
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    Q_DECLARE_FLAGS( Actions, Action )</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">// a.k.a QMessageBox::ButtonRole</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keyword">enum</span> ActionRole</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keyword">enum</span> ActionRole : qint8</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    {</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        InvalidRole = -1,</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
@@ -239,7 +239,7 @@ $(document).ready(function(){initNavTree('QskDialog_8h_source.html',''); initRes
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    Q_ENUM( ActionRole )</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="comment">// for building the mask in QskSkin::dialogButtonLayout</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keyword">enum</span> ButtonLayoutFlag</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keyword">enum</span> ButtonLayoutFlag : quint32</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    {</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="comment">// from QPlatformDialogHelper::ButtonRole</span></div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        ActionMask      = 0x0FFFFFFF,</div>
@@ -249,7 +249,7 @@ $(document).ready(function(){initNavTree('QskDialog_8h_source.html',''); initRes
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        Reverse         = 1 &lt;&lt; 30</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    };</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keyword">enum</span> DialogCode</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keyword">enum</span> DialogCode : quint8</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    {</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        Rejected = 0,</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        Accepted</div>

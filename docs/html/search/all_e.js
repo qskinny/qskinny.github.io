@@ -9,7 +9,7 @@ var searchData=
   ['maybeunresized_6',['maybeUnresized',['../classQskItem.html#ac0cbb1b34efea1f9337042e960f4f1ae',1,'QskItem']]],
   ['memberfunctioncall_7',['MemberFunctionCall',['../classQskMetaFunctionCall_1_1MemberFunctionCall.html',1,'QskMetaFunctionCall']]],
   ['metaobject_8',['metaObject',['../classQskSkinnable.html#a7ded844b4c1ee6c93ab6f9b54d355fe9',1,'QskSkinnable']]],
-  ['metric_9',['metric',['../classQskSkinnable.html#af7ee11024764a173d679d5e2d4b229a8',1,'QskSkinnable::metric()'],['../classQskAspect.html#abe34bcf592dd94b99b1a3461e810ad73acdbbc15bd41c3538403c8c118b5cf090',1,'QskAspect::Metric']]],
+  ['metric_9',['Metric',['../classQskAspect.html#abe34bcf592dd94b99b1a3461e810ad73acdbbc15bd41c3538403c8c118b5cf090',1,'QskAspect']]],
   ['metricprimitive_10',['metricPrimitive',['../classQskAspect.html#afe0fa6e6fe3b975a79690754fb93aea1',1,'QskAspect']]],
   ['minimumsize_11',['minimumsize',['../classQskControl.html#a3f58ea4ac8bd3798f5d5963fe5f9dcb0',1,'QskControl::minimumSize'],['../classQskControl.html#aade6bd5b3fde02000db608ab68fb682c',1,'QskControl::minimumSize() const']]],
   ['mouseungrabevent_12',['mouseUngrabEvent',['../classQskItem.html#a086adc1cac6cca104659d3a17d078b15',1,'QskItem']]]
